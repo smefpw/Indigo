@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cheat\Aimbot\Aimbot.cpp" />
+    <ClCompile Include="Cheat\Backtrack\LagComp.cpp" />
+    <ClCompile Include="Cheat\Client.cpp" />
+    <ClCompile Include="Cheat\Esp\Esp.cpp" />
+    <ClCompile Include="Cheat\Misc\Misc.cpp" />
+    <ClCompile Include="Cheat\Radar\Radar.cpp" />
+    <ClCompile Include="Cheat\Skin\DynSkin.cpp" />
+    <ClCompile Include="Cheat\Skin\Skin.cpp" />
+    <ClCompile Include="Cheat\Triggerbot\Triggerbot.cpp" />
+    <ClCompile Include="CSX\CSX_Cvar.cpp" />
+    <ClCompile Include="CSX\CSX_Hook.cpp" />
+    <ClCompile Include="CSX\CSX_Log.cpp" />
+    <ClCompile Include="CSX\CSX_Memory.cpp" />
+    <ClCompile Include="CSX\CSX_Utils.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\Entity.cpp" />
+    <ClCompile Include="Engine\Hook.cpp" />
+    <ClCompile Include="Engine\NetVar.cpp" />
+    <ClCompile Include="Engine\Offset.cpp" />
+    <ClCompile Include="Engine\Players.cpp" />
+    <ClCompile Include="Engine\Render.cpp" />
+    <ClCompile Include="Engine\Weapon.cpp" />
+    <ClCompile Include="Gui\Gui.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="License\License.cpp" />
+    <ClCompile Include="Main\Main.cpp" />
+    <ClCompile Include="RL\ReflectiveLoader.cpp" />
+    <ClCompile Include="SDK\CRC.cpp" />
+    <ClCompile Include="SDK\KeyValues.cpp" />
+    <ClCompile Include="SDK\SDK.cpp" />
+    <ClCompile Include="SDK\Sounds.cpp" />
+    <ClCompile Include="SDK\Spoofed.cpp" />
+    <ClCompile Include="SDK\Vector.cpp" />
+    <ClCompile Include="SDK\Vector2D.cpp" />
+    <ClCompile Include="SDK\Vector4D.cpp" />
+    <ClCompile Include="SDK\VMatrix.cpp" />
+    <ClCompile Include="Settings\Settings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cheat\Aimbot\Aimbot.h" />
+    <ClInclude Include="Cheat\Backtrack\LagComp.h" />
+    <ClInclude Include="Cheat\Client.h" />
+    <ClInclude Include="Cheat\Esp\Esp.h" />
+    <ClInclude Include="Cheat\Misc\Misc.h" />
+    <ClInclude Include="Cheat\Radar\Radar.h" />
+    <ClInclude Include="Cheat\Skin\DynSkin.h" />
+    <ClInclude Include="Cheat\Skin\Skin.h" />
+    <ClInclude Include="Cheat\Triggerbot\Triggerbot.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="CSX\CSX.h" />
+    <ClInclude Include="CSX\CSX_Cvar.h" />
+    <ClInclude Include="CSX\CSX_Hook.h" />
+    <ClInclude Include="CSX\CSX_Log.h" />
+    <ClInclude Include="CSX\CSX_Memory.h" />
+    <ClInclude Include="CSX\CSX_Utils.h" />
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\Entity.h" />
+    <ClInclude Include="Engine\Hook.h" />
+    <ClInclude Include="Engine\NetVar.h" />
+    <ClInclude Include="Engine\Offset.h" />
+    <ClInclude Include="Engine\Players.h" />
+    <ClInclude Include="Engine\Render.h" />
+    <ClInclude Include="Engine\Weapon.h" />
+    <ClInclude Include="Gui\Gui.h" />
+    <ClInclude Include="Gui\memoryfonts.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx9.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\stb_rect_pack.h" />
+    <ClInclude Include="ImGui\stb_textedit.h" />
+    <ClInclude Include="ImGui\stb_truetype.h" />
+    <ClInclude Include="License\License.h" />
+    <ClInclude Include="Main\Main.h" />
+    <ClInclude Include="RL\ReflectiveDLLInjection.h" />
+    <ClInclude Include="RL\ReflectiveLoader.h" />
+    <ClInclude Include="SDK\BaseTypes.h" />
+    <ClInclude Include="SDK\ButtonCode.h" />
+    <ClInclude Include="SDK\CGlobalVarsBase.hpp" />
+    <ClInclude Include="SDK\CHandle.hpp" />
+    <ClInclude Include="SDK\CInput.hpp" />
+    <ClInclude Include="SDK\ClientClass.hpp" />
+    <ClInclude Include="SDK\Color.hpp" />
+    <ClInclude Include="SDK\Const.h" />
+    <ClInclude Include="SDK\CRC.hpp" />
+    <ClInclude Include="SDK\CVar.h" />
+    <ClInclude Include="SDK\Definitions.hpp" />
+    <ClInclude Include="SDK\IAppSystem.hpp" />
+    <ClInclude Include="SDK\IBaseClientDll.hpp" />
+    <ClInclude Include="SDK\IClientEntity.hpp" />
+    <ClInclude Include="SDK\IClientEntityList.hpp" />
+    <ClInclude Include="SDK\IClientMode.hpp" />
+    <ClInclude Include="SDK\IClientNetworkable.hpp" />
+    <ClInclude Include="SDK\IClientRenderable.hpp" />
+    <ClInclude Include="SDK\IClientThinkable.hpp" />
+    <ClInclude Include="SDK\IClientUnknown.hpp" />
+    <ClInclude Include="SDK\ICollideable.h" />
+    <ClInclude Include="SDK\IDebugOverlay.hpp" />
+    <ClInclude Include="SDK\IEffects.h" />
+    <ClInclude Include="SDK\IEngineSound.h" />
+    <ClInclude Include="SDK\IEngineTrace.hpp" />
+    <ClInclude Include="SDK\IGameEvent.h" />
+    <ClInclude Include="SDK\IHandleEntity.hpp" />
+    <ClInclude Include="SDK\IMaterial.h" />
+    <ClInclude Include="SDK\IMaterialSystem.h" />
+    <ClInclude Include="SDK\InputEnums.h" />
+    <ClInclude Include="SDK\ISurface.h" />
+    <ClInclude Include="SDK\IVEngineClient.hpp" />
+    <ClInclude Include="SDK\IVModelInfoClient.hpp" />
+    <ClInclude Include="SDK\IVModelRender.h" />
+    <ClInclude Include="SDK\IVRenderView.h" />
+    <ClInclude Include="SDK\KeyValues.h" />
+    <ClInclude Include="SDK\PlayerInfo.hpp" />
+    <ClInclude Include="SDK\QAngle.hpp" />
+    <ClInclude Include="SDK\Recv.hpp" />
+    <ClInclude Include="SDK\RecvCommon.hpp" />
+    <ClInclude Include="SDK\SDK.h" />
+    <ClInclude Include="SDK\Sounds.h" />
+    <ClInclude Include="SDK\Spoofed.h" />
+    <ClInclude Include="SDK\TextureGroupNames.h" />
+    <ClInclude Include="SDK\Vector.hpp" />
+    <ClInclude Include="SDK\Vector2D.hpp" />
+    <ClInclude Include="SDK\Vector4D.hpp" />
+    <ClInclude Include="SDK\VMatrix.hpp" />
+    <ClInclude Include="SDK\Vplane.h" />
+    <ClInclude Include="Settings\Settings.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{45A301E6-73EC-4F60-88F4-D1D5154B58D7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>INDIGO</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>INDIGO</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\DirectX SDK (2010)\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>smef.pw</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GAMINGENHANCEMENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/ignore:4307 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GAMINGENHANCEMENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <FullProgramDatabaseFile>false</FullProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
