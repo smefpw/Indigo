@@ -49,7 +49,7 @@ struct GlovesSkins_s
 
 extern WeaponSkins_s WeaponSkins[33];
 extern KnifeSkins_s KnifeSkins[10];
-extern GlovesSkins_s GlovesSkin_Array[25];
+extern GlovesSkins_s GlovesSkin_Array[49];
 
 extern unordered_map<int , EconomyItemCfg> g_SkinChangerCfg;
 extern unordered_map<int , const char*> g_ViewModelCfg;

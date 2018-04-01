@@ -13,6 +13,7 @@
 #include "Radar/Radar.h"
 #include "Misc/Misc.h"
 #include "Skin/Skin.h"
+#include "InventoryChanger/InventoryChanger.h"
 
 class CGui;
 
@@ -22,6 +23,7 @@ class CEsp;
 class CRadar;
 class CSkin;
 class CMisc;
+class CInventoryChanger;
 
 namespace Engine
 {
@@ -65,10 +67,15 @@ namespace Client
 
 	bool Initialize( IDirect3DDevice9* pDevice );
 	void Shutdown();
+	void SendMMHello();
+	void SendClientHello();
+
 
 	void OnRender();
 	void OnLostDevice();
 	void OnResetDevice();
+	void OnRetrieveMessage(void* ecx, void* edx, uint32_t *punMsgType, void *pubDest, uint32_t cubDest, uint32_t *pcubMsgSize);
+	void OnSendMessage(void* ecx, void* edx, uint32_t unMsgType, const void* pubData, uint32_t cubData);
 	void OnCreateMove( CUserCmd* pCmd );
 	void OnFireEventClientSideThink( IGameEvent* pEvent );
 	void OnFrameStageNotify( ClientFrameStage_t Stage );

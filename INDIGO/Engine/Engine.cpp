@@ -33,6 +33,9 @@ namespace Engine
 		if ( !CSX::Utils::IsModuleLoad( VSTDLIB_DLL ) )
 			return false;
 
+		if (!CSX::Utils::IsModuleLoad(STEAMAPI_DLL))
+			return false;
+
 		if ( !SDK::Interfaces::Engine() )
 		{
 			return false;
@@ -106,6 +109,11 @@ namespace Engine
 		}
 
 		if ( !SDK::Interfaces::InputSystem() )
+		{
+			return false;
+		}
+
+		if (!SDK::Interfaces::SteamGameCoordinator())
 		{
 			return false;
 		}

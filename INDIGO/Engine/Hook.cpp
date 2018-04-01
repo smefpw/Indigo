@@ -16,6 +16,7 @@ namespace Engine
 		CSX::Hook::VTable ModelRenderTable;
 		CSX::Hook::VTable ClientTable;
 		CSX::Hook::VTable SurfaceTable;
+		CSX::Hook::VTable SteamGameCoordinatorTable;
 
 		IDirect3DDevice9* g_pDevice = nullptr;
 
@@ -87,6 +88,27 @@ namespace Engine
 			Client::OnGetViewModelFOV(fov);
 
 			return fov;
+		}
+
+		EGCResults __fastcall Hook_RetrieveMessage(void* ecx, void* edx, uint32_t *punMsgType, void *pubDest, uint32_t cubDest, uint32_t *pcubMsgSize)
+		{
+			SteamGameCoordinatorTable.UnHook();
+			EGCResults status = Interfaces::SteamGameCoordinator()->RetrieveMessage(punMsgType, pubDest, cubDest, pcubMsgSize);
+			SteamGameCoordinatorTable.ReHook();
+			if (status != k_EGCResultOK)
+				return status;
+			Client::OnRetrieveMessage(ecx, edx, punMsgType, pubDest, cubDest, pcubMsgSize);
+			return status;
+		}
+		EGCResults __fastcall Hook_SendMessage(void* ecx, void* edx, uint32_t unMsgType, const void* pubData, uint32_t cubData)
+		{
+			uint32_t messageType = unMsgType & 0x7FFFFFFF;
+			void* pubDataMutable = const_cast<void*>(pubData);
+			Client::OnSendMessage(ecx, edx, unMsgType, pubData, cubData);
+			SteamGameCoordinatorTable.UnHook();
+			EGCResults status = Interfaces::SteamGameCoordinator()->SendMessage(unMsgType, pubData, cubData);
+			SteamGameCoordinatorTable.ReHook();
+			return status;
 		}
 
 		bool WINAPI Hook_FireEventClientSideThink(IGameEvent* pEvent)
@@ -219,6 +241,12 @@ namespace Engine
 					ClientModeTable.HookIndex(TABLE::IClientMode::OverrideView, Hook_OverrideView);
 					ClientModeTable.HookIndex(TABLE::IClientMode::GetViewModelFOV, Hook_GetViewModelFOV);
 
+					if (!SteamGameCoordinatorTable.InitTable(Interfaces::SteamGameCoordinator()))
+						return false;
+
+					SteamGameCoordinatorTable.HookIndex(0, Hook_SendMessage);
+					SteamGameCoordinatorTable.HookIndex(2, Hook_RetrieveMessage);
+
 					if (!GameEventTable.InitTable(Interfaces::GameEvent()))
 						return false;
 
@@ -261,6 +289,7 @@ namespace Engine
 			GameEventTable.UnHook();
 			ModelRenderTable.UnHook();
 			ClientTable.UnHook();
+			SteamGameCoordinatorTable.UnHook();
 		}
 	}
 }

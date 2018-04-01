@@ -196,10 +196,6 @@ namespace Settings
 		Misc::misc_FovChanger = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_FOV_CHANGER , Misc::misc_FovChanger ) != false;
 		Misc::misc_FovView = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_FOV_VIEW , Misc::misc_FovView );
 		Misc::misc_FovModelView = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_FOV_MDL_VIEW , Misc::misc_FovModelView );
-
-		string Color_AWPAIM = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AWPAIM_COLOR , "255,0,0" );
-
-		ScanColorFromCvar( Color_AWPAIM.c_str() , Misc::misc_AwpAimColor );
 		
 		string Color_MENU = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_MENU_COLOR, "0,0,0");
 
@@ -443,14 +439,7 @@ namespace Settings
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_SPECTATORS , Misc::misc_Spectators );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_FOV_CHANGER , Misc::misc_FovChanger );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_FOV_VIEW , Misc::misc_FovView );
-		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_FOV_MDL_VIEW , Misc::misc_FovModelView );
-
-		string Color_AWP_AIM =
-			to_string( int( Misc::misc_AwpAimColor[0] * 255.f ) ) + "," +
-			to_string( int( Misc::misc_AwpAimColor[1] * 255.f ) ) + "," +
-			to_string( int( Misc::misc_AwpAimColor[2] * 255.f ) );
-
-		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AWPAIM_COLOR , Color_AWP_AIM );
+		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_FOV_MDL_VIEW , Misc::misc_FovModelView );;
 		
 		string Color_MENU =
 			to_string(int(Misc::misc_MenuColor[0] * 255.f)) + "," +
@@ -476,6 +465,27 @@ namespace Settings
 		if ( !strcmp( Key , CVAR_KEY_MOUSE5 ) ) return 2;
 
 		return 0;
+	}
+
+	namespace MedalChanger {
+		bool enabled = false;
+		std::vector<uint32_t> medals = {};
+		bool equipped_medal_override = false;
+		uint32_t equipped_medal = 0;
+	}
+	namespace ProfileChanger {
+		bool enabled = false;
+		int rank_id = 0;
+		int wins = 0;
+		int cmd_friendly = 0;
+		int cmd_leader = 0;
+		int cmd_teaching = 0;
+		int level = 0;
+		int xp = 0;
+	}
+	namespace InventoryChanger {
+		bool enabled = false;
+		std::vector<k_weapon_data> weapons = {};
 	}
 
 	namespace Aimbot
@@ -626,7 +636,7 @@ namespace Settings
 		bool misc_namespamidkmemes = false;
 		bool misc_namespamidkmemes_static = false;
 		char* First_static = "smef";
-		char* Second_static = "pw";
+		char* Second_static = ".cc";
 		char First[64];
 		char Second[64];
 

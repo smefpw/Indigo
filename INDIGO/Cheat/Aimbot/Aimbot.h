@@ -18,7 +18,7 @@ using namespace Engine;
 
 enum AIM_ATTACK_TYPE
 {
-	AA_SHOTGUN ,
+	AA_SHOTGUN,
 	AA_SNIPER_PISTOL
 };
 
@@ -27,10 +27,10 @@ class CAimbot
 public:
 
 	CAimbot();
-//[swap_lines]
+	//[swap_lines]
 	bool	IsEnable();
 
-	int		GetPlayerFov( CPlayer* pPlayer );
+	int		GetPlayerFov(CPlayer* pPlayer);
 
 	int		GetBestTarget();
 	int		GetBestHitBox();
@@ -41,11 +41,11 @@ public:
 	void	AimbotSet();
 
 	void	AutoPistol();
-	void	OnCreateMove( CUserCmd* pCmd , CMe* pLocal );
-//[/swap_lines]
+	void	OnCreateMove(CUserCmd* pCmd, CMe* pLocal);
+	//[/swap_lines]
 private:
 
-	CMe*		m_pLocal;
+	CMe * m_pLocal;
 	CUserCmd*	m_pCmd;
 
 	int		m_iBestPreTarget;

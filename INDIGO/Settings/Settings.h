@@ -6,6 +6,16 @@
 #define FIX_MIN_FOV_CHEST	50
 #define FOV_BASE_DISTANCE	200
 #define STICKERS_COUNT 5
+
+struct k_weapon_data {
+	int itemDefinitionIndex;
+	int paintKit;
+	int rarity;
+	int seed;
+	float wear;
+	char* name = "";
+};
+
 class Sticker_t
 {
 public:
@@ -21,6 +31,27 @@ namespace Settings
 	void SaveSettings( string szIniFile );
 	extern float hitmarkerAlpha;
 	int TriggerCharToKey( const char* Key );
+
+	namespace MedalChanger {
+		extern bool enabled;
+		extern std::vector<uint32_t> medals;
+		extern bool equipped_medal_override;
+		extern uint32_t equipped_medal;
+	}
+	namespace ProfileChanger {
+		extern bool enabled;
+		extern int rank_id;
+		extern int wins;
+		extern int cmd_friendly;
+		extern int cmd_leader;
+		extern int cmd_teaching;
+		extern int level;
+		extern int xp;
+	}
+	namespace InventoryChanger {
+		extern bool enabled;
+		extern std::vector<k_weapon_data> weapons;
+	}
 
 	namespace Aimbot
 	{
@@ -223,7 +254,6 @@ namespace Settings
 		extern int misc_FovView;
 		extern int misc_FovModelView;
 		extern float misc_fakelag_amount;
-		extern float misc_AwpAimColor[3];
 		extern bool misc_Moonwalk;
 
 		extern bool misc_namespamidkmemes;
@@ -238,8 +268,8 @@ namespace Settings
 
 }
 
-#define CHEAT_NAME "smef.pw Indigo 4.1"
-#define WATER_MARK "smef.pw Indigo 4.1"
+#define CHEAT_NAME "smef.cc 4.2"
+#define WATER_MARK "smef.cc 4.2"
 #define AIMBOT_TEXT "Aim"
 #define COLORS_TEXT "Colors"
 #define CONFIG_TEXT "Config"
@@ -248,6 +278,8 @@ namespace Settings
 #define RADAR_TEXT "Radar"
 #define SKIN_TEXT "Skin"
 #define MISC_TEXT "Misc"
+#define PROFILE_TEXT "PROFILE"
+#define INVENTORY_TEXT "INVENTORY"
 
 #define CVAR_AIMBOT_DEATHMATCH "aim_Deathmatch"
 #define CVAR_AIMBOT_WALLATTACK "aim_WallAttack"

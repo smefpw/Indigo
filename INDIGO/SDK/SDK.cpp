@@ -23,6 +23,8 @@ namespace SDK
 	ConVar*             Interfaces::g_pConVar = nullptr;
 	CEffects*			Interfaces::g_pEffects = nullptr;
 	ILocalize*          Interfaces::g_pILocalize = nullptr;
+	ISteamGameCoordinator* Interfaces::g_pSteamGameCoordinator = nullptr;
+	ISteamUser* Interfaces::g_pSteamUser = nullptr;
 	//[/swap_lines]
 	//[junk_enable /]
 	CreateInterfaceFn CaptureFactory(char* FactoryModule)
@@ -274,6 +276,31 @@ namespace SDK
 		}
 
 		return g_pInputSystem;
+	}
+
+	ISteamUser* Interfaces::SteamUser()
+	{
+		if (!g_pSteamUser) {
+			SteamGameCoordinator();
+		}
+		return g_pSteamUser;
+	}
+
+	ISteamGameCoordinator* Interfaces::SteamGameCoordinator()
+	{
+		if (!g_pSteamGameCoordinator) {
+			typedef uint32_t SteamPipeHandle;
+			typedef uint32_t SteamUserHandle;
+			SteamUserHandle hSteamUser = ((SteamUserHandle(__cdecl*)(void))GetProcAddress(GetModuleHandle("steam_api.dll"), "SteamAPI_GetHSteamUser"))();
+			SteamPipeHandle hSteamPipe = ((SteamPipeHandle(__cdecl*)(void))GetProcAddress(GetModuleHandle("steam_api.dll"), "SteamAPI_GetHSteamPipe"))();
+			auto SteamClient = ((ISteamClient*(__cdecl*)(void))GetProcAddress(GetModuleHandle("steam_api.dll"), "SteamClient"))();
+			auto SteamHTTP = SteamClient->GetISteamHTTP(hSteamUser, hSteamPipe, "STEAMHTTP_INTERFACE_VERSION002");
+			g_pSteamUser = SteamClient->GetISteamUser(hSteamUser, hSteamPipe, "SteamUser019");
+			auto SteamFriends = SteamClient->GetISteamFriends(hSteamUser, hSteamPipe, "SteamFriends015");
+			auto SteamInventory = SteamClient->GetISteamInventory(hSteamUser, hSteamPipe, "STEAMINVENTORY_INTERFACE_V002");
+			g_pSteamGameCoordinator = (ISteamGameCoordinator*)SteamClient->GetISteamGenericInterface(hSteamUser, hSteamPipe, "SteamGameCoordinator001");
+		}
+		return g_pSteamGameCoordinator;
 	}
 
 	ConVar* Interfaces::GetConVar()

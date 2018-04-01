@@ -15,6 +15,7 @@
     <ClCompile Include="Cheat\Backtrack\LagComp.cpp" />
     <ClCompile Include="Cheat\Client.cpp" />
     <ClCompile Include="Cheat\Esp\Esp.cpp" />
+    <ClCompile Include="Cheat\InventoryChanger\InventoryChanger.cpp" />
     <ClCompile Include="Cheat\Misc\Misc.cpp" />
     <ClCompile Include="Cheat\Radar\Radar.cpp" />
     <ClCompile Include="Cheat\Skin\DynSkin.cpp" />
@@ -35,10 +36,22 @@
     <ClCompile Include="Engine\Weapon.cpp" />
     <ClCompile Include="Gui\Gui.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imguicolorpicker.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
     <ClCompile Include="License\License.cpp" />
     <ClCompile Include="Main\Main.cpp" />
+    <ClCompile Include="protobuf\base_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\cstrike15_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\econ_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\engine_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\fatdemo.pb.cc" />
+    <ClCompile Include="protobuf\gcsdk_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\gcsystemmsgs.pb.cc" />
+    <ClCompile Include="protobuf\netmessages.pb.cc" />
+    <ClCompile Include="protobuf\network_connection.pb.cc" />
+    <ClCompile Include="protobuf\steamdatagram_messages.pb.cc" />
+    <ClCompile Include="protobuf\steammessages.pb.cc" />
     <ClCompile Include="RL\ReflectiveLoader.cpp" />
     <ClCompile Include="SDK\CRC.cpp" />
     <ClCompile Include="SDK\KeyValues.cpp" />
@@ -56,6 +69,7 @@
     <ClInclude Include="Cheat\Backtrack\LagComp.h" />
     <ClInclude Include="Cheat\Client.h" />
     <ClInclude Include="Cheat\Esp\Esp.h" />
+    <ClInclude Include="Cheat\InventoryChanger\InventoryChanger.h" />
     <ClInclude Include="Cheat\Misc\Misc.h" />
     <ClInclude Include="Cheat\Radar\Radar.h" />
     <ClInclude Include="Cheat\Skin\DynSkin.h" />
@@ -87,6 +101,19 @@
     <ClInclude Include="ImGui\stb_truetype.h" />
     <ClInclude Include="License\License.h" />
     <ClInclude Include="Main\Main.h" />
+    <ClInclude Include="protobuf\base_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\cstrike15_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\econ_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\engine_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\fatdemo.pb.h" />
+    <ClInclude Include="protobuf\gcsdk_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\gcsystemmsgs.pb.h" />
+    <ClInclude Include="protobuf\netmessages.pb.h" />
+    <ClInclude Include="protobuf\network_connection.pb.h" />
+    <ClInclude Include="protobuf\SteamClient.h" />
+    <ClInclude Include="protobuf\steamdatagram_messages.pb.h" />
+    <ClInclude Include="protobuf\SteamID.h" />
+    <ClInclude Include="protobuf\steammessages.pb.h" />
     <ClInclude Include="RL\ReflectiveDLLInjection.h" />
     <ClInclude Include="RL\ReflectiveLoader.h" />
     <ClInclude Include="SDK\BaseTypes.h" />
@@ -139,6 +166,51 @@
     <ClInclude Include="SDK\VMatrix.hpp" />
     <ClInclude Include="SDK\Vplane.h" />
     <ClInclude Include="Settings\Settings.h" />
+    <ClInclude Include="steam_sdk\isteamapplist.h" />
+    <ClInclude Include="steam_sdk\isteamapps.h" />
+    <ClInclude Include="steam_sdk\isteamappticket.h" />
+    <ClInclude Include="steam_sdk\isteamclient.h" />
+    <ClInclude Include="steam_sdk\isteamcontroller.h" />
+    <ClInclude Include="steam_sdk\isteamfriends.h" />
+    <ClInclude Include="steam_sdk\isteamgamecoordinator.h" />
+    <ClInclude Include="steam_sdk\isteamgameserver.h" />
+    <ClInclude Include="steam_sdk\isteamgameserverstats.h" />
+    <ClInclude Include="steam_sdk\isteamhtmlsurface.h" />
+    <ClInclude Include="steam_sdk\isteamhttp.h" />
+    <ClInclude Include="steam_sdk\isteaminventory.h" />
+    <ClInclude Include="steam_sdk\isteammasterserverupdater.h" />
+    <ClInclude Include="steam_sdk\isteammatchmaking.h" />
+    <ClInclude Include="steam_sdk\isteammusic.h" />
+    <ClInclude Include="steam_sdk\isteammusicremote.h" />
+    <ClInclude Include="steam_sdk\isteamnetworking.h" />
+    <ClInclude Include="steam_sdk\isteamparentalsettings.h" />
+    <ClInclude Include="steam_sdk\isteamps3overlayrenderer.h" />
+    <ClInclude Include="steam_sdk\isteamremotestorage.h" />
+    <ClInclude Include="steam_sdk\isteamscreenshots.h" />
+    <ClInclude Include="steam_sdk\isteamugc.h" />
+    <ClInclude Include="steam_sdk\isteamuser.h" />
+    <ClInclude Include="steam_sdk\isteamuserstats.h" />
+    <ClInclude Include="steam_sdk\isteamutils.h" />
+    <ClInclude Include="steam_sdk\isteamvideo.h" />
+    <ClInclude Include="steam_sdk\matchmakingtypes.h" />
+    <ClInclude Include="steam_sdk\steamclientpublic.h" />
+    <ClInclude Include="steam_sdk\steamencryptedappticket.h" />
+    <ClInclude Include="steam_sdk\steamhttpenums.h" />
+    <ClInclude Include="steam_sdk\steamps3params.h" />
+    <ClInclude Include="steam_sdk\steamtypes.h" />
+    <ClInclude Include="steam_sdk\steamuniverse.h" />
+    <ClInclude Include="steam_sdk\steam_api.h" />
+    <ClInclude Include="steam_sdk\steam_api_flat.h" />
+    <ClInclude Include="steam_sdk\steam_api_internal.h" />
+    <ClInclude Include="steam_sdk\steam_gameserver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="protobuf\libprotobuf.lib" />
+    <Library Include="protobuf\libprotoc.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="steam_sdk\steam_api.json" />
+    <None Include="steam_sdk\steam_api_interop.cs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45A301E6-73EC-4F60-88F4-D1D5154B58D7}</ProjectGuid>
@@ -173,13 +245,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\brais\Desktop\Indigo 4.1\INDIGO\protobuf\src\;C:\Users\brais\Desktop\Indigo 4.1\INDIGO\protobuf\src\google\protobuf;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\brais\Desktop\Indigo 4.1\INDIGO\protobuf;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\DirectX SDK (2010)\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Marcelo\Desktop\Sources\Indigo 4.2\INDIGO\protobuf\src;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Marcelo\Desktop\Sources\Indigo 4.2\INDIGO\protobuf;C:\Program Files\DirectX SDK (2010)\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>smef.pw</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
