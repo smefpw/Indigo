@@ -1,6 +1,6 @@
 # smef's Indigo Remastered
 Notice: You must include protobuf yourself!
-Watch this; https://youtu.be/BqHlEgGAZ1U to learn how to include protobuf
+Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 4.2
 + Menu (changed)
 + Aimbot (improved)
