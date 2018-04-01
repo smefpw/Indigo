@@ -635,3 +635,4 @@ void CEngineGotvSyncPacket::Swap(CEngineGotvSyncPacket* other) {
 // @@protoc_insertion_point(namespace_scope)
 
 // @@protoc_insertion_point(global_scope)
+

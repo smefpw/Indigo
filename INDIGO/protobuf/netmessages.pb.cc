@@ -22835,3 +22835,4 @@ void CSVCMsg_HltvFixupOperatorStatus::Swap(CSVCMsg_HltvFixupOperatorStatus* othe
 // @@protoc_insertion_point(namespace_scope)
 
 // @@protoc_insertion_point(global_scope)
+
