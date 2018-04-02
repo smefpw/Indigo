@@ -1,6 +1,10 @@
 # smef's Indigo Remastered
 Notice: You must include protobuf yourself!
+
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
+
+Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx
+
 4.2
 + Menu (changed)
 + Aimbot (improved)
