@@ -1502,14 +1502,12 @@ namespace Client
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		if (ImGui::Combo("", &Settings::Misc::misc_CurrentSky, skybox_items, IM_ARRAYSIZE(skybox_items)))
+		if (ImGui::Combo("SkyBox", &Settings::Misc::misc_CurrentSky, skybox_items, IM_ARRAYSIZE(skybox_items)))
 		{
 			Settings::Misc::misc_SkyName = skybox_items[Settings::Misc::misc_CurrentSky];
 		}
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("sv_cheats 1/smac ban");
-		ImGui::SameLine();
-		ImGui::Text("SkyBox");
 
 		ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
 		if (ImGui::IsItemHovered())
