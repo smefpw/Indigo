@@ -6,14 +6,11 @@ Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
 Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx - Possibly fixed now|
 
- - Removed
- + Added
-
 4.3
  - Fake Lag (removed)
  + Custom Name Changer (added)
  + Legit AA (thank you smef for source / shahzam for help)
- - Slide Walk (don't work with legit aa) 
+ - Slide Walk (don't work with legit aa (removed)) 
  + KnifeBot (fixed)
  + Inventory Unlocker (added) 
  - Radar (kept only INGAME radar)
