@@ -6,25 +6,25 @@ Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
 Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx - Possibly fixed now|
 
-- Removed
-+ Added
+ - Removed
+ + Added
 
 4.3
-- Fake Lag (removed)
-+ Custom Name Changer (added)
-+ Legit AA (thank you smef for source / shahzam for help)
-- Slide Walk (don't work with legit aa) 
-+ KnifeBot (fixed)
-+ Inventory Unlocker (added) 
-- Radar (kept only INGAME radar)
+ - Fake Lag (removed)
+ + Custom Name Changer (added)
+ + Legit AA (thank you smef for source / shahzam for help)
+ - Slide Walk (don't work with legit aa) 
+ + KnifeBot (fixed)
+ + Inventory Unlocker (added) 
+ - Radar (kept only INGAME radar)
 
 Old Change-logs
-+ Menu (changed)
-+ Aimbot (improved)
-+ ColorPicker (added new one)
-+ Inventory Changer (made by Haterul on forum) (also made a combo with all weapons id and rarity)
-+ Profile Changer (made by Haterul on forum)
-+ Gloves (new ones)
+ + Menu (changed)
+ + Aimbot (improved)
+ + ColorPicker (added new one)
+ + Inventory Changer (made by Haterul on forum) (also made a combo with all weapons id and rarity)
+ + Profile Changer (made by Haterul on forum)
+ + Gloves (new ones)
 
 smef's Indigo is published under the MIT License;
 MIT License
