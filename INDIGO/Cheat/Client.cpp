@@ -55,6 +55,7 @@ namespace Client
 	CTriggerbot* g_pTriggerbot = nullptr;
 	CEsp*		g_pEsp = nullptr;
 	CRadar*		g_pRadar = nullptr;
+	CKnifebot*	g_pKnifebot = nullptr;
 	CSkin*		g_pSkin = nullptr;
 	CMisc*		g_pMisc = nullptr;
 	CInventoryChanger* g_pInventoryChanger = nullptr;
@@ -193,6 +194,7 @@ namespace Client
 		g_pAimbot = new CAimbot();
 		g_pTriggerbot = new CTriggerbot();
 		g_pEsp = new CEsp();
+		g_pKnifebot = new CKnifebot();
 		g_pRadar = new CRadar();
 	
 		g_pSkin = new CSkin();
@@ -250,6 +252,7 @@ namespace Client
 		DELETE_MOD(g_pGui);
 
 		DELETE_MOD(g_pAimbot);
+		DELETE_MOD(g_pKnifebot);
 		DELETE_MOD(g_pTriggerbot);
 		DELETE_MOD(g_pEsp);
 		DELETE_MOD(g_pRadar);
@@ -355,6 +358,9 @@ namespace Client
 
 				if (g_pAimbot)
 					g_pAimbot->OnCreateMove(pCmd, g_pPlayers->GetLocal());
+
+				if (g_pKnifebot)
+					g_pKnifebot->OnCreateMove(pCmd);
 
 				if (g_pMisc)
 					g_pMisc->OnCreateMove(pCmd);
@@ -470,6 +476,11 @@ namespace Client
 		{
 			otherpages = 1;
 		}
+		ImGui::SameLine();
+		if (ImGui::Button("Knife Bot Options", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
+		{
+			otherpages = 2;
+		}
 
 		if (otherpages == 0)
 		{
@@ -559,6 +570,7 @@ namespace Client
 			ImGui::Checkbox("Friendly Fire", &Settings::Aimbot::aim_Deathmatch);
 			ImGui::Checkbox("Auto Wall", &Settings::Aimbot::aim_WallAttack);
 			ImGui::Checkbox("Check Smoke", &Settings::Aimbot::aim_CheckSmoke);
+			ImGui::Checkbox("In Air", &Settings::Aimbot::aim_AntiJump);
 
 			ImGui::Text("Backtrack Options");
 			ImGui::Separator();
@@ -566,6 +578,17 @@ namespace Client
 			ImGui::Checkbox("Backtrack", &Settings::Aimbot::aim_Backtrack);
 			ImGui::PushItemWidth(362.f);
 			ImGui::SliderInt("Ticks", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
+
+			ImGui::Text("Anti Aim Options");
+			ImGui::Separator();
+			ImGui::Spacing();
+			ImGui::Checkbox("Legit Anti Aim", &Settings::Misc::misc_LegitAA);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("left + right arrow key to change angles");
+			ImGui::Checkbox("Silent Aim", &Settings::Misc::misc_LegitAAToggle);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("It lets your default Aimbot working again");
+
 
 			ImGui::Text("Aimbot ESP");
 			ImGui::Separator();
@@ -577,6 +600,28 @@ namespace Client
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
+		}
+		if (otherpages == 2)
+		{
+			string attack_1 = "Trigger";
+			string attack_2 = "Backstab Only";
+			string attack_3 = "Auto";
+
+			ImGui::Text("Knifebot Options");
+			ImGui::Separator();
+			ImGui::Spacing();
+			ImGui::Checkbox("Active", &Settings::Knifebot::knf_Active);
+			ImGui::Checkbox("Friendly Fire", &Settings::Knifebot::knf_Team);
+
+			ImGui::Separator();
+
+			const char* items[] = { attack_1.c_str() , attack_2.c_str() , attack_3.c_str() };
+			ImGui::Combo("Type", &Settings::Knifebot::knf_Attack, items, IM_ARRAYSIZE(items));
+
+			ImGui::Separator();
+
+			ImGui::SliderInt("Distance to trigger", &Settings::Knifebot::knf_DistAttack, 1, 100);
+			ImGui::SliderInt("Distante to backstab", &Settings::Knifebot::knf_DistAttack2, 1, 100);
 		}
 	}
 
@@ -1127,7 +1172,10 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("World Weapon", &Settings::Esp::esp_WorldWeapons);
 			ImGui::SameLine(SpaceLineThr);
-			ImGui::Checkbox("Chams XQZ", &Settings::Esp::esp_XQZ);
+			if (ImGui::Checkbox("Radar", &Settings::Radar::rad_Active))
+			{
+				Settings::Radar::rad_InGame;
+			}
 
 			ImGui::Checkbox("World Grenade", &Settings::Esp::esp_WorldGrenade);
 			ImGui::SameLine(SpaceLineOne);
@@ -1241,6 +1289,7 @@ namespace Client
 				"Arms + Weapon"
 			};
 
+			ImGui::Checkbox("Chams XQZ", &Settings::Esp::esp_XQZ);
 			ImGui::Checkbox("Chams Materials", &Settings::Misc::misc_ChamsMaterials);
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("##CHAMSMATERIALS", &Settings::Misc::misc_ChamsMaterialsList, material_items, ARRAYSIZE(material_items));
@@ -1268,30 +1317,6 @@ namespace Client
 			ImGui::Combo("##HITSOUND", &Settings::Esp::esp_HitMarkerSound, iHitSound, ARRAYSIZE(iHitSound));
 			ImGui::SameLine();
 			ImGui::Text("Hitmarker Sound");
-
-			ImGui::Spacing();
-			ImGui::Text("Radar");
-			ImGui::Separator();
-			ImGui::Spacing();
-
-			ImGui::Checkbox("Active", &Settings::Radar::rad_Active);
-			ImGui::SameLine();
-			ImGui::Checkbox("Team", &Settings::Radar::rad_Team);
-			ImGui::SameLine();
-			ImGui::Checkbox("Enemy", &Settings::Radar::rad_Enemy);
-			ImGui::SameLine();
-			ImGui::Checkbox("Sound", &Settings::Radar::rad_Sound);
-			ImGui::SameLine();
-			ImGui::Checkbox("InGame", &Settings::Radar::rad_InGame);
-
-			ImGui::Spacing();
-			ImGui::Separator();
-			ImGui::Spacing();
-
-			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Range", &Settings::Radar::rad_Range, 1, 5000);
-			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Alpha", &Settings::Radar::rad_Alpha, 1, 255);
 		}
 	}
 	void DrawRadar() // Radar
@@ -1438,70 +1463,123 @@ namespace Client
 			"vietnam"
 		};
 
-		//		ImGui::Checkbox("Skin Changer", &Settings::Misc::misc_SkinChanger);
-		//		ImGui::Checkbox("Knife Changer", &Settings::Misc::misc_KnifeChanger);
-		ImGui::Checkbox("Auto Accept", &Settings::Misc::misc_AutoAccept);
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("Auto Bhop", &Settings::Misc::misc_Bhop);
-		ImGui::SameLine(SpaceLineTwo);
-		ImGui::Checkbox("Auto Strafe", &Settings::Misc::misc_AutoStrafe);
+		static int otherpages = 0;
 
-		ImGui::Checkbox("Show Spectators", &Settings::Misc::misc_Spectators);
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("Recoil Crosshair", &Settings::Misc::misc_Punch);
-		ImGui::SameLine(SpaceLineTwo);
+		if (ImGui::Button("Misc", ImVec2(255.0f, 35.0f))) // <---- customize these to your liking.
+		{
+			otherpages = 0;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Untrusted Features", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
+		{
+			otherpages = 1;
+		}
+
+		if (otherpages == 0)
+		{
+			ImGui::Checkbox("Auto Accept", &Settings::Misc::misc_AutoAccept);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Auto Bhop", &Settings::Misc::misc_Bhop);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("NightMode", &Settings::Esp::esp_NightMode);
+
+			ImGui::Checkbox("Show Spectators", &Settings::Misc::misc_Spectators);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Recoil Crosshair", &Settings::Misc::misc_Punch);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("Inventory Unlocker", &Settings::Misc::misc_inventory);
+
+			ImGui::Checkbox("No Flash", &Settings::Misc::misc_NoFlash);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("No Smoke", &Settings::Misc::misc_NoSmoke);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("No Hands", &Settings::Misc::misc_NoHands);
+
+			ImGui::Separator();
+
+			ImGui::Checkbox("Chat Spam", &Settings::Misc::misc_spamregular);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Random Chat Spam", &Settings::Misc::misc_spamrandom);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("Static Name Spam", &Settings::Misc::misc_namespamidkmemes_static);
+			ImGui::Separator();
+			ImGui::Checkbox("FOV Changer", &Settings::Misc::misc_FovChanger);
+			ImGui::PushItemWidth(362.f);
+			ImGui::SliderInt("FOV View", &Settings::Misc::misc_FovView, 1, 170);
+			ImGui::SliderInt("FOV Model View", &Settings::Misc::misc_FovModelView, 1, 190);
+			ImGui::Separator();
+
+			string clan_1 = "None";
+			string clan_2 = "Clear";
+			string clan_3 = "smef.cc";
+			string clan_4 = "smef.cc No-name";
+			string clan_5 = "Valve";
+			string clan_6 = "Valve No-name";
+			string clan_7 = "Animation";
+			const char* items5[] = { clan_1.c_str() , clan_2.c_str() , clan_3.c_str() , clan_4.c_str() , clan_5.c_str() , clan_6.c_str() , clan_7.c_str() };
+			ImGui::Combo("Clantag Changer", &Settings::Misc::misc_Clan, items5, IM_ARRAYSIZE(items5));
+
+			ImGui::Separator();
+			ImGui::Text("Custom Changers");
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			static char name[128] = { 0 };
+			ImGui::PushItemWidth(362.f);
+			ImGui::InputText("Name", name, 16, Settings::Misc::misc_NameChanger);
+			ImGui::PopItemWidth();
+			if (ImGui::Button("Apply"))
+			{
+				ConVar* Name = Interfaces::GetConVar()->FindVar("name");
+				*(int*)((DWORD)&Name->fnChangeCallback + 0xC) = 0;
+				Name->SetValue(name);
+			}
+/*			ImGui::Separator();
+
+			static char clantag[128] = { 0 };
+			ImGui::PushItemWidth(362.f);
+			ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
+			ImGui::PopItemWidth();
+			if (ImGui::Button("Apply"))
+			{
+				Engine::ClanTagApply(clantag);
+			}*/
+		}
+
+		if (otherpages == 1)
+		{
+		ImGui::Text("All features below can cause Untrusted/SMAC Ban");
+		ImGui::Separator();
+		ImGui::Spacing();
+
 		ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("sv_cheats 1/smac ban");
-
-		ImGui::Checkbox("No Flash", &Settings::Misc::misc_NoFlash);
 		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("No Smoke", &Settings::Misc::misc_NoSmoke);
+		ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("sv_cheats 1/smac ban");
 		ImGui::SameLine(SpaceLineTwo);
-		ImGui::Checkbox("No Hands", &Settings::Misc::misc_NoHands);
-
-		ImGui::Checkbox("NightMode", &Settings::Esp::esp_NightMode);
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("Slide Walk", &Settings::Misc::misc_Moonwalk);
-		ImGui::SameLine(SpaceLineTwo);
+		ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_EPostprocess);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("sv_cheats 1/smac ban");
+		ImGui::SameLine(SpaceLineThr);
 		ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
 
-		ImGui::Separator();
 
-		ImGui::Checkbox("Chat Spam", &Settings::Misc::misc_spamregular);
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("Random Chat Spam", &Settings::Misc::misc_spamrandom);
-		ImGui::SameLine(SpaceLineTwo);
-		ImGui::Checkbox("Static Name Spam", &Settings::Misc::misc_namespamidkmemes_static);
 		ImGui::Separator();
-		ImGui::Checkbox("FOV Changer", &Settings::Misc::misc_FovChanger);
-		ImGui::PushItemWidth(362.f);
-		ImGui::SliderInt("FOV View", &Settings::Misc::misc_FovView, 1, 170);
-		ImGui::SliderInt("FOV Model View", &Settings::Misc::misc_FovModelView, 1, 190);
-		ImGui::Separator();
+		ImGui::Spacing();
 
 		ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
+		ImGui::PushItemWidth(362.f);
 		ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("sv_cheats 1/smac ban");
 
-
-		ImGui::SliderFloat("##FAKELAG_AMOUNT", &Settings::Misc::misc_fakelag_amount, 0.f, 20.f, "Fake Lag Amount: %0.f");
-
-		ImGui::Separator();
-
-		string clan_1 = "None";
-		string clan_2 = "Clear";
-		string clan_3 = "smef.pw";
-		string clan_4 = "smef.pw No-name";
-		string clan_5 = "Valve";
-		string clan_6 = "Valve No-name";
-		string clan_7 = "Animation";
-		const char* items5[] = { clan_1.c_str() , clan_2.c_str() , clan_3.c_str() , clan_4.c_str() , clan_5.c_str() , clan_6.c_str() , clan_7.c_str() };
-		ImGui::Combo("Clantag Changer", &Settings::Misc::misc_Clan, items5, IM_ARRAYSIZE(items5));
 		ImGui::Separator();
 		ImGui::Spacing();
 
+		ImGui::PushItemWidth(362.f);
 		if (ImGui::Combo("", &Settings::Misc::misc_CurrentSky, skybox_items, IM_ARRAYSIZE(skybox_items)))
 		{
 			Settings::Misc::misc_SkyName = skybox_items[Settings::Misc::misc_CurrentSky];
@@ -1510,14 +1588,7 @@ namespace Client
 			ImGui::SetTooltip("sv_cheats 1/smac ban");
 		ImGui::SameLine();
 		ImGui::Text("SkyBox");
-
-		ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_EPostprocess);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
+		}
 	}
 
 	void DrawColors()
@@ -1530,8 +1601,8 @@ namespace Client
 		ImGui::MyColorEdit3("Chams Color T", Settings::Esp::chams_Color_TT);
 		ImGui::MyColorEdit3("Chams Color Visible CT", Settings::Esp::chams_Color_VCT);
 		ImGui::MyColorEdit3("Chams Color Visible T", Settings::Esp::chams_Color_VTT);
-		ImGui::MyColorEdit3("Hitmarker", Settings::Esp::esp_HitMarkerColor);
-		ImGui::MyColorEdit3("Dynamic Lights", Settings::Esp::esp_Dlight);
+		ImGui::MyColorEdit3("Color Hitmarker", Settings::Esp::esp_HitMarkerColor);
+		ImGui::MyColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
 
 		/*		ImGui::Text("Radar");
 		ImGui::Separator();
@@ -1572,7 +1643,7 @@ namespace Client
 		ImGui::SetNextWindowPosCenter(ImGuiSetCond_Appearing);
 		BtnNormal();
 		//style.WindowPadding = ImVec2(0, 0);
-		ImGui::Begin("!smef.pw", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_ShowBorders | ImGuiWindowFlags_NoMove);
+		ImGui::Begin("!smef.pw", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_ShowBorders);
 		{
 			mainWindowPos = ImGui::GetWindowPos();
 			if (Global::MenuTab == 0)

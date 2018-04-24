@@ -1,4 +1,5 @@
 #include "Hook.h"
+#include "intrin.h"
 
 //[enc_string_enable /]
 //[junk_enable /]
@@ -16,6 +17,7 @@ namespace Engine
 		CSX::Hook::VTable ModelRenderTable;
 		CSX::Hook::VTable ClientTable;
 		CSX::Hook::VTable SurfaceTable;
+		CSX::Hook::VTable EngineTable;
 		CSX::Hook::VTable SteamGameCoordinatorTable;
 
 		IDirect3DDevice9* g_pDevice = nullptr;
@@ -45,27 +47,147 @@ namespace Engine
 		}
 
 		
+		void VectorAngles(Vector forward, QAngle & ang_out)
+		{
+			if (forward.x == 0.0f && forward.y == 0.0f)
+			{
+				ang_out.x = (forward.z <= 0.0f) ? 90.0f : 270.f;
+				ang_out.y = 0.0f;
+			}
+			else
+			{
+				ang_out.x = atan2(-forward.z, forward.Length2D()) * -180 / 3.14;
+				ang_out.y = atan2(forward.y, forward.x) * 180 / 3.14;
+			}
+
+			ang_out.z = 0.0f;
+		}
+
+		void FixMovement(CUserCmd * pCommand, Vector ang)
+		{
+			float flSpeed = pCommand->Move.Length2D();
+
+			if (flSpeed <= 0.0f)
+				return;
+
+			Vector vec_move;
+
+			VectorAngles(pCommand->Move, vec_move);
+
+			float flYaw = (pCommand->viewangles.y - ang.y + vec_move.y) *  0.0174532925f;
+
+			pCommand->Move.x = cos(flYaw) * flSpeed;
+			pCommand->Move.y = sin(flYaw) * flSpeed;
+		}
+
+		void NormalizeFloat(float & in)
+		{
+			if (in > 180.f || in < -180.f)
+			{
+				float ry = in / 360.f;
+
+				if (ry < 0.f)
+					ry = -ry;
+
+				ry = round(ry);
+
+				if (in < 0.f)
+					in = (in + 360.f * ry);
+				else
+					in = (in - 360.f * ry);
+			}
+		}
+
 		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
 		{
+			static bool isFakeAngle = false;
+			static bool dir = false;
+			static bool dir2 = false;
+
 			ClientModeTable.UnHook();
+			auto origAng = pCmd->viewangles;
 
-			if (Interfaces::Engine()->IsConnected() || Interfaces::Engine()->IsInGame() && Settings::Misc::misc_ThirdPerson)
+			PDWORD pEBP;
+			__asm mov pEBP, ebp;
+
+			bool& bSendPacket = *(bool*)(*pEBP - 0x1C);
+
+			CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+
+			if (Interfaces::Engine()->IsConnected() || Interfaces::Engine()->IsInGame())
 			{
-				PVOID pebp;
-
-				__asm mov pebp, ebp;
-
-				bool* pbSendPacket = (bool*)((DWORD*)pebp - 0x1C);
-				bool& bSendPacket = *pbSendPacket;
-
 				if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
+
+
+				/* This Disables your Silent Aim if you enabled "Anti Silen Aim" in the Misc Settings if you press your left mouse / right mouse etc.*/
+				/* Add a new key like GetAsyncKeyState(VK_MENU) thats the left al key. Because the Grenades are Buggy. So you have to hold left alt key if u want to throw a nade.*/
+
+				if (Settings::Misc::misc_LegitAAToggle)
+				{
+					if (GetAsyncKeyState(VK_LBUTTON) || GetAsyncKeyState(VK_RBUTTON) || pCmd->buttons & IN_GRENADE1 || pCmd->buttons & IN_GRENADE2 || pCmd->buttons & IN_ATTACK || pCmd->buttons & IN_ATTACK2)
+					{
+						Settings::Misc::misc_LegitAA = false;
+					}
+					else if (!GetAsyncKeyState(VK_LBUTTON) || !GetAsyncKeyState(VK_RBUTTON) || !pCmd->buttons & IN_GRENADE1 || !pCmd->buttons & IN_GRENADE2 || !pCmd->buttons & IN_ATTACK || !pCmd->buttons & IN_ATTACK2)
+					{
+						Settings::Misc::misc_LegitAA = true;
+					}
+				}
+
+
+				//pLocal->GetActiveWeapon();
+				//pLocal->GetWeapons()
+
+				if (Settings::Misc::misc_LegitAA && !(pCmd->buttons & IN_ATTACK) && (pCmd->tick_count % 2))
+				{
+					CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+					CBaseWeapon* pWeapon = pLocal->GetBaseWeapon();
+
+					if (pWeapon->GetWeaponType() == WEAPON_TYPE_GRENADE)
+						return;
+
+					if (GetAsyncKeyState(VK_LEFT)) dir = true;
+					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
+
+					bSendPacket = false;
+					pCmd->viewangles.y = (dir) ? (pCmd->viewangles.y - 180) - 270.f : (pCmd->viewangles.y - 180) - 90.f;
+				}
 			}
 
 			Client::OnCreateMove(pCmd);
 
 			bool ret = Interfaces::ClientMode()->CreateMove(flInputSampleTime, pCmd);
 			ClientModeTable.ReHook();
+			FixMovement(pCmd, origAng);
+			NormalizeFloat(pCmd->viewangles[1]);
+
+			printf_s("%d\n", bSendPacket);
+
+
+			/* The code Below is for the Silent Aim Fix. It disables your Silent aim if you disable Legit AA and enable Silent Aim if you Enable Legit AA. Dont change that or you may spin in Overwatch*/
+
+			if ((Settings::Misc::misc_LegitAA && pLocal->GetMoveType() != MOVETYPE_LADDER && pLocal->GetMoveType() != MOVETYPE_NOCLIP) || isFakeAngle)
+			{
+				return 0;
+			}
+			else
+			{
+				return ret;
+			}
+		}
+
+		bool WINAPI Hook_IsConnected()
+		{
+
+			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client.dll"), "75 04 B0 01 5F") - 2;
+			if (_ReturnAddress() == unk && Settings::Misc::misc_inventory)
+			{
+				return false;
+			}
+			EngineTable.UnHook();
+			bool ret = Interfaces::Engine()->IsConnected();
+			EngineTable.ReHook();
 			return ret;
 		}
 

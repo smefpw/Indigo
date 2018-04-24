@@ -34,6 +34,7 @@ namespace Engine
 {
 	enum WEAPON_TYPE;
 	//[swap_lines]
+	void        ClanTagApply(const char* TagName);
 	bool		Initialize();
 	void		Shutdown();
 	WEAPON_TYPE GetWeaponType(int iItemDefinitionIndex);

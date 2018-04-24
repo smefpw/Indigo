@@ -53,6 +53,7 @@
     <ClCompile Include="protobuf\steammessages.pb.cc" />
     <ClCompile Include="Cheat\InventoryChanger\InventoryChanger.cpp" />
     <ClCompile Include="ImGui\imguicolorpicker.cpp" />
+    <ClCompile Include="Cheat\Knifebot\Knifebot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gui\Gui.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="steam_sdk\steamtypes.h" />
     <ClInclude Include="steam_sdk\steamuniverse.h" />
     <ClInclude Include="Cheat\InventoryChanger\InventoryChanger.h" />
+    <ClInclude Include="Cheat\Knifebot\Knifebot.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="protobuf\libprotobuf.lib" />

@@ -204,6 +204,15 @@ namespace Settings
 		//[/swap_lines]
 	}
 
+	namespace Knifebot
+	{
+		extern bool knf_Active;
+		extern bool knf_Team;
+		extern int knf_Attack;
+		extern int knf_DistAttack;
+		extern int knf_DistAttack2;
+	}
+
 	namespace Skin
 	{
 		//[swap_lines]
@@ -218,6 +227,10 @@ namespace Settings
 	namespace Misc
 	{
 		//[swap_lines]
+		extern bool misc_LegitAA;
+		extern bool misc_LegitAAToggle;
+		extern char misc_NameChanger;
+		extern char misc_ClanTagChanger;
 		extern QAngle qLastTickAngle;
 		extern bool misc_ThirdPerson;
 		extern float misc_ThirdPersonRange;
@@ -255,6 +268,7 @@ namespace Settings
 		extern int misc_FovModelView;
 		extern float misc_fakelag_amount;
 		extern bool misc_Moonwalk;
+		extern bool misc_inventory;
 
 		extern bool misc_namespamidkmemes;
 		extern bool misc_namespamidkmemes_static;
@@ -268,14 +282,15 @@ namespace Settings
 
 }
 
-#define CHEAT_NAME "smef.cc 4.2"
-#define WATER_MARK "smef.cc 4.2"
+#define CHEAT_NAME "smef.cc"
+#define WATER_MARK "smef.cc 4.3"
 #define AIMBOT_TEXT "Aim"
 #define COLORS_TEXT "Colors"
 #define CONFIG_TEXT "Config"
 #define TRIGGER_TEXT "Trigger"
 #define VISUAL_TEXT "ESP"
 #define RADAR_TEXT "Radar"
+#define KNIFEBOT_TEXT "Knifebot"
 #define SKIN_TEXT "Skin"
 #define MISC_TEXT "Misc"
 #define PROFILE_TEXT "PROFILE"
@@ -391,6 +406,12 @@ namespace Settings
 #define CVAR_RAD_COLOR_TT "rad_Color_TT"
 #define CVAR_RAD_COLOR_VCT "rad_Color_VCT"
 #define CVAR_RAD_COLOR_VTT "rad_Color_VTT"
+
+#define CVAR_KNIFEBOT_ACTIVE "knf_Active"
+#define CVAR_KNIFEBOT_TEAM "knf_Team"
+#define CVAR_KNIFEBOT_ATTACK "knf_Attack"
+#define CVAR_KNIFEBOT_DISTATTACK "knf_DistAttack"
+#define CVAR_KNIFEBOT_DISTATTACK2 "knf_DistAttack2"
 
 #define CVAR_SKIN_CT_MODEL "knf_ct_model"
 #define CVAR_SKIN_CT_SKIN "knf_ct_skin"

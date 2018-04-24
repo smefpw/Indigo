@@ -1,4 +1,6 @@
 #include "Entity.h"
+#define ptr( x, x1, x2 ) *(x*)( (DWORD)x1 + (DWORD)x2 )
+
 
 namespace Engine
 {
@@ -79,6 +81,15 @@ namespace Engine
 		}
 
 		return false;
+	}
+	
+	int CBaseEntity::GetMoveType()
+	{
+		if (this != NULL && this != nullptr && (DWORD)this != 0xE) 
+		{
+			return ptr(int, this, 0x258);
+			//return *(int*)((DWORD)this + (DWORD)0x258);
+		}
 	}
 
 	bool CBaseEntity::HasHelmet()

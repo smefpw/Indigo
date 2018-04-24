@@ -4,9 +4,21 @@ Notice: You must include protobuf yourself!
 
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
-Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx - Possibly fixed now
+Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx - Possibly fixed now|
 
-4.2
+- Removed
++ Added
+
+4.3
+- Fake Lag (removed)
++ Custom Name Changer (added)
++ Legit AA (thank you smef for source / shahzam for help)
+- Slide Walk (don't work with legit aa) 
++ KnifeBot (fixed)
++ Inventory Unlocker (added) 
+- Radar (kept only INGAME radar)
+
+Old Change-logs
 + Menu (changed)
 + Aimbot (improved)
 + ColorPicker (added new one)
@@ -22,7 +34,7 @@ Copyright (c) 2018 smefcc
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+to use, copy, modify, merge, publish, distribute, sub license, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
