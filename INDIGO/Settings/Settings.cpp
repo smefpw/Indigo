@@ -166,6 +166,12 @@ namespace Settings
 		ScanColorFromCvar( Color_VCT.c_str() , Radar::rad_Color_VCT );
 		ScanColorFromCvar( Color_VTT.c_str() , Radar::rad_Color_VTT );
 
+		Knifebot::knf_Active = CSX::Cvar::LoadCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_ACTIVE, Knifebot::knf_Active) != false;
+		Knifebot::knf_Team = CSX::Cvar::LoadCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_TEAM, Knifebot::knf_Team) != false;
+		Knifebot::knf_Attack = CSX::Cvar::LoadCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_ATTACK, Knifebot::knf_Attack);
+		Knifebot::knf_DistAttack = CSX::Cvar::LoadCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_DISTATTACK, Knifebot::knf_DistAttack);
+		Knifebot::knf_DistAttack2 = CSX::Cvar::LoadCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_DISTATTACK2, Knifebot::knf_DistAttack2);
+
 		Skin::knf_ct_model = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_CT_MODEL , Skin::knf_ct_model );
 		Skin::knf_ct_skin = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_CT_SKIN , Skin::knf_ct_skin );
 		Skin::knf_tt_model = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_TT_MODEL , Skin::knf_tt_model );
@@ -412,6 +418,12 @@ namespace Settings
 		CSX::Cvar::SaveCvar( RADAR_TEXT , CVAR_RAD_COLOR_VCT , Color_VCT );
 		CSX::Cvar::SaveCvar( RADAR_TEXT , CVAR_RAD_COLOR_VTT , Color_VTT );
 
+		CSX::Cvar::SaveCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_ACTIVE, Knifebot::knf_Active);
+		CSX::Cvar::SaveCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_TEAM, Knifebot::knf_Team);
+		CSX::Cvar::SaveCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_ATTACK, Knifebot::knf_Attack);
+		CSX::Cvar::SaveCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_DISTATTACK, Knifebot::knf_DistAttack);
+		CSX::Cvar::SaveCvar(KNIFEBOT_TEXT, CVAR_KNIFEBOT_DISTATTACK2, Knifebot::knf_DistAttack2);
+
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_CT_MODEL , Skin::knf_ct_model );
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_CT_SKIN , Skin::knf_ct_skin );
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_TT_MODEL , Skin::knf_tt_model );
@@ -592,6 +604,15 @@ namespace Settings
 		float rad_Color_VTT[3] = { 0.f,0.f,0.f };
 	}
 
+	namespace Knifebot
+	{
+		bool knf_Active = false;
+		bool knf_Team = false;
+		int knf_Attack = 2;
+		int knf_DistAttack = 72;
+		int knf_DistAttack2 = 64;
+	}
+
 	namespace Skin
 	{
 		int knf_ct_model = 0;
@@ -603,6 +624,10 @@ namespace Settings
 
 	namespace Misc
 	{
+		bool misc_LegitAA = false;
+		bool misc_LegitAAToggle = false;
+		char misc_NameChanger = 0;
+		char misc_ClanTagChanger = 0;
 		QAngle qLastTickAngle;
 		float misc_MenuColor[3] = { 0.f, 0.f, 0.f };
 		bool misc_SkinChanger = true;
@@ -635,13 +660,14 @@ namespace Settings
 
 		bool misc_namespamidkmemes = false;
 		bool misc_namespamidkmemes_static = false;
-		char* First_static = "smef";
-		char* Second_static = ".cc";
+		char* First_static = "smef.cc \r";
+		char* Second_static = "smef.cc \r";
 		char First[64];
 		char Second[64];
 
 		bool misc_AutoAccept = false;
 		bool misc_Spectators = false;
+		bool misc_inventory = false;
 		bool misc_RainbowMenu = false;
 		float misc_RainbowSpeed = 0.001f;
 		bool misc_FovChanger = false;

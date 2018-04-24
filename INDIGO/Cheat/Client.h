@@ -11,6 +11,7 @@
 #include "TriggerBot/Triggerbot.h"
 #include "ESP/Esp.h"
 #include "Radar/Radar.h"
+#include "Knifebot/Knifebot.h"
 #include "Misc/Misc.h"
 #include "Skin/Skin.h"
 #include "InventoryChanger/InventoryChanger.h"
@@ -22,6 +23,7 @@ class CTriggerbot;
 class CEsp;
 class CRadar;
 class CSkin;
+class CKnifebot;
 class CMisc;
 class CInventoryChanger;
 
@@ -54,6 +56,7 @@ namespace Client
 	extern CTriggerbot* g_pTriggerbot;
 	extern CEsp*		g_pEsp;
 	extern CRadar*		g_pRadar;
+	extern CKnifebot*	g_pKnifebot;
 	extern CSkin*		g_pSkin;
 	extern CMisc*		g_pMisc;
 

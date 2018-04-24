@@ -33,39 +33,15 @@ void CMisc::OnRender()
 
 void CMisc::OnCreateMove( CUserCmd* pCmd )
 {
-	if (Settings::Misc::misc_Moonwalk)
-	{
-		enum MoveType_t;
-		if (enum MoveType_t() & (MOVETYPE_NOCLIP | MOVETYPE_LADDER | FL_ONGROUND))
-			return;
-		{
-			if (pCmd->buttons & IN_FORWARD)
-			{
-				pCmd->forwardmove = 450;
-				pCmd->buttons &= ~IN_FORWARD;
-				pCmd->buttons |= IN_BACK;
-			}
-			else if (pCmd->buttons & IN_BACK)
-			{
-				pCmd->forwardmove = -450;
-				pCmd->buttons &= ~IN_BACK;
-				pCmd->buttons |= IN_FORWARD;
-			}
 
-			if (pCmd->buttons & IN_MOVELEFT)
-			{
-				pCmd->sidemove = -450;
-				pCmd->buttons &= ~IN_MOVELEFT;
-				pCmd->buttons |= IN_MOVERIGHT;
-			}
-			else if (pCmd->buttons & IN_MOVERIGHT)
-			{
-				pCmd->sidemove = 450;
-				pCmd->buttons &= ~IN_MOVERIGHT;
-				pCmd->buttons |= IN_MOVELEFT;
-			}
-		}
-	}
+//
+// Enable this if you want , it is useless cause it causes lag and delay
+//
+//	ConVar* net_fakelag = Interfaces::GetConVar()->FindVar("net_fakelag");
+//	static SpoofedConvar* fakelagspoof = new SpoofedConvar(net_fakelag);
+//	if (Settings::Misc::misc_fakeping)
+//		fakelagspoof->SetInt(Settings::Misc::misc_fakeping_value);
+//
 
 	if ( Settings::Misc::misc_Bhop )
 	{
@@ -107,18 +83,6 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 		}
 	}
 
-
-	if ( Settings::Misc::misc_AutoStrafe && !( g_pPlayers->GetLocal()->iFlags & FL_ONGROUND ) )
-	{
-		if ( pCmd->mousedx < 0 )
-		{
-			pCmd->sidemove = -450.0f;
-		}
-		else if ( pCmd->mousedx > 0 )
-		{
-			pCmd->sidemove = 450.0f;
-		}
-	}
 
 	if (Settings::Misc::misc_namespamidkmemes)
 	{

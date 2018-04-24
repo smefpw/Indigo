@@ -19,6 +19,7 @@ namespace Engine
 		Vector GetOrigin();
 		bool	IsVisible( CBaseEntity* pLocalEntity );
 
+		int        GetMoveType();
 		bool	HasHelmet();
 		bool	HasDefuser();
 		bool*	IsSpotted();

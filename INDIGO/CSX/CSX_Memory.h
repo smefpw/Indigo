@@ -32,6 +32,7 @@ namespace CSX
 
 		/* Native memory Func */
 		void nt_memset( PVOID pBuffer , DWORD dwLen , DWORD dwSym );
+		std::uint8_t* NewPatternScan(void* module, const char* signature);
 		void nt_memcpy( PVOID pDst , PVOID pSrc , size_t Count );
 //[/swap_lines]
 	}

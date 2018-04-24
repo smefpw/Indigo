@@ -269,6 +269,12 @@ namespace Engine
 		pSetClanTag(tag, name);
 	}
 
+	//fix nisto 
+	void ClanTagApply(const char* tag)
+	{
+		SetMyClanTag(tag, "smef.cc");
+	}
+
 	void ClanTag()
 	{
 		CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
@@ -286,12 +292,12 @@ namespace Engine
 		}
 		case 2:
 		{
-			SetMyClanTag("smef.pw", "smef.pw");
+			SetMyClanTag("smef.cc", "smef.cc");
 			break;
 		}
 		case 3:
 		{
-			SetMyClanTag("smef.pw \r", "smef.pw");
+			SetMyClanTag("smef.cc \r", "smef.cc");
 			break;
 		}
 		case 4:
@@ -312,82 +318,92 @@ namespace Engine
 
 			int ServerTime = (float)pPlayer->GetTickBase() * Interfaces::GlobalVars()->interval_per_tick;
 
-			int value = ServerTime % 15;
+			int value = ServerTime % 17;
 			switch (value)
 			{
 			case 0:
 			{
-				SetMyClanTag("", "smef.pw");
+				SetMyClanTag("", "smef.cc");
 				break;
 			}
 			case 1:
 			{
-				SetMyClanTag("s", "smef.pw");
+				SetMyClanTag("s", "smef.cc");
 				break;
 			}
 			case 2:
 			{
-				SetMyClanTag("sm", "smef.pw");
+				SetMyClanTag("sm", "smef.cc");
 				break;
 			}
 			case 3:
 			{
-				SetMyClanTag("sme", "smef.pw");
+				SetMyClanTag("sme", "smef.cc");
 				break;
 			}
 			case 4:
 			{
-				SetMyClanTag("smef", "smef.pw");
+				SetMyClanTag("smef", "smef.cc");
 				break;
 			}
 			case 5:
 			{
-				SetMyClanTag("smef.", "smef.pw");
+				SetMyClanTag("smef.", "smef.cc");
 				break;
 			}
 			case 6:
 			{
-				SetMyClanTag("smef.p", "smef.pw");
+				SetMyClanTag("smef.c", "smef.cc");
 				break;
 			}
 			case 7:
 			{
-				SetMyClanTag("smef.pw", "smef.pw");
+				SetMyClanTag("smef.cc", "smef.cc");
 				break;
 			}
 			case 8:
 			{
-				SetMyClanTag("smef.p", "smef.pw");
+				SetMyClanTag("smef.cc", "smef.cc");
 				break;
 			}
 			case 9:
 			{
-				SetMyClanTag("smef.", "smef.pw");
+				SetMyClanTag("smef.cc", "smef.cc");
 				break;
 			}
 			case 10:
 			{
-				SetMyClanTag("smef", "smef.pw");
+				SetMyClanTag("smef.c", "smef.cc");
 				break;
 			}
 			case 11:
 			{
-				SetMyClanTag("sme", "smef.pw");
+				SetMyClanTag("smef.", "smef.cc");
 				break;
 			}
 			case 12:
 			{
-				SetMyClanTag("sm", "smef.pw");
+				SetMyClanTag("smef", "smef.cc");
 				break;
 			}
 			case 13:
 			{
-				SetMyClanTag("s", "smef.pw");
+				SetMyClanTag("sme", "smef.cc");
 				break;
 			}
 			case 14:
 			{
-				SetMyClanTag("", "smef.pw");
+				SetMyClanTag("sm", "smef.cc");
+				break;
+			}
+			case 15:
+			{
+				SetMyClanTag("s", "smef.cc");
+				break;
+			}
+			case 16:
+			{
+				SetMyClanTag("", "smef.cc");
 				break;
 			}
 			}
@@ -398,7 +414,7 @@ namespace Engine
 	}
 	void ChatSpamRegular()
 	{
-		std::vector<std::string> chatspam = { "smef.pw" };
+		std::vector<std::string> chatspam = { "jozkah.cc" };
 		static DWORD lastspammed = 0;
 		if (GetTickCount() - lastspammed > 800)
 		{
@@ -411,7 +427,7 @@ namespace Engine
 
 	void ChatSpamRandom()
 	{
-		std::vector<std::string> chatspamsss = { "smef.pw | Coder of smef.pw Indigo" , "I'm legit stfu coon" };
+		std::vector<std::string> chatspamsss = { "jozkah.cc" };
 
 		static DWORD lastspammed = 0;
 		if (GetTickCount() - lastspammed > 800)

@@ -50,9 +50,7 @@ namespace SDK
 			CRC32_ProcessBuffer(&crc, &tick_count, sizeof(tick_count));
 			CRC32_ProcessBuffer(&crc, &viewangles, sizeof(viewangles));
 			CRC32_ProcessBuffer(&crc, &aimdirection, sizeof(aimdirection));
-			CRC32_ProcessBuffer(&crc, &forwardmove, sizeof(forwardmove));
-			CRC32_ProcessBuffer(&crc, &sidemove, sizeof(sidemove));
-			CRC32_ProcessBuffer(&crc, &upmove, sizeof(upmove));
+			CRC32_ProcessBuffer(&crc, &Move, sizeof(Move));
 			CRC32_ProcessBuffer(&crc, &buttons, sizeof(buttons));
 			CRC32_ProcessBuffer(&crc, &impulse, sizeof(impulse));
 			CRC32_ProcessBuffer(&crc, &weaponselect, sizeof(weaponselect));
@@ -69,9 +67,7 @@ namespace SDK
 		int       tick_count;         // 0x08
 		QAngle    viewangles;         // 0x0C
 		Vector    aimdirection;       // 0x18
-		float     forwardmove;        // 0x24
-		float     sidemove;           // 0x28
-		float     upmove;             // 0x2C
+		Vector    Move;
 		int       buttons;            // 0x30
 		byte      impulse;            // 0x34
 		int       weaponselect;       // 0x38
