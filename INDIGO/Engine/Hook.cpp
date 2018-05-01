@@ -147,6 +147,9 @@ namespace Engine
 					if (pWeapon->GetWeaponType() == WEAPON_TYPE_GRENADE)
 						return;
 
+					if (!localplayer->IsDead())
+						return;
+
 					if (GetAsyncKeyState(VK_LEFT)) dir = true;
 					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
 
