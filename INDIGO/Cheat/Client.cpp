@@ -79,7 +79,9 @@ namespace Client
 	void RefreshConfigs()
 	{
 		ConfigList.clear();
-		string ConfigDir = BaseDir + "\\*.ini";
+		string ConfigDir = "C:/Indigo/*.ini";
+		GuiFile = "C:/Indigo/gui.ini";
+		CreateDirectoryW(L"C:\\Indigo", NULL);
 		SearchFiles(ConfigDir.c_str(), ReadConfigs, FALSE);
 	}
 
@@ -1319,7 +1321,7 @@ namespace Client
 			ImGui::Text("Hitmarker Sound");
 		}
 	}
-	void DrawRadar() // Radar
+	void DrawRadar() // Radar // Dont fucking know why this has configs in it but it does so deal with it
 	{
 		ImGui::Separator();
 		ImGui::Text("Configs");
@@ -1330,14 +1332,16 @@ namespace Client
 
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
 
+		ImGui::Separator();
+
 		if (ImGui::Button("Load Config"))
 		{
-			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
+			Settings::LoadSettings("C:/Indigo/" + ConfigList[iConfigSelect]);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Save Config"))
 		{
-			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
+			Settings::SaveSettings("C:/Indigo/" + ConfigList[iConfigSelect]);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Refresh Config List"))
@@ -1347,7 +1351,6 @@ namespace Client
 
 		ImGui::Separator();
 
-		ImGui::PushItemWidth(362.f);
 		ImGui::InputText("Config Name", ConfigName, 64);
 
 		if (ImGui::Button("Create & Save new Config"))
@@ -1359,7 +1362,7 @@ namespace Client
 				ConfigFileName = "settings";
 			}
 
-			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".ini");
+			Settings::SaveSettings("C:/Indigo/" + ConfigFileName + ".ini");
 			RefreshConfigs();
 		}
 
