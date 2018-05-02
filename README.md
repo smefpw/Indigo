@@ -6,6 +6,11 @@ Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
 Recently people have been reporting "compiler is out of heap space" error; if you receive this read this. https://msdn.microsoft.com/en-us/library/yz7kx3y2.aspx - Possibly fixed now|
 
+
+4.3.1
+ + Config saving updated to C:/Indigo (fix for ManualMap injectors; should work received positive feedback but havent tested)
+ + Minor fix to LegitAA where a IsDead check wasn't causing crashing when you died (this should have fixed it but I didn't test)
+
 4.3
  - Fake Lag (removed)
  + Custom Name Changer (added)
