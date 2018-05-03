@@ -9,7 +9,7 @@ Recently people have been reporting "compiler is out of heap space" error; if yo
 
 4.3.1
  + Config saving updated to C:/Indigo (fix for ManualMap injectors; should work received positive feedback but havent tested)
-confirmed not working  + Minor fix to LegitAA where a IsDead check wasn't causing crashing when you died (
+ + LegitAA Crash fix (confirmed not working!)
 
 4.3
  - Fake Lag (removed)
