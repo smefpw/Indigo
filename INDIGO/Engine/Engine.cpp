@@ -414,7 +414,7 @@ namespace Engine
 	}
 	void ChatSpamRegular()
 	{
-		std::vector<std::string> chatspam = { "jozkah.cc" };
+		std::vector<std::string> chatspam = { "I'm using smef.cc's Indigo Remastered" };
 		static DWORD lastspammed = 0;
 		if (GetTickCount() - lastspammed > 800)
 		{
@@ -427,7 +427,7 @@ namespace Engine
 
 	void ChatSpamRandom()
 	{
-		std::vector<std::string> chatspamsss = { "jozkah.cc" };
+		std::vector<std::string> chatspamsss = { "I'm using smef.cc's Indigo Remastered!", "My Paste > Your Paste", "Open Source Cheat > Your Cheat (which is pasted)", "Sinclair.zone has dog fingers" };
 
 		static DWORD lastspammed = 0;
 		if (GetTickCount() - lastspammed > 800)
