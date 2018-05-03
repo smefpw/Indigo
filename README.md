@@ -1,6 +1,6 @@
 # smef's Indigo Remastered
 
-WARNING: This cheat will cause SMAC bans (unless your remvoe the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans) No-one but you can be held responsible for your Overwatch, VAC bans.
+WARNING: This cheat will cause SMAC bans (unless your remove the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans) No-one but you can be held responsible for your Overwatch, VAC bans.
 
 Notice: You must include protobuf yourself!
 
