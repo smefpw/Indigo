@@ -147,7 +147,7 @@ namespace Engine
 
 					if (pLocal->IsDead())
 					Settings::Misc::misc_LegitAA = false;		
-			
+					Settings::Misc::misc_LegitAA = true;
 					
 					if (GetAsyncKeyState(VK_LEFT)) dir = true;
 					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
