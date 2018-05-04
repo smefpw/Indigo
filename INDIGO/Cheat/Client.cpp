@@ -303,6 +303,16 @@ namespace Client
 			}
 
 			std::time_t result = std::time(nullptr);
+			
+						if (Settings::Misc::misc_Spectators)
+			{
+				g_pRender->Text(150, 500, false, true, Color::White(), "Spectators List:");
+				g_pRender->Text(150, 501, false, true, Color::White(), "____________");
+			}
+			else
+			{
+			}
+
 
 			if (Settings::Esp::esp_Time)
 				g_pRender->Text(15, 30, false, true, Color::White(), std::asctime(std::localtime(&result)));
