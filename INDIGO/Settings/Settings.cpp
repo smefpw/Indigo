@@ -22,7 +22,7 @@ namespace Settings
 
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
-			// ïèñòîëåòû
+			// Ã¯Ã¨Ã±Ã²Ã®Ã«Ã¥Ã²Ã»
 			if ( i <= 9 )
 			{
 				Aimbot::weapon_aim_settings[i].aim_Active = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , 0 );
@@ -36,7 +36,7 @@ namespace Settings
 				Aimbot::weapon_aim_settings[i].aim_AutoPistol = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_AIMBOT_AUTOPISTOL , 0 );
 			}
 
-			// àâòîìàòû
+			// Ã Ã¢Ã²Ã®Ã¬Ã Ã²Ã»
 			if ( i >= 10 && i <= 30 )
 			{
 				Aimbot::weapon_aim_settings[i].aim_Active = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , 0 );
@@ -52,7 +52,7 @@ namespace Settings
 				Aimbot::weapon_aim_settings[i].aim_RcsClampType = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_AIMBOT_RCSCLAMPTYPE , 0 );
 			}
 
-			// ñíàéïåðêè
+			// Ã±Ã­Ã Ã©Ã¯Ã¥Ã°ÃªÃ¨
 			if ( i >= 31 && i <= 32 )
 			{
 				Aimbot::weapon_aim_settings[i].aim_Active = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , 0 );
@@ -228,7 +228,7 @@ namespace Settings
 
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
-			// ïèñòîëåòû
+			// Ã¯Ã¨Ã±Ã²Ã®Ã«Ã¥Ã²Ã»
 			if ( i <= 9 )
 			{
 				CSX::Cvar::SaveCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , Aimbot::weapon_aim_settings[i].aim_Active );
@@ -242,7 +242,7 @@ namespace Settings
 				CSX::Cvar::SaveCvar( pWeaponData[i] , CVAR_AIMBOT_AUTOPISTOL , Aimbot::weapon_aim_settings[i].aim_AutoPistol );
 			}
 
-			// àâòîìàòû
+			// Ã Ã¢Ã²Ã®Ã¬Ã Ã²Ã»
 			if ( i >= 10 && i <= 30 )
 			{
 				CSX::Cvar::SaveCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , Aimbot::weapon_aim_settings[i].aim_Active );
@@ -258,7 +258,7 @@ namespace Settings
 				CSX::Cvar::SaveCvar( pWeaponData[i] , CVAR_AIMBOT_RCSCLAMPTYPE , Aimbot::weapon_aim_settings[i].aim_RcsClampType );
 			}
 
-			// ñíàéïåðêè
+			// Ã±Ã­Ã Ã©Ã¯Ã¥Ã°ÃªÃ¨
 			if ( i >= 31 && i <= 32 )
 			{
 				CSX::Cvar::SaveCvar( pWeaponData[i] , CVAR_AIMBOT_ACTIVE , Aimbot::weapon_aim_settings[i].aim_Active );
@@ -558,6 +558,7 @@ namespace Settings
 		float esp_Ambient[3];
 		float esp_Dlight[3];
 
+		bool esp_HitMarker = false;
 		bool esp_HitMarker = false;
 		int esp_HitMarkerSound = 0;
 		float esp_HitMarkerColor[3] = { 0.f, 0.f, 0.f };
