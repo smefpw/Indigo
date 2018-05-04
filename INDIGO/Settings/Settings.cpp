@@ -558,7 +558,7 @@ namespace Settings
 		float esp_Ambient[3];
 		float esp_Dlight[3];
 
-		bool esp_HitMarker = false;
+		bool esp_hitevent = false;
 		bool esp_HitMarker = false;
 		int esp_HitMarkerSound = 0;
 		float esp_HitMarkerColor[3] = { 0.f, 0.f, 0.f };
