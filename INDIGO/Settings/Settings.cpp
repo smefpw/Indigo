@@ -504,6 +504,7 @@ namespace Settings
 	{
 		bool aim_Backtrack = false;
 		bool aim_DrawBacktrack = false;
+		int aim_Backtracktime = 1;
 		int aim_Backtracktickrate = 1;
 		bool aim_Deathmatch = false;
 		bool aim_WallAttack = false;
