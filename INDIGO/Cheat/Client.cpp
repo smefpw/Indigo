@@ -589,7 +589,8 @@ namespace Client
 			ImGui::Spacing();
 			ImGui::Checkbox("Backtrack", &Settings::Aimbot::aim_Backtrack);
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Ticks", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
+			ImGui::SliderInt("Ticks (ms)", &Settings::Aimbot::aim_Backtracktime, 1, 200);
+			//ImGui::SliderInt("Ticks", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
 
 			ImGui::Text("Anti Aim Options");
 			ImGui::Separator();
@@ -1855,20 +1856,31 @@ void CGui::GUI_Draw_Elements()
 
 	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
 	{
-		ImVec2 OldMinSize = ImGui::GetStyle().WindowMinSize;
-
-		ImGui::GetStyle().WindowMinSize = ImVec2(0.f, 0.f);
-
-		ImGui::SetNextWindowSize(ImVec2(125.f, 30.f));
-
-		if (ImGui::Begin("Bomb Timer", &bOpenTimer,
-			ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
-		{
-			ImGui::Text(C4_TIMER_STRING, g_pEsp->fC4Timer);
-			ImGui::End();
-		}
-		ImGui::GetStyle().WindowMinSize = OldMinSize;
+		g_pRender->Text(15, 200, false, true, Color::White(), C4_TIMER_STRING , g_pEsp->fC4Timer);
+		g_pRender->Text(15, 201, false, true, Color::White(), "_______________");
 	}
+	else
+	{
+	}
+	//old bomb timer
+	/*	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
+
+	{
+	ImVec2 OldMinSize = ImGui::GetStyle().WindowMinSize;
+
+	ImGui::GetStyle().WindowMinSize = ImVec2(0.f, 0.f);
+
+	ImGui::SetNextWindowSize(ImVec2(125.f, 30.f));
+
+	if (ImGui::Begin("Bomb Timer", &bOpenTimer,
+	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
+	{
+	ImGui::Text(C4_TIMER_STRING, g_pEsp->fC4Timer);
+	ImGui::End();
+	}
+	ImGui::GetStyle().WindowMinSize = OldMinSize;
+	}
+	*/
 
 	if (bIsGuiVisible)
 	{
