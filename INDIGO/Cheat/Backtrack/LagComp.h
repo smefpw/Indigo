@@ -2,6 +2,9 @@
 #include "../../Engine/Engine.h"
 
 #define PI 3.14159265358979323846f
+#define MAXBACKTRACKTICKS ((int)Settings::Aimbot::aim_Backtracktime)
+#define TICK_INTERVAL	(Interfaces::GlobalVars()->interval_per_tick)
+#define TIME_TO_TICKS( dt )	( (int)( 0.5f + (float)(dt) / TICK_INTERVAL ) )
 
 inline Vector angle_vector(Vector meme)
 {
@@ -55,5 +58,5 @@ namespace SDK
 }
 
 extern backtrackData headPositions[64][25];
-
 extern BackTrack* backtracking;
+int BacktrackTicks();
