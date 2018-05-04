@@ -9,6 +9,19 @@ void BackTrack::Update(int tick_count)
 	}
 }
 
+int BacktrackTicks()
+{
+	// Gets server tickrate
+	float timepertick = Interfaces::GlobalVars()->interval_per_tick;
+	if (timepertick == 0) timepertick += 0.001; // prevents game from crashing when unconnected
+	float tickrate = 1 / timepertick;
+
+	// actual b1g calculations yay
+	int gayxd = Settings::Aimbot::aim_Backtracktime / 200 * tickrate; // slider from 1-200ms
+	if (gayxd < 1) return 1; //prevents crash, thank me l8r
+	else return gayxd;
+}
+
 bool BackTrack::IsTickValid(int tick)
 {
 	int delta = latest_tick - tick;
@@ -82,7 +95,7 @@ void BackTrack::legitBackTrack(CUserCmd* cmd)
 				float simtime = entity->GetSimTime();
 				Vector hitboxPos = entity->GetHitboxPosition(0);
 
-				headPositions[i][cmd->command_number % Settings::Aimbot::aim_Backtracktickrate] = backtrackData{ simtime, hitboxPos };
+				headPositions[i][cmd->command_number % BacktrackTicks()] = backtrackData{ simtime, hitboxPos };
 				Vector ViewDir = angle_vector(cmd->viewangles + (pLocal->GetAimPunchAngle() * 2.f));
 				float FOVDistance = distance_point_to_line(hitboxPos, pLocal->GetEyePosition(), ViewDir);
 
@@ -99,7 +112,7 @@ void BackTrack::legitBackTrack(CUserCmd* cmd)
 		{
 			float tempFloat = FLT_MAX;
 			Vector ViewDir = angle_vector(cmd->viewangles + (pLocal->GetAimPunchAngle() * 2.f));
-			for (int t = 0; t < Settings::Aimbot::aim_Backtracktickrate; ++t)
+			for (int t = 0; t < BacktrackTicks(); ++t)
 			{
 				float tempFOVDistance = distance_point_to_line(headPositions[bestTargetIndex][t].hitboxPos, pLocal->GetEyePosition(), ViewDir);
 				if (tempFloat > tempFOVDistance && headPositions[bestTargetIndex][t].simtime > pLocal->GetSimTime() - 1)
