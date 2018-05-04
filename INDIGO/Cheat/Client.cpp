@@ -1194,6 +1194,8 @@ namespace Client
 			ImGui::Checkbox("Grenade Boxes", &Settings::Esp::esp_BoxNade);
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("Dynamic Lights", &Settings::Esp::esp_Dlightz);
+			ImGui::SameLine(SpaceLineThr);
+			ImGui::Checkbox("Watermark", &Settings::Esp::esp_Watermark);
 
 			ImGui::Spacing();
 			ImGui::Separator();
@@ -1329,6 +1331,7 @@ namespace Client
 			ImGui::Combo("##HITSOUND", &Settings::Esp::esp_HitMarkerSound, iHitSound, ARRAYSIZE(iHitSound));
 			ImGui::SameLine();
 			ImGui::Text("Hitmarker Sound");
+			ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
 		}
 	}
 	void DrawRadar() // Radar // Dont fucking know why this has configs in it but it does so deal with it
