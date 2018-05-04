@@ -378,86 +378,50 @@ void CMisc::FakeLag(bool &bSendPacket)
 	}
 }
 
-void CMisc::OnRenderSpectatorList() // Roshly#7550
+void CMisc::OnRenderSpectatorList()
 {
 	if (Settings::Misc::misc_Spectators)
 	{
-		int specs = 0;
-		int modes = 0;
-		std::string spect = "";
-		std::string mode = "";
 		int DrawIndex = 1;
+
 		for (int playerId : GetObservervators(Interfaces::Engine()->GetLocalPlayer()))
 		{
 			if (playerId == Interfaces::Engine()->GetLocalPlayer())
 				continue;
-			CBaseEntity * pPlayer = (CBaseEntity *)Interfaces::EntityList()->GetClientEntity(playerId);
+
+			CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(playerId);
+
 			if (!pPlayer)
 				continue;
+
 			PlayerInfo Pinfo;
 			Interfaces::Engine()->GetPlayerInfo(playerId, &Pinfo);
+
 			if (Pinfo.m_bIsFakePlayer)
 				continue;
+
 			if (g_pRender)
 			{
-				spect += Pinfo.m_szPlayerName;
-				spect += "\n";
-				specs++;
-				if (spect!= "")
+				string Name = Pinfo.m_szPlayerName;
+
+				if (Name != "")
 				{
 					Color PlayerObsColor;
-					// [junk_disable /] 
+					//[junk_disable /]
 					switch (pPlayer->GetObserverMode())
 					{
 					case ObserverMode_t::OBS_MODE_IN_EYE:
-						mode += ("Perspective");
+						Name.append(" ");
 						PlayerObsColor = Color::White();
-						break;
-					case ObserverMode_t::OBS_MODE_CHASE:
-						mode += ("3rd Person");
-						PlayerObsColor = Color::White();
-						break;
-					case ObserverMode_t::OBS_MODE_ROAMING:
-						mode += ("Free look");
-						PlayerObsColor = Color::Red();
-						break;
-					case ObserverMode_t::OBS_MODE_DEATHCAM:
-						mode += ("Deathcam");
-						PlayerObsColor = Color::Yellow();
-						break;
-					case ObserverMode_t::OBS_MODE_FREEZECAM:
-						mode += ("Freezecam");
-						PlayerObsColor = Color::LimeGreen();
-						break;
-					case ObserverMode_t::OBS_MODE_FIXED:
-						mode += ("Fixed");
-						PlayerObsColor = Color::Orange();
 						break;
 					default:
 						break;
 					}
-					mode += "\n";
-					modes++;
+					//[junk_enable /]
+					g_pRender->Text(150, 500 + (DrawIndex * 13), false, true, PlayerObsColor, "%s", Name.c_str());
+					DrawIndex++;
 				}
 			}
 		}
-		if (ImGui::Begin("Spectator List", &Settings::Misc::misc_Spectators, ImVec2(200, 100), 0.9f, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders))
-		{
-			if (specs> 0) spect += "\n";
-			if (modes> 0) mode += "\n";
-			ImVec2 size = ImGui::CalcTextSize(spect.c_str());
-			ImGui::Columns(2);
-			ImGui::Text("Name");
-			ImGui::NextColumn();
-			ImGui::Text("Mode");
-			ImGui::NextColumn();
-			ImGui::Separator();
-			ImGui::Text(spect.c_str());
-			ImGui::NextColumn();
-			ImGui::Text(mode.c_str());
-			ImGui::Columns(1);
-			DrawIndex++;
-		}
-		ImGui::End();
 	}
 }
