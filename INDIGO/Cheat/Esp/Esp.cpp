@@ -717,7 +717,7 @@ void CEsp::OnRender()
 
 						if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4)
 						{
-							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::DarkRed(),
+							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(),
 								"[C4 PLANTED]");
 						}
 
@@ -870,15 +870,16 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead() && pPlayer->bVisible)
 					{
-						for (int t = 0; t < Settings::Aimbot::aim_Backtracktickrate; ++t)
+						for (int t = 0; t < Settings::Aimbot::aim_Backtracktime; ++t)
 						{
-							Vector screenbacktrack[64][12];
+							Vector screenbacktrack[64][13];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
 								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
 								{
-									g_pRender->DrawFillBox(screenbacktrack[i][t].x, screenbacktrack[i][t].y, 4, 4, g_pEsp->GetPlayerColor(pPlayer));
+									 g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
+									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
 								}
 							}
 						}
@@ -892,15 +893,16 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead())
 					{
-						for (int t = 0; t < Settings::Aimbot::aim_Backtracktickrate; ++t)
+						for (int t = 0; t < Settings::Aimbot::aim_Backtracktime; ++t)
 						{
-							Vector screenbacktrack[64][12];
+							Vector screenbacktrack[64][13];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
 								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
 								{
-									g_pRender->DrawFillBox(screenbacktrack[i][t].x, screenbacktrack[i][t].y, 4, 4, g_pEsp->GetPlayerColor(pPlayer));
+									g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
+									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
 								}
 							}
 						}
@@ -913,7 +915,7 @@ void CEsp::OnRender()
 			}
 		}
 	}
-	}
+}
 
 void MsgFunc_ServerRankRevealAll()
 {
