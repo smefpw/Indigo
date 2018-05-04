@@ -9,7 +9,9 @@ Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
 + Changed version from watermark
-+ Changed spectator list to a new one
++ LegitAA Crash fix
++ Fixed Spectator List
++ Hit Logs (added)
 
 Old Change-logs
 
