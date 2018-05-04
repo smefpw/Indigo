@@ -6,11 +6,15 @@ Notice: You must include protobuf yourself!
 
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
+
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
 + LegitAA Crash fix (pull-request)
-+ Fixed Spectator List
++ Spectator List (new one)
++ Bomb Timer (new one) (c4 planted string changed to red color)
++ Backtrack timebased (added)
 + Hit Logs (added)
++ Watermark checkbox
 
 Old Change-logs
 
@@ -26,14 +30,6 @@ Old Change-logs
  + KnifeBot (fixed)
  + Inventory Unlocker (added) 
  - Radar (kept only INGAME radar)
-
-4.2
- + Menu (changed)
- + Aimbot (improved)
- + ColorPicker (added new one)
- + Inventory Changer (made by Haterul on forum) (also made a combo with all weapons id and rarity)
- + Profile Changer (made by Haterul on forum)
- + Gloves (new ones)
 
 smef's Indigo is published under the MIT License;
 MIT License
