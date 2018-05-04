@@ -4,6 +4,51 @@ using namespace Client;
 //[enc_string_enable /]
 //[junk_enable /]
 
+SDK::PlayerInfo GetInfo(int Index)
+{
+	SDK::PlayerInfo info;
+	Interfaces::Engine()->GetPlayerInfo(Index, &info);
+	return info;
+}
+
+typedef void(__cdecl* MsgFn)(const char* msg, va_list);
+void Msg(const char* msg, ...)
+{
+
+	if (msg == nullptr)
+		return;
+	static MsgFn fn = (MsgFn)GetProcAddress(GetModuleHandle("tier0.dll"), "Msg");
+	char buffer[989];
+	va_list list;
+	va_start(list, msg);
+
+	vsprintf(buffer, msg, list);
+	va_end(list);
+
+	fn(buffer, list);
+}
+
+char* HitgroupToName(int hitgroup)
+{
+	switch (hitgroup)
+	{
+	case HITGROUP_HEAD:
+		return "head";
+	case HITGROUP_LEFTLEG:
+		return "leg";
+	case HITGROUP_RIGHTLEG:
+		return "leg";
+	case HITGROUP_LEFTARM:
+		return "arm";
+	case HITGROUP_RIGHTARM:
+		return "arm";
+	case HITGROUP_STOMACH:
+		return "chest";
+	default:
+		return "chest";
+	}
+}
+
 CSoundEsp::CSoundEsp()
 {
 	SoundColor = Color::White();
@@ -165,12 +210,12 @@ void CEsp::NightMode()
 
 CEsp::CEsp()
 {
-	// Öâåòà õï áàðà
+	// Ã–Ã¢Ã¥Ã²Ã  ÃµÃ¯ Ã¡Ã Ã°Ã 
 
 	CT_HP_ColorM.SetColor( 255 , 64 , 64 );
 	TT_HP_ColorM.SetColor( 255 , 64 , 64 );
 
-	// Öâåòà àðìîð áàðà
+	// Ã–Ã¢Ã¥Ã²Ã  Ã Ã°Ã¬Ã®Ã° Ã¡Ã Ã°Ã 
 
 	CT_AR_ColorM.SetColor( 255 , 64 , 64 );
 	TT_AR_ColorM.SetColor( 255 , 64 , 64 );
@@ -207,19 +252,19 @@ Color CEsp::GetPlayerVisibleColor( CPlayer* pPlayer )
 
 	bool SetColor = false;
 
-	// Ïîäñâå÷èâàòü çåë¸íûì åñëè èãðîê âèäåí:
+	// ÃÃ®Ã¤Ã±Ã¢Ã¥Ã·Ã¨Ã¢Ã Ã²Ã¼ Ã§Ã¥Ã«Â¸Ã­Ã»Ã¬ Ã¥Ã±Ã«Ã¨ Ã¨Ã£Ã°Ã®Ãª Ã¢Ã¨Ã¤Ã¥Ã­:
 
 	if ( pPlayer->bVisible )
 	{
-		if ( Settings::Esp::esp_Visible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+		if ( Settings::Esp::esp_Visible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // ÃÃ°Ã®Ã²Ã¨Ã¢Ã­Ã¨ÃªÃ®Ã¢
 		{
 			SetColor = true;
 		}
-		else if ( Settings::Esp::esp_Visible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+		else if ( Settings::Esp::esp_Visible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ã‘Ã¢Ã®Ã¨Ãµ
 		{
 			SetColor = true;
 		}
-		else if ( Settings::Esp::esp_Visible == 2 ) // Âñåõ
+		else if ( Settings::Esp::esp_Visible == 2 ) // Ã‚Ã±Ã¥Ãµ
 		{
 			SetColor = true;
 		}
@@ -248,11 +293,11 @@ bool CEsp::CheckPlayerTeam( CPlayer* pPlayer )
 	bool CheckTeam = false;
 	bool PlayerVisible = pPlayer->bVisible;
 
-	// Ïîêàçûâàåì esp òîëüêî íà:
-	if ( Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+	// ÃÃ®ÃªÃ Ã§Ã»Ã¢Ã Ã¥Ã¬ esp Ã²Ã®Ã«Ã¼ÃªÃ® Ã­Ã :
+	if ( Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // ÃÃ°Ã®Ã²Ã¨Ã¢Ã­Ã¨ÃªÃ®Ã¢
 		CheckTeam = true;
 
-	if ( Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+	if ( Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ã‘Ã¢Ã®Ã¨Ãµ
 		CheckTeam = true;
 
 	if ( Settings::Esp::esp_Visible >= 3 && !PlayerVisible )
@@ -279,6 +324,47 @@ void CEsp::Ambient()
 	*(float*)((DWORD)&AmbientBlueCvar->fnChangeCallback + 0xC) = NULL;
 	AmbientBlueCvar->SetValue(AmbientBlueAmount);
 }
+
+void CEsp::HitEvents(IGameEvent* event)
+{
+	if (!Settings::Esp::esp_hitevent)
+		return;
+
+	if (!strcmp(event->GetName(), "player_hurt")) {
+		int attackerid = event->GetInt("attacker");
+		int entityid = Interfaces::Engine()->GetPlayerForUserID(attackerid);
+		if (entityid == Interfaces::Engine()->GetLocalPlayer())
+		{
+
+			int nUserID = event->GetInt("attacker");
+			int nDead = event->GetInt("userid");
+			if (nUserID || nDead)
+			{
+				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
+				SDK::PlayerInfo killer_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nUserID));
+				std::string before = ("You ");
+				std::string two = ("Hit ");
+				std::string three = killed_info.m_szPlayerName;
+				std::string four = (" in the ");
+				std::string five = HitgroupToName(event->GetInt("hitgroup"));
+				std::string sixa = " for ";
+				std::string sevena = event->GetString("dmg_health");
+				std::string damage = " damage";
+				std::string sixb = " (";
+				std::string sevenb = event->GetString("health");
+				std::string ate = " health remaining)";
+				std::string newline = "\n";
+				if (Settings::Esp::esp_HitMarker)
+				{
+					Interfaces::Engine()->ExecuteClientCmd("developer 1");
+					Interfaces::Engine()->ExecuteClientCmd("con_filter_enable 2 ");
+					Interfaces::Engine()->ExecuteClientCmd("con_filter_text Hit ");
+					Msg((before + two + three + four + five + sixa + sevena + damage + sixb + sevenb + ate + newline).c_str());
+				}
+
+			}
+		}
+	}
 
 void CEsp::HitmarkerEvents(IGameEvent* event)
 {
@@ -1038,10 +1124,10 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 				Color TeamHideColor;
 				Color TeamVisibleColor;
 
-				if ( Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+				if ( Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // ÃÃ°Ã®Ã²Ã¨Ã¢Ã­Ã¨ÃªÃ®Ã¢
 					CheckTeam = true;
 
-				if ( Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+				if ( Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ã‘Ã¢Ã®Ã¨Ãµ
 					CheckTeam = true;
 
 				if ( pPlayer->Team == TEAM_CT )
@@ -1059,15 +1145,15 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 
 				bool SetColor = false;
 
-				if ( Settings::Esp::esp_ChamsVisible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+				if ( Settings::Esp::esp_ChamsVisible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // ÃÃ°Ã®Ã²Ã¨Ã¢Ã­Ã¨ÃªÃ®Ã¢
 				{
 					SetColor = true;
 				}
-				else if ( Settings::Esp::esp_ChamsVisible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+				else if ( Settings::Esp::esp_ChamsVisible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ã‘Ã¢Ã®Ã¨Ãµ
 				{
 					SetColor = true;
 				}
-				else if ( Settings::Esp::esp_ChamsVisible == 2 ) // Âñåõ
+				else if ( Settings::Esp::esp_ChamsVisible == 2 ) // Ã‚Ã±Ã¥Ãµ
 				{
 					SetColor = true;
 				}
