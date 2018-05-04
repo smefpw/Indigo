@@ -77,6 +77,7 @@ public:
 
 	void Ambient();
 
+	void HitEvents(IGameEvent * event);
 	void HitmarkerEvents(IGameEvent * event);
 
 	void DrawHitmarker();
