@@ -146,9 +146,11 @@ namespace Engine
 
 					if (pWeapon->GetWeaponType() == WEAPON_TYPE_GRENADE)
 						Settings::Misc::misc_LegitAA = false;
+						Settings::Misc::misc_LegitAA = true;
 
 					if (pLocal->IsDead())
 						Settings::Misc::misc_LegitAA = false;
+						Settings::Misc::misc_LegitAA = true;
 
 					if (GetAsyncKeyState(VK_LEFT)) dir = true;
 					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
