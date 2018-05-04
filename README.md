@@ -6,14 +6,12 @@ Notice: You must include protobuf yourself!
 
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
-4.3.1.2
-+ Changed spectator list to a new one
-
-Old Change-logs
-
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
 + Changed version from watermark
++ Changed spectator list to a new one
+
+Old Change-logs
 
 4.3.1
  + Config saving updated to C:/Indigo (fix for ManualMap injectors; should work received positive feedback but havent tested)
