@@ -418,7 +418,7 @@ void CMisc::OnRenderSpectatorList()
 						break;
 					}
 					//[junk_enable /]
-					g_pRender->Text(150, 500 + (DrawIndex * 13), false, true, PlayerObsColor, "%s", Name.c_str());
+					g_pRender->Text(15, 500 + (DrawIndex * 13), false, true, PlayerObsColor, "%s", Name.c_str());
 					DrawIndex++;
 				}
 			}
