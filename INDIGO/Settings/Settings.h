@@ -151,6 +151,7 @@ namespace Settings
 
 		extern float esp_Ambient[3];
 
+		extern bool esp_hitevent;
 		extern bool esp_HitMarker;
 		extern int esp_HitMarkerSound;
 		extern float esp_HitMarkerColor[3];
