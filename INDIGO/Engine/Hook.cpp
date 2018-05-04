@@ -144,12 +144,11 @@ namespace Engine
 					CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 					CBaseWeapon* pWeapon = pLocal->GetBaseWeapon();
 
-					if (pWeapon->GetWeaponType() == WEAPON_TYPE_GRENADE)
-						return;
 
 					if (pLocal->IsDead())
-						return;
-
+					Settings::Misc::misc_LegitAA = false;		
+			
+					
 					if (GetAsyncKeyState(VK_LEFT)) dir = true;
 					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
 
