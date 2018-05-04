@@ -424,6 +424,7 @@ void hitmarker::player_hurt_listener::stop()
 void hitmarker::player_hurt_listener::FireGameEvent(IGameEvent *event)
 {
 	g_pEsp->HitmarkerEvents(event);
+	g_pEsp->HitEvents(event);
 }
 int hitmarker::player_hurt_listener::GetEventDebugID(void)
 {
