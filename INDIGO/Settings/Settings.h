@@ -79,6 +79,7 @@ namespace Settings
 		//[swap_lines]
 		extern int aim_Backtracktickrate;
 		extern bool aim_Backtrack;
+		extern int aim_Backtracktime;
 		extern bool aim_DrawBacktrack;
 		extern bool aim_Deathmatch;
 		extern bool aim_WallAttack;
