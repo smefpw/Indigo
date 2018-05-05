@@ -528,6 +528,66 @@ namespace Engine
 
 		return false;
 	}
+	void correct_movement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove)
+	{
+		float deltaView = pCmd->viewangles.y - vOldAngles.y;
+		float f1;
+		float f2;
+
+		if (vOldAngles.y < 0.f)
+			f1 = 360.0f + vOldAngles.y;
+		else
+			f1 = vOldAngles.y;
+
+		if (pCmd->viewangles.y < 0.0f)
+			f2 = 360.0f + pCmd->viewangles.y;
+		else
+			f2 = pCmd->viewangles.y;
+
+		if (f2 < f1)
+			deltaView = abs(f2 - f1);
+		else
+			deltaView = 360.0f - abs(f1 - f2);
+
+		deltaView = 360.0f - deltaView;
+		
+		pCmd->Move.x = cos(DEG2RAD(deltaView)) * fOldForward + cos(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+		pCmd->Move.y = sin(DEG2RAD(deltaView)) * fOldForward + sin(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+	}
+	void normalize_angles(QAngle& angles)
+	{
+		for (auto i = 0; i < 3; i++) {
+			while (angles[i] < -180.0f) angles[i] += 360.0f;
+			while (angles[i] >  180.0f) angles[i] -= 360.0f;
+		}
+	}
+	//--------------------------------------------------------------------------------
+	void clamp_angles(QAngle& angles)
+	{
+		if (angles.x > 89.0f) angles.x = 89.0f;
+		else if (angles.x < -89.0f) angles.x = -89.0f;
+
+		if (angles.y > 180.0f) angles.y = 180.0f;
+		else if (angles.y < -180.0f) angles.y = -180.0f;
+
+		angles.z = 0;
+	}
+
+	bool sanitize_angles(QAngle &angles)
+	{
+		QAngle temp = angles;
+		normalize_angles(temp);
+		clamp_angles(temp);
+
+		if (!isfinite(temp.x) ||
+			!isfinite(temp.y) ||
+			!isfinite(temp.z))
+			return false;
+
+		angles = temp;
+
+		return true;
+	}
 
 	bool GetVisibleOrigin( const Vector& vOrigin )
 	{

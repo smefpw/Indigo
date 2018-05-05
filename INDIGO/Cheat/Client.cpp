@@ -599,8 +599,8 @@ namespace Client
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("left + right arrow key to change angles");
 			ImGui::Checkbox("Silent Aim", &Settings::Misc::misc_LegitAAToggle);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("It lets your default Aimbot working again");
+			//if (ImGui::IsItemHovered())
+				//ImGui::SetTooltip("It lets your default Aimbot working again");
 
 
 			ImGui::Text("Aimbot ESP");

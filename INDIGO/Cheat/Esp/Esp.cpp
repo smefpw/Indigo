@@ -365,6 +365,7 @@ void CEsp::HitEvents(IGameEvent* event)
 			}
 		}
 	}
+}
 
 void CEsp::HitmarkerEvents(IGameEvent* event)
 {

@@ -100,12 +100,9 @@ namespace Engine
 
 		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
 		{
-			static bool isFakeAngle = false;
-			static bool dir = false;
-			static bool dir2 = false;
-
 			ClientModeTable.UnHook();
-			auto origAng = pCmd->viewangles;
+			QAngle view;
+			Interfaces::Engine()->GetViewAngles(view);
 
 			PDWORD pEBP;
 			__asm mov pEBP, ebp;
@@ -119,67 +116,19 @@ namespace Engine
 				if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
 
-
-				/* This Disables your Silent Aim if you enabled "Anti Silen Aim" in the Misc Settings if you press your left mouse / right mouse etc.*/
-				/* Add a new key like GetAsyncKeyState(VK_MENU) thats the left al key. Because the Grenades are Buggy. So you have to hold left alt key if u want to throw a nade.*/
-
-				if (Settings::Misc::misc_LegitAAToggle)
-				{
-					if (GetAsyncKeyState(VK_LBUTTON) || GetAsyncKeyState(VK_RBUTTON) || pCmd->buttons & IN_GRENADE1 || pCmd->buttons & IN_GRENADE2 || pCmd->buttons & IN_ATTACK || pCmd->buttons & IN_ATTACK2)
-					{
-						Settings::Misc::misc_LegitAA = false;
-					}
-					else if (!GetAsyncKeyState(VK_LBUTTON) || !GetAsyncKeyState(VK_RBUTTON) || !pCmd->buttons & IN_GRENADE1 || !pCmd->buttons & IN_GRENADE2 || !pCmd->buttons & IN_ATTACK || !pCmd->buttons & IN_ATTACK2)
-					{
-						Settings::Misc::misc_LegitAA = true;
-					}
-				}
-
-
-				//pLocal->GetActiveWeapon();
-				//pLocal->GetWeapons()
-
-				if (Settings::Misc::misc_LegitAA && !(pCmd->buttons & IN_ATTACK) && (pCmd->tick_count % 2))
-				{
-					CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
-					CBaseWeapon* pWeapon = pLocal->GetBaseWeapon();
-
-					if (pWeapon->GetWeaponType() == WEAPON_TYPE_GRENADE)
-						Settings::Misc::misc_LegitAA = false;
-						Settings::Misc::misc_LegitAA = true;
-
-					if (pLocal->IsDead())
-						Settings::Misc::misc_LegitAA = false;
-						Settings::Misc::misc_LegitAA = true;
-
-					if (GetAsyncKeyState(VK_LEFT)) dir = true;
-					if (GetAsyncKeyState(VK_RIGHT)) dir = false;
-
-					bSendPacket = false;
-					pCmd->viewangles.y = (dir) ? (pCmd->viewangles.y - 180) - 270.f : (pCmd->viewangles.y - 180) - 90.f;
-				}
+				if (Settings::Misc::misc_LegitAA)
+					AntiAim().LegitAA(pCmd, bSendPacket);
 			}
 
 			Client::OnCreateMove(pCmd);
 
+			correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
+			AngleNormalize(pCmd->viewangles);
+
 			bool ret = Interfaces::ClientMode()->CreateMove(flInputSampleTime, pCmd);
 			ClientModeTable.ReHook();
-			FixMovement(pCmd, origAng);
-			NormalizeFloat(pCmd->viewangles[1]);
 
-			printf_s("%d\n", bSendPacket);
-
-
-			/* The code Below is for the Silent Aim Fix. It disables your Silent aim if you disable Legit AA and enable Silent Aim if you Enable Legit AA. Dont change that or you may spin in Overwatch*/
-
-			if ((Settings::Misc::misc_LegitAA && pLocal->GetMoveType() != MOVETYPE_LADDER && pLocal->GetMoveType() != MOVETYPE_NOCLIP) || isFakeAngle)
-			{
-				return 0;
-			}
-			else
-			{
-				return ret;
-			}
+			return false; // SilentAim fix is already in the aimbot.
 		}
 
 		bool WINAPI Hook_IsConnected()

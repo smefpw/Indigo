@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cheat\Aimbot\Aimbot.cpp" />
+    <ClCompile Include="Cheat\AntiAim\AntiAim.cpp" />
     <ClCompile Include="Cheat\Backtrack\LagComp.cpp" />
     <ClCompile Include="Cheat\Client.cpp" />
     <ClCompile Include="Cheat\Esp\Esp.cpp" />
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cheat\Aimbot\Aimbot.h" />
+    <ClInclude Include="Cheat\AntiAim\AntiAim.h" />
     <ClInclude Include="Cheat\Backtrack\LagComp.h" />
     <ClInclude Include="Cheat\Client.h" />
     <ClInclude Include="Cheat\Esp\Esp.h" />
@@ -252,7 +254,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>INDIGO\protobuf\src;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <IncludePath>protobuf\src;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>INDIGO\protobuf;C:\Program Files\DirectX SDK (2010)\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>smef.pw</TargetName>
   </PropertyGroup>
