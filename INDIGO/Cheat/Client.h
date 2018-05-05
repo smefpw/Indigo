@@ -15,6 +15,7 @@
 #include "Misc/Misc.h"
 #include "Skin/Skin.h"
 #include "InventoryChanger/InventoryChanger.h"
+#include "AntiAim/AntiAim.h"
 
 class CGui;
 

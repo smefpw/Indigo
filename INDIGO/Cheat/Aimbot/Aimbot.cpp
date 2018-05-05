@@ -658,6 +658,9 @@ void CAimbot::AimbotSet()
 
 	SmoothAngles(m_pCmd->viewangles, vAimAngle, vSmoothAimAngle, fSmooth);
 
+	if (!Settings::Misc::misc_LegitAAToggle)
+		Interfaces::Engine()->SetViewAngles(vSmoothAimAngle); // Silent Aim Fix.
+
 	m_pCmd->viewangles = vSmoothAimAngle;
 }
 

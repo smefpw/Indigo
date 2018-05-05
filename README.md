@@ -6,6 +6,10 @@ Notice: You must include protobuf yourself!
 
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
+4.3.1.2
++ Redid Legit AA (should fix issues like crashing on death, grenades not working, etc.)
++ Fixed Protobuf includes
++ Moved Silent Aim fix to aimbot
 
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
