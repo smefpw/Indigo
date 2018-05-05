@@ -31,7 +31,7 @@ namespace Settings
 	void SaveSettings( string szIniFile );
 	extern float hitmarkerAlpha;
 	int TriggerCharToKey( const char* Key );
-
+	extern bool Untrusted;
 	namespace MedalChanger {
 		extern bool enabled;
 		extern std::vector<uint32_t> medals;

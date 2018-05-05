@@ -469,7 +469,7 @@ namespace Settings
 }
 
 	float hitmarkerAlpha;
-
+	bool Untrusted = false;
 	int TriggerCharToKey( const char* Key )
 	{
 		if ( !strcmp( Key , CVAR_KEY_MOUSE3 ) ) return 0;
