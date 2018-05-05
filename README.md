@@ -7,9 +7,13 @@ Notice: You must include protobuf yourself!
 Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 
 4.3.1.2
-+ Redid Legit AA (should fix issues like crashing on death, grenades not working, etc.)
++ Recoded Legit AA (should fix issues like crashing on death, grenades not working, etc.)
 + Fixed Protobuf includes
 + Moved Silent Aim fix to aimbot
++ Added toggle for Untrusted features/sv_cheats spoof
++ Cleaned up a ton of code.
+
+Old Change-logs
 
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
@@ -19,8 +23,6 @@ Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
 + Backtrack timebased (added)
 + Hit Logs (added)
 + Watermark checkbox
-
-Old Change-logs
 
 4.3.1
  + Config saving updated to C:/Indigo (fix for ManualMap injectors; should work received positive feedback but havent tested)
