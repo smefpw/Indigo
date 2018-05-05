@@ -1,9 +1,10 @@
-﻿/*#include "Gui.h"
+﻿#include "Gui.h"
 
 using namespace Client;
 
-//[enc_string_enable /]
-//[junk_enable /]
+#include "memoryfonts.h"
+ImFont* tabfont;
+ImFont* font;
 
 bool bIsGuiInitalize = false;
 bool bIsGuiVisible = false;
@@ -11,7 +12,7 @@ WNDPROC WndProc_o = nullptr;
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-LRESULT WINAPI GUI_WndProc( HWND hwnd , UINT uMsg , WPARAM wParam , LPARAM lParam );
+LRESULT WINAPI GUI_WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 CGui::CGui() {}
 
@@ -20,29 +21,19 @@ CGui::~CGui()
 	ImGui_ImplDX9_Shutdown();
 }
 
-void CGui::GUI_Init( IDirect3DDevice9 * pDevice )
+void CGui::GUI_Init(IDirect3DDevice9 * pDevice)
 {
-	HWND hWindow = FindWindowA( "Valve001" , 0 );
+	HWND hWindow = FindWindowA("Valve001", 0);
 
-	ImGui_ImplDX9_Init( hWindow , pDevice );
+	ImGui_ImplDX9_Init(hWindow, pDevice);
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	io.IniFilename = GuiFile.c_str();
-	
-	ImFont* font = io.Fonts->AddFontFromFileTTF( "C:\\Windows\\Fonts\\Arial\\arial.ttf" ,
-												 14.f , 0 , io.Fonts->GetGlyphRangesCyrillic() );
 
-
-	io.Fonts->AddFontFromFileTTF(("C:\\Windows\\Fonts\\Arial\\arial.ttf"), 10);
-	io.Fonts->AddFontFromFileTTF(("C:\\Windows\\Fonts\\Arial\\arial.ttf"), 12); //this?
-	io.Fonts->AddFontFromFileTTF(("C:\\Windows\\Fonts\\Arial\\arial.ttf"), 14);
-	io.Fonts->AddFontFromFileTTF(("C:\\Windows\\Fonts\\Arial\\arial.ttf"), 18);
-
-
-	//ImFont* font = io.Fonts->AddFontFromMemoryCompressedTTF( 
-	//	Avalon_compressed_data , Avalon_compressed_size , 12.f );
+	font = io.Fonts->AddFontFromMemoryCompressedTTF(MyFont_compressed_data2, MyFont_compressed_size2, 14.f);
+	tabfont = io.Fonts->AddFontFromMemoryCompressedTTF(MyFont_compressed_data, MyFont_compressed_size, 62.f);
 
 	style.Alpha = 0.0f;
 	style.WindowPadding = ImVec2(8, 8);
@@ -68,11 +59,11 @@ void CGui::GUI_Init( IDirect3DDevice9 * pDevice )
 	style.AntiAliasedShapes = true;
 	style.CurveTessellationTol = 1.25f;
 
-	BlueSheme();
+	MenuColor();
 
 	ImGui_ImplDX9_CreateDeviceObjects();
 
-	WndProc_o = (WNDPROC)SetWindowLongA( hWindow , GWL_WNDPROC , (LONG)(LONG_PTR)GUI_WndProc );
+	WndProc_o = (WNDPROC)SetWindowLongA(hWindow, GWL_WNDPROC, (LONG)(LONG_PTR)GUI_WndProc);
 
 	bIsGuiInitalize = true;
 }
@@ -87,18 +78,18 @@ void CGui::GUI_End_Render()
 	ImGui::Render();
 }
 
-LRESULT WINAPI GUI_WndProc( HWND hwnd , UINT uMsg , WPARAM wParam , LPARAM lParam )
+LRESULT WINAPI GUI_WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static bool is_down = false;
 	static bool is_clicked = false;
 	static bool check_closed = false;
 
-	if ( GUI_KEY_DOWN( VK_INSERT ) )
+	if (GUI_KEY_DOWN(VK_INSERT))
 	{
 		is_clicked = false;
 		is_down = true;
 	}
-	else if ( !GUI_KEY_DOWN( VK_INSERT ) && is_down )
+	else if (!GUI_KEY_DOWN(VK_INSERT) && is_down)
 	{
 		is_clicked = true;
 		is_down = false;
@@ -109,77 +100,89 @@ LRESULT WINAPI GUI_WndProc( HWND hwnd , UINT uMsg , WPARAM wParam , LPARAM lPara
 		is_down = false;
 	}
 
-	if ( !bIsGuiVisible && !is_clicked && check_closed )
+	if (!bIsGuiVisible && !is_clicked && check_closed)
 	{
-		string msg = "cl_mouseenable " + to_string( !bIsGuiVisible );
-		Interfaces::Engine()->ClientCmd_Unrestricted2( msg.c_str() );
+		string msg = "cl_mouseenable " + to_string(!bIsGuiVisible);
+		Interfaces::Engine()->ClientCmd_Unrestricted2(msg.c_str());
 		check_closed = false;
 	}
 
-	if ( is_clicked )
+	if (is_clicked)
 	{
 		bIsGuiVisible = !bIsGuiVisible;
 
-		string msg = "cl_mouseenable " + to_string( !bIsGuiVisible );
-		Interfaces::Engine()->ClientCmd_Unrestricted2( msg.c_str() );
+		string msg = "cl_mouseenable " + to_string(!bIsGuiVisible);
+		Interfaces::Engine()->ClientCmd_Unrestricted2(msg.c_str());
 
-		if ( !check_closed )
+		if (!check_closed)
 			check_closed = true;
 	}
 
-	if ( bIsGuiVisible && ImGui_ImplDX9_WndProcHandler( hwnd , uMsg , wParam , lParam ) )
+	if (bIsGuiVisible && ImGui_ImplDX9_WndProcHandler(hwnd, uMsg, wParam, lParam))
 		return true;
 
-	return CallWindowProcA( WndProc_o , hwnd , uMsg , wParam , lParam );
+	return CallWindowProcA(WndProc_o, hwnd, uMsg, wParam, lParam);
 }
 
 void CGui::GUI_Draw_Elements()
 {
-	if ( !bIsGuiInitalize || Interfaces::Engine()->IsTakingScreenshot() || !Interfaces::Engine()->IsActiveApp() )
+	if (!bIsGuiInitalize || Interfaces::Engine()->IsTakingScreenshot() || !Interfaces::Engine()->IsActiveApp())
 		return;
 
 	g_pGui->GUI_Begin_Render();
 
 	ImGui::GetIO().MouseDrawCursor = bIsGuiVisible;
 
-	bool bOpenTimer = ( bIsGuiVisible || ( bC4Timer && iC4Timer ) );
+	bool bOpenTimer = (bIsGuiVisible || (bC4Timer && iC4Timer));
 
 	if (Settings::Misc::misc_Spectators) g_pMisc->OnRenderSpectatorList();
 
-	if ( g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer )
+	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
 	{
-		ImVec2 OldMinSize = ImGui::GetStyle().WindowMinSize;
-
-		ImGui::GetStyle().WindowMinSize = ImVec2( 0.f , 0.f );
-
-		ImGui::SetNextWindowSize( ImVec2( 125.f , 30.f ) );
-		
-		if ( ImGui::Begin( "Bomb Timer" , &bOpenTimer ,
-			 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
-		{
-			ImGui::Text( C4_TIMER_STRING , g_pEsp->fC4Timer);
-			ImGui::End();
-		}
-
-		ImGui::GetStyle().WindowMinSize = OldMinSize;
+		g_pRender->Text(15, 200, false, true, Color::White(), C4_TIMER_STRING, g_pEsp->fC4Timer);
+		g_pRender->Text(15, 201, false, true, Color::White(), "_______________");
 	}
-
-	if ( bIsGuiVisible )
+	else
 	{
-		int pX , pY;
-		Interfaces::InputSystem()->GetCursorPosition( &pX , &pY );
+	}
+	//old bomb timer
+	/*	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
+
+	{
+	ImVec2 OldMinSize = ImGui::GetStyle().WindowMinSize;
+
+	ImGui::GetStyle().WindowMinSize = ImVec2(0.f, 0.f);
+
+	ImGui::SetNextWindowSize(ImVec2(125.f, 30.f));
+
+	if (ImGui::Begin("Bomb Timer", &bOpenTimer,
+	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar))
+	{
+	ImGui::Text(C4_TIMER_STRING, g_pEsp->fC4Timer);
+	ImGui::End();
+	}
+	ImGui::GetStyle().WindowMinSize = OldMinSize;
+	}
+	*/
+
+	if (bIsGuiVisible)
+	{
+		int pX, pY;
+		Interfaces::InputSystem()->GetCursorPosition(&pX, &pY);
 
 		ImGui::GetIO().MousePos.x = (float)pX;
 		ImGui::GetIO().MousePos.y = (float)pY;
 
 		Client::OnRenderGUI();
 	}
-	
-	if ( g_pRadar )
+
+	if (g_pRadar)
 		g_pRadar->OnRender();
 
 	g_pGui->GUI_End_Render();
 }
+
+//Change color stuff \/
 
 void CGui::MenuColor()
 {
@@ -950,22 +953,22 @@ void CGui::BlackSheme()
 
 namespace ImGui
 {
-	static auto vector_getter = []( void* vec , int idx , const char** out_text )
+	static auto vector_getter = [](void* vec, int idx, const char** out_text)
 	{
-		auto& vector = *static_cast<std::vector<std::string>*>( vec );
-		if ( idx < 0 || idx >= static_cast<int>( vector.size() ) ) { return false; }
-		*out_text = vector.at( idx ).c_str();
+		auto& vector = *static_cast<std::vector<std::string>*>(vec);
+		if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
+		*out_text = vector.at(idx).c_str();
 		return true;
 	};
 
-	IMGUI_API bool ComboBoxArray( const char* label , int* currIndex , std::vector<std::string>& values )
+	IMGUI_API bool ComboBoxArray(const char* label, int* currIndex, std::vector<std::string>& values)
 	{
-		if ( values.empty() ) { return false; }
-		return Combo( label , currIndex , vector_getter ,
-					  static_cast<void*>( &values ) , values.size() );
+		if (values.empty()) { return false; }
+		return Combo(label, currIndex, vector_getter,
+			static_cast<void*>(&values), values.size());
 	}
 
-		IMGUI_API bool TabLabels(const char **tabLabels, int tabSize, int &tabIndex, int *tabOrder)
+	IMGUI_API bool TabLabels(const char **tabLabels, int tabSize, int &tabIndex, int *tabOrder)
 	{
 		ImGuiStyle& style = ImGui::GetStyle();
 
@@ -983,13 +986,9 @@ namespace ImGui
 		if (tabSize>0 && (tabIndex<0 || tabIndex >= tabSize))
 		{
 			if (!tabOrder)
-			{
 				tabIndex = 0;
-			}
 			else
-			{
 				tabIndex = -1;
-			}
 		}
 
 		float windowWidth = 0.f, sumX = 0.f;
@@ -1011,13 +1010,9 @@ namespace ImGui
 				sumX += ImGui::CalcTextSize(tabLabels[i]).x + 2.f*style.FramePadding.x;
 
 				if (sumX>windowWidth)
-				{
 					sumX = 0.f;
-				}
 				else
-				{
 					ImGui::SameLine();
-				}
 			}
 
 			if (i != tabIndex)
@@ -1030,7 +1025,7 @@ namespace ImGui
 			}
 			// Draw the button
 			ImGui::PushID(i);   // otherwise two tabs with the same name would clash.
-			if (ImGui::Button(tabLabels[i], ImVec2(67.f, 15.f))) { selection_changed = (tabIndex != i); newtabIndex = i; }
+			if (ImGui::Button(tabLabels[i], ImVec2(windowWidth / tabSize, 35.f))) { selection_changed = (tabIndex != i); newtabIndex = i; }
 			ImGui::PopID();
 			if (i != tabIndex)
 			{
@@ -1041,9 +1036,7 @@ namespace ImGui
 				style.Colors[ImGuiCol_Text] = colorText;
 			}
 			noButtonDrawn = false;
-
 			if (sumX == 0.f) sumX = style.WindowPadding.x + ImGui::GetItemRectSize().x; // First element of a line
-
 		}
 
 		tabIndex = newtabIndex;
@@ -1056,9 +1049,7 @@ namespace ImGui
 			{
 				i = tabOrder ? tabOrder[j] : j;
 				if (i == -1)
-				{
 					continue;
-				}
 				tabIndex = i;
 				break;
 			}
@@ -1073,4 +1064,4 @@ namespace ImGui
 
 		return selection_changed;
 	}
-}*/
+}

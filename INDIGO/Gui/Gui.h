@@ -7,7 +7,8 @@
 
 #define GUI_KEY_DOWN( KeyNum ) ( GetAsyncKeyState(KeyNum) & 0x1 )
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
-
+extern ImFont* tabfont;
+extern ImFont* font;
 class CGui
 {
 public:
