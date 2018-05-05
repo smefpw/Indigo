@@ -46,6 +46,8 @@ namespace Engine
 	int			GetWeaponSettingsSelectID();
 	bool		ScanColorFromCvar(const char* str, float* colors);
 	bool		WorldToScreen(const Vector& vOrigin, Vector& vScreen);
+	void correct_movement(QAngle vOldAngles, CUserCmd * pCmd, float fOldForward, float fOldSidemove);
+	bool sanitize_angles(QAngle & angles);
 	bool		GetVisibleOrigin(const Vector& vOrigin);
 	void		AngleVectors(const Vector &vAngles, Vector& vForward);
 	Vector AngleVector(QAngle meme);
