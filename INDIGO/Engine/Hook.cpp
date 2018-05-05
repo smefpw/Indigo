@@ -46,58 +46,6 @@ namespace Engine
 			return hRes;
 		}
 
-		
-		void VectorAngles(Vector forward, QAngle & ang_out)
-		{
-			if (forward.x == 0.0f && forward.y == 0.0f)
-			{
-				ang_out.x = (forward.z <= 0.0f) ? 90.0f : 270.f;
-				ang_out.y = 0.0f;
-			}
-			else
-			{
-				ang_out.x = atan2(-forward.z, forward.Length2D()) * -180 / 3.14;
-				ang_out.y = atan2(forward.y, forward.x) * 180 / 3.14;
-			}
-
-			ang_out.z = 0.0f;
-		}
-
-		void FixMovement(CUserCmd * pCommand, Vector ang)
-		{
-			float flSpeed = pCommand->Move.Length2D();
-
-			if (flSpeed <= 0.0f)
-				return;
-
-			Vector vec_move;
-
-			VectorAngles(pCommand->Move, vec_move);
-
-			float flYaw = (pCommand->viewangles.y - ang.y + vec_move.y) *  0.0174532925f;
-
-			pCommand->Move.x = cos(flYaw) * flSpeed;
-			pCommand->Move.y = sin(flYaw) * flSpeed;
-		}
-
-		void NormalizeFloat(float & in)
-		{
-			if (in > 180.f || in < -180.f)
-			{
-				float ry = in / 360.f;
-
-				if (ry < 0.f)
-					ry = -ry;
-
-				ry = round(ry);
-
-				if (in < 0.f)
-					in = (in + 360.f * ry);
-				else
-					in = (in - 360.f * ry);
-			}
-		}
-
 		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
 		{
 			ClientModeTable.UnHook();
@@ -106,10 +54,7 @@ namespace Engine
 
 			PDWORD pEBP;
 			__asm mov pEBP, ebp;
-
 			bool& bSendPacket = *(bool*)(*pEBP - 0x1C);
-
-			CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 
 			if (Interfaces::Engine()->IsConnected() || Interfaces::Engine()->IsInGame())
 			{
@@ -133,12 +78,10 @@ namespace Engine
 
 		bool WINAPI Hook_IsConnected()
 		{
-
 			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client.dll"), "75 04 B0 01 5F") - 2;
 			if (_ReturnAddress() == unk && Settings::Misc::misc_inventory)
-			{
 				return false;
-			}
+
 			EngineTable.UnHook();
 			bool ret = Interfaces::Engine()->IsConnected();
 			EngineTable.ReHook();

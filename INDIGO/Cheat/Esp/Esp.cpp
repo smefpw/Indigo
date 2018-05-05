@@ -1,9 +1,6 @@
 #include "ESP.h"
 
 using namespace Client;
-//[enc_string_enable /]
-//[junk_enable /]
-
 SDK::PlayerInfo GetInfo(int Index)
 {
 	SDK::PlayerInfo info;
@@ -14,7 +11,6 @@ SDK::PlayerInfo GetInfo(int Index)
 typedef void(__cdecl* MsgFn)(const char* msg, va_list);
 void Msg(const char* msg, ...)
 {
-
 	if (msg == nullptr)
 		return;
 	static MsgFn fn = (MsgFn)GetProcAddress(GetModuleHandle("tier0.dll"), "Msg");
@@ -57,12 +53,8 @@ bool done = false;
 void CSoundEsp::Update()
 {
 	for ( size_t i = 0; i < Sound.size(); i++ )
-	{
 		if ( Sound[i].dwTime + 800 <= GetTickCount64() )
-		{
 			Sound.erase( Sound.begin() + i );
-		}
-	}
 }
 
 void CSoundEsp::AddSound( Vector vOrigin )
@@ -82,10 +74,8 @@ void CSoundEsp::DrawSoundEsp()
 		Vector vScreen;
 
 		if ( WorldToScreen( Sound[i].vOrigin , vScreen ) )
-		{
 			if ( Settings::Esp::esp_Sound )
 				g_pRender->DrawBox( (int)vScreen.x , (int)vScreen.y , 10 , 10 , SoundColor );
-		}
 	}
 }
 
@@ -94,6 +84,7 @@ void CEsp::Dlight(CPlayer* pPlayer)
 	Vector getorig = pPlayer->m_pEntity->GetOrigin();
 	Vector getheadorig = pPlayer->m_pEntity->GetEyePosition();
 	Color EspVisibleColor = GetPlayerVisibleColor(pPlayer);
+
 	dlight_t* pElight = Interfaces::Effects()->CL_AllocElight(pPlayer->m_pEntity->EntIndex());
 	pElight->color.r = float(Settings::Esp::esp_Dlight[0] * 255.f);
 	pElight->color.g = float(Settings::Esp::esp_Dlight[1] * 255.f);;
@@ -105,6 +96,7 @@ void CEsp::Dlight(CPlayer* pPlayer)
 	pElight->die = Interfaces::GlobalVars()->curtime + 0.1f;
 	pElight->decay = 25.0f;
 	pElight->key = pPlayer->m_pEntity->EntIndex();
+
 	dlight_t* pDlight = Interfaces::Effects()->CL_AllocDlight(pPlayer->m_pEntity->EntIndex());
 	pDlight->color.r = float(Settings::Esp::esp_Dlight[0] * 255.f);;
 	pDlight->color.g = float(Settings::Esp::esp_Dlight[1] * 255.f);;
@@ -140,29 +132,22 @@ void CEsp::NightMode()
 				const char* name = pMaterial->GetName();
 
 				if (strstr(group, "World textures"))
-				{
 					pMaterial->ColorModulate(0.10, 0.10, 0.10);
-				}
+
 				if (strstr(group, "StaticProp"))
-				{
 					pMaterial->ColorModulate(0.30, 0.30, 0.30);
-				}
+
 				if (strstr(name, "models/props/de_dust/palace_bigdome"))
-				{
 					pMaterial->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
-				}
+
 				if (strstr(name, "models/props/de_dust/palace_pillars"))
-				{
 					pMaterial->ColorModulate(0.30, 0.30, 0.30);
-				}
 
 				if (strstr(group, "Particle textures"))
-				{
 					pMaterial->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
-				}
+
 				done = true;
 			}
-
 		}
 	}
 	else
@@ -180,28 +165,19 @@ void CEsp::NightMode()
 				const char* name = pMaterial->GetName();
 
 				if (strstr(group, "World textures"))
-				{
-
 					pMaterial->ColorModulate(1, 1, 1);
-				}
+
 				if (strstr(group, "StaticProp"))
-				{
-
 					pMaterial->ColorModulate(1, 1, 1);
-				}
+
 				if (strstr(name, "models/props/de_dust/palace_bigdome"))
-				{
 					pMaterial->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-				}
-				if (strstr(name, "models/props/de_dust/palace_pillars"))
-				{
 
+				if (strstr(name, "models/props/de_dust/palace_pillars"))
 					pMaterial->ColorModulate(1, 1, 1);
-				}
+
 				if (strstr(group, "Particle textures"))
-				{
 					pMaterial->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-				}
 			}
 			done = false;
 		}
@@ -235,13 +211,9 @@ Color CEsp::GetPlayerColor( CPlayer* pPlayer )
 	Color TT_Color( int( Settings::Esp::esp_Color_TT[0] * 255.f ) , int( Settings::Esp::esp_Color_TT[1] * 255.f ) , int( Settings::Esp::esp_Color_TT[2] * 255.f ) );
 
 	if ( pPlayer->Team == TEAM_CT )
-	{
 		return CT_Color;
-	}
 	else if ( pPlayer->Team == TEAM_TT )
-	{
 		return TT_Color;
-	}
 
 	return Color::White();
 }
@@ -257,17 +229,11 @@ Color CEsp::GetPlayerVisibleColor( CPlayer* pPlayer )
 	if ( pPlayer->bVisible )
 	{
 		if ( Settings::Esp::esp_Visible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
-		{
 			SetColor = true;
-		}
 		else if ( Settings::Esp::esp_Visible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
-		{
 			SetColor = true;
-		}
 		else if ( Settings::Esp::esp_Visible == 2 ) // Âñåõ
-		{
 			SetColor = true;
-		}
 
 		Color VCT_Color( int( Settings::Esp::esp_Color_VCT[0] * 255.f ) , int( Settings::Esp::esp_Color_VCT[1] * 255.f ) , int( Settings::Esp::esp_Color_VCT[2] * 255.f ) );
 		Color VTT_Color( int( Settings::Esp::esp_Color_VTT[0] * 255.f ) , int( Settings::Esp::esp_Color_VTT[1] * 255.f ) , int( Settings::Esp::esp_Color_VTT[2] * 255.f ) );
@@ -275,13 +241,9 @@ Color CEsp::GetPlayerVisibleColor( CPlayer* pPlayer )
 		if ( SetColor )
 		{
 			if ( pPlayer->Team == TEAM_CT )
-			{
 				PlayerColor = VCT_Color;
-			}
 			else if ( pPlayer->Team == TEAM_TT )
-			{
 				PlayerColor = VTT_Color;
-			}
 		}
 	}
 
@@ -308,21 +270,17 @@ bool CEsp::CheckPlayerTeam( CPlayer* pPlayer )
 
 void CEsp::Ambient()
 {
-	float AmbientRedAmount = Settings::Esp::esp_Ambient[0];
-	float AmbientGreenAmount = Settings::Esp::esp_Ambient[1];
-	float AmbientBlueAmount = Settings::Esp::esp_Ambient[2];
-
 	ConVar* AmbientRedCvar = Interfaces::GetConVar()->FindVar("mat_ambient_light_r");
 	*(float*)((DWORD)&AmbientRedCvar->fnChangeCallback + 0xC) = NULL;
-	AmbientRedCvar->SetValue(AmbientRedAmount);
+	AmbientRedCvar->SetValue(Settings::Esp::esp_Ambient[0]);
 
 	ConVar* AmbientGreenCvar = Interfaces::GetConVar()->FindVar("mat_ambient_light_g");
 	*(float*)((DWORD)&AmbientGreenCvar->fnChangeCallback + 0xC) = NULL;
-	AmbientGreenCvar->SetValue(AmbientGreenAmount);
+	AmbientGreenCvar->SetValue(Settings::Esp::esp_Ambient[1]);
 
 	ConVar* AmbientBlueCvar = Interfaces::GetConVar()->FindVar("mat_ambient_light_b");
 	*(float*)((DWORD)&AmbientBlueCvar->fnChangeCallback + 0xC) = NULL;
-	AmbientBlueCvar->SetValue(AmbientBlueAmount);
+	AmbientBlueCvar->SetValue(Settings::Esp::esp_Ambient[2]);
 }
 
 void CEsp::HitEvents(IGameEvent* event)
@@ -335,31 +293,29 @@ void CEsp::HitEvents(IGameEvent* event)
 		int entityid = Interfaces::Engine()->GetPlayerForUserID(attackerid);
 		if (entityid == Interfaces::Engine()->GetLocalPlayer())
 		{
-
 			int nUserID = event->GetInt("attacker");
 			int nDead = event->GetInt("userid");
 			if (nUserID || nDead)
 			{
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
 				SDK::PlayerInfo killer_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nUserID));
-				std::string before = ("You ");
-				std::string two = ("Hit ");
-				std::string three = killed_info.m_szPlayerName;
-				std::string four = (" in the ");
-				std::string five = HitgroupToName(event->GetInt("hitgroup"));
-				std::string sixa = " for ";
-				std::string sevena = event->GetString("dmg_health");
-				std::string damage = " damage";
-				std::string sixb = " (";
-				std::string sevenb = event->GetString("health");
-				std::string ate = " health remaining)";
-				std::string newline = "\n";
+				string print;
+				print += "Hit ";
+				print += killed_info.m_szPlayerName;
+				print += " in the ";
+				print += HitgroupToName(event->GetInt("hitgroup"));
+				print += " for ";
+				print += event->GetString("dmg_health");
+				print += " damage";
+				print += " (";
+				print += event->GetString("health");
+				print += " health remaining)\n";
 				if (Settings::Esp::esp_HitMarker)
 				{
 					Interfaces::Engine()->ExecuteClientCmd("developer 1");
 					Interfaces::Engine()->ExecuteClientCmd("con_filter_enable 2 ");
 					Interfaces::Engine()->ExecuteClientCmd("con_filter_text Hit ");
-					Msg((before + two + three + four + five + sixa + sevena + damage + sixb + sevenb + ate + newline).c_str());
+					Msg(print.c_str());
 				}
 
 			}
@@ -377,12 +333,13 @@ void CEsp::HitmarkerEvents(IGameEvent* event)
 		if (Interfaces::Engine()->GetPlayerForUserID(attacker) == Interfaces::Engine()->GetLocalPlayer()) {
 			switch (Settings::Esp::esp_HitMarkerSound)
 			{
-			case 0: break;
-			case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break;
-			case 2: PlaySoundA(pew, NULL, SND_ASYNC | SND_MEMORY); break;
-			case 3: PlaySoundA(roblox, NULL, SND_ASYNC | SND_MEMORY); break;
-			case 4: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav");
+				case 0: break;
+				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break;
+				case 2: PlaySoundA(pew, NULL, SND_ASYNC | SND_MEMORY); break;
+				case 3: PlaySoundA(roblox, NULL, SND_ASYNC | SND_MEMORY); break;
+				case 4: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav");
 			}
+
 			Settings::hitmarkerAlpha = 1.f;
 		}
 	}
@@ -408,15 +365,13 @@ void CEsp::DrawHitmarker()
 		g_pRender->DrawLine(W / 2 - 10, H / 2 + 10, W / 2 - 5, H / 2 + 5, Color(r, g, b, (Settings::hitmarkerAlpha * 255.f)));
 		g_pRender->DrawLine(W / 2 + 10, H / 2 - 10, W / 2 + 5, H / 2 - 5, Color(r, g, b, (Settings::hitmarkerAlpha * 255.f)));
 		g_pRender->DrawLine(W / 2 + 10, H / 2 + 10, W / 2 + 5, H / 2 + 5, Color(r, g, b, (Settings::hitmarkerAlpha * 255.f)));
-
 	}
 }
 
 void hitmarker::player_hurt_listener::start()
 {
-	if (!Interfaces::GameEvent()->AddListener(this, "player_hurt", false)) {
+	if (!Interfaces::GameEvent()->AddListener(this, "player_hurt", false))
 		throw exception("Failed to register the event");
-	}
 }
 void hitmarker::player_hurt_listener::stop()
 {
@@ -632,29 +587,28 @@ void CEsp::OnRender()
 	Ambient();
 
 	if (Settings::Misc::misc_AwpAim && IsLocalAlive())
-	{
 		g_pRender->DrawFillBox(iScreenWidth, iScreenHeight, 1, 1, Color::Purple());
-	}
-
 
 	for ( BYTE PlayerIndex = 0; PlayerIndex < g_pPlayers->GetSize(); PlayerIndex++ )
 	{
 		CPlayer* pPlayer = g_pPlayers->GetPlayer( PlayerIndex );
 
-		if ( pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate && CheckPlayerTeam( pPlayer ) )
+		if ( pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate )
 		{
-			if ( g_pTriggerbot )
-				g_pTriggerbot->TriggerShow( pPlayer );
+			if (CheckPlayerTeam(pPlayer))
+			{
+				if (g_pTriggerbot)
+					g_pTriggerbot->TriggerShow(pPlayer);
 
-			DrawPlayerEsp( pPlayer );
+				DrawPlayerEsp(pPlayer);
 
-			if ( Settings::Esp::esp_Skeleton )
-				DrawPlayerSkeleton( pPlayer );
-
-			if ( Settings::Esp::esp_BulletTrace )
+				if (Settings::Esp::esp_Skeleton)
+					DrawPlayerSkeleton(pPlayer);
+			}
+			if ( Settings::Esp::esp_BulletTrace && pPlayer->Team != g_pPlayers->GetLocal()->Team)
 				DrawPlayerBulletTrace( pPlayer );
 
-			if (Settings::Esp::esp_Dlightz)
+			if (Settings::Esp::esp_Dlightz && pPlayer->Team != g_pPlayers->GetLocal()->Team)
 				Dlight(pPlayer);
 		}
 	}
@@ -666,9 +620,7 @@ void CEsp::OnRender()
 			float fTimeStamp = Interfaces::Engine()->GetLastTimeStamp();
 
 			if ( !fExplodeC4Timer )
-			{
 				fExplodeC4Timer = fTimeStamp + (float)iC4Timer;
-			}
 			else
 			{
 				fC4Timer = fExplodeC4Timer - fTimeStamp;
@@ -698,7 +650,6 @@ void CEsp::OnRender()
 			if ( pModel )
 			{
 				const char* pModelName = Interfaces::ModelInfo()->GetModelName( pModel );
-
 				if ( pModelName )
 				{
 					Vector vEntScreen;
@@ -707,23 +658,15 @@ void CEsp::OnRender()
 					{
 
 						if (Settings::Esp::esp_Chicken && (pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CChicken))
-						{
-							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(),
-								"Chicken");
-						}
+							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "Chicken");
+
 						if ( Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CC4 )
-						{
 							g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , Color::Green() , "[C4]" );
-						}
 
 						if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4)
-						{
-							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(),
-								"[C4 PLANTED]");
-						}
+							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(), "[C4 PLANTED]");
 
-						if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_")
-							&& !strstr(pModelName, "models/weapons/w_ied"))
+						if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_") && !strstr(pModelName, "models/weapons/w_ied"))
 						{
 							if (strstr(pModelName, "models/weapons/w_") && strstr(pModelName, "_dropped.mdl"))
 							{
@@ -732,36 +675,27 @@ void CEsp::OnRender()
 								WeaponName[WeaponName.size() - 12] = '\0';
 
 								if (strstr(pModelName, "models/weapons/w_rif") && strstr(pModelName, "_dropped.mdl"))
-								{
 									WeaponName.erase(0, 4);
-								}
-								else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223"))
-								{
-									WeaponName.erase(0, 5);
-								}
-								else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl"))
-								{
-									WeaponName = "usp-s";
-								}
-								else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl"))
-								{
-									WeaponName.erase(0, 4);
-								}
-								else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl"))
-								{
-									WeaponName.erase(0, 5);
-								}
-								else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl"))
-								{
-									WeaponName.erase(0, 5);
-								}
-								else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl"))
-								{
-									WeaponName.erase(0, 5);
-								}
 
-								g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(),
-									WeaponName.c_str());
+								else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223"))
+									WeaponName.erase(0, 5);
+
+								else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl"))
+									WeaponName = "usp-s";
+
+								else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl"))
+									WeaponName.erase(0, 4);
+
+								else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl"))
+									WeaponName.erase(0, 5);
+
+								else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl"))
+									WeaponName.erase(0, 5);
+
+								else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl"))
+									WeaponName.erase(0, 5);
+
+								g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(), WeaponName.c_str());
 							}
 						}
 
@@ -770,36 +704,27 @@ void CEsp::OnRender()
 							if (strstr(pModelName, "_dropped.mdl"))
 							{
 								if (strstr(pModelName, "fraggrenade"))
-								{
 									if (Settings::Esp::esp_BoxNade)
 										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Red());
-								}
+
 								else if (strstr(pModelName, "molotov"))
-								{
 									if (Settings::Esp::esp_BoxNade)
 										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
-								}
+
 								else if (strstr(pModelName, "incendiarygrenade"))
-								{
 									if (Settings::Esp::esp_BoxNade)
 										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
-								}
+
 								else if (strstr(pModelName, "flashbang"))
-								{
 									if (Settings::Esp::esp_BoxNade)
 										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Yellow());
-								}
 							}
-								else if (strstr(pModelName, "smokegrenade_thrown.mdl"))
-								{
-									if (Settings::Esp::esp_BoxNade)
-										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
-								}
-							}
+							else if (strstr(pModelName, "smokegrenade_thrown.mdl"))
+								if (Settings::Esp::esp_BoxNade)
+									g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
+						}
 						
-						if ( Settings::Esp::esp_WorldGrenade &&
-							( strstr( pModelName , "models/weapons/w_eq_" ) ||
-							 strstr( pModelName , "models/Weapons/w_eq_" ) ) )
+						if ( Settings::Esp::esp_WorldGrenade && ( strstr( pModelName , "models/weapons/w_eq_" ) || strstr( pModelName , "models/Weapons/w_eq_" ) ) )
 						{
 							if ( strstr( pModelName , "_dropped.mdl" ) )
 							{
@@ -830,15 +755,12 @@ void CEsp::OnRender()
 									GrenadeColor = Color::Yellow();
 								}
 
-								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , GrenadeColor ,
-												 WeaponName.c_str() );
+								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , GrenadeColor , WeaponName.c_str() );
 							}
 							else if ( strstr( pModelName , "smokegrenade_thrown.mdl" ) )
 							{
 								string WeaponName = "Smoke";
-
-								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , Color::Gray() ,
-												 WeaponName.c_str() );
+								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , Color::Gray() , WeaponName.c_str() );
 							}
 						}
 					}
@@ -857,13 +779,7 @@ void CEsp::OnRender()
 			CBaseEntity *entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
 			CPlayer* pPlayer = g_pPlayers->GetPlayer(i);
 			PlayerInfo pinfo;
-			if (entity == nullptr)
-				continue;
-			if (entity == local)
-				continue;
-			if (entity->IsDormant())
-				continue;
-			if (entity->GetTeam() == local->GetTeam())
+			if (entity == nullptr || entity == local || entity->IsDormant() || entity->GetTeam() == local->GetTeam())
 				continue;
 			if (Interfaces::Engine()->GetPlayerInfo(i, &pinfo) && !entity->IsDead())
 			{
@@ -871,32 +787,9 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead() && pPlayer->bVisible)
 					{
-						for (int t = 0; t < Settings::Aimbot::aim_Backtracktime; ++t)
+						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime); ++t)
 						{
-							Vector screenbacktrack[64][13];
-
-							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
-							{
-								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
-								{
-									 g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
-									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
-								}
-							}
-						}
-					}
-					else
-					{
-						memset(&headPositions[0][0], 0, sizeof(headPositions));
-					}
-				}
-				else
-				{
-					if (!local->IsDead())
-					{
-						for (int t = 0; t < Settings::Aimbot::aim_Backtracktime; ++t)
-						{
-							Vector screenbacktrack[64][13];
+							Vector screenbacktrack[64][25];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
@@ -909,9 +802,28 @@ void CEsp::OnRender()
 						}
 					}
 					else
-					{
 						memset(&headPositions[0][0], 0, sizeof(headPositions));
+				}
+				else
+				{
+					if (!local->IsDead())
+					{
+						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime); ++t)
+						{
+							Vector screenbacktrack[64][25];
+
+							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
+							{
+								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
+								{
+									g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
+									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
+								}
+							}
+						}
 					}
+					else
+						memset(&headPositions[0][0], 0, sizeof(headPositions));
 				}
 			}
 		}
@@ -963,13 +875,9 @@ void CEsp::OnEvents( IGameEvent* pEvent )
 	if ( g_pEsp && Settings::Esp::esp_BombTimer )
 	{
 		if ( !strcmp( pEvent->GetName() , "bomb_defused" ) || !strcmp( pEvent->GetName() , "bomb_exploded" ) )
-		{
 			bC4Timer = false;
-		}
 		else if ( !strcmp( pEvent->GetName() , "bomb_planted" ) )
-		{
 			bC4Timer = true;
-		}
 	}
 }
 
@@ -1008,25 +916,25 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 				IMaterial *material;
 				switch (Settings::Misc::misc_ChamsMaterialsList)
 				{
-				case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
-				case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
-				case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
-				case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
-				case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
-				case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
-				case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
-				case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
+					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
+					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
+					case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
+					case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
+					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
+					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
+					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
 				}
 				Color color = Color(255, 255, 255, 255);
 				if (Settings::Esp::esp_ChamsVisible <= 2)
 				{
-						ForceMaterial(color, material);
-						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
+					ForceMaterial(color, material);
+					material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
 				}
 				else
 				{
-						ForceMaterial(color, material);
-						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
+					ForceMaterial(color, material);
+					material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 				}
 				Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 			}
@@ -1037,42 +945,42 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 	{
 		switch (Settings::Misc::misc_ArmMaterialsType)
 		{
-		case 0: if (strModelName.find("arms") != std::string::npos)
-		{
-			IMaterial *material;
-			switch (Settings::Misc::misc_ArmMaterialsList)
+			case 0: if (strModelName.find("arms") != std::string::npos)
 			{
-			case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
-			case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
-			case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
-			case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
-			case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
-			case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
-			case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
-			case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
-			}
-			Color color = Color(255, 255, 255, 255);
-			ForceMaterial(color, material);
-			Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-		} break;
-		case 1: if (strModelName.find("weapons/v") != std::string::npos)
-		{
-			IMaterial *material;
-			switch (Settings::Misc::misc_ArmMaterialsList)
+				IMaterial *material;
+				switch (Settings::Misc::misc_ArmMaterialsList)
+				{
+					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
+					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
+					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
+					case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
+					case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
+					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
+					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
+					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+				}
+				Color color = Color(255, 255, 255, 255);
+				ForceMaterial(color, material);
+				Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
+			} break;
+			case 1: if (strModelName.find("weapons/v") != std::string::npos)
 			{
-			case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
-			case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
-			case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
-			case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
-			case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
-			case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
-			case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
-			case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
-			}
-			Color color = Color(255, 255, 255, 255);
-			ForceMaterial(color, material);
-			Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-		} break;
+				IMaterial *material;
+				switch (Settings::Misc::misc_ArmMaterialsList)
+				{
+					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
+					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
+					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
+					case 3:	material = Interfaces::MaterialSystem()->FindMaterial("models/gibs/glass/glass", TEXTURE_GROUP_OTHER); break; // Dark Chrome
+					case 4: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gloss", TEXTURE_GROUP_OTHER); break; // Plastic Glass
+					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
+					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
+					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+				}
+				Color color = Color(255, 255, 255, 255);
+				ForceMaterial(color, material);
+				Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
+			} break;
 		}
 	}
 
@@ -1085,13 +993,10 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 			Interfaces::ModelRender()->ForcedMaterialOverride(Hands);
 		}
 	}
-	else
+	else if (strModelName.find("arms") != string::npos)
 	{
-		if (strModelName.find("arms") != string::npos)
-		{
-			IMaterial* Hands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
-			Hands->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-		}
+		IMaterial* Hands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
+		Hands->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 	}
 
 	if (Settings::Misc::misc_WireHands) //Wireframe Hands
@@ -1103,15 +1008,11 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 			Interfaces::ModelRender()->ForcedMaterialOverride(WireHands);
 		}
 	}
-	else
+	else if (strModelName.find("arms") != string::npos)
 	{
-		if (strModelName.find("arms") != string::npos)
-		{
-			IMaterial* WireHands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
-			WireHands->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, false);
-		}
+		IMaterial* WireHands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
+		WireHands->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, false);
 	}
-
 
 	if ( Settings::Esp::esp_Chams && Client::g_pPlayers && Client::g_pPlayers->GetLocal() && strModelName.find( "models/player" ) != string::npos )
 	{
@@ -1150,17 +1051,11 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 				bool SetColor = false;
 
 				if ( Settings::Esp::esp_ChamsVisible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
-				{
 					SetColor = true;
-				}
 				else if ( Settings::Esp::esp_ChamsVisible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
-				{
 					SetColor = true;
-				}
 				else if ( Settings::Esp::esp_ChamsVisible == 2 ) // Âñåõ
-				{
 					SetColor = true;
-				}
 
 				if ( SetColor )
 				{
@@ -1235,13 +1130,9 @@ void CEsp::DrawPlayerEsp( CPlayer* pPlayer )
 	Vector vLineOrigin;
 
 	if ( Settings::Esp::esp_Size < 0 )
-	{
 		Settings::Esp::esp_Size = 1;
-	}
 	else if ( Settings::Esp::esp_Size > 10 )
-	{
 		Settings::Esp::esp_Size = 10;
-	}
 
 	int Height = (int)pPlayer->vOriginScreen.y - (int)pPlayer->vHitboxHeadScreen.y;
 
@@ -1261,42 +1152,27 @@ void CEsp::DrawPlayerEsp( CPlayer* pPlayer )
 
 	if (Settings::Esp::esp_Size)
 	{
-		if (Settings::Esp::esp_Style == 0)
-		{
-		}
-		else if (Settings::Esp::esp_Style == 1)
+		if (Settings::Esp::esp_Style == 1)
 		{
 			if (!Settings::Esp::esp_Outline)
-			{
 				g_pRender->DrawBox(x, y, Width, Height, EspVisibleColor);
-			}
 			else if (Settings::Esp::esp_Outline)
-			{
 				g_pRender->DrawOutlineBox(x, y, Width, Height, EspVisibleColor);
-			}
 		}
 		else if (Settings::Esp::esp_Style >= 2)
 		{
 			if (!Settings::Esp::esp_Outline)
-			{
 				g_pRender->DrawCoalBox(x, y, Width, Height, EspVisibleColor);
-			}
 			else if (Settings::Esp::esp_Outline)
-			{
 				g_pRender->DrawOutlineCoalBox(x, y, Width, Height, EspVisibleColor);
-			}
 		}
 	}
 
 	if ( Settings::Esp::esp_Line )
-	{
 		g_pRender->DrawLine( (int)vLineOrigin.x , (int)vLineOrigin.y , iScreenWidth / 2 , iScreenHeight , EspVisibleColor );
-	}
 
 	if ( Settings::Esp::esp_Name )
-	{
 		g_pRender->Text( (int)vLineOrigin.x , (int)pPlayer->vHitboxHeadScreen.y - 13 , true , true , EspPlayerColor , pPlayer->Name.c_str() );
-	}
 
 	int iHpAmY = 1;
 
@@ -1305,13 +1181,9 @@ void CEsp::DrawPlayerEsp( CPlayer* pPlayer )
 		Color Minus = Color::Red();
 
 		if ( pPlayer->Team == TEAM_CT )
-		{
 			Minus = CT_HP_ColorM;
-		}
 		else if ( pPlayer->Team == TEAM_TT )
-		{
 			Minus = TT_HP_ColorM;
-		}
 
 		int iHealth = pPlayer->iHealth;
 
@@ -1339,13 +1211,9 @@ void CEsp::DrawPlayerEsp( CPlayer* pPlayer )
 		Color Minus = Color::Red();
 
 		if ( pPlayer->Team == TEAM_CT )
-		{
 			Minus = CT_AR_ColorM;
-		}
 		else if ( pPlayer->Team == TEAM_TT )
-		{
 			Minus = TT_AR_ColorM;
-		}
 
 		int iArmor = pPlayer->iArmor;
 
@@ -1399,9 +1267,7 @@ void CEsp::DrawPlayerSkeleton( CPlayer* pPlayer )
 	Color SkeletonColor = GetPlayerColor( pPlayer );
 
 	for ( BYTE IndexArray = 0; IndexArray < 18; IndexArray++ )
-	{
 		DrawHitBoxLine( pPlayer->vHitboxSkeletonArray[IndexArray] , SkeletonColor );
-	}
 }
 
 void CEsp::DrawPlayerBulletTrace( CPlayer* pPlayer )

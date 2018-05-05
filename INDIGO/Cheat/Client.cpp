@@ -1,15 +1,11 @@
 ﻿#include "Client.h"
 #include <ctime>
 #include "../Gui/memoryfonts.h"
-
-//[enc_string_enable /]
-//[junk_enable /]
 ImFont* tabfont;
 ImFont* font;
 
 static int iSlot;
-const char* Slot[] =
-{
+const char* Slot[] = {
 	"1",
 	"2",
 	"3",
@@ -21,20 +17,14 @@ void CL_FullUpdate()
 	Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
 }
 
-bool Aimbot;
-bool Triggerbot;
-bool Visuals;
-bool Misc;
-bool Radar;
-bool Colors;
+bool Aimbot, Triggerbot, Visuals, Misc, Radar, Colors;
 
-float SpaceLineOne = 140.f;
-float SpaceLineTwo = 280.f;
-float SpaceLineThr = 420.f;
+float	SpaceLineOne = 140.f,
+		SpaceLineTwo = 280.f,
+		SpaceLineThr = 420.f;
 
 namespace Client
 {
-	//[swap_lines]
 	int	iScreenWidth = 0;
 	int	iScreenHeight = 0;
 
@@ -66,14 +56,11 @@ namespace Client
 	int			iWeaponID = 0;
 	int			iWeaponSelectIndex = WEAPON_DEAGLE;
 	int			iWeaponSelectSkinIndex = -1;
-	//[/swap_lines]
 
 	void ReadConfigs(LPCTSTR lpszFileName)
 	{
 		if (!strstr(lpszFileName, "gui.ini"))
-		{
 			ConfigList.push_back(lpszFileName);
-		}
 	}
 
 	void RefreshConfigs()
@@ -97,9 +84,7 @@ namespace Client
 		auto& style = ImGui::GetStyle();
 
 		if (active)
-		{
 			style.Colors[ImGuiCol_Text] = ImVec4(0.98f, 0.98f, 0.98f, 1.f);
-		}
 		else
 			style.Colors[ImGuiCol_Text] = ImVec4(0.39f, 0.39f, 0.39f, 1.f);
 	}
@@ -168,7 +153,7 @@ namespace Client
 
 		style.Colors[ImGuiCol_Button] = ImVec4(0.10, 0.10, 0.10, .98f);
 		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.21f, 0.21f, 0.21f, 1.f);
+		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.33f, 0.33f, 0.33f, 1.f);
 	}
 
 	void BtnColor(bool active)
@@ -182,9 +167,11 @@ namespace Client
 			style.Colors[ImGuiCol_ButtonActive] = ImVec4(.78f, 0.f, 0.f, 1.f);
 		}
 		else
+		{
 			style.Colors[ImGuiCol_Button] = ImVec4(0.12, 0.12, 0.12, .98f);
-		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.12, 0.12, 0.12, .98f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.12, 0.12, 0.12, .98f);
+			style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.12, 0.12, 0.12, .98f);
+			style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.12, 0.12, 0.12, .98f);
+		}
 	}
 
 	bool Initialize(IDirect3DDevice9* pDevice)
@@ -262,7 +249,6 @@ namespace Client
 		DELETE_MOD(g_pMisc);
 	}
 
-
 	void OnRender()
 	{
 		if (g_pRender && !Interfaces::Engine()->IsTakingScreenshot() && Interfaces::Engine()->IsActiveApp())
@@ -277,12 +263,8 @@ namespace Client
 			g_vCenterScreen.x = iScreenWidth / 2.f;
 			g_vCenterScreen.y = iScreenHeight / 2.f;
 
-
-
-
 			if (Settings::Esp::esp_Watermark)
 			{
-				//bool rainbow; 
 				static float rainbow;
 				rainbow += 0.005f;
 				if (rainbow > 1.f) rainbow = 0.f;
@@ -291,28 +273,22 @@ namespace Client
 
 			g_pGui->MenuColor();
 
-			{
-				if (g_pEsp)
-					g_pEsp->OnRender();
+			if (g_pEsp)
+				g_pEsp->OnRender();
 
-				if (g_pMisc)
-				{
-					g_pMisc->OnRender();
-					g_pMisc->OnRenderSpectatorList();
-				}
+			if (g_pMisc)
+			{
+				g_pMisc->OnRender();
+				g_pMisc->OnRenderSpectatorList();
 			}
 
 			std::time_t result = std::time(nullptr);
 			
-						if (Settings::Misc::misc_Spectators)
+			if (Settings::Misc::misc_Spectators)
 			{
 				g_pRender->Text(150, 500, false, true, Color::White(), "Spectators List:");
 				g_pRender->Text(150, 501, false, true, Color::White(), "____________");
 			}
-			else
-			{
-			}
-
 
 			if (Settings::Esp::esp_Time)
 				g_pRender->Text(15, 30, false, true, Color::White(), std::asctime(std::localtime(&result)));
@@ -378,7 +354,6 @@ namespace Client
 					g_pMisc->OnCreateMove(pCmd);
 
 				backtracking->legitBackTrack(pCmd);
-
 			}
 		}
 	}
@@ -412,11 +387,20 @@ namespace Client
 	{
 		if (Interfaces::Engine()->IsInGame() && Interfaces::Engine()->IsConnected())
 		{
-			
-			ConVar* sv_cheats = Interfaces::GetConVar()->FindVar("sv_cheats");
-			SpoofedConvar* sv_cheats_spoofed = new SpoofedConvar(sv_cheats);
-			sv_cheats_spoofed->SetInt(1);
-			
+			SpoofedConvar* sv_cheats_spoofed = nullptr;
+			if (Settings::Untrusted)
+			{
+				if (sv_cheats_spoofed == nullptr)
+					sv_cheats_spoofed = new SpoofedConvar(Interfaces::GetConVar()->FindVar("sv_cheats"));
+				sv_cheats_spoofed->SetInt(1);
+			}
+			else 
+			{
+				if (sv_cheats_spoofed != nullptr) {
+					sv_cheats_spoofed->SetInt(0);
+					sv_cheats_spoofed->~SpoofedConvar();
+				}
+			}
 			if (g_pMisc)
 				g_pMisc->FrameStageNotify(Stage);
 
@@ -478,25 +462,17 @@ namespace Client
 		ImGui::BeginGroup();
 
 		static int otherpages = 0;
+		const char* tabNames[] = { // change these to what you like
+			"Aimbot Options",
+			"Weapon Options", 
+			"Knife Bot Options" 
+		};
 
-		if (ImGui::Button("Aimbot Options", ImVec2(255.0f, 35.0f))) // <---- customize these to your liking.
-		{
-			otherpages = 0;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Weapon Options", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 1;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Knife Bot Options", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 2;
-		}
+		static int tabOrder[] = { 0 , 1 , 2 };
+		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
 
 		if (otherpages == 0)
 		{
-
 			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_FovType > 1)
 				Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_FovType = 1;
 
@@ -571,7 +547,6 @@ namespace Client
 				ImGui::Combo("RCS Clamp", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_RcsClampType, ClampType, IM_ARRAYSIZE(ClampType));
 				ImGui::PopItemWidth();
 			}
-
 		}
 
 		if (otherpages == 1)
@@ -589,8 +564,7 @@ namespace Client
 			ImGui::Spacing();
 			ImGui::Checkbox("Backtrack", &Settings::Aimbot::aim_Backtrack);
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Ticks (ms)", &Settings::Aimbot::aim_Backtracktime, 1, 200);
-			//ImGui::SliderInt("Ticks", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
+			ImGui::SliderInt("Time (ms)", &Settings::Aimbot::aim_Backtracktime, 1, 200);
 
 			ImGui::Text("Anti Aim Options");
 			ImGui::Separator();
@@ -599,9 +573,6 @@ namespace Client
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("left + right arrow key to change angles");
 			ImGui::Checkbox("Silent Aim", &Settings::Misc::misc_LegitAAToggle);
-			//if (ImGui::IsItemHovered())
-				//ImGui::SetTooltip("It lets your default Aimbot working again");
-
 
 			ImGui::Text("Aimbot ESP");
 			ImGui::Separator();
@@ -616,10 +587,6 @@ namespace Client
 		}
 		if (otherpages == 2)
 		{
-			string attack_1 = "Trigger";
-			string attack_2 = "Backstab Only";
-			string attack_3 = "Auto";
-
 			ImGui::Text("Knifebot Options");
 			ImGui::Separator();
 			ImGui::Spacing();
@@ -628,7 +595,7 @@ namespace Client
 
 			ImGui::Separator();
 
-			const char* items[] = { attack_1.c_str() , attack_2.c_str() , attack_3.c_str() };
+			const char* items[] = { "Trigger" , "Backstab Only" , "Auto" };
 			ImGui::Combo("Type", &Settings::Knifebot::knf_Attack, items, IM_ARRAYSIZE(items));
 
 			ImGui::Separator();
@@ -641,234 +608,216 @@ namespace Client
 	void DrawSkins() // Skins
 	{
 		static int otherpages = 0;
-
-		if (ImGui::Button("SKINCHANGER", ImVec2(233.3f, 35.0f))) // <---- customize these to your liking.
-		{
-			otherpages = 0;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("INVENTORY CHANGER", ImVec2(233.3f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 1;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("PROFILE CHANGER", ImVec2(233.3f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 2;
-		}
+		const char* tabNames[] = { // change these to what you like
+			"SKINCHANGER", 
+			"INVENTORY CHANGER", 
+			"PROFILE CHANGER" 
+		};
+		static int tabOrder[] = { 0 , 1 , 2 };
+		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
 
 		if (otherpages == 0)
 		{
 
-		const char* quality_items[] =
-		{
-			"None",
-			"1 - Consumer grade (white)",
-			"2 - Industrial grade (light blue)",
-			"3 - Mil-Spec (darker blue)",
-			"4 - Restricted (purple)",
-			"5 - Classified (pinkish purple)",
-			"6 - Covert (red)",
-			"7 - Exceedingly Rare (gold)",
-		};
+			const char* quality_items[] = {
+				"None",
+				"1 - Consumer grade (white)",
+				"2 - Industrial grade (light blue)",
+				"3 - Mil-Spec (darker blue)",
+				"4 - Restricted (purple)",
+				"5 - Classified (pinkish purple)",
+				"6 - Covert (red)",
+				"7 - Exceedingly Rare (gold)",
+			};
 
-		const char* gloves_listbox_items[49] =
-		{
-			"None",
-			"Sport Gloves | Superconductor",
-			"Sport Gloves | Pandora's Box",
-			"Sport Gloves | Hedge Maze",
-			"Sport Gloves | Arid",
-			"Sport Gloves | Vice",
-			"Sport Gloves | Omega",
-			"Sport Gloves | Bronze Morph",
-			"Sport Gloves | Amphibious",
-			"Moto Gloves | Eclipse",
-			"Moto Gloves | Spearmint",
-			"Moto Gloves | Boom!",
-			"Moto Gloves | Cool Mint",
-			"Moto Gloves | Polygon",
-			"Moto Gloves | Transport",
-			"Moto Gloves | Turtle",
-			"Moto Gloves | Pow",
-			"Specialist Gloves | Crimson Kimono",
-			"Specialist Gloves | Emerald Web",
-			"Specialist Gloves | Foundation",
-			"Specialist Gloves | Forest DDPAT",
-			"Specialist Gloves | Mogul",
-			"Specialist Gloves | Fade",
-			"Specialist Gloves | Buckshot",
-			"Specialist Gloves | Crimson Web",
-			"Driver Gloves | Lunar Weave",
-			"Driver Gloves | Convoy",
-			"Driver Gloves | Crimson Weave",
-			"Driver Gloves | Diamondback",
-			"Driver Gloves | Racing Green",
-			"Driver Gloves | Overtake",
-			"Driver Gloves | Imperial Plad",
-			"Driver Gloves | King Snake",
-			"Hand Wraps | Leather",
-			"Hand Wraps | Spruce DDPAT",
-			"Hand Wraps | Badlands",
-			"Hand Wraps | Slaughter",
-			"Hand Wraps | Aboreal",
-			"Hand Wraps | Duct Tape",
-			"Hand Wraps | Overprint",
-			"Hand Wraps | Cobalt Skulls",
-			"Bloodhound Gloves | Charred",
-			"Bloodhound Gloves | Snakebite",
-			"Bloodhound Gloves | Bronzed",
-			"Bloodhound Gloves | Guerrilla",
-			"Hydra Gloves | Case Hardened",
-			"Hydra Gloves | Rattler",
-			"Hydra Gloves | Mangrove",
-			"Hydra Gloves | Emerald",
-		};
-		//[enc_string_enable /]
+			const char* gloves_listbox_items[49] = {
+				"None",
+				"Sport Gloves | Superconductor",
+				"Sport Gloves | Pandora's Box",
+				"Sport Gloves | Hedge Maze",
+				"Sport Gloves | Arid",
+				"Sport Gloves | Vice",
+				"Sport Gloves | Omega",
+				"Sport Gloves | Bronze Morph",
+				"Sport Gloves | Amphibious",
+				"Moto Gloves | Eclipse",
+				"Moto Gloves | Spearmint",
+				"Moto Gloves | Boom!",
+				"Moto Gloves | Cool Mint",
+				"Moto Gloves | Polygon",
+				"Moto Gloves | Transport",
+				"Moto Gloves | Turtle",
+				"Moto Gloves | Pow",
+				"Specialist Gloves | Crimson Kimono",
+				"Specialist Gloves | Emerald Web",
+				"Specialist Gloves | Foundation",
+				"Specialist Gloves | Forest DDPAT",
+				"Specialist Gloves | Mogul",
+				"Specialist Gloves | Fade",
+				"Specialist Gloves | Buckshot",
+				"Specialist Gloves | Crimson Web",
+				"Driver Gloves | Lunar Weave",
+				"Driver Gloves | Convoy",
+				"Driver Gloves | Crimson Weave",
+				"Driver Gloves | Diamondback",
+				"Driver Gloves | Racing Green",
+				"Driver Gloves | Overtake",
+				"Driver Gloves | Imperial Plad",
+				"Driver Gloves | King Snake",
+				"Hand Wraps | Leather",
+				"Hand Wraps | Spruce DDPAT",
+				"Hand Wraps | Badlands",
+				"Hand Wraps | Slaughter",
+				"Hand Wraps | Aboreal",
+				"Hand Wraps | Duct Tape",
+				"Hand Wraps | Overprint",
+				"Hand Wraps | Cobalt Skulls",
+				"Bloodhound Gloves | Charred",
+				"Bloodhound Gloves | Snakebite",
+				"Bloodhound Gloves | Bronzed",
+				"Bloodhound Gloves | Guerrilla",
+				"Hydra Gloves | Case Hardened",
+				"Hydra Gloves | Rattler",
+				"Hydra Gloves | Mangrove",
+				"Hydra Gloves | Emerald",
+			};
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		ImGui::Text("Skin Changer");
+			ImGui::Text("Skin Changer");
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		ImGui::Text("Current Weapon: %s", pWeaponData[iWeaponID]);
+			ImGui::Text("Current Weapon: %s", pWeaponData[iWeaponID]);
 
-		ImGui::PushItemWidth(362.f);
+			ImGui::PushItemWidth(362.f);
 
-		static int iOldWeaponID = -1;
+			static int iOldWeaponID = -1;
 
-		ImGui::Combo("Weapon##WeaponSelect", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
+			ImGui::Combo("Weapon##WeaponSelect", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
 
-		iWeaponSelectIndex = pWeaponItemIndexData[iWeaponID];
+			iWeaponSelectIndex = pWeaponItemIndexData[iWeaponID];
 
-		if (iOldWeaponID != iWeaponID)
-			iWeaponSelectSkinIndex = GetWeaponSkinIndexFromPaintKit(g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit);
+			if (iOldWeaponID != iWeaponID)
+				iWeaponSelectSkinIndex = GetWeaponSkinIndexFromPaintKit(g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit);
 
-		iOldWeaponID = iWeaponID;
+			iOldWeaponID = iWeaponID;
 
-		string WeaponSkin = pWeaponData[iWeaponID];
-		WeaponSkin += " Skin";
+			string WeaponSkin = pWeaponData[iWeaponID];
+			WeaponSkin += " Skin";
 
-		ImGui::ComboBoxArray(WeaponSkin.c_str(), &iWeaponSelectSkinIndex, WeaponSkins[iWeaponID].SkinNames);
+			ImGui::ComboBoxArray(WeaponSkin.c_str(), &iWeaponSelectSkinIndex, WeaponSkins[iWeaponID].SkinNames);
 
-		ImGui::Combo("Weapon Quality", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-		ImGui::SliderFloat("Weapon Wear", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].flFallbackWear, 0.001f, 1.f);
-		ImGui::InputInt("Weapon StatTrak", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].nFallbackStatTrak, 1, 100, ImGuiInputTextFlags_CharsDecimal);
+			ImGui::Combo("Weapon Quality", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
+			ImGui::SliderFloat("Weapon Wear", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].flFallbackWear, 0.001f, 1.f);
+			ImGui::InputInt("Weapon StatTrak", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].nFallbackStatTrak, 1, 100, ImGuiInputTextFlags_CharsDecimal);
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		ImGui::Combo("Gloves Skin", &Settings::Skin::gloves_skin, gloves_listbox_items,
-			IM_ARRAYSIZE(gloves_listbox_items));
+			ImGui::Combo("Gloves Skin", &Settings::Skin::gloves_skin, gloves_listbox_items, IM_ARRAYSIZE(gloves_listbox_items));
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		ImGui::PopItemWidth();
+			ImGui::PopItemWidth();
 
-		const char* knife_models_items[] =
-		{
-			"Default","Bayonet","Flip","Gut","Karambit" ,"M9 Bayonet",
-			"Huntsman","Falchion","Bowie","Butterfly","Shadow Daggers"
-		};
+			const char* knife_models_items[] = {
+				"Default", "Bayonet", "Flip", "Gut", "Karambit" , "M9 Bayonet",
+				"Huntsman", "Falchion", "Bowie", "Butterfly", "Shadow Daggers"
+			};
 
-		ImGui::Text("Knife Changer");
-		ImGui::Separator();
+			ImGui::Text("Knife Changer");
+			ImGui::Separator();
 
-		ImGui::PushItemWidth(362.f);
-		ImGui::Combo("Knife CT Model", &Settings::Skin::knf_ct_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
-		ImGui::PushItemWidth(362.f);
-		ImGui::Combo("Knife T Model", &Settings::Skin::knf_tt_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife CT Model", &Settings::Skin::knf_ct_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife T Model", &Settings::Skin::knf_tt_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		static int iSelectKnifeCTSkinIndex = -1;
-		static int iSelectKnifeTTSkinIndex = -1;
+			static int iSelectKnifeCTSkinIndex = -1;
+			static int iSelectKnifeTTSkinIndex = -1;
 
-		int iKnifeCTModelIndex = Settings::Skin::knf_ct_model;
-		int iKnifeTTModelIndex = Settings::Skin::knf_tt_model;
+			int iKnifeCTModelIndex = Settings::Skin::knf_ct_model;
+			int iKnifeTTModelIndex = Settings::Skin::knf_tt_model;
 
-		static int iOldKnifeCTModelIndex = -1;
-		static int iOldKnifeTTModelIndex = -1;
+			static int iOldKnifeCTModelIndex = -1;
+			static int iOldKnifeTTModelIndex = -1;
 
-		if (iOldKnifeCTModelIndex != iKnifeCTModelIndex && Settings::Skin::knf_ct_model)
-			iSelectKnifeCTSkinIndex = GetKnifeSkinIndexFromPaintKit(Settings::Skin::knf_ct_skin, false);
+			if (iOldKnifeCTModelIndex != iKnifeCTModelIndex && Settings::Skin::knf_ct_model)
+				iSelectKnifeCTSkinIndex = GetKnifeSkinIndexFromPaintKit(Settings::Skin::knf_ct_skin, false);
 
-		if (iOldKnifeTTModelIndex != iKnifeTTModelIndex && Settings::Skin::knf_tt_model)
-			iSelectKnifeTTSkinIndex = GetKnifeSkinIndexFromPaintKit(Settings::Skin::knf_ct_skin, true);
+			if (iOldKnifeTTModelIndex != iKnifeTTModelIndex && Settings::Skin::knf_tt_model)
+				iSelectKnifeTTSkinIndex = GetKnifeSkinIndexFromPaintKit(Settings::Skin::knf_ct_skin, true);
 
-		iOldKnifeCTModelIndex = iKnifeCTModelIndex;
-		iOldKnifeTTModelIndex = iKnifeTTModelIndex;
+			iOldKnifeCTModelIndex = iKnifeCTModelIndex;
+			iOldKnifeTTModelIndex = iKnifeTTModelIndex;
 
-		string KnifeCTModel = knife_models_items[Settings::Skin::knf_ct_model];
-		string KnifeTTModel = knife_models_items[Settings::Skin::knf_tt_model];
+			string KnifeCTModel = knife_models_items[Settings::Skin::knf_ct_model];
+			string KnifeTTModel = knife_models_items[Settings::Skin::knf_tt_model];
 
-		KnifeCTModel += " Skin##KCT";
-		KnifeTTModel += " Skin##KTT";
-		ImGui::PushItemWidth(362.f);
-		ImGui::SliderFloat("Knife CT Wear", &g_SkinChangerCfg[WEAPON_KNIFE].flFallbackWear, 0.001f, 1.f);
-		ImGui::PushItemWidth(362.f);
-		ImGui::Combo("Knife CT Quality", &g_SkinChangerCfg[WEAPON_KNIFE].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-		ImGui::ComboBoxArray(KnifeCTModel.c_str(), &iSelectKnifeCTSkinIndex, KnifeSkins[iKnifeCTModelIndex].SkinNames);
+			KnifeCTModel += " Skin##KCT";
+			KnifeTTModel += " Skin##KTT";
+			ImGui::PushItemWidth(362.f);
+			ImGui::SliderFloat("Knife CT Wear", &g_SkinChangerCfg[WEAPON_KNIFE].flFallbackWear, 0.001f, 1.f);
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife CT Quality", &g_SkinChangerCfg[WEAPON_KNIFE].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
+			ImGui::ComboBoxArray(KnifeCTModel.c_str(), &iSelectKnifeCTSkinIndex, KnifeSkins[iKnifeCTModelIndex].SkinNames);
 
-		ImGui::Separator();
+			ImGui::Separator();
 
-		ImGui::PushItemWidth(362.f);
-		ImGui::SliderFloat("Knife T Wear", &g_SkinChangerCfg[WEAPON_KNIFE_T].flFallbackWear, 0.001f, 1.f);
-		ImGui::PushItemWidth(362.f);
-		ImGui::Combo("Knife T Quality", &g_SkinChangerCfg[WEAPON_KNIFE_T].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-		ImGui::ComboBoxArray(KnifeTTModel.c_str(), &iSelectKnifeTTSkinIndex, KnifeSkins[iKnifeTTModelIndex].SkinNames);
+			ImGui::PushItemWidth(362.f);
+			ImGui::SliderFloat("Knife T Wear", &g_SkinChangerCfg[WEAPON_KNIFE_T].flFallbackWear, 0.001f, 1.f);
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife T Quality", &g_SkinChangerCfg[WEAPON_KNIFE_T].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
+			ImGui::ComboBoxArray(KnifeTTModel.c_str(), &iSelectKnifeTTSkinIndex, KnifeSkins[iKnifeTTModelIndex].SkinNames);
 
-		if (ImGui::Button("Apply##Skin"))
-		{
-			if (iWeaponSelectSkinIndex >= 0) {
-				g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit = WeaponSkins[iWeaponID].SkinPaintKit[iWeaponSelectSkinIndex];
-			}
-
-			if (iSelectKnifeCTSkinIndex >= 0 && Settings::Skin::knf_ct_model > 0) {
-				Settings::Skin::knf_ct_skin = KnifeSkins[iKnifeCTModelIndex].SkinPaintKit[iSelectKnifeCTSkinIndex];
-			}
-			else
+			if (ImGui::Button("Apply##Skin"))
 			{
-				Settings::Skin::knf_ct_skin = 0;
-				iSelectKnifeCTSkinIndex = -1;
+				if (iWeaponSelectSkinIndex >= 0)
+					g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit = WeaponSkins[iWeaponID].SkinPaintKit[iWeaponSelectSkinIndex];
+
+				if (iSelectKnifeCTSkinIndex >= 0 && Settings::Skin::knf_ct_model > 0)
+					Settings::Skin::knf_ct_skin = KnifeSkins[iKnifeCTModelIndex].SkinPaintKit[iSelectKnifeCTSkinIndex];
+				else {
+					Settings::Skin::knf_ct_skin = 0;
+					iSelectKnifeCTSkinIndex = -1;
+				}
+
+				if (iSelectKnifeTTSkinIndex >= 0 && Settings::Skin::knf_tt_model > 0)
+					Settings::Skin::knf_tt_skin = KnifeSkins[iKnifeTTModelIndex].SkinPaintKit[iSelectKnifeTTSkinIndex];
+				else {
+					Settings::Skin::knf_tt_skin = 0;
+					iSelectKnifeTTSkinIndex = -1;
+				}
+
+				ForceFullUpdate();
 			}
 
-			if (iSelectKnifeTTSkinIndex >= 0 && Settings::Skin::knf_tt_model > 0) {
-				Settings::Skin::knf_tt_skin = KnifeSkins[iKnifeTTModelIndex].SkinPaintKit[iSelectKnifeTTSkinIndex];
-			}
-			else
+			//fix it if you want sticker changer
+			/*
+
+			if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled))
+				CL_FullUpdate();
+
+
+			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
 			{
-				Settings::Skin::knf_tt_skin = 0;
-				iSelectKnifeTTSkinIndex = -1;
+				ImGui::Combo("Slot", &iSlot, Slot, ARRAYSIZE(Slot));
+				ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text)
+				{
+					*out_text = k_stickers.at(idx).name.c_str();
+					return true;
+				}, nullptr, k_stickers.size());
+
+				ImGui::SliderFloat("Wear ", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear, 0.f, 1.f);
+				ImGui::SliderInt("Rotation", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation, 0, 360);
 			}
 
-			ForceFullUpdate();
-		}
 
-		//fix it if you want sticker changer
-		/*
-
-		if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled))
-			CL_FullUpdate();
-
-
-		if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
-		{
-			ImGui::Combo("Slot", &iSlot, Slot, ARRAYSIZE(Slot));
-			ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text)
-			{
-				*out_text = k_stickers.at(idx).name.c_str();
-				return true;
-			}, nullptr, k_stickers.size());
-
-			ImGui::SliderFloat("Wear ", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear, 0.f, 1.f);
-			ImGui::SliderInt("Rotation", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation, 0, 360);
-		}
-
-
-		if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f)))
-			CL_FullUpdate();
-			*/
+			if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f)))
+				CL_FullUpdate();
+				*/
 		}
 
 		if (otherpages == 1)
@@ -942,12 +891,11 @@ namespace Client
 			//ImGui::InputInt("Rarity", &rarity);
 			ImGui::InputInt("Seed", &seed);
 			ImGui::SliderFloat("Wear", &wear, FLT_MIN, 1.f, "%.10f", 5);
-			if (ImGui::Button("Add")) {
+			if (ImGui::Button("Add"))
 				Settings::InventoryChanger::weapons.insert(Settings::InventoryChanger::weapons.end(), { itemDefinitionIndex , paintKit , rarity , seed, wear });
-			} ImGui::SameLine();
-			if (ImGui::Button("Apply##Skin")) {
+			ImGui::SameLine();
+			if (ImGui::Button("Apply##Skin"))
 				SendClientHello();
-			}
 			ImGui::NextColumn();
 
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
@@ -1000,9 +948,8 @@ namespace Client
 				}
 				ImGui::PopStyleColor();
 			}
-			if (ImGui::Button("Apply##Medals")) {
+			if (ImGui::Button("Apply##Medals"))
 				SendClientHello();
-			}
 			ImGui::NextColumn();
 			ImGui::Checkbox("Enable Profile Changer", &Settings::ProfileChanger::enabled);
 			static const char* ranks[] = {
@@ -1034,9 +981,8 @@ namespace Client
 			ImGui::InputInt("Teaching", &Settings::ProfileChanger::cmd_teaching);
 			ImGui::InputInt("Leader", &Settings::ProfileChanger::cmd_leader);
 			if (ImGui::Button("Apply##Profile"))
-			{
 				SendMMHello();
-			}
+
 			ImGui::Columns(1, nullptr, false);
 		}
 	}
@@ -1125,31 +1071,18 @@ namespace Client
 	void DrawVisuals() // Visuals
 	{
 		ImGui::BeginGroup();
-
 		static int otherpages = 0;
-
-		if (ImGui::Button("Part 1", ImVec2(255.0f, 35.0f))) // <---- customize these to your liking.
-		{
-			otherpages = 0;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Part 2", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 1;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Part 3", ImVec2(255.0f, 35.0f))) // <---- customize these to your liking.
-		{
-			otherpages = 2;
-		}
+		const char* tabNames[] = { // change these to what you like
+			"Part 1",
+			"Part 2",
+			"Part 3"
+		};
+		static int tabOrder[] = { 0 , 1 , 2 };
+		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
 
 		if (otherpages == 0)
 		{
-			string style_1 = "None";
-			string style_2 = "Box";
-			string style_3 = "Corners";
-
-			const char* items1[] = { style_1.c_str() , style_2.c_str(), style_3.c_str() };
+			const char* items1[] = { "None" , "Box", "Corners" };
 
 			ImGui::Text("Visuals");
 			ImGui::Separator();
@@ -1185,10 +1118,7 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("World Weapon", &Settings::Esp::esp_WorldWeapons);
 			ImGui::SameLine(SpaceLineThr);
-			if (ImGui::Checkbox("Radar", &Settings::Radar::rad_Active))
-			{
-				Settings::Radar::rad_InGame;
-			}
+			ImGui::Checkbox("Radar", &Settings::Radar::rad_Active);
 
 			ImGui::Checkbox("World Grenade", &Settings::Esp::esp_WorldGrenade);
 			ImGui::SameLine(SpaceLineOne);
@@ -1212,18 +1142,9 @@ namespace Client
 			ImGui::Text("Visuals");
 			ImGui::Separator();
 			ImGui::Spacing();
-			string visible_1 = "Enemy";
-			string visible_2 = "Team";
-			string visible_3 = "All";
-			string visible_4 = "Only Visible";
+			const char* items2[] = { "Enemy" , "Team" ,"All" , "Only Visible" };
 
-			const char* items2[] = { visible_1.c_str() , visible_2.c_str() , visible_3.c_str() , visible_4.c_str() };
-
-			string chams_1 = "None";
-			string chams_2 = "Flat";
-			string chams_3 = "Texture";
-
-			const char* items5[] = { chams_1.c_str() , chams_2.c_str() , chams_3.c_str() };
+			const char* items5[] = { "None" , "Flat" , "Texture" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Chams", &Settings::Esp::esp_Chams, items5, IM_ARRAYSIZE(items5));
 			ImGui::PushItemWidth(362.f);
@@ -1251,21 +1172,11 @@ namespace Client
 			ImGui::Separator();
 			ImGui::Spacing();
 
-			string hpbar_1 = "None";
-			string hpbar_2 = "Number";
-			string hpbar_3 = "Bottom";
-			string hpbar_4 = "Left";
-
-			const char* items3[] = { hpbar_1.c_str() , hpbar_2.c_str() , hpbar_3.c_str() , hpbar_4.c_str() };
+			const char* items3[] = { "None" , "Number" , "Bottom" , "Left" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Health", &Settings::Esp::esp_Health, items3, IM_ARRAYSIZE(items3));
 
-			string arbar_1 = "None";
-			string arbar_2 = "Number";
-			string arbar_3 = "Bottom";
-			string arbar_4 = "Right";
-
-			const char* items4[] = { arbar_1.c_str() , arbar_2.c_str() , arbar_3.c_str() , arbar_4.c_str() };
+			const char* items4[] = { "None" , "Number" , "Bottom" , "Right" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Armor", &Settings::Esp::esp_Armor, items4, IM_ARRAYSIZE(items4));
 
@@ -1277,8 +1188,7 @@ namespace Client
 			ImGui::Separator();
 			ImGui::Spacing();
 
-			const char* iHitSound[] =
-			{
+			const char* iHitSound[] = {
 				"Off",
 				"Default",
 				"Anime",
@@ -1286,8 +1196,7 @@ namespace Client
 				"Gamesense",
 			};
 
-			const char* material_items[] =
-			{
+			const char* material_items[] = {
 				"Glass",
 				"Crystal",
 				"Gold",
@@ -1298,8 +1207,7 @@ namespace Client
 				"Detailed Gold"
 			};
 
-			const char* armtype_items[] =
-			{
+			const char* armtype_items[] = {
 				"Arms Only",
 				"Arms + Weapon"
 			};
@@ -1349,19 +1257,17 @@ namespace Client
 		ImGui::Separator();
 
 		if (ImGui::Button("Load Config"))
-		{
 			Settings::LoadSettings("C:/Indigo/" + ConfigList[iConfigSelect]);
-		}
+
 		ImGui::SameLine();
+
 		if (ImGui::Button("Save Config"))
-		{
 			Settings::SaveSettings("C:/Indigo/" + ConfigList[iConfigSelect]);
-		}
+
 		ImGui::SameLine();
+
 		if (ImGui::Button("Refresh Config List"))
-		{
 			RefreshConfigs();
-		}
 
 		ImGui::Separator();
 
@@ -1372,9 +1278,7 @@ namespace Client
 			string ConfigFileName = ConfigName;
 
 			if (ConfigFileName.size() < 1)
-			{
 				ConfigFileName = "settings";
-			}
 
 			Settings::SaveSettings("C:/Indigo/" + ConfigFileName + ".ini");
 			RefreshConfigs();
@@ -1392,68 +1296,39 @@ namespace Client
 		if (ImGui::Button("Apply Color"))
 		{
 			if (iMenuSheme == 0)
-			{
 				g_pGui->purple();
-			}
 			else if (iMenuSheme == 1)
-			{
 				g_pGui->DefaultSheme1();
-			}
 			else if (iMenuSheme == 2)
-			{
 				g_pGui->RedSheme();
-			}
 			else if (iMenuSheme == 3)
-			{
 				g_pGui->darkblue();
-			}
 			else if (iMenuSheme == 4)
-			{
 				g_pGui->MidNightSheme();
-			}
 			else if (iMenuSheme == 5)
-			{
 				g_pGui->NightSheme();
-			}
 			else if (iMenuSheme == 6)
-			{
 				g_pGui->DunnoSheme();
-			}
 			else if (iMenuSheme == 7)
-			{
 				g_pGui->BlueSheme();
-			}
 			else if (iMenuSheme == 8)
-			{
 				g_pGui->BlackSheme2();
-			}
 			else if (iMenuSheme == 9)
-			{
 				g_pGui->green();
-			}
 			else if (iMenuSheme == 10)
-			{
 				g_pGui->pink();
-			}
 			else if (iMenuSheme == 11)
-			{
 				g_pGui->blue();
-			}
 			else if (iMenuSheme == 12)
-			{
 				g_pGui->yellow();
-			}
 			else if (iMenuSheme == 13)
-			{
 				g_pGui->BlackSheme();
-			}
 		}
 	}
 
 	void DrawMisc() // Misc
 	{
-		const char* skybox_items[] =
-		{
+		const char* skybox_items[] = {
 			"cs_baggage_skybox_",
 			"cs_tibet",
 			"embassy",
@@ -1479,18 +1354,13 @@ namespace Client
 			"vertigo",
 			"vietnam"
 		};
-
 		static int otherpages = 0;
-
-		if (ImGui::Button("Misc", ImVec2(255.0f, 35.0f))) // <---- customize these to your liking.
-		{
-			otherpages = 0;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Untrusted Features", ImVec2(255.0f, 35.0f))) // <---- again, customize to your liking.
-		{
-			otherpages = 1;
-		}
+		const char* tabNames[] = { // change these to what you like
+			"Misc",
+			"Untrusted Features",
+		};
+		static int tabOrder[] = { 0 , 1 };
+		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
 
 		if (otherpages == 0)
 		{
@@ -1526,14 +1396,12 @@ namespace Client
 			ImGui::SliderInt("FOV Model View", &Settings::Misc::misc_FovModelView, 1, 190);
 			ImGui::Separator();
 
-			string clan_1 = "None";
-			string clan_2 = "Clear";
-			string clan_3 = "smef.cc";
-			string clan_4 = "smef.cc No-name";
-			string clan_5 = "Valve";
-			string clan_6 = "Valve No-name";
-			string clan_7 = "Animation";
-			const char* items5[] = { clan_1.c_str() , clan_2.c_str() , clan_3.c_str() , clan_4.c_str() , clan_5.c_str() , clan_6.c_str() , clan_7.c_str() };
+			ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_EPostprocess);
+			ImGui::Separator();
+
+			const char* items5[] = { "None" , "Clear" , "smef.cc" , "smef.cc No-name" , "Valve" , "Valve No-name" , "Animation" };
 			ImGui::Combo("Clantag Changer", &Settings::Misc::misc_Clan, items5, IM_ARRAYSIZE(items5));
 
 			ImGui::Separator();
@@ -1565,44 +1433,32 @@ namespace Client
 
 		if (otherpages == 1)
 		{
-		ImGui::Text("All features below can cause Untrusted/SMAC Ban");
-		ImGui::Separator();
-		ImGui::Spacing();
+			ImGui::Text("All features below can cause Untrusted/SMAC Ban");
+			ImGui::Separator();
+			ImGui::Spacing();
+			ImGui::Checkbox("Enable Untrusted", &Settings::Untrusted);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("sv_cheats 1/smac ban");
+			if (Settings::Untrusted)
+			{
+				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
+				ImGui::SameLine(SpaceLineOne);
+				ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
 
-		ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
-		ImGui::SameLine(SpaceLineOne);
-		ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
-		ImGui::SameLine(SpaceLineTwo);
-		ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_EPostprocess);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
-		ImGui::SameLine(SpaceLineThr);
-		ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
+				ImGui::Separator();
+				ImGui::Spacing();
 
+				ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
+				ImGui::PushItemWidth(362.f);
+				ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
 
-		ImGui::Separator();
-		ImGui::Spacing();
+				ImGui::Separator();
+				ImGui::Spacing();
 
-		ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
-		ImGui::PushItemWidth(362.f);
-		ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
-
-		ImGui::Separator();
-		ImGui::Spacing();
-
-		ImGui::PushItemWidth(362.f);
-		if (ImGui::Combo("SkyBox", &Settings::Misc::misc_CurrentSky, skybox_items, IM_ARRAYSIZE(skybox_items)))
-		{
-			Settings::Misc::misc_SkyName = skybox_items[Settings::Misc::misc_CurrentSky];
-		}
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("sv_cheats 1/smac ban");
+				ImGui::PushItemWidth(362.f);
+				if (ImGui::Combo("SkyBox", &Settings::Misc::misc_CurrentSky, skybox_items, IM_ARRAYSIZE(skybox_items)))
+					Settings::Misc::misc_SkyName = skybox_items[Settings::Misc::misc_CurrentSky];
+			}
 		}
 	}
 
@@ -1619,7 +1475,7 @@ namespace Client
 		ImGui::MyColorEdit3("Color Hitmarker", Settings::Esp::esp_HitMarkerColor);
 		ImGui::MyColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
 
-		/*		ImGui::Text("Radar");
+		/*ImGui::Text("Radar");
 		ImGui::Separator();
 		ImGui::ColorEdit3("Color CT", Settings::Radar::rad_Color_CT);
 		ImGui::ColorEdit3("Color T", Settings::Radar::rad_Color_TT);
@@ -1657,36 +1513,30 @@ namespace Client
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.95f);
 		ImGui::SetNextWindowPosCenter(ImGuiSetCond_Appearing);
 		BtnNormal();
-		//style.WindowPadding = ImVec2(0, 0);
 		ImGui::Begin("!smef.pw", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_ShowBorders);
-		{
-			mainWindowPos = ImGui::GetWindowPos();
-			if (Global::MenuTab == 0)
-				DrawAimbot();
-			if (Global::MenuTab == 1)
-				DrawVisuals();
-			if (Global::MenuTab == 2)
-				DrawSkins();
-			if (Global::MenuTab == 3)
-				DrawMisc();
-			if (Global::MenuTab == 4)
-				DrawRadar();
-			if (Global::MenuTab == 5)
-				DrawColors();
-		}ImGui::End();
+		mainWindowPos = ImGui::GetWindowPos();
+		if (Global::MenuTab == 0)
+			DrawAimbot();
+		if (Global::MenuTab == 1)
+			DrawVisuals();
+		if (Global::MenuTab == 2)
+			DrawSkins();
+		if (Global::MenuTab == 3)
+			DrawMisc();
+		if (Global::MenuTab == 4)
+			DrawRadar();
+		if (Global::MenuTab == 5)
+			DrawColors();
+		ImGui::End();
 		ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x - 6, mainWindowPos.y - 6));
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.f);
 		ImGui::Begin("##border2", &bIsGuiVisible, ImVec2(840, 462), 0.98f, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_ShowBorders);
-		{
-		}
 		ImGui::End();
 
 		//left bar with buttons
 		ImGui::SetNextWindowPos(ImVec2(0, -30));
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.f);
 		ImGui::Begin("##exdee", &bIsGuiVisible, ImVec2(180, 1110), 0.5f, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoInputs);
-		{
-		}
 		ImGui::End();
 
 		ImGui::SetNextWindowPos(ImVec2(10, 150));
@@ -1694,32 +1544,22 @@ namespace Client
 		style.WindowPadding = ImVec2(0, 0);//not
 		style.ItemSpacing = ImVec2(8, 4);//not
 		ImGui::Begin("##tabarea", &bIsGuiVisible, ImVec2(150, 620), 0.f, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoTitleBar);
-		{
-			ImGui::PushFont(tabfont);
+		ImGui::PushFont(tabfont);
 
-			//TextColor(true);
-
-			BtnColor(false); //if you enable this (true) , buttons get color
-			if (ImGui::Button("A", ImVec2(133.3, 100))) Global::MenuTab = 0;
-
-			if (ImGui::Button("D", ImVec2(133.3, 100))) Global::MenuTab = 1;
-
-			if (ImGui::Button("B", ImVec2(133.3, 100))) Global::MenuTab = 2;
-
-			if (ImGui::Button("G", ImVec2(133.3, 100))) Global::MenuTab = 3;
-
-			if (ImGui::Button("C", ImVec2(133.3, 100))) Global::MenuTab = 4;
-
-			if (ImGui::Button("H", ImVec2(133.3, 100))) Global::MenuTab = 5;
-			ImGui::PopFont();
-		}
+		//TextColor(true);
+		BtnColor(false); //if you enable this (true) , buttons get color
+		if (ImGui::Button("A", ImVec2(133.3, 100))) Global::MenuTab = 0;
+		if (ImGui::Button("D", ImVec2(133.3, 100))) Global::MenuTab = 1;
+		if (ImGui::Button("B", ImVec2(133.3, 100))) Global::MenuTab = 2;
+		if (ImGui::Button("G", ImVec2(133.3, 100))) Global::MenuTab = 3;
+		if (ImGui::Button("C", ImVec2(133.3, 100))) Global::MenuTab = 4;
+		if (ImGui::Button("H", ImVec2(133.3, 100))) Global::MenuTab = 5;
+		ImGui::PopFont();
 		ImGui::End();
 	}
 }
 
 using namespace Client;
-
-
 
 bool bIsGuiInitalize = false;
 bool bIsGuiVisible = false;
@@ -1740,7 +1580,6 @@ void CGui::GUI_Init(IDirect3DDevice9 * pDevice)
 {
 	HWND hWindow = FindWindowA("Valve001", 0);
 
-
 	ImGui_ImplDX9_Init(hWindow, pDevice);
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -1749,7 +1588,6 @@ void CGui::GUI_Init(IDirect3DDevice9 * pDevice)
 	io.IniFilename = GuiFile.c_str();
 
 	font = io.Fonts->AddFontFromMemoryCompressedTTF(MyFont_compressed_data2, MyFont_compressed_size2, 14.f);
-
 	tabfont = io.Fonts->AddFontFromMemoryCompressedTTF(MyFont_compressed_data, MyFont_compressed_size, 62.f);
 
 	style.Alpha = 0.0f;
@@ -2703,13 +2541,9 @@ namespace ImGui
 		if (tabSize>0 && (tabIndex<0 || tabIndex >= tabSize))
 		{
 			if (!tabOrder)
-			{
 				tabIndex = 0;
-			}
 			else
-			{
 				tabIndex = -1;
-			}
 		}
 
 		float windowWidth = 0.f, sumX = 0.f;
@@ -2731,13 +2565,9 @@ namespace ImGui
 				sumX += ImGui::CalcTextSize(tabLabels[i]).x + 2.f*style.FramePadding.x;
 
 				if (sumX>windowWidth)
-				{
 					sumX = 0.f;
-				}
 				else
-				{
 					ImGui::SameLine();
-				}
 			}
 
 			if (i != tabIndex)
@@ -2750,8 +2580,8 @@ namespace ImGui
 			}
 			// Draw the button
 			ImGui::PushID(i);   // otherwise two tabs with the same name would clash.
-			if (ImGui::Button(tabLabels[i], ImVec2(67.f, 15.f))) { selection_changed = (tabIndex != i); newtabIndex = i; }
-			ImGui::PopID();
+			if (ImGui::Button(tabLabels[i], ImVec2(windowWidth / tabSize, 35.f))) { selection_changed = (tabIndex != i); newtabIndex = i; }
+				ImGui::PopID();
 			if (i != tabIndex)
 			{
 				// Reset the style
@@ -2761,9 +2591,7 @@ namespace ImGui
 				style.Colors[ImGuiCol_Text] = colorText;
 			}
 			noButtonDrawn = false;
-
 			if (sumX == 0.f) sumX = style.WindowPadding.x + ImGui::GetItemRectSize().x; // First element of a line
-
 		}
 
 		tabIndex = newtabIndex;
@@ -2776,9 +2604,7 @@ namespace ImGui
 			{
 				i = tabOrder ? tabOrder[j] : j;
 				if (i == -1)
-				{
 					continue;
-				}
 				tabIndex = i;
 				break;
 			}

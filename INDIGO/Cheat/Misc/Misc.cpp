@@ -1,6 +1,5 @@
 #include "Misc.h"
 
-
 using namespace Client;
 //[junk_enable /]
 //[enc_string_enable /]
@@ -34,15 +33,6 @@ void CMisc::OnRender()
 void CMisc::OnCreateMove( CUserCmd* pCmd )
 {
 
-//
-// Enable this if you want , it is useless cause it causes lag and delay
-//
-//	ConVar* net_fakelag = Interfaces::GetConVar()->FindVar("net_fakelag");
-//	static SpoofedConvar* fakelagspoof = new SpoofedConvar(net_fakelag);
-//	if (Settings::Misc::misc_fakeping)
-//		fakelagspoof->SetInt(Settings::Misc::misc_fakeping_value);
-//
-
 	if ( Settings::Misc::misc_Bhop )
 	{
 		if ( pCmd->buttons & IN_JUMP && !( g_pPlayers->GetLocal()->iFlags & FL_ONGROUND ) )
@@ -66,23 +56,9 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 	if (Settings::Misc::misc_NoSky) { if (skybox) skybox->SetValue("sky_l4d_rural02_ldr"); }
 
 
-	ConVar* postprocess = Interfaces::GetConVar()->FindVar("mat_postprocess_enable");
-
-	if (Settings::Misc::misc_EPostprocess)
-	{
-		if (Interfaces::Engine()->IsInGame())
-		{
-			postprocess->SetValue(0);
-		}
-	}
-	else
-	{
-		if (Interfaces::Engine()->IsInGame())
-		{
-			postprocess->SetValue(1);
-		}
-	}
-
+	ConVar* PostProcess = Interfaces::GetConVar()->FindVar("mat_postprocess_enable");
+	*(int*)((DWORD)&PostProcess->fnChangeCallback + 0xC) = 0;
+	PostProcess->SetValue(!Settings::Misc::misc_EPostprocess);
 
 	if (Settings::Misc::misc_namespamidkmemes)
 	{
@@ -168,51 +144,34 @@ void CMisc::OnDrawModelExecute()
 {
 	static bool NoSmoke = false;
 	static bool NoFlashReset = false;
+	IMaterial* flash = Interfaces::MaterialSystem()->FindMaterial("effects\\flashbang", TEXTURE_GROUP_CLIENT_EFFECTS);
+	IMaterial* flashWhite = Interfaces::MaterialSystem()->FindMaterial("effects\\flashbang_white", TEXTURE_GROUP_CLIENT_EFFECTS);
+	IMaterial* vistasmokev1_smokegrenade = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_smokegrenade", TEXTURE_GROUP_CLIENT_EFFECTS);
+	IMaterial* vistasmokev1_emods = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods", TEXTURE_GROUP_CLIENT_EFFECTS);
+	IMaterial* vistasmokev1_emods_impactdust = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods_impactdust", TEXTURE_GROUP_CLIENT_EFFECTS);
+	IMaterial* vistasmokev1_fire = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_fire", TEXTURE_GROUP_CLIENT_EFFECTS);
 
-	if ( Settings::Misc::misc_NoFlash && !NoFlashReset )
+	if (flash && flashWhite)
 	{
-		IMaterial* flash = Interfaces::MaterialSystem()->FindMaterial(
-			"effects\\flashbang" ,  TEXTURE_GROUP_CLIENT_EFFECTS );
-
-		IMaterial* flashWhite = Interfaces::MaterialSystem()->FindMaterial( "effects\\flashbang_white" ,
-																			TEXTURE_GROUP_CLIENT_EFFECTS );
-
-		if ( flash && flashWhite )
+		if (Settings::Misc::misc_NoFlash && !NoFlashReset)
 		{
-			flash->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW , true );
-			flashWhite->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW , true );
+			flash->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
+			flashWhite->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
 
 			NoFlashReset = true;
 		}
-	}
-	else if ( !Settings::Misc::misc_NoFlash && NoFlashReset )
-	{
-		IMaterial* flash = Interfaces::MaterialSystem()->FindMaterial(
-			"effects\\flashbang" , TEXTURE_GROUP_CLIENT_EFFECTS );
-
-		IMaterial* flashWhite = Interfaces::MaterialSystem()->FindMaterial( "effects\\flashbang_white" ,
-																			TEXTURE_GROUP_CLIENT_EFFECTS );
-
-		if ( flash && flashWhite )
+		else if (!Settings::Misc::misc_NoFlash && NoFlashReset)
 		{
-			flash->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW , false );
-			flashWhite->SetMaterialVarFlag( MATERIAL_VAR_NO_DRAW , false );
+			flash->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
+			flashWhite->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 
 			NoFlashReset = false;
 		}
 	}
 
-	if (Settings::Misc::misc_NoSmoke)
+	if (vistasmokev1_smokegrenade && vistasmokev1_emods && vistasmokev1_emods_impactdust && vistasmokev1_fire)
 	{
-		IMaterial* vistasmokev1_smokegrenade = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_smokegrenade", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_emods = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_emods_impactdust = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods_impactdust", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_fire = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_fire", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		if (vistasmokev1_smokegrenade && vistasmokev1_emods && vistasmokev1_emods_impactdust && vistasmokev1_fire)
+		if (Settings::Misc::misc_NoSmoke && !NoSmoke)
 		{
 			vistasmokev1_smokegrenade->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
 			vistasmokev1_emods->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
@@ -221,18 +180,7 @@ void CMisc::OnDrawModelExecute()
 
 			NoSmoke = true;
 		}
-	}
-	else if (!Settings::Misc::misc_NoSmoke)
-	{
-		IMaterial* vistasmokev1_smokegrenade = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_smokegrenade", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_emods = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_emods_impactdust = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods_impactdust", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		IMaterial* vistasmokev1_fire = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_fire", TEXTURE_GROUP_CLIENT_EFFECTS);
-
-		if (vistasmokev1_smokegrenade && vistasmokev1_emods && vistasmokev1_emods_impactdust && vistasmokev1_fire)
+		else if (!Settings::Misc::misc_NoSmoke && NoSmoke)
 		{
 			vistasmokev1_smokegrenade->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 			vistasmokev1_emods->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
@@ -240,7 +188,6 @@ void CMisc::OnDrawModelExecute()
 			vistasmokev1_fire->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 
 			NoSmoke = false;
-
 		}
 	}
 }
