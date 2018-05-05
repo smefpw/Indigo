@@ -2,10 +2,6 @@
 
 WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans)) No-one but you can be held responsible for your Overwatch, VAC bans.
 
-Notice: You must include protobuf yourself!
-
-Watch this; https://youtu.be/4VumbtVsv3c to learn how to include protobuf
-
 4.3.1.2
 + Recoded Legit AA (should fix issues like crashing on death, grenades not working, etc.)
 + Fixed Protobuf includes
