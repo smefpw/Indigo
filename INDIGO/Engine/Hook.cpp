@@ -19,7 +19,6 @@ namespace Engine
 		CSX::Hook::VTable SurfaceTable;
 		CSX::Hook::VTable EngineTable;
 		CSX::Hook::VTable SteamGameCoordinatorTable;
-
 		IDirect3DDevice9* g_pDevice = nullptr;
 
 		typedef HRESULT(WINAPI* Present_t)(IDirect3DDevice9* pDevice, CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion);
@@ -48,15 +47,16 @@ namespace Engine
 
 		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
 		{
+			if (!pCmd->command_number)
+				return true;
+
 			ClientModeTable.UnHook();
 			QAngle view;
 			Interfaces::Engine()->GetViewAngles(view);
-
-			PDWORD pEBP;
-			__asm mov pEBP, ebp;
-			bool& bSendPacket = *(bool*)(*pEBP - 0x1C);
-
-			if (Interfaces::Engine()->IsConnected() || Interfaces::Engine()->IsInGame())
+			// 2018 style coding btw
+			auto ebp = (uintptr_t*)(uintptr_t(_AddressOfReturnAddress()) - sizeof(void*));
+			bool& bSendPacket = *reinterpret_cast<bool*>( *ebp - 0x1C );
+			if (Interfaces::Engine()->IsConnected() && Interfaces::Engine()->IsInGame())
 			{
 				if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
@@ -64,7 +64,6 @@ namespace Engine
 				if (Settings::Misc::misc_LegitAA)
 					AntiAim().LegitAA(pCmd, bSendPacket);
 			}
-
 			Client::OnCreateMove(pCmd);
 
 			correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
