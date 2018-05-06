@@ -28,7 +28,7 @@ void CMisc::OnRender()
 
 		}
 	}
-}
+} 
 
 void CMisc::OnCreateMove( CUserCmd* pCmd )
 {
