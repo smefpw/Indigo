@@ -787,7 +787,7 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead() && pPlayer->bVisible)
 					{
-						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime); ++t)
+						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime / 1000); ++t)
 						{
 							Vector screenbacktrack[64][25];
 
@@ -808,7 +808,7 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead())
 					{
-						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime); ++t)
+						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime / 1000); ++t)
 						{
 							Vector screenbacktrack[64][25];
 
