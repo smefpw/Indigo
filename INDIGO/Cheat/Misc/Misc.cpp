@@ -35,7 +35,7 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 
 	if ( Settings::Misc::misc_Bhop )
 	{
-		if (local->m_pEntity->GetMoveType() == MOVETYPE_LADDER) return;			
+		if (g_pPlayers->GetLocal()->m_pEntity->GetMoveType() == MOVETYPE_LADDER) return;			
 		
 		if ( pCmd->buttons & IN_JUMP && !( g_pPlayers->GetLocal()->iFlags & FL_ONGROUND ) )
 		{
