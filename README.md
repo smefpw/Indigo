@@ -8,6 +8,8 @@ WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoo
 + Moved Silent Aim fix to aimbot
 + Added toggle for Untrusted features/sv_cheats spoof
 + Cleaned up a ton of code.
++ Fixed bhop on ladder
++ Fixed draw backtrack ticks
 
 Old Change-logs
 
