@@ -787,9 +787,9 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead() && pPlayer->bVisible)
 					{
-						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime / 1000); ++t)
+						for (int t = 0; t < 13; ++t)
 						{
-							Vector screenbacktrack[64][25];
+							Vector screenbacktrack[64][12];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
@@ -808,9 +808,9 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead())
 					{
-						for (int t = 0; t < TIME_TO_TICKS(Settings::Aimbot::aim_Backtracktime / 1000); ++t)
+						for (int t = 0; t < 13; ++t)
 						{
-							Vector screenbacktrack[64][25];
+							Vector screenbacktrack[64][12];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
