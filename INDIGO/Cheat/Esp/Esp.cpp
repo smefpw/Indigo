@@ -300,7 +300,7 @@ void CEsp::HitEvents(IGameEvent* event)
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
 				SDK::PlayerInfo killer_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nUserID));
 				string print;
-				print += "Hit ";
+				print += "[smef's indigo] hit ";
 				print += killed_info.m_szPlayerName;
 				print += " in the ";
 				print += HitgroupToName(event->GetInt("hitgroup"));
