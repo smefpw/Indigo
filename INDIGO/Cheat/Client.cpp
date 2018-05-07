@@ -1236,7 +1236,8 @@ namespace Client
 			ImGui::Combo("##HITSOUND", &Settings::Esp::esp_HitMarkerSound, iHitSound, ARRAYSIZE(iHitSound));
 			ImGui::SameLine();
 			ImGui::Text("Hitmarker Sound");
-			ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
+
+			if (Settings::Esp::esp_HitMarker) ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
 		}
 	}
 	void DrawRadar() // Radar // Dont fucking know why this has configs in it but it does so deal with it
@@ -1429,7 +1430,7 @@ namespace Client
 
 		if (otherpages == 1)
 		{
-			ImGui::Text("All features below can cause Untrusted/SMAC Ban");
+			ImGui::Text("All features below can either cause SMAC or Untrusted bans");
 			ImGui::Separator();
 			ImGui::Spacing();
 			ImGui::Checkbox("Enable Untrusted", &Settings::Untrusted);
