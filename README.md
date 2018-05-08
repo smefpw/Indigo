@@ -10,6 +10,7 @@ WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoo
 + Cleaned up a ton of code.
 + Fixed bhop on ladder
 + Fixed draw backtrack ticks
++ Other small changes
 
 Old Change-logs
 
