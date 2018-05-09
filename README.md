@@ -24,7 +24,7 @@ Old Change-logs
 + Watermark checkbox
 
 4.3.1
- + Config saving updated to C:/Indigo (fix for ManualMap injectors; should work received positive feedback but havent tested)
+ + Config saving updated to C:/Indigo (fix for ManualMap injectors)
  + LegitAA Crash fix (confirmed not working!)
 
 4.3
