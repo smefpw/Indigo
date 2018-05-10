@@ -5,6 +5,7 @@ WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoo
 4.4 (WILL POST TOMORROW 11 MAY)
 + Reworked SKINCHANGER
 + Small Fixes
++ Grenade Prediction (added)
 
 Old Change-logs
 
