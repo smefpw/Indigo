@@ -7,13 +7,12 @@
 #define FOV_BASE_DISTANCE	200
 #define STICKERS_COUNT 5
 
-struct k_weapon_data {
+struct InventoryWeaponData {
 	int itemDefinitionIndex;
 	int paintKit;
 	int rarity;
 	int seed;
 	float wear;
-	char* name = "";
 };
 
 class Sticker_t
@@ -38,19 +37,14 @@ namespace Settings
 		extern bool equipped_medal_override;
 		extern uint32_t equipped_medal;
 	}
-	namespace ProfileChanger {
+	
+	namespace MedalChanger 
+	{
 		extern bool enabled;
-		extern int rank_id;
-		extern int wins;
-		extern int cmd_friendly;
-		extern int cmd_leader;
-		extern int cmd_teaching;
-		extern int level;
-		extern int xp;
-	}
-	namespace InventoryChanger {
-		extern bool enabled;
-		extern std::vector<k_weapon_data> weapons;
+		extern std::vector<uint32_t> medals;
+		extern bool equipped_medal_override;
+		extern uint32_t equipped_medal;
+
 	}
 
 	namespace Aimbot
@@ -282,6 +276,26 @@ namespace Settings
 		extern float hitmarkerAlpha;
 	}
 
+		namespace InvChanger
+	{
+		extern bool Inventory_Changer;
+		extern bool Inventory_Changer_Medal;
+		extern bool Profile_Info;
+		extern int medals[100];
+		extern int Profile_Info_Rank;
+		extern int Profile_Info_Rank_Combo; //Add this for Rank Box
+		extern int MedalOverride;
+		extern bool MedalOverride_enable;
+		extern int Profile_Info_XP;
+		extern int Profile_Info_Win;
+		extern int Profile_Info_Level;
+		extern int Profile_Info_Friendly;
+		extern int Profile_Info_Leader;
+		extern int Profile_Info_Teacher;
+		extern std::vector<InventoryWeaponData> weapons;
+		extern int CustomWeaponCount;
+		extern int MedalsCount;
+	}
 }
 
 #define CHEAT_NAME "smef.cc"
@@ -443,3 +457,11 @@ namespace Settings
 #define CVAR_MISC_FOV_VIEW "misc_FovView"
 #define CVAR_MISC_FOV_MDL_VIEW "misc_FovModelView"
 #define CVAR_MISC_AWPAIM_COLOR "misc_AwpAimColor"
+
+#define CVAR_PROFILE_INFO_RANK_COMBO "Profile_Info_Rank_Combo"
+#define CVAR_PROFILE_INFO_LEVEL "Profile_Info_Level"
+#define CVAR_PROFILE_INFO_XP "Profile_Info_XP"
+#define CVAR_PROFILE_INFO_WIN "Profile_Info_Win"
+#define CVAR_PROFILE_INFO_FRIENDLY "Profile_Info_Friendly"
+#define CVAR_PROFILE_INFO_LEADER "Profile_Info_Leader"
+#define CVAR_PROFILE_INFO_TEACHER "Profile_Info_Teacher"
