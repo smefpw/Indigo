@@ -614,121 +614,39 @@ namespace Client
 
 		if (otherpages == 0)
 		{
-
-			const char* quality_items[] = {
-				"None",
-				"1 - Consumer grade (white)",
-				"2 - Industrial grade (light blue)",
-				"3 - Mil-Spec (darker blue)",
-				"4 - Restricted (purple)",
-				"5 - Classified (pinkish purple)",
-				"6 - Covert (red)",
-				"7 - Exceedingly Rare (gold)",
+			const char* knife_models_items[] =
+			{
+				"Default","Bayonet","Flip","Gut","Karambit" ,"M9 Bayonet",
+				"Huntsman","Falchion","Bowie","Butterfly","Shadow Daggers"
 			};
 
-			const char* gloves_listbox_items[49] = {
-				"None",
-				"Sport Gloves | Superconductor",
-				"Sport Gloves | Pandora's Box",
-				"Sport Gloves | Hedge Maze",
-				"Sport Gloves | Arid",
-				"Sport Gloves | Vice",
-				"Sport Gloves | Omega",
-				"Sport Gloves | Bronze Morph",
-				"Sport Gloves | Amphibious",
-				"Moto Gloves | Eclipse",
-				"Moto Gloves | Spearmint",
-				"Moto Gloves | Boom!",
-				"Moto Gloves | Cool Mint",
-				"Moto Gloves | Polygon",
-				"Moto Gloves | Transport",
-				"Moto Gloves | Turtle",
-				"Moto Gloves | Pow",
-				"Specialist Gloves | Crimson Kimono",
-				"Specialist Gloves | Emerald Web",
-				"Specialist Gloves | Foundation",
-				"Specialist Gloves | Forest DDPAT",
-				"Specialist Gloves | Mogul",
-				"Specialist Gloves | Fade",
-				"Specialist Gloves | Buckshot",
-				"Specialist Gloves | Crimson Web",
-				"Driver Gloves | Lunar Weave",
-				"Driver Gloves | Convoy",
-				"Driver Gloves | Crimson Weave",
-				"Driver Gloves | Diamondback",
-				"Driver Gloves | Racing Green",
-				"Driver Gloves | Overtake",
-				"Driver Gloves | Imperial Plad",
-				"Driver Gloves | King Snake",
-				"Hand Wraps | Leather",
-				"Hand Wraps | Spruce DDPAT",
-				"Hand Wraps | Badlands",
-				"Hand Wraps | Slaughter",
-				"Hand Wraps | Aboreal",
-				"Hand Wraps | Duct Tape",
-				"Hand Wraps | Overprint",
-				"Hand Wraps | Cobalt Skulls",
-				"Bloodhound Gloves | Charred",
-				"Bloodhound Gloves | Snakebite",
-				"Bloodhound Gloves | Bronzed",
-				"Bloodhound Gloves | Guerrilla",
-				"Hydra Gloves | Case Hardened",
-				"Hydra Gloves | Rattler",
-				"Hydra Gloves | Mangrove",
-				"Hydra Gloves | Emerald",
+			const char* quality_items[] =
+			{
+				"Use PaintKit Default",
+				"Consumer Grade (white)",
+				"Industrial Grade (light blue)",
+				"Mil-Spec (darker blue)",
+				"Restricted (purple)",
+				"Classified (pinkish purple)",
+				"Covert (red)",
+				"Exceedingly Rare (gold)",
+			};
+			//[enc_string_enable /]
+			const char* GlovesType[] = {
+				"Default",
+				"Bloodhound",
+				"Default (Terrorists)",
+				"Default (Counter-Terrorists)",
+				"Sporty",
+				"Slick",
+				"Handwrap",
+				"Motorcycle",
+				"Specialist",
+				"Hydra"
 			};
 
 			ImGui::Separator();
-
-			ImGui::Text("Skin Changer");
-
-			ImGui::Separator();
-
-			ImGui::Text("Current Weapon: %s", pWeaponData[iWeaponID]);
-
-			ImGui::PushItemWidth(362.f);
-
-			static int iOldWeaponID = -1;
-
-			ImGui::Combo("Weapon##WeaponSelect", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
-
-			iWeaponSelectIndex = pWeaponItemIndexData[iWeaponID];
-
-			if (iOldWeaponID != iWeaponID)
-				iWeaponSelectSkinIndex = GetWeaponSkinIndexFromPaintKit(g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit);
-
-			iOldWeaponID = iWeaponID;
-
-			string WeaponSkin = pWeaponData[iWeaponID];
-			WeaponSkin += " Skin";
-
-			ImGui::ComboBoxArray(WeaponSkin.c_str(), &iWeaponSelectSkinIndex, WeaponSkins[iWeaponID].SkinNames);
-
-			ImGui::Combo("Weapon Quality", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-			ImGui::SliderFloat("Weapon Wear", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].flFallbackWear, 0.001f, 1.f);
-			ImGui::InputInt("Weapon StatTrak", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].nFallbackStatTrak, 1, 100, ImGuiInputTextFlags_CharsDecimal);
-
-			ImGui::Separator();
-
-			ImGui::Combo("Gloves Skin", &Settings::Skin::gloves_skin, gloves_listbox_items, IM_ARRAYSIZE(gloves_listbox_items));
-
-			ImGui::Separator();
-
-			ImGui::PopItemWidth();
-
-			const char* knife_models_items[] = {
-				"Default", "Bayonet", "Flip", "Gut", "Karambit" , "M9 Bayonet",
-				"Huntsman", "Falchion", "Bowie", "Butterfly", "Shadow Daggers"
-			};
-
 			ImGui::Text("Knife Changer");
-			ImGui::Separator();
-
-			ImGui::PushItemWidth(362.f);
-			ImGui::Combo("Knife CT Model", &Settings::Skin::knf_ct_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
-			ImGui::PushItemWidth(362.f);
-			ImGui::Combo("Knife T Model", &Settings::Skin::knf_tt_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
-
 			ImGui::Separator();
 
 			static int iSelectKnifeCTSkinIndex = -1;
@@ -754,35 +672,80 @@ namespace Client
 
 			KnifeCTModel += " Skin##KCT";
 			KnifeTTModel += " Skin##KTT";
+
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife CT Model", &Settings::Skin::knf_ct_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
+			ImGui::PushItemWidth(362.f);
+			ImGui::ComboBoxArray("Knife CT Skin", &iSelectKnifeCTSkinIndex, KnifeSkins[iKnifeCTModelIndex].SkinNames);
 			ImGui::PushItemWidth(362.f);
 			ImGui::SliderFloat("Knife CT Wear", &g_SkinChangerCfg[WEAPON_KNIFE].flFallbackWear, 0.001f, 1.f);
-			ImGui::PushItemWidth(362.f);
-			ImGui::Combo("Knife CT Quality", &g_SkinChangerCfg[WEAPON_KNIFE].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-			ImGui::ComboBoxArray(KnifeCTModel.c_str(), &iSelectKnifeCTSkinIndex, KnifeSkins[iKnifeCTModelIndex].SkinNames);
+			ImGui::Spacing();
 
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Knife T Model", &Settings::Skin::knf_tt_model, knife_models_items, IM_ARRAYSIZE(knife_models_items));
+			ImGui::PushItemWidth(362.f);
+			ImGui::ComboBoxArray("Knife T Skin", &iSelectKnifeTTSkinIndex, KnifeSkins[iKnifeTTModelIndex].SkinNames);
+			ImGui::PushItemWidth(362.f);
+			ImGui::SliderFloat("Knife T Wear", &g_SkinChangerCfg[WEAPON_KNIFE_T].flFallbackWear, 0.001f, 1.f);
+
+			ImGui::Separator();
+			ImGui::Text("Skin Changer");
+			ImGui::Separator();
+
+			static int iOldWeaponID = -1;
+
+			ImGui::Combo("Weapon##WeaponSelect", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
+
+			iWeaponSelectIndex = pWeaponItemIndexData[iWeaponID];
+
+			if (iOldWeaponID != iWeaponID)
+				iWeaponSelectSkinIndex = GetWeaponSkinIndexFromPaintKit(g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit);
+
+			iOldWeaponID = iWeaponID;
+
+			string WeaponSkin = pWeaponData[iWeaponID];
+			WeaponSkin += " Skin";
+			static int weaponskin = 0;
+			ImGui::PushItemWidth(362.f);
+			ImGui::ComboBoxArray(WeaponSkin.c_str(), &iWeaponSelectSkinIndex, WeaponSkins[iWeaponID].SkinNames);
+			ImGui::PushItemWidth(362.f);
+			ImGui::Combo("Weapon Quality", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
+			ImGui::PushItemWidth(362.f);
+			ImGui::SliderFloat("Weapon Wear", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].flFallbackWear, 0.001f, 1.f);
+			ImGui::PushItemWidth(362.f);
+			ImGui::InputInt("Weapon StatTrak", &g_SkinChangerCfg[pWeaponItemIndexData[iWeaponID]].nFallbackStatTrak, 1, 100, ImGuiInputTextFlags_CharsDecimal);
+
+			ImGui::Separator();
+			ImGui::Text("Glove Changer");
 			ImGui::Separator();
 
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderFloat("Knife T Wear", &g_SkinChangerCfg[WEAPON_KNIFE_T].flFallbackWear, 0.001f, 1.f);
+			ImGui::Combo("Gloves Type", &Settings::Skin::gloves_model, GlovesType, IM_ARRAYSIZE(GlovesType));
 			ImGui::PushItemWidth(362.f);
-			ImGui::Combo("Knife T Quality", &g_SkinChangerCfg[WEAPON_KNIFE_T].iEntityQuality, quality_items, IM_ARRAYSIZE(quality_items));
-			ImGui::ComboBoxArray(KnifeTTModel.c_str(), &iSelectKnifeTTSkinIndex, KnifeSkins[iKnifeTTModelIndex].SkinNames);
+			ImGui::ComboBoxArray("Gloves Skin", &Settings::Skin::gloves_skin, GloveSkin[Settings::Skin::gloves_model].Names);
+			ImGui::Separator();
+
 
 			if (ImGui::Button("Apply##Skin"))
 			{
-				if (iWeaponSelectSkinIndex >= 0)
+				if (iWeaponSelectSkinIndex >= 0) {
 					g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit = WeaponSkins[iWeaponID].SkinPaintKit[iWeaponSelectSkinIndex];
+				}
 
-				if (iSelectKnifeCTSkinIndex >= 0 && Settings::Skin::knf_ct_model > 0)
+				if (iSelectKnifeCTSkinIndex >= 0 && Settings::Skin::knf_ct_model > 0) {
 					Settings::Skin::knf_ct_skin = KnifeSkins[iKnifeCTModelIndex].SkinPaintKit[iSelectKnifeCTSkinIndex];
-				else {
+				}
+				else
+				{
 					Settings::Skin::knf_ct_skin = 0;
 					iSelectKnifeCTSkinIndex = -1;
 				}
 
-				if (iSelectKnifeTTSkinIndex >= 0 && Settings::Skin::knf_tt_model > 0)
+				if (iSelectKnifeTTSkinIndex >= 0 && Settings::Skin::knf_tt_model > 0) {
 					Settings::Skin::knf_tt_skin = KnifeSkins[iKnifeTTModelIndex].SkinPaintKit[iSelectKnifeTTSkinIndex];
-				else {
+				}
+				else
+				{
 					Settings::Skin::knf_tt_skin = 0;
 					iSelectKnifeTTSkinIndex = -1;
 				}
@@ -818,168 +781,280 @@ namespace Client
 
 		if (otherpages == 1)
 		{
-			ImGui::Columns(2, nullptr, false);
-			ImGui::Checkbox("Enable Inventory Changer", &Settings::InventoryChanger::enabled);
-			static int itemDefinitionIndex = 0;
-			static int paintKit = 0;
-			static int rarity = 0;
-			static int seed = 0;
-			static float wear = 0.f;
-
-			static const char* weapons[] = {
-				"None",
-				"1 - Desert Eagle",
-				"2 - Dual Berettas",
-				"3 - Five SeveN",
-				"4 - Glock",
-				"",
-				"",
-				"7 - AK47",
-				"8 - AUG",
-				"9 - AWP",
-				"10 - FAMAS",
-				"11 - G3SG1",
-				"",
-				"13 - Galil AR",
-				"14 - M249",
-				"",
-				"16 - M4A4",
-				"17 - MAC10",
-				"",
-				"19 - P90",
-				"",
-				"",
-				"",
-				"",
-				"24 - UMP45",
-				"25 - XM1014",
-				"26 - PPBizon",
-				"27 - MAG7",
-				"28 - Negev",
-				"29 - SawedOff",
-				"30 - Tec9",
-				" ",
-				"32 - P2000",
-				"33 - MP7",
-				"34 - MP9",
-				"35 - Nova",
-				"36 - P250",
-				"38 - SCAR20",
-				"39 - SG553",
-				"40 - SCOUT",
-			};
-			ImGui::Combo("Weapon", &itemDefinitionIndex, weapons, IM_ARRAYSIZE(weapons));
-//			ImGui::InputInt("Weapon ID", &itemDefinitionIndex);
-
-		    ImGui::InputInt("Paint Kit", &paintKit);
-			static const char* rare[] = 
-			{
-				"None",
-				"1 - Consumer grade (white)",
-				"2 - Industrial grade (light blue)",
-				"3 - Mil-Spec (darker blue)",
-			    "4 - Restricted (purple)",
-				"5 - Classified (pinkish purple)",
-				"6 - Covert (red)",
-				"7 - Exceedingly Rare (gold)",
-			};
-			ImGui::Combo("Rarity", &rarity, rare, IM_ARRAYSIZE(rare));
-			//ImGui::InputInt("Rarity", &rarity);
-			ImGui::InputInt("Seed", &seed);
-			ImGui::SliderFloat("Wear", &wear, FLT_MIN, 1.f, "%.10f", 5);
-			if (ImGui::Button("Add"))
-				Settings::InventoryChanger::weapons.insert(Settings::InventoryChanger::weapons.end(), { itemDefinitionIndex , paintKit , rarity , seed, wear });
+			ImGui::Text("Other Changers");
+			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
+			if (Settings::InvChanger::Inventory_Changer) {
+				ImGui::SameLine();
+				ImGui::Checkbox("Medal Changer", &Settings::InvChanger::Inventory_Changer_Medal);
+			}
 			ImGui::SameLine();
-			if (ImGui::Button("Apply##Skin"))
-				SendClientHello();
-			ImGui::NextColumn();
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
-			ImGui::ListBoxHeader("Skins");
-			int weapon_index = 0;
-			for (auto weapon : Settings::InventoryChanger::weapons) {
-				if (ImGui::Selectable(std::string(std::to_string(weapon.itemDefinitionIndex) + " " + std::to_string(weapon.paintKit)).c_str())) {
-					Settings::InventoryChanger::weapons.erase(Settings::InventoryChanger::weapons.begin() + weapon_index);
+			if (Settings::InvChanger::Inventory_Changer) {
+				ImGui::Text("Skins");
+				ImGui::Separator();
+				ImGui::Spacing();
+				ImGui::Columns(2, nullptr, false);
+				static int itemidtmp = 0;
+				static int itemDefinitionIndex = 0;
+				static int paintKit = 0;
+				static int paintkit_temp_skin = 0; // prevents crashing
+				static int paintkit_temp_knife = 0;
+				static int paintkit_temp_gloves = 0;
+				static int rarity = 0;
+				static int seed = 0;
+				static float wear = 0.f;
+				static int raritypick = 0;
+				const char* raritynames[] = { "Default (gray)", "Consumer Grade (white)", "Industrial Grade (light blue)", "Mil-Spec (darker blue)", "Restricted (purple)", "Classified (pinkish purple)", "Covert (red)", "Exceedingly Rare (gold)" };
+				const char* itemnames[] = { "Desert Eagle", "Dual Berettas", "Five-Seven", "Glock-18", "AK-47", "AUG", "AWP", "FAMAS", "G3SG1", "Galil AR", "M249", "M4A4",
+					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
+					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
+					"Shadow Daggers", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
+				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
+				switch (itemidtmp) {
+				case 0:
+					itemDefinitionIndex = WEAPON_DEAGLE;
+					break;
+				case 1:
+					itemDefinitionIndex = WEAPON_ELITE;
+					break;
+				case 2:
+					itemDefinitionIndex = WEAPON_FIVESEVEN;
+					break;
+				case 3:
+					itemDefinitionIndex = WEAPON_GLOCK;
+					break;
+				case 4:
+					itemDefinitionIndex = WEAPON_AK47;
+					break;
+				case 5:
+					itemDefinitionIndex = WEAPON_AUG;
+					break;
+				case 6:
+					itemDefinitionIndex = WEAPON_AWP;
+					break;
+				case 7:
+					itemDefinitionIndex = WEAPON_FAMAS;
+					break;
+				case 8:
+					itemDefinitionIndex = WEAPON_G3SG1;
+					break;
+				case 9:
+					itemDefinitionIndex = WEAPON_GALILAR;
+					break;
+				case 10:
+					itemDefinitionIndex = WEAPON_M249;
+					break;
+				case 11:
+					itemDefinitionIndex = WEAPON_M4A1;
+					break;
+				case 12:
+					itemDefinitionIndex = WEAPON_MAC10;
+					break;
+				case 13:
+					itemDefinitionIndex = WEAPON_P90;
+					break;
+				case 14:
+					itemDefinitionIndex = WEAPON_UMP45;
+					break;
+				case 15:
+					itemDefinitionIndex = WEAPON_XM1014;
+					break;
+				case 16:
+					itemDefinitionIndex = WEAPON_BIZON;
+					break;
+				case 17:
+					itemDefinitionIndex = WEAPON_MAG7;
+					break;
+				case 18:
+					itemDefinitionIndex = WEAPON_NEGEV;
+					break;
+				case 19:
+					itemDefinitionIndex = WEAPON_SAWEDOFF;
+					break;
+				case 20:
+					itemDefinitionIndex = WEAPON_TEC9;
+					break;
+				case 21:
+					itemDefinitionIndex = WEAPON_HKP2000;
+					break;
+				case 22:
+					itemDefinitionIndex = WEAPON_MP7;
+					break;
+				case 23:
+					itemDefinitionIndex = WEAPON_MP9;
+					break;
+				case 24:
+					itemDefinitionIndex = WEAPON_NOVA;
+					break;
+				case 25:
+					itemDefinitionIndex = WEAPON_P250;
+					break;
+				case 26:
+					itemDefinitionIndex = WEAPON_SCAR20;
+					break;
+				case 27:
+					itemDefinitionIndex = WEAPON_SG553;
+					break;
+				case 28:
+					itemDefinitionIndex = WEAPON_SSG08;
+					break;
+				case 29:
+					itemDefinitionIndex = WEAPON_M4A1_SILENCER;
+					break;
+				case 30:
+					itemDefinitionIndex = WEAPON_USP_SILENCER;
+					break;
+				case 31:
+					itemDefinitionIndex = WEAPON_CZ75A;
+					break;
+				case 32:
+					itemDefinitionIndex = WEAPON_REVOLVER;
+					break;
+				case 33:
+					itemDefinitionIndex = WEAPON_KNIFE_BAYONET;
+					break;
+				case 34:
+					itemDefinitionIndex = WEAPON_KNIFE_FLIP;
+					break;
+				case 35:
+					itemDefinitionIndex = WEAPON_KNIFE_GUT;
+					break;
+				case 36:
+					itemDefinitionIndex = WEAPON_KNIFE_KARAMBIT;
+					break;
+				case 37:
+					itemDefinitionIndex = WEAPON_KNIFE_M9_BAYONET;
+					break;
+				case 38:
+					itemDefinitionIndex = WEAPON_KNIFE_TACTICAL;
+					break;
+				case 39:
+					itemDefinitionIndex = WEAPON_KNIFE_FALCHION;
+					break;
+				case 40:
+					itemDefinitionIndex = WEAPON_KNIFE_SURVIVAL_BOWIE;
+					break;
+				case 41:
+					itemDefinitionIndex = WEAPON_KNIFE_BUTTERFLY;
+					break;
+				case 42:
+					itemDefinitionIndex = WEAPON_KNIFE_PUSH;
+					break;
+				case 43:
+					itemDefinitionIndex = 5030;
+					break;
+				case 44:
+					itemDefinitionIndex = 5031;
+					break;
+				case 45:
+					itemDefinitionIndex = 5032;
+					break;
+				case 46:
+					itemDefinitionIndex = 5033;
+					break;
+				case 47:
+					itemDefinitionIndex = 5034;
+					break;
+				case 48:
+					itemDefinitionIndex = 5035;
+					break;
 				}
-				weapon_index++;
-			}
-			ImGui::ListBoxFooter();
-			ImGui::PopStyleColor();
-			ImGui::Columns(1, nullptr, false);
-		}
-
-		if (otherpages == 2)
-		{
-			ImGui::Columns(2, nullptr, false);
-			ImGui::Checkbox("Enable Medal Changer", &Settings::MedalChanger::enabled);
-			static int medal_id = 0;
-			ImGui::InputInt("Medal ID", &medal_id);
-			if (ImGui::Button("Add") && medal_id != 0) {
-				Settings::MedalChanger::medals.insert(Settings::MedalChanger::medals.end(), medal_id);
-				medal_id = 0;
-			}
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
-			ImGui::ListBoxHeader("Medal List");
-			for (int m = 0; m < Settings::MedalChanger::medals.size(); m++) {
-				if (ImGui::Selectable(std::to_string(Settings::MedalChanger::medals[m]).c_str())) {
-					if (Settings::MedalChanger::equipped_medal == Settings::MedalChanger::medals[m]) {
-						Settings::MedalChanger::equipped_medal = 0;
-						Settings::MedalChanger::equipped_medal_override = false;
-					}
-					Settings::MedalChanger::medals.erase(Settings::MedalChanger::medals.begin() + m);
+				if (itemDefinitionIndex < 500) {
+					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, WeaponSkins[itemDefinitionIndex].SkinNames);
+					paintKit = WeaponSkins[itemDefinitionIndex].SkinPaintKit[paintkit_temp_skin];
 				}
-			}
-			ImGui::ListBoxFooter();
-			ImGui::PopStyleColor();
-			ImGui::Checkbox("Equipped Medal Override", &Settings::MedalChanger::equipped_medal_override);
-			if (Settings::MedalChanger::equipped_medal_override) {
-				static int equipped_medal = 0;
+				else if (itemDefinitionIndex > 500 && itemDefinitionIndex < 5000) {
+					ImGui::ComboBoxArray("Skin", &paintkit_temp_knife, KnifeSkins[0].SkinNames);
+					paintKit = KnifeSkins[0].SkinPaintKit[paintkit_temp_knife];
+				}
+				else {
+					ImGui::ComboBoxArray("Skin", &paintkit_temp_gloves, GloveSkin[0].Names);
+					paintKit = GloveSkin[0].PaintKit[paintkit_temp_gloves];
+				}
+				ImGui::Combo(("Rarity"), &rarity, raritynames, ARRAYSIZE(raritynames));
+				//ImGui::InputInt("Rarity", &rarity);
+				ImGui::InputInt("Seed", &seed);
+				ImGui::SliderFloat("Wear", &wear, FLT_MIN, 1.f, "%.10f", 5);
+
+				if (ImGui::Button("Add")) {
+					Settings::InvChanger::weapons.insert(Settings::InvChanger::weapons.end(), { itemDefinitionIndex , paintKit , rarity , seed, wear });
+					Settings::InvChanger::CustomWeaponCount = Settings::InvChanger::weapons.size();
+				} ImGui::SameLine();
+
+				if (ImGui::Button("Apply##Skin")) {
+					SendClientHello();
+				}
+
+				ImGui::NextColumn();
+
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
-				if (ImGui::Combo("Equipped Medal", &equipped_medal, [](void* data, int idx, const char** out_text)
-				{
-					*out_text = std::to_string(Settings::MedalChanger::medals[idx]).c_str();
-					return true;
-				}, nullptr, Settings::MedalChanger::medals.size(), 5)) {
-					Settings::MedalChanger::equipped_medal = Settings::MedalChanger::medals[equipped_medal];
+				//ImGui::ListBoxHeader("Skins");
+				int weapon_index = 0;
+				for (auto weapon : Settings::InvChanger::weapons) {
+					if (ImGui::Selectable(std::string(std::to_string(weapon.itemDefinitionIndex) + " " + std::to_string(weapon.paintKit)).c_str())) {
+						Settings::InvChanger::weapons.erase(Settings::InvChanger::weapons.begin() + weapon_index);
+						Settings::InvChanger::CustomWeaponCount = Settings::InvChanger::weapons.size();
+					}
+					weapon_index++;
 				}
-				ImGui::PopStyleColor();
+				ImGui::ListBoxFooter();
+				ImGui::Columns(1, nullptr, false);
 			}
-			if (ImGui::Button("Apply##Medals"))
-				SendClientHello();
-			ImGui::NextColumn();
-			ImGui::Checkbox("Enable Profile Changer", &Settings::ProfileChanger::enabled);
-			static const char* ranks[] = {
-				"Unranked",
-				"Silver I",
-				"Silver II",
-				"Silver III",
-				"Silver IV",
-				"Silver Elite",
-				"Silver Elite Master",
-				"Gold Nova I",
-				"Gold Nova II",
-				"Gold Nova III",
-				"Gold Nova Master",
-				"Master Guardian I",
-				"Master Guardian II",
-				"Master Guardian Elite",
-				"Distinguished Master Guardian",
-				"Legendary Eagle",
-				"Legendary Eagle Master",
-				"Supreme Master First Class",
-				"The Global Elite"
-			};
-			ImGui::Combo("Rank", &Settings::ProfileChanger::rank_id, ranks, IM_ARRAYSIZE(ranks));
-			ImGui::SliderInt("Level", &Settings::ProfileChanger::level, 0, 40);
-			ImGui::SliderInt("XP", &Settings::ProfileChanger::xp, 0, 5000);
-			ImGui::InputInt("Wins", &Settings::ProfileChanger::wins);
-			ImGui::InputInt("Friendly", &Settings::ProfileChanger::cmd_friendly);
-			ImGui::InputInt("Teaching", &Settings::ProfileChanger::cmd_teaching);
-			ImGui::InputInt("Leader", &Settings::ProfileChanger::cmd_leader);
-			if (ImGui::Button("Apply##Profile"))
-				SendMMHello();
 
-			ImGui::Columns(1, nullptr, false);
+			if (otherpages == 2)
+			{
+				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
+				//ImGui::Text("Profile Changer");
+				const char* MMRank[] = {
+					//"Unknown",
+					"Silver I",
+					"Silver II",
+					"Silver III",
+					"Silver IV",
+					"Silver Elite",
+					"Silver Elite Master",
+
+					"Gold Nova I",
+					"Gold Nova II",
+					"Gold Nova III",
+					"Gold Nova Master",
+					"Master Guardian I",
+					"Master Guardian II",
+
+					"Master Guardian Elite",
+					"Distinguished Master Guardian",
+					"Legendary Eagle",
+					"Legendary Eagle Master",
+					"Supreme Master First Class",
+					"Global Elite" };
+
+				ImGui::Combo(("Rank"), &Settings::InvChanger::Profile_Info_Rank_Combo, MMRank, ARRAYSIZE(MMRank));
+				//if (Settings::InvChanger::Profile_Info_Rank_Combo > 0)
+				//{
+				Settings::InvChanger::Profile_Info_Rank = Settings::InvChanger::Profile_Info_Rank_Combo + 1;
+				//}
+				//else
+				//{
+				//	Settings::InvChanger::Profile_Info_Rank = 0;
+				//}
+				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
+				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
+				ImGui::InputInt("Win", &Settings::InvChanger::Profile_Info_Win);
+				ImGui::Spacing();
+				ImGui::Text("Commends");
+				ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
+				ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
+				ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
+				ImGui::Spacing();
+				if (ImGui::Button("Apply Changes"))
+				{
+					SendMMHello();
+				}
+				ImGui::SameLine(SpaceLineOne);
+				if (ImGui::Button("Refresh Changes"))
+				{
+					SendClientHello();
+				}
+			}
 		}
 	}
 
@@ -1106,7 +1181,7 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("Ammo", &Settings::Esp::esp_Ammo);
 			ImGui::SameLine(SpaceLineThr);
-			ImGui::Checkbox("Time", &Settings::Esp::esp_Time);
+			ImGui::Checkbox("Grenade Prediction (CRASH WITH SKINCHANGER)", &Settings::Esp::esp_GrenadePrediction);
 
 			ImGui::Checkbox("Distance", &Settings::Esp::esp_Distance);
 			ImGui::SameLine(SpaceLineOne);
@@ -1122,7 +1197,11 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("Dynamic Lights", &Settings::Esp::esp_Dlightz);
 			ImGui::SameLine(SpaceLineThr);
-			ImGui::Checkbox("Watermark", &Settings::Esp::esp_Watermark);
+			ImGui::Checkbox("Watermarks", &Settings::Esp::esp_Watermark);
+			 if (&Settings::Esp::esp_Watermark)
+			 {
+				 Settings::Esp::esp_Time == 0;
+			 }
 
 			ImGui::Spacing();
 			ImGui::Separator();
@@ -1433,7 +1512,7 @@ namespace Client
 			ImGui::Text("All features below can either cause SMAC or Untrusted bans");
 			ImGui::Separator();
 			ImGui::Spacing();
-			ImGui::Checkbox("Enable Untrusted", &Settings::Untrusted);
+			ImGui::Checkbox("Enable Untrusted Features", &Settings::Untrusted);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("sv_cheats 1/smac ban");
 			if (Settings::Untrusted)
