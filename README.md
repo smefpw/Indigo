@@ -5,10 +5,6 @@ WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoo
 4.4
 + Reworked SKINCHANGER
 + Small Fixes
-
-Old Change-logs
-
-4.3.1.2
 + Recoded Legit AA (should fix issues like crashing on death, grenades not working, etc.)
 + Fixed Protobuf includes
 + Moved Silent Aim fix to aimbot
@@ -17,6 +13,8 @@ Old Change-logs
 + Fixed bhop on ladder
 + Fixed draw backtrack ticks
 + Other small changes
+
+Old Change-logs
 
 4.3.1.1
 + Fixed combo box on Client.cpp (pull-request)
