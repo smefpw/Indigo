@@ -1,42 +1,43 @@
 #include "Skin.h"
-
-unordered_map<int , EconomyItemCfg> g_SkinChangerCfg;
-unordered_map<int , const char*> g_ViewModelCfg;
-unordered_map<const char* , const char*> g_KillIconCfg;
+#include <algorithm>
+#include <functional>
+unordered_map<int, EconomyItemCfg> g_SkinChangerCfg;
+unordered_map<int, const char*> g_ViewModelCfg;
+unordered_map<const char*, const char*> g_KillIconCfg;
 
 char* pWeaponData[33] =
 {
-	// охярнкерш - 0 - 9
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - 0 - 9
 	WEAPON_DEAGLE_STR,WEAPON_ELITE_STR,WEAPON_FIVESEVEN_STR,
 	WEAPON_GLOCK_STR,WEAPON_HKP2000_STR,WEAPON_P250_STR,
 	WEAPON_USP_S_STR,WEAPON_CZ75A_STR,WEAPON_REVOLVER_STR,
 	WEAPON_TEC9_STR,
-	// юбрнлюрш - 10 - 30
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - 10 - 30
 	WEAPON_AK47_STR,WEAPON_AUG_STR,WEAPON_FAMAS_STR,WEAPON_GALILAR_STR,
 	WEAPON_M249_STR,WEAPON_M4A1_STR,WEAPON_M4A1_S_STR,WEAPON_MAC10_STR,
 	WEAPON_P90_STR,WEAPON_UMP45_STR,WEAPON_XM1014_STR,WEAPON_BIZON_STR,
 	WEAPON_MAG7_STR,WEAPON_NEGEV_STR,WEAPON_SAWEDOFF_STR,
 	WEAPON_MP7_STR,WEAPON_MP9_STR,WEAPON_NOVA_STR,WEAPON_SG553_STR,
 	WEAPON_SCAR20_STR,WEAPON_G3SG1_STR,
-	// ямюиоепйх  - 31 - 32
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫  - 31 - 32
 	WEAPON_AWP_STR,WEAPON_SSG08_STR
 };
 
 int pWeaponItemIndexData[33] =
 {
-	// охярнкерш - 0 - 9
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - 0 - 9
 	WEAPON_DEAGLE,WEAPON_ELITE,WEAPON_FIVESEVEN,
 	WEAPON_GLOCK,WEAPON_HKP2000,WEAPON_P250,
 	WEAPON_USP_SILENCER,WEAPON_CZ75A,WEAPON_REVOLVER,
 	WEAPON_TEC9,
-	// юбрнлюрш - 10 - 30
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - 10 - 30
 	WEAPON_AK47,WEAPON_AUG,WEAPON_FAMAS,WEAPON_GALILAR,
 	WEAPON_M249,WEAPON_M4A1,WEAPON_M4A1_SILENCER,WEAPON_MAC10,
 	WEAPON_P90,WEAPON_UMP45,WEAPON_XM1014,WEAPON_BIZON,
 	WEAPON_MAG7,WEAPON_NEGEV,WEAPON_SAWEDOFF,
 	WEAPON_MP7,WEAPON_MP9,WEAPON_NOVA,WEAPON_SG553,
 	WEAPON_SCAR20,WEAPON_G3SG1,
-	// ямюиоепйх  - 31 - 32
+	// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫  - 31 - 32
 	WEAPON_AWP,WEAPON_SSG08
 };
 
@@ -58,97 +59,46 @@ const char* hydra = "models / weapons / v_models / arms / glove_bloodhound / v_g
 
 WeaponSkins_s WeaponSkins[33];
 KnifeSkins_s KnifeSkins[10];
-
-GlovesSkins_s GlovesSkin_Array[49] =
-{
-	{ 5030,10018,sporty },
-{ 5030,10037,sporty },
-{ 5030,10038,sporty },
-{ 5030,10019,sporty },
-{ 5030,10048,sporty },
-{ 5030,10047,sporty },
-{ 5030,10046,sporty },
-{ 5030,10045,sporty },
-{ 5033,10024,motorcycle },
-{ 5033,10026,motorcycle },
-{ 5033,10027,motorcycle },
-{ 5033,10028,motorcycle },
-{ 5033,10052,motorcycle },
-{ 5033,10051,motorcycle },
-{ 5033,10050,motorcycle },
-{ 5033,10049,motorcycle },
-{ 5034,10033,specialist },
-{ 5034,10034,specialist },
-{ 5034,10035,specialist },
-{ 5034,10030,specialist },
-{ 5034,10064,specialist },
-{ 5034,10063,specialist },
-{ 5034,10062,specialist },
-{ 5034,10061,specialist },
-{ 5031,10013,slick },
-{ 5031,10015,slick },
-{ 5031,10016,slick },
-{ 5031,10040,slick },
-{ 5031,10044,slick },
-{ 5031,10043,slick },
-{ 5031,10042,slick },
-{ 5031,10041,slick },
-{ 5032,10009,handwrap },
-{ 5032,10010,handwrap },
-{ 5032,10036,handwrap },
-{ 5032,10021,handwrap },
-{ 5032,10056,handwrap },
-{ 5032,10055,handwrap },
-{ 5032,10054,handwrap },
-{ 5032,10053,handwrap },
-{ 5027,10006,bloodhound },
-{ 5027,10007,bloodhound },
-{ 5027,10008,bloodhound },
-{ 5027,10039,bloodhound },
-{ 5035,10060,hydra },
-{ 5035,10059,hydra },
-{ 5035,10058,hydra },
-{ 5035,10057,hydra },
-};
+Gloves_s GloveSkin[10];
 //[junk_enable /]
 //[enc_string_enable /]
 RecvVarProxyFn fnSequenceProxyFn = NULL;
 
 using namespace Client;
 
-int GetWeaponSkinIndexFromPaintKit( int iPaintKit )
+int GetWeaponSkinIndexFromPaintKit(int iPaintKit)
 {
-	for ( size_t iSkinID = 0; iSkinID < WeaponSkins[iWeaponID].SkinPaintKit.size(); iSkinID++ )
+	for (size_t iSkinID = 0; iSkinID < WeaponSkins[iWeaponID].SkinPaintKit.size(); iSkinID++)
 	{
-		if ( WeaponSkins[iWeaponID].SkinPaintKit[iSkinID] == iPaintKit )
+		if (WeaponSkins[iWeaponID].SkinPaintKit[iSkinID] == iPaintKit)
 			return iSkinID;
 	}
 
 	return 0;
 }
 
-int GetKnifeSkinIndexFromPaintKit( int iPaintKit , bool tt )
+int GetKnifeSkinIndexFromPaintKit(int iPaintKit, bool tt)
 {
-	int iKnifeModelID = ( tt ? Settings::Skin::knf_tt_model - 1 : Settings::Skin::knf_ct_model - 1 );
+	int iKnifeModelID = (tt ? Settings::Skin::knf_tt_model - 1 : Settings::Skin::knf_ct_model - 1);
 
-	for ( size_t iSkinID = 0; iSkinID < KnifeSkins[iKnifeModelID].SkinPaintKit.size(); iSkinID++ )
+	for (size_t iSkinID = 0; iSkinID < KnifeSkins[iKnifeModelID].SkinPaintKit.size(); iSkinID++)
 	{
-		if ( KnifeSkins[iKnifeModelID].SkinPaintKit[iSkinID] == iPaintKit )
+		if (KnifeSkins[iKnifeModelID].SkinPaintKit[iSkinID] == iPaintKit)
 			return iSkinID;
 	}
 
 	return 0;
 }
-void CSkin::OnEvents( IGameEvent* pEvent )
+void CSkin::OnEvents(IGameEvent* pEvent)
 {
 	const char* szEventName = pEvent->GetName();
 
-	if ( !strcmp( szEventName , "player_death" ) )
-		ApplyCustomKillIcon( pEvent );
+	if (!strcmp(szEventName, "player_death"))
+		ApplyCustomKillIcon(pEvent);
 
-	if ( !strcmp( szEventName , "game_newmap" ) )
+	if (!strcmp(szEventName, "game_newmap"))
 	{
-		if ( g_ViewModelCfg.size() >= 1 )
+		if (g_ViewModelCfg.size() >= 1)
 			g_ViewModelCfg.clear();
 
 		SetSkinConfig();
@@ -166,7 +116,7 @@ void CSkin::SetSkinConfig()
 		WEAPON_KNIFE_SURVIVAL_BOWIE,WEAPON_KNIFE_BUTTERFLY,WEAPON_KNIFE_PUSH
 	};
 
-	if ( Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10 )
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_ct_model - 1];
 	}
@@ -174,8 +124,8 @@ void CSkin::SetSkinConfig()
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE].iItemDefinitionIndex = WEAPON_KNIFE;
 	}
-	
-	if ( Settings::Skin::knf_ct_skin)
+
+	if (Settings::Skin::knf_ct_skin)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE].nFallbackPaintKit = Settings::Skin::knf_ct_skin;
 	}
@@ -183,8 +133,8 @@ void CSkin::SetSkinConfig()
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE].nFallbackPaintKit = 0;
 	}
-	
-	if ( Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10 )
+
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE_T].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_tt_model - 1];
 	}
@@ -192,8 +142,8 @@ void CSkin::SetSkinConfig()
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE_T].iItemDefinitionIndex = WEAPON_KNIFE_T;
 	}
-	
-	if ( Settings::Skin::knf_tt_skin)
+
+	if (Settings::Skin::knf_tt_skin)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE_T].nFallbackPaintKit = Settings::Skin::knf_tt_skin;
 	}
@@ -226,10 +176,10 @@ void CSkin::SetModelConfig()
 		pszKnifeButterfly,pszKnifeShadow
 	};
 
-	int nOriginalKnifeCT = Interfaces::ModelInfo()->GetModelIndex( pszDefaultCtModel );
-	int nOriginalKnifeT = Interfaces::ModelInfo()->GetModelIndex( pszDefaultTtModel );
+	int nOriginalKnifeCT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultCtModel);
+	int nOriginalKnifeT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultTtModel);
 
-	if ( Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10 )
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10)
 	{
 		char* mdl_ct = pszKnifeModels[Settings::Skin::knf_ct_model - 1];
 		g_ViewModelCfg[nOriginalKnifeCT] = mdl_ct;
@@ -239,7 +189,7 @@ void CSkin::SetModelConfig()
 		g_ViewModelCfg[nOriginalKnifeCT] = pszDefaultCtModel;
 	}
 
-	if ( Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10 )
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10)
 	{
 		char* mdl_tt = pszKnifeModels[Settings::Skin::knf_tt_model - 1];
 		g_ViewModelCfg[nOriginalKnifeT] = mdl_tt;
@@ -252,15 +202,15 @@ void CSkin::SetModelConfig()
 
 void CSkin::SetKillIconCfg()
 {
-//[enc_string_disable /]
+	//[enc_string_disable /]
 	char* pszKnifeModelsIcon[10] =
 	{
 		"bayonet","knife_flip","knife_gut","knife_karambit",
 		"knife_m9_bayonet","knife_tactical","knife_falchion",
 		"knife_survival_bowie","knife_butterfly","knife_push"
 	};
-//[enc_string_enable /]
-	if ( Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10 )
+	//[enc_string_enable /]
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 10)
 	{
 		g_KillIconCfg["knife_default_ct"] = pszKnifeModelsIcon[Settings::Skin::knf_ct_model - 1];
 	}
@@ -268,7 +218,7 @@ void CSkin::SetKillIconCfg()
 	{
 		g_KillIconCfg["knife_default_ct"] = "knife_default_ct";
 	}
-	if ( Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10 )
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 10)
 	{
 		g_KillIconCfg["knife_t"] = pszKnifeModelsIcon[Settings::Skin::knf_tt_model - 1];
 	}
@@ -280,68 +230,22 @@ void CSkin::SetKillIconCfg()
 
 void CSkin::InitalizeSkins()
 {
-	auto pSkins = new DynSkin::Skins::CSkins();
-
-	string CsgoPatch = CSX::Utils::GetModuleBaseDir( 0 ) + "\\csgo";
-
-	if ( pSkins->Load( CsgoPatch , "csgo" ) )
-	{
-		// Load Weapon Skins
-		for ( int iWeaponIndex = 0; iWeaponIndex < WEAPON_DATA_SIZE; iWeaponIndex++ )
-		{
-			string WeaponSearch = "weapon_" + string( pWeaponData[iWeaponIndex] );
-			
-			DynSkin::Skins::vecSkinInfo SkinInfoWeapon = pSkins->GetSkinInfoByWeapon( WeaponSearch );
-
-			for ( size_t iSkinWeaponIndex = 0; iSkinWeaponIndex < SkinInfoWeapon.size(); iSkinWeaponIndex++ )
-			{
-				if ( SkinInfoWeapon[iSkinWeaponIndex].nFallbackPaintKit >= 10000 )
-					continue;
-
-				string DragonKing = "Dragon King";
-				string FullName = SkinInfoWeapon[iSkinWeaponIndex]._name;
-
-				if ( SkinInfoWeapon[iSkinWeaponIndex].nFallbackPaintKit == 400 && SkinInfoWeapon[iSkinWeaponIndex]._name.find( DragonKing ) != string::npos )
-					FullName = DragonKing;
-
-				WeaponSkins[iWeaponIndex].SkinPaintKit.push_back( SkinInfoWeapon[iSkinWeaponIndex].nFallbackPaintKit );
-				WeaponSkins[iWeaponIndex].SkinNames.push_back( FullName );
-			}
-		}
-
-		// Load Knife Skins
-		for ( int iKnifeIndex = 0; iKnifeIndex < KNIFE_DATA_SIZE; iKnifeIndex++ )
-		{
-			string KnifeSearch = "weapon_" + string(pKnifeData[iKnifeIndex]);
-
-			DynSkin::Skins::vecSkinInfo SkinInfoKnife = pSkins->GetSkinInfoByWeapon(KnifeSearch);
-
-			for (size_t iSkinKnifeIndex = 0; iSkinKnifeIndex < SkinInfoKnife.size(); iSkinKnifeIndex++)
-			{
-				KnifeSkins[iKnifeIndex].SkinPaintKit.push_back(SkinInfoKnife[iSkinKnifeIndex].nFallbackPaintKit);
-				KnifeSkins[iKnifeIndex].SkinNames.push_back(SkinInfoKnife[iSkinKnifeIndex]._name);
-			}
-		}
-
-		pSkins->Release();
-	}
-
-	delete pSkins;
+	InitializeKits();
 
 	SetSkinConfig();
 	SetKillIconCfg();
 
-	for ( ClientClass* pClass = Interfaces::Client()->GetAllClasses(); pClass; pClass = pClass->m_pNext )
+	for (ClientClass* pClass = Interfaces::Client()->GetAllClasses(); pClass; pClass = pClass->m_pNext)
 	{
-		if ( !strcmp( pClass->m_pNetworkName , "CBaseViewModel" ) )
+		if (!strcmp(pClass->m_pNetworkName, "CBaseViewModel"))
 		{
 			RecvTable* pClassTable = pClass->m_pRecvTable;
 
-			for ( int nIndex = 0; nIndex < pClassTable->m_nProps; nIndex++ )
+			for (int nIndex = 0; nIndex < pClassTable->m_nProps; nIndex++)
 			{
 				RecvProp* pProp = &pClassTable->m_pProps[nIndex];
 
-				if ( !pProp || strcmp( pProp->m_pVarName , "m_nSequence" ) )
+				if (!pProp || strcmp(pProp->m_pVarName, "m_nSequence"))
 					continue;
 
 				fnSequenceProxyFn = pProp->m_ProxyFn;
@@ -355,9 +259,9 @@ void CSkin::InitalizeSkins()
 	}
 }
 
-bool CSkin::ApplyCustomSkin( CBaseAttributableItem* pWeapon , int nWeaponIndex )
+bool CSkin::ApplyCustomSkin(CBaseAttributableItem* pWeapon, int nWeaponIndex)
 {
-	if ( g_SkinChangerCfg.find( nWeaponIndex ) == g_SkinChangerCfg.end() )
+	if (g_SkinChangerCfg.find(nWeaponIndex) == g_SkinChangerCfg.end())
 		return false;
 
 	*pWeapon->GetFallbackPaintKit() = g_SkinChangerCfg[nWeaponIndex].nFallbackPaintKit;
@@ -365,7 +269,7 @@ bool CSkin::ApplyCustomSkin( CBaseAttributableItem* pWeapon , int nWeaponIndex )
 	*pWeapon->GetFallbackStatTrak() = g_SkinChangerCfg[nWeaponIndex].nFallbackStatTrak;
 	*pWeapon->GetFallbackWear() = g_SkinChangerCfg[nWeaponIndex].flFallbackWear;
 
-	if ( g_SkinChangerCfg[nWeaponIndex].iItemDefinitionIndex )
+	if (g_SkinChangerCfg[nWeaponIndex].iItemDefinitionIndex)
 	{
 		*pWeapon->GetItemDefinitionIndex() = g_SkinChangerCfg[nWeaponIndex].iItemDefinitionIndex;
 	}
@@ -375,50 +279,50 @@ bool CSkin::ApplyCustomSkin( CBaseAttributableItem* pWeapon , int nWeaponIndex )
 	return true;
 }
 
-bool CSkin::ApplyCustomModel( CBaseEntity* pLocal , CBaseAttributableItem* pWeapon )
+bool CSkin::ApplyCustomModel(CBaseEntity* pLocal, CBaseAttributableItem* pWeapon)
 {
 	CBaseViewModel* pViewModel = pLocal->GetViewModel();
 
-	if ( !pViewModel )
+	if (!pViewModel)
 		return false;
 
 	DWORD hViewModelWeapon = pViewModel->GetWeapon();
 
-	CBaseAttributableItem* pViewModelWeapon = (CBaseAttributableItem*)Interfaces::EntityList()->GetClientEntityFromHandle( (PVOID)hViewModelWeapon );
+	CBaseAttributableItem* pViewModelWeapon = (CBaseAttributableItem*)Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)hViewModelWeapon);
 
-	if ( pViewModelWeapon != pWeapon )
+	if (pViewModelWeapon != pWeapon)
 		return false;
 
 	int nViewModelIndex = pViewModel->GetModelIndex();
 
-	if ( !nViewModelIndex )
+	if (!nViewModelIndex)
 		return false;
 
-	if ( g_ViewModelCfg.find( nViewModelIndex ) == g_ViewModelCfg.end() )
+	if (g_ViewModelCfg.find(nViewModelIndex) == g_ViewModelCfg.end())
 		return false;
 
-	pViewModel->SetModelIndex( Interfaces::ModelInfo()->GetModelIndex( g_ViewModelCfg[nViewModelIndex] ) );
+	pViewModel->SetModelIndex(Interfaces::ModelInfo()->GetModelIndex(g_ViewModelCfg[nViewModelIndex]));
 
 	return true;
 }
 
-bool CSkin::ApplyCustomKillIcon( IGameEvent* pEvent )
+bool CSkin::ApplyCustomKillIcon(IGameEvent* pEvent)
 {
-	int nUserID = pEvent->GetInt( "attacker" );
+	int nUserID = pEvent->GetInt("attacker");
 
-	if ( !nUserID )
+	if (!nUserID)
 		return false;
 
-	if ( Interfaces::Engine()->GetPlayerForUserID( nUserID ) != Interfaces::Engine()->GetLocalPlayer() )
+	if (Interfaces::Engine()->GetPlayerForUserID(nUserID) != Interfaces::Engine()->GetLocalPlayer())
 		return false;
 
-	const char* szWeapon = pEvent->GetString( "weapon" );
+	const char* szWeapon = pEvent->GetString("weapon");
 
-	for ( auto ReplacementIcon : g_KillIconCfg )
+	for (auto ReplacementIcon : g_KillIconCfg)
 	{
-		if ( !strcmp( szWeapon , ReplacementIcon.first ) )
+		if (!strcmp(szWeapon, ReplacementIcon.first))
 		{
-			pEvent->SetString( "weapon" , ReplacementIcon.second );
+			pEvent->SetString("weapon", ReplacementIcon.second);
 			break;
 		}
 	}
@@ -450,29 +354,29 @@ DWORD dwEconItemInterfaceWrapper = 0x2DB0 + 0xC;
 
 typedef float(__thiscall* GetStickerAttributeBySlotIndexFloatFn)(void*, int, EStickerAttributeType, float);
 GetStickerAttributeBySlotIndexFloatFn oGetStickerAttributeBySlotIndexFloat;
-
-float __fastcall Hooked_GetStickerAttributeBySlotIndexFloat(void* thisptr, void* edx, int iSlot, EStickerAttributeType iAttribute, float flUnknown)
+// Below is reserved for future use, if we want to add stickers.
+/*float __fastcall Hooked_GetStickerAttributeBySlotIndexFloat(void* thisptr, void* edx, int iSlot, EStickerAttributeType iAttribute, float flUnknown)
 {
-	auto pItem = reinterpret_cast<CBaseAttributableItem*>(uintptr_t(thisptr) - dwEconItemInterfaceWrapper);
-	if (!pItem)
-		return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
+auto pItem = reinterpret_cast<CBaseAttributableItem*>(uintptr_t(thisptr) - dwEconItemInterfaceWrapper);
+if (!pItem)
+return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
 
-	int iID = *pItem->GetItemDefinitionIndex();
-	if (!Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
-		return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
+int iID = *pItem->GetItemDefinitionIndex();
+if (!Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
+return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
 
-	switch (iAttribute)
-	{
-	case EStickerAttributeType::Wear:
-		return min(1.f, Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear + 0.0000000001f);
-	case EStickerAttributeType::Scale:
-		return 1.f;
-	case EStickerAttributeType::Rotation:
-		return Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation;
-	default:
-		break;
-	}
-	return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
+switch (iAttribute)
+{
+case EStickerAttributeType::Wear:
+return min(1.f, Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear + 0.0000000001f);
+case EStickerAttributeType::Scale:
+return 1.f;
+case EStickerAttributeType::Rotation:
+return Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation;
+default:
+break;
+}
+return oGetStickerAttributeBySlotIndexFloat(thisptr, iSlot, iAttribute, flUnknown);
 }
 
 typedef UINT(__thiscall* GetStickerAttributeBySlotIndexIntFn)(void*, int, EStickerAttributeType, float);
@@ -480,255 +384,255 @@ GetStickerAttributeBySlotIndexIntFn oGetStickerAttributeBySlotIndexInt;
 
 UINT __fastcall Hooked_GetStickerAttributeBySlotIndexInt(void* thisptr, void* edx, int iSlot, EStickerAttributeType iAttribute, UINT iUnknown)
 {
-	auto pItem = reinterpret_cast<CBaseAttributableItem*>(uintptr_t(thisptr) - dwEconItemInterfaceWrapper);
-	if (!pItem)
-		return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
+auto pItem = reinterpret_cast<CBaseAttributableItem*>(uintptr_t(thisptr) - dwEconItemInterfaceWrapper);
+if (!pItem)
+return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
 
-	int iID = *pItem->GetItemDefinitionIndex();
-	if (!Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
-		return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
+int iID = *pItem->GetItemDefinitionIndex();
+if (!Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
+return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
 
-	if (iAttribute == EStickerAttributeType::Index)
-		return k_stickers.at(Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID).id;
+if (iAttribute == EStickerAttributeType::Index)
+return k_stickers.at(Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID).id;
 
-	return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
+return oGetStickerAttributeBySlotIndexInt(thisptr, iSlot, iAttribute, iUnknown);
 }
 void ApplyStickers(CBaseAttributableItem* pItem)
 {
-	void**& vmt = *reinterpret_cast<void***>(uintptr_t(pItem) + dwEconItemInterfaceWrapper);
+void**& vmt = *reinterpret_cast<void***>(uintptr_t(pItem) + dwEconItemInterfaceWrapper);
 
-	static void** hooked_vmt = nullptr;
-	if (!hooked_vmt)
-	{
-		size_t size = 0;
-
-		while (IsCodePtr(vmt[size]))
-			++size;
-
-		hooked_vmt = new void*[size];
-		memcpy(hooked_vmt, vmt, size * sizeof(void*));
-
-		oGetStickerAttributeBySlotIndexFloat = (GetStickerAttributeBySlotIndexFloatFn)hooked_vmt[4];
-		hooked_vmt[4] = reinterpret_cast<void*>(&Hooked_GetStickerAttributeBySlotIndexFloat);
-
-		oGetStickerAttributeBySlotIndexInt = (GetStickerAttributeBySlotIndexIntFn)hooked_vmt[5];
-		hooked_vmt[5] = reinterpret_cast<void*>(&Hooked_GetStickerAttributeBySlotIndexInt);
-	}
-	vmt = hooked_vmt;
-}
-
-void Skin_OnFrameStageNotify( ClientFrameStage_t Stage )
+static void** hooked_vmt = nullptr;
+if (!hooked_vmt)
 {
-	if ( Stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START )
+size_t size = 0;
+
+while (IsCodePtr(vmt[size]))
+++size;
+
+hooked_vmt = new void*[size];
+memcpy(hooked_vmt, vmt, size * sizeof(void*));
+
+oGetStickerAttributeBySlotIndexFloat = (GetStickerAttributeBySlotIndexFloatFn)hooked_vmt[4];
+hooked_vmt[4] = reinterpret_cast<void*>(&Hooked_GetStickerAttributeBySlotIndexFloat);
+
+oGetStickerAttributeBySlotIndexInt = (GetStickerAttributeBySlotIndexIntFn)hooked_vmt[5];
+hooked_vmt[5] = reinterpret_cast<void*>(&Hooked_GetStickerAttributeBySlotIndexInt);
+}
+vmt = hooked_vmt;
+}*/
+
+void Skin_OnFrameStageNotify(ClientFrameStage_t Stage)
+{
+	if (Stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START)
 	{
 		int nLocalPlayerID = Interfaces::Engine()->GetLocalPlayer();
 
-		CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity( nLocalPlayerID );
+		CBaseEntity* pLocal = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(nLocalPlayerID);
 
-		if ( !pLocal || pLocal->IsDead() )
+		if (!pLocal || pLocal->IsDead())
 			return;
 
 		UINT* hWeapons = pLocal->GetWeapons();
 
-		if ( !hWeapons )
+		if (!hWeapons)
 			return;
 
 		PlayerInfo LocalPlayerInfo;
-		Interfaces::Engine()->GetPlayerInfo( nLocalPlayerID , &LocalPlayerInfo );
+		Interfaces::Engine()->GetPlayerInfo(nLocalPlayerID, &LocalPlayerInfo);
 
-		for ( int nIndex = 0; hWeapons[nIndex]; nIndex++ )
+		for (int nIndex = 0; hWeapons[nIndex]; nIndex++)
 		{
 			CBaseAttributableItem* pWeapon = (CBaseAttributableItem*)Interfaces::EntityList()->GetClientEntityFromHandle(
-				(PVOID)hWeapons[nIndex] );
+				(PVOID)hWeapons[nIndex]);
 
 			CBaseViewModel* pView = pWeapon->GetViewModel();
 
-			if ( !pWeapon )
+			if (!pWeapon)
 				continue;
 
 			int nWeaponIndex = *pWeapon->GetItemDefinitionIndex();
 
-			if ( g_ViewModelCfg.find( pView->GetModelIndex() ) != g_ViewModelCfg.end() )
-				pView->SetModelIndex( Interfaces::ModelInfo()->GetModelIndex( g_ViewModelCfg[pView->GetModelIndex()] ) );
+			if (g_ViewModelCfg.find(pView->GetModelIndex()) != g_ViewModelCfg.end())
+				pView->SetModelIndex(Interfaces::ModelInfo()->GetModelIndex(g_ViewModelCfg[pView->GetModelIndex()]));
 
-			if ( Client::g_pSkin )
-				Client::g_pSkin->ApplyCustomModel( pLocal , pWeapon );
+			if (Client::g_pSkin)
+				Client::g_pSkin->ApplyCustomModel(pLocal, pWeapon);
 
-			if ( LocalPlayerInfo.m_nXuidLow != *pWeapon->GetOriginalOwnerXuidLow() )
+			if (LocalPlayerInfo.m_nXuidLow != *pWeapon->GetOriginalOwnerXuidLow())
 				continue;
 
-			if ( LocalPlayerInfo.m_nXuidHigh != *pWeapon->GetOriginalOwnerXuidHigh() )
+			if (LocalPlayerInfo.m_nXuidHigh != *pWeapon->GetOriginalOwnerXuidHigh())
 				continue;
 
-			if ( Client::g_pSkin )
-				Client::g_pSkin->ApplyCustomSkin( pWeapon , nWeaponIndex );
+			if (Client::g_pSkin)
+				Client::g_pSkin->ApplyCustomSkin(pWeapon, nWeaponIndex);
 
 			*pWeapon->GetAccountID() = LocalPlayerInfo.m_nXuidLow;
 		}
 	}
 }
 
-void Gloves_OnFrameStageNotify( ClientFrameStage_t Stage )
+void Gloves_OnFrameStageNotify(ClientFrameStage_t Stage)
 {
-	if ( !Settings::Skin::gloves_skin )
+	if (!Settings::Skin::gloves_skin)
 		return;
 
-	if ( Stage != ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START )
+	if (Stage != ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START)
 		return;
 
-	if ( !IsLocalAlive() )
+	if (!IsLocalAlive())
 		return;
 
 	CBaseEntity* pLocal = g_pPlayers->GetLocal()->m_pEntity;
 
 	UINT* pWeapons = pLocal->GetWeapons();
 
-	if ( !pWeapons )
+	if (!pWeapons)
 		return;
 
 	UINT* pWareables = pLocal->GetWearables();
 
-	if ( !Interfaces::EntityList()->GetClientEntityFromHandle( (PVOID)pWareables[0] ) )
+	if (!Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)pWareables[0]))
 	{
-		for ( ClientClass* pClass = Interfaces::Client()->GetAllClasses(); pClass; pClass = pClass->m_pNext )
+		for (ClientClass* pClass = Interfaces::Client()->GetAllClasses(); pClass; pClass = pClass->m_pNext)
 		{
-			if ( pClass->m_ClassID == (int)CLIENT_CLASS_ID::CEconWearable )
+			if (pClass->m_ClassID == (int)CLIENT_CLASS_ID::CEconWearable)
 			{
 				int iEntry = Interfaces::EntityList()->GetHighestEntityIndex() + 1;
-				int iSerial = CSX::Utils::RandomIntRange( 0x0 , 0xFFF );
+				int iSerial = CSX::Utils::RandomIntRange(0x0, 0xFFF);
 
-				if ( pClass->m_pCreateFn( iEntry , iSerial ) )
+				if (pClass->m_pCreateFn(iEntry, iSerial))
 				{
-					pWareables[0] = iEntry | ( iSerial << 16 );
+					pWareables[0] = iEntry | (iSerial << 16);
 					break;
 				}
 			}
 		}
 
-		if ( !pWareables[0] )
+		if (!pWareables[0])
 			return;
 
-		CBaseAttributableItem* pGlove = (CBaseAttributableItem*)Interfaces::EntityList()->GetClientEntityFromHandle( (PVOID)pWareables[0] );
+		CBaseAttributableItem* pGlove = (CBaseAttributableItem*)Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)pWareables[0]);
 
-		if ( !pGlove )
+		if (!pGlove)
 			return;
 
 		PlayerInfo LocalPlayerInfo;
 
-		if ( !Interfaces::Engine()->GetPlayerInfo( Interfaces::Engine()->GetLocalPlayer() , &LocalPlayerInfo ) )
+		if (!Interfaces::Engine()->GetPlayerInfo(Interfaces::Engine()->GetLocalPlayer(), &LocalPlayerInfo))
 			return;
 
-		*pGlove->GetItemDefinitionIndex() = GlovesSkin_Array[Settings::Skin::gloves_skin - 1].ItemIndex;
+		*pGlove->GetItemDefinitionIndex() = k_glove_names.at(Settings::Skin::gloves_model).GloveType;
 		*pGlove->GetItemIDHigh() = -1;
 		*pGlove->GetEntityQuality() = 4;
 		*pGlove->GetAccountID() = LocalPlayerInfo.m_nXuidLow;
 		*pGlove->GetFallbackWear() = 0.00000001f;
 		*pGlove->GetFallbackSeed() = 0;
 		*pGlove->GetFallbackStatTrak() = -1;
-		*pGlove->GetFallbackPaintKit() = GlovesSkin_Array[Settings::Skin::gloves_skin - 1].PaintKit;
+		*pGlove->GetFallbackPaintKit() = GloveSkin[Settings::Skin::gloves_model].PaintKit[Settings::Skin::gloves_skin];
 
-		int ModelIndex = Interfaces::ModelInfo()->GetModelIndex(
-			GlovesSkin_Array[Settings::Skin::gloves_skin - 1].szModel );
+		int ModelIndex = Interfaces::ModelInfo()->GetModelIndex(k_glove_names.at(Settings::Skin::gloves_model).szModel);
 
-		if ( !ModelIndex )
+
+		if (!ModelIndex)
 			return;
 
-		if ( pGlove->GetViewModel() )
-			pGlove->GetViewModel()->SetModelIndex( ModelIndex );
+		if (pGlove->GetViewModel())
+			pGlove->GetViewModel()->SetModelIndex(ModelIndex);
 
-		if ( pGlove->GetClientNetworkable() )
-			pGlove->GetClientNetworkable()->PreDataUpdate( DATA_UPDATE_CREATED );
+		if (pGlove->GetClientNetworkable())
+			pGlove->GetClientNetworkable()->PreDataUpdate(DATA_UPDATE_CREATED);
 	}
 }
 
-void Hook_SetViewModelSequence( const CRecvProxyData *pDataConst , void *pStruct , void *pOut )
+void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, void *pOut)
 {
-	CRecvProxyData* pData = const_cast<CRecvProxyData*>( pDataConst );
+	CRecvProxyData* pData = const_cast<CRecvProxyData*>(pDataConst);
 	CBaseViewModel* pViewModel = (CBaseViewModel*)pStruct;
 
-	if ( pViewModel )
+	if (pViewModel)
 	{
-		IClientEntity* pOwner = Interfaces::EntityList()->GetClientEntityFromHandle( (PVOID)pViewModel->GetOwner() );
+		IClientEntity* pOwner = Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)pViewModel->GetOwner());
 
-		if ( pOwner && pOwner->EntIndex() == Interfaces::Engine()->GetLocalPlayer() )
+		if (pOwner && pOwner->EntIndex() == Interfaces::Engine()->GetLocalPlayer())
 		{
-			const model_t* pModel = Interfaces::ModelInfo()->GetModel( pViewModel->GetModelIndex() );
-			const char* szModel = Interfaces::ModelInfo()->GetModelName( pModel );
+			const model_t* pModel = Interfaces::ModelInfo()->GetModel(pViewModel->GetModelIndex());
+			const char* szModel = Interfaces::ModelInfo()->GetModelName(pModel);
 
 			int m_nSequence = pData->m_Value.m_Int;
-//[junk_disable /]
-			if ( !strcmp( szModel , "models/weapons/v_knife_butterfly.mdl" ) )
+			//[junk_disable /]
+			if (!strcmp(szModel, "models/weapons/v_knife_butterfly.mdl"))
 			{
-				switch ( m_nSequence )
+				switch (m_nSequence)
 				{
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_BUTTERFLY_DRAW , SEQUENCE_BUTTERFLY_DRAW2 ); break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_BUTTERFLY_LOOKAT01 , SEQUENCE_BUTTERFLY_LOOKAT03 ); break;
-					default:
-						m_nSequence++;
+				case SEQUENCE_DEFAULT_DRAW:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2); break;
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03); break;
+				default:
+					m_nSequence++;
 				}
 			}
-			else if ( !strcmp( szModel , "models/weapons/v_knife_falchion_advanced.mdl" ) )
+			else if (!strcmp(szModel, "models/weapons/v_knife_falchion_advanced.mdl"))
 			{
 				// Fix animations for the Falchion Knife.
-				switch ( m_nSequence )
+				switch (m_nSequence)
 				{
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_FALCHION_IDLE1; break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_FALCHION_HEAVY_MISS1 , SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP ); break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_FALCHION_LOOKAT01 , SEQUENCE_FALCHION_LOOKAT02 ); break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence--;
+				case SEQUENCE_DEFAULT_IDLE2:
+					m_nSequence = SEQUENCE_FALCHION_IDLE1; break;
+				case SEQUENCE_DEFAULT_HEAVY_MISS1:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP); break;
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02); break;
+				case SEQUENCE_DEFAULT_DRAW:
+				case SEQUENCE_DEFAULT_IDLE1:
+					break;
+				default:
+					m_nSequence--;
 				}
 			}
-			else if ( !strcmp( szModel , "models/weapons/v_knife_push.mdl" ) )
+			else if (!strcmp(szModel, "models/weapons/v_knife_push.mdl"))
 			{
 				// Fix animations for the Shadow Daggers.
-				switch ( m_nSequence )
+				switch (m_nSequence)
 				{
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_DAGGERS_IDLE1; break;
-					case SEQUENCE_DEFAULT_LIGHT_MISS1:
-					case SEQUENCE_DEFAULT_LIGHT_MISS2:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_DAGGERS_LIGHT_MISS1 , SEQUENCE_DAGGERS_LIGHT_MISS5 ); break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = CSX::Utils::RandomIntRange( SEQUENCE_DAGGERS_HEAVY_MISS2 , SEQUENCE_DAGGERS_HEAVY_MISS1 ); break;
-					case SEQUENCE_DEFAULT_HEAVY_HIT1:
-					case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence += 3; break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence += 2;
+				case SEQUENCE_DEFAULT_IDLE2:
+					m_nSequence = SEQUENCE_DAGGERS_IDLE1; break;
+				case SEQUENCE_DEFAULT_LIGHT_MISS1:
+				case SEQUENCE_DEFAULT_LIGHT_MISS2:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5); break;
+				case SEQUENCE_DEFAULT_HEAVY_MISS1:
+					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1); break;
+				case SEQUENCE_DEFAULT_HEAVY_HIT1:
+				case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence += 3; break;
+				case SEQUENCE_DEFAULT_DRAW:
+				case SEQUENCE_DEFAULT_IDLE1:
+					break;
+				default:
+					m_nSequence += 2;
 				}
 			}
-			else if ( !strcmp( szModel , "models/weapons/v_knife_survival_bowie.mdl" ) )
+			else if (!strcmp(szModel, "models/weapons/v_knife_survival_bowie.mdl"))
 			{
-				switch ( m_nSequence )
+				switch (m_nSequence)
 				{
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_BOWIE_IDLE1; break;
-					default:
-						m_nSequence--;
+				case SEQUENCE_DEFAULT_DRAW:
+				case SEQUENCE_DEFAULT_IDLE1:
+					break;
+				case SEQUENCE_DEFAULT_IDLE2:
+					m_nSequence = SEQUENCE_BOWIE_IDLE1; break;
+				default:
+					m_nSequence--;
 				}
 			}
-//[junk_enable /]
+			//[junk_enable /]
 			pData->m_Value.m_Int = m_nSequence;
 		}
 	}
 
-	fnSequenceProxyFn( pData , pStruct , pOut );
+	fnSequenceProxyFn(pData, pStruct, pOut);
 }
 
 std::deque<Kit_t> k_skins;
@@ -815,7 +719,8 @@ struct CStickerKit
 	uint32_t pad0[4];
 };
 
-
+// I totally didn't paste this from nskinz xd
+// TODO: Sort out the paint kits
 void InitializeKits()
 {
 	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -871,14 +776,49 @@ void InitializeKits()
 			const wchar_t* wide_name = Interfaces::GetLocalize()->Find(paint_kit->item_name.buffer + 1);
 			auto name = converter.to_bytes(wide_name);
 
-			if (paint_kit->id < 10000)
+			if (paint_kit->id < 10000) {
 				k_skins.push_back({ paint_kit->id, name });
-			else
-				k_gloves.push_back({ paint_kit->id, name });
-		}
+				for (int i = 0; i < KNIFE_DATA_SIZE; i++) {
+					KnifeSkins[i].SkinNames.push_back(name);
+					KnifeSkins[i].SkinPaintKit.push_back(paint_kit->id);
+				}
+				for (int i = 0; i < WEAPON_DATA_SIZE; i++) {
+					WeaponSkins[i].SkinNames.push_back(name);
+					WeaponSkins[i].SkinPaintKit.push_back(paint_kit->id);
+				}
 
+			}
+			else {
+				k_gloves.push_back({ paint_kit->id, name });
+				for (int i = 0; i < 10; i++) {
+					GloveSkin[i].Names.push_back(name);
+					GloveSkin[i].PaintKit.push_back(paint_kit->id);
+				}
+
+			}
+		}
+		/*class SortShit
+		{
+		private:
+		int* count;
+		string* thing;
+		public:
+		SortShit(string* Name, int* PaintKit) : thing(Name), count(PaintKit) {}
+		bool operator()(int i, int j) const { return thing[i] < thing[j]; }
+		};
+		for (int i = 0; i < KNIFE_DATA_SIZE; i++) {
+		std::sort((KnifeSkins[i].SkinPaintKit.begin()), (KnifeSkins[i].SkinPaintKit.end()), SortShit(KnifeSkins[i].SkinNames.data(), KnifeSkins[i].SkinPaintKit.data()));
+
+		}
+		for (int i = 0; i < WEAPON_DATA_SIZE; i++) {
+		std::sort((WeaponSkins[i].SkinNames.begin(), WeaponSkins[i].SkinPaintKit.begin()), (WeaponSkins[i].SkinNames.end(), WeaponSkins[i].SkinPaintKit.end()), SortShit(WeaponSkins[i].SkinNames.data(), WeaponSkins[i].SkinPaintKit.data()));
+		}
+		for (int i = 0; i < 10; i++) {
+		std::sort((GloveSkin[i].Names.begin(), GloveSkin[i].PaintKit.begin()), (GloveSkin[i].Names.end(), GloveSkin[i].PaintKit.end()), SortShit(GloveSkin[i].Names.data(), GloveSkin[i].PaintKit.data()));
+		}*/
 		std::sort(k_skins.begin(), k_skins.end());
 		std::sort(k_gloves.begin(), k_gloves.end());
+
 	}
 
 	// Dump sticker kits
