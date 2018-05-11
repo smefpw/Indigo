@@ -479,27 +479,26 @@ namespace Settings
 		return 0;
 	}
 
-	namespace MedalChanger {
-		bool enabled = false;
-		std::vector<uint32_t> medals = {};
-		bool equipped_medal_override = false;
-		uint32_t equipped_medal = 0;
+	namespace InvChanger
+	{
+		bool Inventory_Changer = false;
+		bool Inventory_Changer_Medal = false;
+		bool Profile_Info = false;
+		int medals[100] = { 874,1353,6001,6002,6003,6004,6005,6006,6007,6008,6009,6010,6011,6012,6013,6014,6015,6016,6017,6018,6019,6020,6021,6022,6023,6024,6025,6026,6027,6028,6029,6030,6031,6032,6033 };
+		int Profile_Info_Rank = 0; //Go back here and change this from 1 to 0 so it starts off.
+		int Profile_Info_Rank_Combo; //Add this for Rank Box // this is fucking retarded, go kys noob
+		int Profile_Info_Level = 1;
+		int Profile_Info_XP = 1;
+		int Profile_Info_Win = 1;
+		int Profile_Info_Friendly = 1;
+		int Profile_Info_Leader = 1;
+		int Profile_Info_Teacher = 1;
+		int MedalOverride;
+		bool MedalOverride_enable = false;
+		std::vector<InventoryWeaponData> weapons;
+		int CustomWeaponCount = 0;
+		int MedalsCount = 100;
 	}
-	namespace ProfileChanger {
-		bool enabled = false;
-		int rank_id = 0;
-		int wins = 0;
-		int cmd_friendly = 0;
-		int cmd_leader = 0;
-		int cmd_teaching = 0;
-		int level = 0;
-		int xp = 0;
-	}
-	namespace InventoryChanger {
-		bool enabled = false;
-		std::vector<k_weapon_data> weapons = {};
-	}
-
 	namespace Aimbot
 	{
 		bool aim_Backtrack = false;
@@ -621,7 +620,8 @@ namespace Settings
 		int knf_ct_skin = 0;
 		int knf_tt_model = 0;
 		int knf_tt_skin = 0;
-		int gloves_skin = 0;
+		int gloves_skin = -1;
+		int gloves_model = 0;
 	}
 
 	namespace Misc
