@@ -2,10 +2,9 @@
 
 WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans)) No-one but you can be held responsible for your Overwatch, VAC bans.
 
-4.4 (WILL POST TOMORROW 11 MAY)
+4.4
 + Reworked SKINCHANGER
 + Small Fixes
-+ Grenade Prediction (added)
 
 Old Change-logs
 
