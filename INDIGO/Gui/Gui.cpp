@@ -138,9 +138,10 @@ void CGui::GUI_Draw_Elements()
 	if (Settings::Misc::misc_Spectators) g_pMisc->OnRenderSpectatorList();
 
 	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
+	if (g_pEsp && Settings::Esp::esp_BombTimer && bOpenTimer)
 	{
-		g_pRender->Text(15, 200, false, true, Color::White(), C4_TIMER_STRING, g_pEsp->fC4Timer);
-		g_pRender->Text(15, 201, false, true, Color::White(), "_______________");
+		g_pRender->Text(15, 250, false, true, Color::White(), C4_TIMER_STRING, g_pEsp->fC4Timer);
+		g_pRender->Text(15, 251, false, true, Color::White(), "______________");
 	}
 	else
 	{
