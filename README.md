@@ -5,6 +5,7 @@ WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoo
 4.4.1
 + Fixed Time-based Backtrack (last time I swear!)
 + Cleaned up even more
++ Settings for Inventory Changer/Medals now save/load (for Medals you'll need to edit your configs for now)
 + Updated imgui
 
 Old Change-logs
