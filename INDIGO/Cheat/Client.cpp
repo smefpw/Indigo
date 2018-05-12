@@ -24,7 +24,7 @@ namespace Client
 	int	iScreenWidth = 0;
 	int	iScreenHeight = 0;
 
-	string BaseDir = "C:/Indigo/";
+	string BaseDir = "C:\\Indigo";
 	string LogFile = "";
 	string GuiFile = "";
 	string IniFile = "";
@@ -62,8 +62,8 @@ namespace Client
 	void RefreshConfigs()
 	{
 		ConfigList.clear();
-		string ConfigDir = BaseDir + "*.ini";
-		GuiFile = BaseDir + "gui.ini";
+		string ConfigDir = BaseDir + "\\" + "*.ini";
+		GuiFile = BaseDir + "\\" + "gui.ini";
 		CreateDirectoryW(L"C:\\Indigo", NULL);
 		SearchFiles(ConfigDir.c_str(), ReadConfigs, FALSE);
 	}
@@ -1199,12 +1199,12 @@ namespace Client
 		ImGui::Separator();
 
 		if (ImGui::Button("Load Config"))
-			Settings::LoadSettings(BaseDir + ConfigList[iConfigSelect]);
+			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Save Config"))
-			Settings::SaveSettings(BaseDir + ConfigList[iConfigSelect]);
+			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
 
 		ImGui::SameLine();
 
@@ -1222,7 +1222,7 @@ namespace Client
 			if (ConfigFileName.size() < 1)
 				ConfigFileName = "settings";
 
-			Settings::SaveSettings(BaseDir + ConfigFileName + ".ini");
+			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".ini");
 			RefreshConfigs();
 		}
 
