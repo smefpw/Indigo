@@ -1,6 +1,6 @@
 # smef's Indigo Remastered
 
-### You, and only YOU, are responsible for any bans on your account uring the usage of this cheat. This includes, but not limited to, Overwatch, VAC and Untrusted bans.
+### You, and only YOU, are responsible for any bans on your account during the usage of this cheat. This includes, but not limited to, Overwatch, VAC and Untrusted bans.
 
 **WARNING: This cheat is _not_ SMAC-safe! Do not use Convar spoofers and Legit AntiAim while on community servers.**
 
