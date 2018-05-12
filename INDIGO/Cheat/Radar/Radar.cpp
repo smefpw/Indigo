@@ -183,7 +183,7 @@ void CRadar::OnRender()
 
 		ImGui::GetStyle().Alpha = Alpha;
 
-		if ( ImGui::Begin( RADAR_TEXT , &Settings::Radar::rad_Active , ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_ShowBorders ) )
+		if ( ImGui::Begin( RADAR_TEXT , &Settings::Radar::rad_Active , ImGuiWindowFlags_NoCollapse ) ) //| ImGuiWindowFlags_ShowBorders ) )
 		{
 			ImDrawList* Draw = ImGui::GetWindowDrawList();
 
