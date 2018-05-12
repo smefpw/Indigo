@@ -2,9 +2,10 @@
 
 WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans)) No-one but you can be held responsible for your Overwatch, VAC bans.
 
-4.5
+4.4.1
 + Fixed Time-based Backtrack (last time I swear!)
 + Cleaned up even more
++ Updated imgui
 
 Old Change-logs
 4.4
