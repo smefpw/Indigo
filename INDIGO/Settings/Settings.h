@@ -216,6 +216,7 @@ namespace Settings
 		extern int knf_ct_skin;
 		extern int knf_tt_model;
 		extern int knf_tt_skin;
+		extern int gloves_model;
 		extern int gloves_skin;
 		//[/swap_lines]
 	}
