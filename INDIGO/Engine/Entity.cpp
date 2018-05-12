@@ -102,9 +102,28 @@ namespace Engine
 		return *(bool*)((DWORD)this + Offset::Entity::m_bHasDefuser);
 	}
 
+	int CBaseEntity::IsDefusing()
+	{
+		return *(bool*)((DWORD)this + (DWORD)Offset::Entity::m_bIsDefusing);
+	}
+
 	bool* CBaseEntity::IsSpotted()
 	{
 		return (bool*)((DWORD)this + Offset::Entity::m_bSpotted);
+	}
+
+	float CBaseEntity::GetFlashDuration() {
+		return *(float*)((DWORD)this + Offset::Entity::m_flFlashDuration);
+	}
+
+	int CBaseEntity::IsFlashed()
+	{
+		return GetFlashDuration() > 0 ? true : false;
+	}
+
+	bool* CBaseEntity::IsReloading()
+	{
+		return (bool*)((DWORD)this + Offset::Entity::m_bInReload);
 	}
 
 	int	CBaseEntity::GetFovStart()

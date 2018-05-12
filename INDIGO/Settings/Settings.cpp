@@ -105,6 +105,7 @@ namespace Settings
 		Esp::esp_Rank = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_RANK , Esp::esp_Rank ) != false;
 		Esp::esp_Health = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_HEALTH , Esp::esp_Health );
 		Esp::esp_Armor = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_ARMOR , Esp::esp_Armor );
+		Esp::esp_Infoz = CSX::Cvar::LoadCvar(VISUAL_TEXT, CVAR_ESP_INFOZ, Esp::esp_Infoz) != false; 
 		Esp::esp_Weapon = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_WEAPON , Esp::esp_Weapon ) != false;
 		Esp::esp_Ammo = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_AMMO , Esp::esp_Ammo ) != false;
 		Esp::esp_Distance = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_DISTANCE , Esp::esp_Distance ) != false;
@@ -334,6 +335,7 @@ namespace Settings
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_ARMOR , Settings::Esp::esp_Armor );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_WEAPON , Settings::Esp::esp_Weapon );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_AMMO , Settings::Esp::esp_Ammo );
+		CSX::Cvar::SaveCvar(VISUAL_TEXT, CVAR_ESP_INFOZ, Settings::Esp::esp_Infoz);
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_DISTANCE , Settings::Esp::esp_Distance );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_SOUND , Settings::Esp::esp_Sound );
 
@@ -593,6 +595,7 @@ namespace Settings
 		int esp_Armor = 0;
 		bool esp_Weapon = false;
 		bool esp_Ammo = false;
+		bool esp_Infoz = false;
 		bool esp_Distance = false;
 		bool esp_Sound = false;
 		bool esp_GrenadePrediction = false;

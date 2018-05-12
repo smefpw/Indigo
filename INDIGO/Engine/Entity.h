@@ -16,20 +16,24 @@ namespace Engine
 		bool	IsPlayer();
 		bool	IsValid();
 		bool	IsDead();
-		Vector GetOrigin();
+		Vector  GetOrigin();
 		bool	IsVisible( CBaseEntity* pLocalEntity );
 
-		int        GetMoveType();
+		int     GetMoveType();
 		bool	HasHelmet();
 		bool	HasDefuser();
 		bool*	IsSpotted();
+		int     IsDefusing();
+		int		IsFlashed();
+		bool*   IsReloading();
 
 		int		GetFovStart();
 		int		GetFlags();
 		int		GetHealth();
 		int		GetArmor();
 		int		GetTeam();
-		float GetLowerBodyYaw();
+		float	GetLowerBodyYaw();
+		float   GetFlashDuration();
 		float	GetSimTime();
 		int		GetShotsFired();
 		int		GetIsScoped();

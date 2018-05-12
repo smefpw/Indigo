@@ -1261,7 +1261,35 @@ void CEsp::DrawPlayerEsp( CPlayer* pPlayer )
 		int Distance = pPlayer->iDistance;
 		g_pRender->Text( (int)vLineOrigin.x , (int)vLineOrigin.y + iHpAmY , true , true , EspPlayerColor , to_string( Distance ).c_str() );
 	}
+
+	if (Settings::Esp::esp_Infoz)
+	{
+		if (pPlayer->m_pEntity->IsDefusing())
+		{
+			int iHpAmY = 10;
+			g_pRender->Text((int)vLineOrigin.x, (int)vLineOrigin.y + iHpAmY, true, true, Color::GreenYellow(), ("Defusing"));
+		}
+		if (pPlayer->m_pEntity->GetIsScoped())
+		{
+			int iHpAmY = 10;
+			g_pRender->Text((int)vLineOrigin.x, (int)vLineOrigin.y + iHpAmY, true, true, Color::GreenYellow(), ("Scoped"));
+
+		}
+		if (pPlayer->m_pEntity->IsFlashed())
+		{
+			int iHpAmY = 10;
+			g_pRender->Text((int)vLineOrigin.x, (int)vLineOrigin.y + iHpAmY, true, true, Color::GreenYellow(), ("Flashed"));
+		}/* fix it if you want 
+ 		if (pPlayer->m_pEntity->IsReloading())
+		{
+			int iHpAmY = 10;
+			g_pRender->Text((int)vLineOrigin.x, (int)vLineOrigin.y + iHpAmY, true, true, Color::GreenYellow(), ("Reloading"));
+		}*/
+	}
+
 }
+
+
 
 void CEsp::DrawPlayerSkeleton( CPlayer* pPlayer )
 {

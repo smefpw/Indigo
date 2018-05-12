@@ -1047,7 +1047,7 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("Ammo", &Settings::Esp::esp_Ammo);
 			ImGui::SameLine(SpaceLineThr);
-			ImGui::Checkbox("Grenade Prediction (CRASH WITH SKINCHANGER)", &Settings::Esp::esp_GrenadePrediction);
+			ImGui::Checkbox("Player Status", &Settings::Esp::esp_Infoz);
 
 			ImGui::Checkbox("Distance", &Settings::Esp::esp_Distance);
 			ImGui::SameLine(SpaceLineOne);

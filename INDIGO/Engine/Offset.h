@@ -21,6 +21,9 @@
 #define CS_PLAYER_HASHELMET			"m_bHasHelmet"
 #define CS_PLAYER_HASHDEFUSER		"m_bHasDefuser"
 #define CS_PLAYER_ISSCOPED			"m_bIsScoped"
+#define CS_PLAYER_ISDEFUSING		"m_bIsDefusing"
+#define CS_PLAYER_ISFLASHED			"m_flFlashDuration"
+#define CS_PLAYER_ISRELOADING		"m_bInReload"
 
 #define CS_PLAYER_FOVSTART			"m_iFOVStart"
 #define CS_PLAYER_FLAGS				"m_fFlags"
@@ -125,6 +128,9 @@ namespace Engine
 			extern DWORD m_hOwner;
 			extern DWORD m_hWeapon;
 			extern DWORD m_bSpotted;
+			extern DWORD m_bIsDefusing;
+			extern DWORD m_flFlashDuration;
+			extern DWORD m_bInReload;
 			extern DWORD m_flSimulationTime;
 
 			extern DWORD m_zoomLevel;

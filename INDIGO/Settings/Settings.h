@@ -140,6 +140,7 @@ namespace Settings
 		extern int esp_Armor;
 		extern bool esp_Weapon;
 		extern bool esp_Ammo;
+		extern bool esp_Infoz;
 		extern bool esp_Distance;
 		extern bool esp_Sound;
 		extern bool esp_GrenadePrediction;
@@ -381,6 +382,7 @@ namespace Settings
 #define CVAR_ESP_NIGHTMODE "misc_NightMode"
 #define CVAR_ESP_HEALTH "ESP_Health"
 #define CVAR_ESP_ARMOR "ESP_Armor"
+#define CVAR_ESP_INFOZ "ESP_Infoz"
 #define CVAR_ESP_WEAPON "ESP_Weapon"
 #define CVAR_ESP_AMMO "ESP_Ammo"
 #define CVAR_ESP_DISTANCE "ESP_Distance"

@@ -33,6 +33,7 @@ namespace Engine
 			DWORD m_iTeamNum = 0;
 			DWORD m_iShotsFired = 0;
 			DWORD m_flSimulationTime = 0;
+			DWORD m_flFlashDuration = 0;
 
 			DWORD m_aimPunchAngle = 0;
 			DWORD m_viewPunchAngle = 0;
@@ -63,6 +64,8 @@ namespace Engine
 			DWORD m_hOwner = 0;
 			DWORD m_hWeapon = 0;
 			DWORD m_bSpotted = 0;
+			DWORD m_bIsDefusing = 0;
+			DWORD m_bInReload = 0;
 
 			DWORD m_zoomLevel = 0;
 			//[/swap_lines]
@@ -86,6 +89,9 @@ namespace Engine
 			Entity::m_bHasHelmet = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_HASHELMET);
 			Entity::m_bHasDefuser = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_HASHDEFUSER);
 			Entity::m_bIsScoped = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_ISSCOPED);
+			Entity::m_bIsDefusing = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_ISDEFUSING);
+			Entity::m_flFlashDuration = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_ISFLASHED);
+			Entity::m_bInReload = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_ISRELOADING);
 
 			Entity::m_iFOVStart = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_FOVSTART);
 			Entity::m_fFlags = g_NetVar.GetOffset(CS_PLAYER, CS_PLAYER_FLAGS);
