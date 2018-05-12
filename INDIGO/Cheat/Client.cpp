@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include <ctime>
 static int iSlot;
 const char* Slot[] = {
@@ -337,10 +337,10 @@ namespace Client
 			{
 				QAngle view;
 				Interfaces::Engine()->GetViewAngles(view);
-
-				if (bSendPacket)
+				
+					if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
-
+				
 				if (!bIsGuiVisible)
 				{
 					int iWeaponSettingsSelectID = GetWeaponSettingsSelectID();
@@ -359,12 +359,12 @@ namespace Client
 					g_pMisc->OnCreateMove(pCmd);
 
 				if (Settings::Aimbot::aim_Backtrack)
-					backtracking->legitBackTrack(pCmd);
-
-				if (Settings::Misc::misc_LegitAA)
-					AntiAim().LegitAA(pCmd, bSendPacket);
-
-				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
+					 backtracking->legitBackTrack(pCmd);
+				
+					if (Settings::Misc::misc_LegitAA)
+					 AntiAim().LegitAA(pCmd, bSendPacket);
+				
+					correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
 				AngleNormalize(pCmd->viewangles);
 			}
 		}
@@ -608,12 +608,14 @@ namespace Client
 
 			ImGui::Separator();
 
+			ImGui::PushItemWidth(362.f);
 			const char* items[] = { "Trigger" , "Backstab Only" , "Auto" };
 			ImGui::Combo("Type", &Settings::Knifebot::knf_Attack, items, IM_ARRAYSIZE(items));
 
 			ImGui::Separator();
-
+			ImGui::PushItemWidth(362.f);
 			ImGui::SliderInt("Distance to trigger", &Settings::Knifebot::knf_DistAttack, 1, 100);
+			ImGui::PushItemWidth(362.f);
 			ImGui::SliderInt("Distante to backstab", &Settings::Knifebot::knf_DistAttack2, 1, 100);
 		}
 	}
@@ -824,12 +826,13 @@ namespace Client
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
 					"Shadow Daggers", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
+			
 				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALILAR, WEAPON_M249,
 					WEAPON_M4A1, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_HKP2000, WEAPON_MP7, WEAPON_MP9,
 					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_KNIFE_BAYONET, WEAPON_KNIFE_FLIP,
 					WEAPON_KNIFE_GUT, WEAPON_KNIFE_KARAMBIT, WEAPON_KNIFE_M9_BAYONET, WEAPON_KNIFE_TACTICAL, WEAPON_KNIFE_FALCHION, WEAPON_KNIFE_SURVIVAL_BOWIE, WEAPON_KNIFE_SURVIVAL_BOWIE,
 					WEAPON_KNIFE_BUTTERFLY, WEAPON_KNIFE_PUSH, 5030, 5031, 5032, 5033, 5034, 5035
-				};
+					 };
 				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
 				itemDefinitionIndex = weapons_id[itemidtmp];
 				if (itemDefinitionIndex < 5000) {
@@ -1403,7 +1406,8 @@ namespace Client
 
 	void DrawColors()
 	{
-		ImGui::MyColorEdit3("Color CT", Settings::Esp::esp_Color_CT);
+		// if you want to use old MyColorEdit3 , go to ImGui -> OldImGui , and there is " imguicolorpicker.cpp" 
+		/*ImGui::MyColorEdit3("Color CT", Settings::Esp::esp_Color_CT);
 		ImGui::MyColorEdit3("Color T", Settings::Esp::esp_Color_TT);
 		ImGui::MyColorEdit3("Color Visible CT", Settings::Esp::esp_Color_VCT);
 		ImGui::MyColorEdit3("Color Visible T", Settings::Esp::esp_Color_VTT);
@@ -1412,14 +1416,57 @@ namespace Client
 		ImGui::MyColorEdit3("Chams Color Visible CT", Settings::Esp::chams_Color_VCT);
 		ImGui::MyColorEdit3("Chams Color Visible T", Settings::Esp::chams_Color_VTT);
 		ImGui::MyColorEdit3("Color Hitmarker", Settings::Esp::esp_HitMarkerColor);
-		ImGui::MyColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
+		ImGui::MyColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);*/
 
-		/*ImGui::Text("Radar");
-		ImGui::Separator();
-		ImGui::ColorEdit3("Color CT", Settings::Radar::rad_Color_CT);
-		ImGui::ColorEdit3("Color T", Settings::Radar::rad_Color_TT);
-		ImGui::ColorEdit3("Color Visible CT", Settings::Radar::rad_Color_VCT);
-		ImGui::ColorEdit3("Color Visible T", Settings::Radar::rad_Color_VTT);*/
+		const char* espcolornames[] = { "ESP Invisible CT", "ESP Invisible T", "ESP Visible CT", "ESP Visible T", "Chams Invisible CT",
+			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights"};
+
+		static int selected = 0;
+		static bool done = false;
+		ImGui::Columns(2, nullptr, true);
+		ImGui::PushItemWidth(-1);
+		ImGui::ListBox("", &selected, espcolornames, IM_ARRAYSIZE(espcolornames), 20);
+		ImGui::NextColumn();
+		if (!done) {
+			ImGui::SetColumnOffset(1, 150);
+			done = true;
+		}
+		switch (selected) {
+		case 0:
+			ImGui::ColorPicker3(espcolornames[0], Settings::Esp::esp_Color_CT);
+			break;
+		case 1:
+			ImGui::ColorPicker3(espcolornames[1], Settings::Esp::esp_Color_TT);
+			break;
+		case 2:
+			ImGui::ColorPicker3(espcolornames[2], Settings::Esp::esp_Color_VCT);
+			break;
+		case 3:
+			ImGui::ColorPicker3(espcolornames[3], Settings::Esp::esp_Color_VTT);
+			break;
+		case 4:
+			ImGui::ColorPicker3(espcolornames[4], Settings::Esp::chams_Color_CT);
+			break;
+		case 5:
+			ImGui::ColorPicker3(espcolornames[5], Settings::Esp::chams_Color_TT);
+			break;
+		case 6:
+			ImGui::ColorPicker3(espcolornames[6], Settings::Esp::chams_Color_VCT);
+			break;
+		case 7:
+			ImGui::ColorPicker3(espcolornames[7], Settings::Esp::chams_Color_VTT);
+			break;
+		case 8:
+			ImGui::ColorPicker3(espcolornames[8], Settings::Esp::esp_HitMarkerColor);
+			break;
+		case 9:
+			ImGui::ColorPicker3(espcolornames[9], Settings::Esp::esp_Dlight);
+			break;
+		case 10:
+			ImGui::ColorPicker3(espcolornames[10], Settings::Esp::esp_Ambient);
+			break;
+		}
+		ImGui::Columns(1, nullptr, false);
 	}
 
 	void OnRenderGUI()
@@ -1450,10 +1497,11 @@ namespace Client
 
 		style.WindowPadding = ImVec2(8, 8);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.95f);
-		ImGui::SetNextWindowPosCenter(ImGuiSetCond_Appearing);
+		ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiSetCond_Appearing);
 		BtnNormal();
-		ImGui::Begin("!smef.pw", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_ShowBorders);
+		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar ); //ImGuiWindowFlags_ShowBorders);
 		mainWindowPos = ImGui::GetWindowPos();
+
 		if (Global::MenuTab == 0)
 			DrawAimbot();
 		if (Global::MenuTab == 1)
@@ -1469,7 +1517,7 @@ namespace Client
 		ImGui::End();
 		ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x - 6, mainWindowPos.y - 6));
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.f);
-		ImGui::Begin("##border2", &bIsGuiVisible, ImVec2(840, 462), 0.98f, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_ShowBorders);
+		ImGui::Begin("##border2", &bIsGuiVisible, ImVec2(840, 462), 0.98f, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus); // | ImGuiWindowFlags_ShowBorders);
 		ImGui::End();
 
 		//left bar with buttons
