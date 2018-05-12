@@ -80,7 +80,7 @@ namespace Client
 	void OnResetDevice();
 	void OnRetrieveMessage(void* ecx, void* edx, uint32_t *punMsgType, void *pubDest, uint32_t cubDest, uint32_t *pcubMsgSize);
 	void OnSendMessage(void* ecx, void* edx, uint32_t unMsgType, const void* pubData, uint32_t cubData);
-	void OnCreateMove( CUserCmd* pCmd, bool& bSendPacket );
+	void OnCreateMove(CUserCmd* pCmd, bool& bSendPacket);
 	void OnFireEventClientSideThink( IGameEvent* pEvent );
 	void OnFrameStageNotify( ClientFrameStage_t Stage );
 	void OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &state , const ModelRenderInfo_t &pInfo , matrix3x4_t *pCustomBoneToWorld = NULL );
