@@ -21,14 +21,8 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL , DWORD fdwReason , LPVOID lpReserved )
 	if ( fdwReason == DLL_PROCESS_ATTACH )
 	{
 		DisableThreadLibraryCalls( hinstDLL );
-
-		Client::BaseDir = CSX::Utils::GetHackWorkingDirectory().c_str();
-
-		if ( Client::BaseDir.size() < 1 )
-		{
-			Client::BaseDir = CSX::Utils::GetModuleBaseDir( hinstDLL );
-		}
-
+		
+		
 #if ENABLE_DEBUG_FILE == 1
 		AllocConsole();
 		AttachConsole(GetCurrentProcessId());
