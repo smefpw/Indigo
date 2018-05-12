@@ -352,6 +352,9 @@ namespace Client
 				if (g_pAimbot)
 					g_pAimbot->OnCreateMove(pCmd, g_pPlayers->GetLocal());
 
+				if (g_pTriggerbot)
+					g_pTriggerbot->OnCreateMove(pCmd, g_pPlayers->GetLocal());
+
 				if (g_pKnifebot)
 					g_pKnifebot->OnCreateMove(pCmd);
 
@@ -478,7 +481,7 @@ namespace Client
 		const char* tabNames[] = { // change these to what you like
 			"Aimbot Options",
 			"Weapon Options", 
-			"Knife Bot Options" 
+			"Trigger Options" 
 		};
 
 		static int tabOrder[] = { 0 , 1 , 2 };
@@ -600,23 +603,89 @@ namespace Client
 		}
 		if (otherpages == 2)
 		{
-			ImGui::Text("Knifebot Options");
+			const char* TriggerEnable[] = { "Disable" , "FOV" , "Trace" };
+			ImGui::PushItemWidth(130.f);
+			ImGui::Combo("Type", &Settings::Triggerbot::trigger_Enable, TriggerEnable, IM_ARRAYSIZE(TriggerEnable));
+
+			ImGui::PushItemWidth(110.f);
+			ImGui::Text("Current Weapon: ");
+			ImGui::SameLine();
+			ImGui::Combo("##AimWeapon", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
+			ImGui::PopItemWidth();
 			ImGui::Separator();
 			ImGui::Spacing();
-			ImGui::Checkbox("Active", &Settings::Knifebot::knf_Active);
-			ImGui::Checkbox("Friendly Fire", &Settings::Knifebot::knf_Team);
 
 			ImGui::Separator();
+			ImGui::Spacing();
 
-			ImGui::PushItemWidth(362.f);
-			const char* items[] = { "Trigger" , "Backstab Only" , "Auto" };
-			ImGui::Combo("Type", &Settings::Knifebot::knf_Attack, items, IM_ARRAYSIZE(items));
+			ImGui::Checkbox("Friendly Fire", &Settings::Triggerbot::trigger_Deathmatch);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Auto Wall", &Settings::Triggerbot::trigger_WallAttack);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("Quick Scope", &Settings::Triggerbot::trigger_FastZoom);
+			ImGui::SameLine(SpaceLineThr);
+			ImGui::Checkbox("Head Only", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HeadOnly);
+
+
+			ImGui::Checkbox("Check Smoke", &Settings::Triggerbot::trigger_SmokCheck);
+			ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Draw FOV", &Settings::Triggerbot::trigger_DrawFov);
+			ImGui::SameLine(SpaceLineTwo);
+			ImGui::Checkbox("Draw Hitbox", &Settings::Triggerbot::trigger_DrawSpot);
+			ImGui::SameLine(SpaceLineThr);
+			ImGui::Checkbox("Draw FOV Assist", &Settings::Triggerbot::trigger_DrawFovAssist);
 
 			ImGui::Separator();
+			ImGui::Spacing();
+
+			const char* items1[] = { CVAR_KEY_MOUSE5 , CVAR_KEY_MOUSE4 , CVAR_KEY_MOUSE3 };
+			ImGui::PushItemWidth(130.f);
+			ImGui::Combo("Key", &Settings::Triggerbot::trigger_Key, items1, IM_ARRAYSIZE(items1));
+			ImGui::PopItemWidth();
+			ImGui::SameLine(SpaceLineTwo);
+
+			const char* items2[] = { "Hold" , "Press" };
+			ImGui::PushItemWidth(130.f);
+			ImGui::Combo("Key Mode", &Settings::Triggerbot::trigger_KeyMode, items2, IM_ARRAYSIZE(items2));
+			ImGui::PopItemWidth();
+
+			ImGui::Separator();
+			ImGui::Spacing();
+
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Distance to trigger", &Settings::Knifebot::knf_DistAttack, 1, 100);
+			//ImGui::SliderInt("Min Distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMin, 0, 5000);
+			//ImGui::SliderInt("Max Distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMax, 0, 5000);
+			ImGui::SliderInt("Fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Fov, 1, 100);
+			ImGui::SliderInt("Delay Before", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayBefore, 0, 200);
+			ImGui::SliderInt("Delay After", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayAfter, 0, 1000);
+			ImGui::PopItemWidth();
+
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			const char* AssistMode[] = { "Disable" , "One Shot" , "Auto" };
+			ImGui::PushItemWidth(130.f);
+			ImGui::Combo("Assist", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Assist, AssistMode, IM_ARRAYSIZE(AssistMode));
+			ImGui::PopItemWidth();
+
+			ImGui::SameLine(SpaceLineTwo);
+			const char* AssistFovType[] = { "Dynamic" , "Static" };
+			ImGui::PushItemWidth(130.f);
+			ImGui::Combo("Assist FOV Type", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFovType, AssistFovType, IM_ARRAYSIZE(AssistFovType));
+			ImGui::PopItemWidth();
+			ImGui::PushItemWidth(355.f);
+			const char* HitGroup[] = { "All" , "Head + Body" , "Head" };
+			ImGui::Combo("HitGroup", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HitGroup, HitGroup, IM_ARRAYSIZE(HitGroup));
+			ImGui::PopItemWidth();
+			ImGui::Separator();
+			ImGui::Spacing();
+
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Distante to backstab", &Settings::Knifebot::knf_DistAttack2, 1, 100);
+			ImGui::SliderInt("Assist RCS", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistRcs, 0, 100);
+			ImGui::SliderInt("Assist FOV", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFov, 1, 300);
+			ImGui::SliderInt("Assist Smooth", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistSmooth, 1, 300);
+			ImGui::PopItemWidth();
+
 		}
 	}
 
