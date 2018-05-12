@@ -11,6 +11,8 @@
 + Cleaned up even more
 + Settings for Inventory Changer/Medals now save/load (for Medals you'll need to edit your configs for now)
 + Updated imgui
++ Player Status (reloading , flashed , scoped , defusing ) (credits for choZen#1878)
++ Triggerbot (fixed) (credits for choZen#1878)
 
 **Old Changelogs**
 
