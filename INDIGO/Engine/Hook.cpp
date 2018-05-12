@@ -51,28 +51,16 @@ namespace Engine
 				return true;
 
 			ClientModeTable.UnHook();
-			QAngle view;
-			Interfaces::Engine()->GetViewAngles(view);
-			// 2018 style coding btw
+
 			auto ebp = (uintptr_t*)(uintptr_t(_AddressOfReturnAddress()) - sizeof(void*));
 			bool& bSendPacket = *reinterpret_cast<bool*>( *ebp - 0x1C );
-			if (Interfaces::Engine()->IsConnected() && Interfaces::Engine()->IsInGame())
-			{
-				if (bSendPacket)
-					Settings::Misc::qLastTickAngle = pCmd->viewangles;
 
-				if (Settings::Misc::misc_LegitAA)
-					AntiAim().LegitAA(pCmd, bSendPacket);
-			}
-			Client::OnCreateMove(pCmd);
-
-			correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-			AngleNormalize(pCmd->viewangles);
+			Client::OnCreateMove(pCmd, bSendPacket);
 
 			bool ret = Interfaces::ClientMode()->CreateMove(flInputSampleTime, pCmd);
 			ClientModeTable.ReHook();
 
-			return false; // SilentAim fix is already in the aimbot.
+			return false;
 		}
 
 		bool WINAPI Hook_IsConnected()

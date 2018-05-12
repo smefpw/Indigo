@@ -289,6 +289,9 @@ namespace Client
 			if (Settings::Esp::esp_Time)
 				g_pRender->Text(15, 30, false, true, Color::White(), std::asctime(std::localtime(&result)));
 
+			//if (Settings::Aimbot::aim_Backtrack)
+				//g_pRender->Text(15, 66, false, true, Color::White(), to_string(BacktrackTicks()).c_str());
+
 			g_pRender->EndRender();
 		}
 	}
@@ -321,7 +324,7 @@ namespace Client
 		g_pInventoryChanger->PreSendMessage(unMsgType, pubDataMutable, cubData);
 	}
 
-	void OnCreateMove(CUserCmd* pCmd)
+	void OnCreateMove(CUserCmd* pCmd, bool& bSendPacket)
 	{
 		if (g_pPlayers && Interfaces::Engine()->IsInGame())
 		{
@@ -332,6 +335,12 @@ namespace Client
 
 			if (IsLocalAlive())
 			{
+				QAngle view;
+				Interfaces::Engine()->GetViewAngles(view);
+
+				if (bSendPacket)
+					Settings::Misc::qLastTickAngle = pCmd->viewangles;
+
 				if (!bIsGuiVisible)
 				{
 					int iWeaponSettingsSelectID = GetWeaponSettingsSelectID();
@@ -349,7 +358,14 @@ namespace Client
 				if (g_pMisc)
 					g_pMisc->OnCreateMove(pCmd);
 
-				backtracking->legitBackTrack(pCmd);
+				if (Settings::Aimbot::aim_Backtrack)
+					backtracking->legitBackTrack(pCmd);
+
+				if (Settings::Misc::misc_LegitAA)
+					AntiAim().LegitAA(pCmd, bSendPacket);
+
+				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
+				AngleNormalize(pCmd->viewangles);
 			}
 		}
 	}
@@ -395,6 +411,7 @@ namespace Client
 				if (sv_cheats_spoofed != nullptr) {
 					sv_cheats_spoofed->SetInt(0);
 					sv_cheats_spoofed->~SpoofedConvar();
+					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
 			if (g_pMisc)
@@ -728,7 +745,7 @@ namespace Client
 
 			if (ImGui::Button("Apply##Skin"))
 			{
-				if (iWeaponSelectSkinIndex >= 0) {
+				/*if (iWeaponSelectSkinIndex >= 0) {
 					g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit = WeaponSkins[iWeaponID].SkinPaintKit[iWeaponSelectSkinIndex];
 				}
 
@@ -748,7 +765,7 @@ namespace Client
 				{
 					Settings::Skin::knf_tt_skin = 0;
 					iSelectKnifeTTSkinIndex = -1;
-				}
+				}*/
 
 				ForceFullUpdate();
 			}
@@ -796,8 +813,7 @@ namespace Client
 				static int itemidtmp = 0;
 				static int itemDefinitionIndex = 0;
 				static int paintKit = 0;
-				static int paintkit_temp_skin = 0; // prevents crashing
-				static int paintkit_temp_knife = 0;
+				static int paintkit_temp_skin = 0;
 				static int paintkit_temp_gloves = 0;
 				static int rarity = 0;
 				static int seed = 0;
@@ -808,163 +824,17 @@ namespace Client
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
 					"Shadow Daggers", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
+				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALILAR, WEAPON_M249,
+					WEAPON_M4A1, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_HKP2000, WEAPON_MP7, WEAPON_MP9,
+					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_KNIFE_BAYONET, WEAPON_KNIFE_FLIP,
+					WEAPON_KNIFE_GUT, WEAPON_KNIFE_KARAMBIT, WEAPON_KNIFE_M9_BAYONET, WEAPON_KNIFE_TACTICAL, WEAPON_KNIFE_FALCHION, WEAPON_KNIFE_SURVIVAL_BOWIE, WEAPON_KNIFE_SURVIVAL_BOWIE,
+					WEAPON_KNIFE_BUTTERFLY, WEAPON_KNIFE_PUSH, 5030, 5031, 5032, 5033, 5034, 5035
+				};
 				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
-				switch (itemidtmp) {
-				case 0:
-					itemDefinitionIndex = WEAPON_DEAGLE;
-					break;
-				case 1:
-					itemDefinitionIndex = WEAPON_ELITE;
-					break;
-				case 2:
-					itemDefinitionIndex = WEAPON_FIVESEVEN;
-					break;
-				case 3:
-					itemDefinitionIndex = WEAPON_GLOCK;
-					break;
-				case 4:
-					itemDefinitionIndex = WEAPON_AK47;
-					break;
-				case 5:
-					itemDefinitionIndex = WEAPON_AUG;
-					break;
-				case 6:
-					itemDefinitionIndex = WEAPON_AWP;
-					break;
-				case 7:
-					itemDefinitionIndex = WEAPON_FAMAS;
-					break;
-				case 8:
-					itemDefinitionIndex = WEAPON_G3SG1;
-					break;
-				case 9:
-					itemDefinitionIndex = WEAPON_GALILAR;
-					break;
-				case 10:
-					itemDefinitionIndex = WEAPON_M249;
-					break;
-				case 11:
-					itemDefinitionIndex = WEAPON_M4A1;
-					break;
-				case 12:
-					itemDefinitionIndex = WEAPON_MAC10;
-					break;
-				case 13:
-					itemDefinitionIndex = WEAPON_P90;
-					break;
-				case 14:
-					itemDefinitionIndex = WEAPON_UMP45;
-					break;
-				case 15:
-					itemDefinitionIndex = WEAPON_XM1014;
-					break;
-				case 16:
-					itemDefinitionIndex = WEAPON_BIZON;
-					break;
-				case 17:
-					itemDefinitionIndex = WEAPON_MAG7;
-					break;
-				case 18:
-					itemDefinitionIndex = WEAPON_NEGEV;
-					break;
-				case 19:
-					itemDefinitionIndex = WEAPON_SAWEDOFF;
-					break;
-				case 20:
-					itemDefinitionIndex = WEAPON_TEC9;
-					break;
-				case 21:
-					itemDefinitionIndex = WEAPON_HKP2000;
-					break;
-				case 22:
-					itemDefinitionIndex = WEAPON_MP7;
-					break;
-				case 23:
-					itemDefinitionIndex = WEAPON_MP9;
-					break;
-				case 24:
-					itemDefinitionIndex = WEAPON_NOVA;
-					break;
-				case 25:
-					itemDefinitionIndex = WEAPON_P250;
-					break;
-				case 26:
-					itemDefinitionIndex = WEAPON_SCAR20;
-					break;
-				case 27:
-					itemDefinitionIndex = WEAPON_SG553;
-					break;
-				case 28:
-					itemDefinitionIndex = WEAPON_SSG08;
-					break;
-				case 29:
-					itemDefinitionIndex = WEAPON_M4A1_SILENCER;
-					break;
-				case 30:
-					itemDefinitionIndex = WEAPON_USP_SILENCER;
-					break;
-				case 31:
-					itemDefinitionIndex = WEAPON_CZ75A;
-					break;
-				case 32:
-					itemDefinitionIndex = WEAPON_REVOLVER;
-					break;
-				case 33:
-					itemDefinitionIndex = WEAPON_KNIFE_BAYONET;
-					break;
-				case 34:
-					itemDefinitionIndex = WEAPON_KNIFE_FLIP;
-					break;
-				case 35:
-					itemDefinitionIndex = WEAPON_KNIFE_GUT;
-					break;
-				case 36:
-					itemDefinitionIndex = WEAPON_KNIFE_KARAMBIT;
-					break;
-				case 37:
-					itemDefinitionIndex = WEAPON_KNIFE_M9_BAYONET;
-					break;
-				case 38:
-					itemDefinitionIndex = WEAPON_KNIFE_TACTICAL;
-					break;
-				case 39:
-					itemDefinitionIndex = WEAPON_KNIFE_FALCHION;
-					break;
-				case 40:
-					itemDefinitionIndex = WEAPON_KNIFE_SURVIVAL_BOWIE;
-					break;
-				case 41:
-					itemDefinitionIndex = WEAPON_KNIFE_BUTTERFLY;
-					break;
-				case 42:
-					itemDefinitionIndex = WEAPON_KNIFE_PUSH;
-					break;
-				case 43:
-					itemDefinitionIndex = 5030;
-					break;
-				case 44:
-					itemDefinitionIndex = 5031;
-					break;
-				case 45:
-					itemDefinitionIndex = 5032;
-					break;
-				case 46:
-					itemDefinitionIndex = 5033;
-					break;
-				case 47:
-					itemDefinitionIndex = 5034;
-					break;
-				case 48:
-					itemDefinitionIndex = 5035;
-					break;
-				}
-				if (itemDefinitionIndex < 500) {
-					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, WeaponSkins[itemDefinitionIndex].SkinNames);
-					paintKit = WeaponSkins[itemDefinitionIndex].SkinPaintKit[paintkit_temp_skin];
-				}
-				else if (itemDefinitionIndex > 500 && itemDefinitionIndex < 5000) {
-					ImGui::ComboBoxArray("Skin", &paintkit_temp_knife, KnifeSkins[0].SkinNames);
-					paintKit = KnifeSkins[0].SkinPaintKit[paintkit_temp_knife];
+				itemDefinitionIndex = weapons_id[itemidtmp];
+				if (itemDefinitionIndex < 5000) {
+					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, WeaponSkins[0].SkinNames);
+					paintKit = WeaponSkins[0].SkinPaintKit[paintkit_temp_skin];
 				}
 				else {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_gloves, GloveSkin[0].Names);
@@ -1003,7 +873,6 @@ namespace Client
 			if (otherpages == 2)
 			{
 				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
-				//ImGui::Text("Profile Changer");
 				const char* MMRank[] = {
 					//"Unknown",
 					"Silver I",
@@ -1028,14 +897,8 @@ namespace Client
 					"Global Elite" };
 
 				ImGui::Combo(("Rank"), &Settings::InvChanger::Profile_Info_Rank_Combo, MMRank, ARRAYSIZE(MMRank));
-				//if (Settings::InvChanger::Profile_Info_Rank_Combo > 0)
-				//{
 				Settings::InvChanger::Profile_Info_Rank = Settings::InvChanger::Profile_Info_Rank_Combo + 1;
-				//}
-				//else
-				//{
-				//	Settings::InvChanger::Profile_Info_Rank = 0;
-				//}
+
 				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
 				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
 				ImGui::InputInt("Win", &Settings::InvChanger::Profile_Info_Win);

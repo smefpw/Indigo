@@ -182,6 +182,28 @@ namespace Settings
 		{
 			g_SkinChangerCfg[pWeaponItemIndexData[i]].nFallbackPaintKit = CSX::Cvar::LoadCvar( SKIN_TEXT , pWeaponData[i] , 0 );
 		}
+		// damn this goes in so well, nice 1-1 paste jozkah
+		InvChanger::CustomWeaponCount = CSX::Cvar::LoadCvar(PROFILE_TEXT, "MedalCount", 100);
+		for (int i = 0; i < Settings::InvChanger::CustomWeaponCount; i++) {
+			string slots = "medalslots_" + to_string(i);
+			InvChanger::medals[i] = CSX::Cvar::LoadCvar(PROFILE_TEXT, (char*)slots.c_str(), 0);
+		}
+
+		InvChanger::CustomWeaponCount = CSX::Cvar::LoadCvar(SKIN_TEXT, "ItemCount", 0);
+		InvChanger::weapons.clear();
+		for (int i = 0; i < Settings::InvChanger::CustomWeaponCount; i++) {
+			string itemidstr = "item" + to_string(i) + "_id";
+			string paintkitstr = "item" + to_string(i) + "_paintkit";
+			string raritystr = "item" + to_string(i) + "_rarity";
+			string seedstr = "item" + to_string(i) + "_seed";
+			string wearstr = "item" + to_string(i) + "_wear";
+			int itemid = CSX::Cvar::LoadCvar(INVENTORY_TEXT, (char*)itemidstr.c_str(), 0);
+			int paintkit = CSX::Cvar::LoadCvar(INVENTORY_TEXT, (char*)paintkitstr.c_str(), 0);
+			int rarity = CSX::Cvar::LoadCvar(INVENTORY_TEXT, (char*)raritystr.c_str(), 0);
+			int seed = CSX::Cvar::LoadCvar(INVENTORY_TEXT, (char*)seedstr.c_str(), 0);
+			float wear = CSX::Cvar::LoadCvar(INVENTORY_TEXT, (char*)wearstr.c_str(), 0);
+			Settings::InvChanger::weapons.insert(Settings::InvChanger::weapons.end(), { itemid , paintkit , rarity , seed, wear });
+		}
 
 		if ( Interfaces::Engine()->IsConnected() )
 			ForceFullUpdate();
@@ -434,6 +456,26 @@ namespace Settings
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
 			CSX::Cvar::SaveCvar( SKIN_TEXT , pWeaponData[i] , g_SkinChangerCfg[pWeaponItemIndexData[i]].nFallbackPaintKit );
+		}
+
+		CSX::Cvar::SaveCvar(PROFILE_TEXT, "MedalCount", Settings::InvChanger::MedalsCount);
+		for (int i = 0; i < Settings::InvChanger::MedalsCount; i++)
+		{
+			string slots = "medalslots_" + to_string(i);
+			CSX::Cvar::SaveCvar(PROFILE_TEXT, (char*)slots.c_str(), Settings::InvChanger::medals[i]);
+		}
+		CSX::Cvar::SaveCvar(SKIN_TEXT, "ItemCount", Settings::InvChanger::CustomWeaponCount);
+		for (int i = 0; i < Settings::InvChanger::CustomWeaponCount; i++) {
+			string itemidstr = "item" + to_string(i) + "_id";
+			string paintkitstr = "item" + to_string(i) + "_paintkit";
+			string raritystr = "item" + to_string(i) + "_rarity";
+			string seedstr = "item" + to_string(i) + "_seed";
+			string wearstr = "item" + to_string(i) + "_wear";
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)itemidstr.c_str(), Settings::InvChanger::weapons[i].itemDefinitionIndex);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)paintkitstr.c_str(), Settings::InvChanger::weapons[i].paintKit);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)raritystr.c_str(), Settings::InvChanger::weapons[i].rarity);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)seedstr.c_str(), Settings::InvChanger::weapons[i].seed);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)wearstr.c_str(), Settings::InvChanger::weapons[i].wear);
 		}
 
 		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_SKIN_CHANGER, Misc::misc_SkinChanger);

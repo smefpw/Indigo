@@ -718,8 +718,6 @@ struct CStickerKit
 
 	uint32_t pad0[4];
 };
-
-// I totally didn't paste this from nskinz xd
 // TODO: Sort out the paint kits
 void InitializeKits()
 {
@@ -786,7 +784,6 @@ void InitializeKits()
 					WeaponSkins[i].SkinNames.push_back(name);
 					WeaponSkins[i].SkinPaintKit.push_back(paint_kit->id);
 				}
-
 			}
 			else {
 				k_gloves.push_back({ paint_kit->id, name });
@@ -797,25 +794,6 @@ void InitializeKits()
 
 			}
 		}
-		/*class SortShit
-		{
-		private:
-		int* count;
-		string* thing;
-		public:
-		SortShit(string* Name, int* PaintKit) : thing(Name), count(PaintKit) {}
-		bool operator()(int i, int j) const { return thing[i] < thing[j]; }
-		};
-		for (int i = 0; i < KNIFE_DATA_SIZE; i++) {
-		std::sort((KnifeSkins[i].SkinPaintKit.begin()), (KnifeSkins[i].SkinPaintKit.end()), SortShit(KnifeSkins[i].SkinNames.data(), KnifeSkins[i].SkinPaintKit.data()));
-
-		}
-		for (int i = 0; i < WEAPON_DATA_SIZE; i++) {
-		std::sort((WeaponSkins[i].SkinNames.begin(), WeaponSkins[i].SkinPaintKit.begin()), (WeaponSkins[i].SkinNames.end(), WeaponSkins[i].SkinPaintKit.end()), SortShit(WeaponSkins[i].SkinNames.data(), WeaponSkins[i].SkinPaintKit.data()));
-		}
-		for (int i = 0; i < 10; i++) {
-		std::sort((GloveSkin[i].Names.begin(), GloveSkin[i].PaintKit.begin()), (GloveSkin[i].Names.end(), GloveSkin[i].PaintKit.end()), SortShit(GloveSkin[i].Names.data(), GloveSkin[i].PaintKit.data()));
-		}*/
 		std::sort(k_skins.begin(), k_skins.end());
 		std::sort(k_gloves.begin(), k_gloves.end());
 

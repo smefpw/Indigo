@@ -59,4 +59,4 @@ namespace SDK
 
 extern backtrackData headPositions[64][25];
 extern BackTrack* backtracking;
-int BacktrackTicks();
+extern int BacktrackTicks();

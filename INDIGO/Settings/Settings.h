@@ -300,7 +300,7 @@ namespace Settings
 }
 
 #define CHEAT_NAME "smef.cc"
-#define WATER_MARK "smef.cc 4.3.1.2"
+#define WATER_MARK "smef.cc 4.5"
 #define AIMBOT_TEXT "Aim"
 #define COLORS_TEXT "Colors"
 #define CONFIG_TEXT "Config"

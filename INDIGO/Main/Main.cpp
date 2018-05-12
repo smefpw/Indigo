@@ -1,5 +1,5 @@
 #include "Main.h"
-#include "../RL/ReflectiveLoader.h"
+//#include "../RL/ReflectiveLoader.h"
 
 
 //[enc_string_enable /]
@@ -44,7 +44,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL , DWORD fdwReason , LPVOID lpReserved )
 
 #endif
 
-		CreateThread( 0 , 0 , CheatEntry , hinstDLL , 0 , 0 );
+		CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)CheatEntry, hinstDLL, 0, nullptr);
 	}
 	else if ( fdwReason == DLL_PROCESS_DETACH )
 	{

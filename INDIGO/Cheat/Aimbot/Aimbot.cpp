@@ -625,29 +625,22 @@ void CAimbot::AimbotSet()
 		float MulVar = Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Rcs * 0.02f;
 
 		if (Settings::Aimbot::aim_RcsType <= 0)
-		{
 			vAimAngle -= m_pLocal->vAimPunch * MulVar;
-		}
+
 		else if (Settings::Aimbot::aim_RcsType == 1)
-		{
 			vAimAngle -= (m_pLocal->vPunch + m_pLocal->vAimPunch) * MulVar;
-		}
+
 		else if (Settings::Aimbot::aim_RcsType >= 2)
-		{
 			vAimAngle -= (m_pLocal->vPunch + (m_pLocal->vAimPunch * 2 * 0.5f)) * MulVar;
-		}
 	}
 
 	float fSmooth = 10.f;
 
 	if (bEnableRcs && m_pLocal->WeaponType == WEAPON_TYPE_SHOTGUN)
-	{
 		fSmooth = Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_RcsSmooth;
-	}
+
 	else
-	{
 		fSmooth = Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Smooth;
-	}
 
 	AngleNormalize(vAimAngle);
 
@@ -673,13 +666,10 @@ void CAimbot::AutoPistol()
 		return;
 
 	if (*m_pLocal->m_pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex() == WEAPON_REVOLVER)
-	{
 		m_pCmd->buttons &= ~IN_ATTACK2;
-	}
+
 	else
-	{
 		m_pCmd->buttons &= ~IN_ATTACK;
-	}
 }
 
 void CAimbot::OnCreateMove(CUserCmd * pCmd, CMe * pLocal)
