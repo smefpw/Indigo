@@ -38,7 +38,6 @@
     <ClCompile Include="Engine\Weapon.cpp" />
     <ClCompile Include="Gui\Gui.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
-    <ClCompile Include="ImGui\imguicolorpicker.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
     <ClCompile Include="License\License.cpp" />

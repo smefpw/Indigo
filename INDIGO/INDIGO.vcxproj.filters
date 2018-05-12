@@ -52,7 +52,6 @@
     <ClCompile Include="protobuf\steamdatagram_messages.pb.cc" />
     <ClCompile Include="protobuf\steammessages.pb.cc" />
     <ClCompile Include="Cheat\InventoryChanger\InventoryChanger.cpp" />
-    <ClCompile Include="ImGui\imguicolorpicker.cpp" />
     <ClCompile Include="Cheat\Knifebot\Knifebot.cpp" />
     <ClCompile Include="Cheat\AntiAim\AntiAim.cpp" />
   </ItemGroup>
