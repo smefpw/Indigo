@@ -13,6 +13,8 @@
 + Updated imgui
 + Player Status (reloading , flashed , scoped , defusing ) (credits for choZen#1878)
 + Triggerbot (fixed) (credits for choZen#1878)
++ Colors (added esp colors to others strings) (credits for choZen#1878)
++ Weapon Icons (credits for choZen#1878)
 
 **Old Changelogs**
 
