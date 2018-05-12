@@ -1,6 +1,8 @@
 # smef's Indigo Remastered
 
-**WARNING: This cheat will cause SMAC bans (unless you remove the "sv_cheats" spoof and the LegitAA (other spoofers like Skybox may also cause smac bans)) No-one but you can be held responsible for your Overwatch, VAC bans.**
+##### You, and only YOU, are responsible for any bans on your account uring the usage of this cheat. This includes, but not limited to, Overwatch, VAC and Untrusted bans.
+
+**WARNING: This cheat is _not_ SMAC-safe! Do not use Convar spoofers and Legit AntiAim while on community servers.**
 
 **NOTE: Any configs generated before 4.4.1 will not work with 4.4.1+ (crashes the game)!**
 
@@ -10,7 +12,8 @@
 + Settings for Inventory Changer/Medals now save/load (for Medals you'll need to edit your configs for now)
 + Updated imgui
 
-**Old Change-logs**
+**Old Changelogs**
+
 4.4
 + Reworked SKINCHANGER
 + Small Fixes
