@@ -177,7 +177,7 @@ namespace Settings
 		Skin::knf_tt_model = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_TT_MODEL , Skin::knf_tt_model );
 		Skin::knf_tt_skin = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_TT_SKIN , Skin::knf_tt_skin );
 		Skin::gloves_skin = CSX::Cvar::LoadCvar( SKIN_TEXT , CVAR_SKIN_GLOVES , Skin::gloves_skin );
-
+		Skin::gloves_model = CSX::Cvar::LoadCvar( SKIN_TEXT , "gloves_model" , Skin::gloves_model );
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
 			g_SkinChangerCfg[pWeaponItemIndexData[i]].nFallbackPaintKit = CSX::Cvar::LoadCvar( SKIN_TEXT , pWeaponData[i] , 0 );
@@ -429,7 +429,8 @@ namespace Settings
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_TT_MODEL , Skin::knf_tt_model );
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_TT_SKIN , Skin::knf_tt_skin );
 		CSX::Cvar::SaveCvar( SKIN_TEXT , CVAR_SKIN_GLOVES , Skin::gloves_skin );
-
+		CSX::Cvar::SaveCvar( SKIN_TEXT , "gloves_model" , Skin::gloves_model );
+		
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
 			CSX::Cvar::SaveCvar( SKIN_TEXT , pWeaponData[i] , g_SkinChangerCfg[pWeaponItemIndexData[i]].nFallbackPaintKit );
