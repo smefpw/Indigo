@@ -15,7 +15,7 @@ When reporting a bug, please include the following:
        - How do you reproduce it (+ video if possible)?
        - Is it game-breaking?
 
-**Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!
+**Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
 
 **NOTE: Any configs generated before 4.4.1 will not work with 4.4.1+ (crashes the game)!**
 ## Changelogs
