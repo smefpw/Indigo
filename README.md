@@ -11,9 +11,9 @@ When reporting a bug, please include the following:
 - Your injector (+ injection method)
 - Current cheat version **(any old versions will not be supported!)**
 - Bug details
-       - What happens?
-       - How do you reproduce it (+ video if possible)?
-       - Is it game-breaking?
+  - What happens? Is it important to fix?
+  - How do you reproduce it (+ video if possible)?
+
 
 **Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
 
