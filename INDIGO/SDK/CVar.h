@@ -5,6 +5,18 @@ namespace SDK
 		class ConVar
 	{
 	public:
+		template<typename... Args>
+		void const ConsoleColorPrintf(const Color& clr, const char* format, Args... args)
+		{
+			GetMethod<void(__cdecl*)(void*, const Color&, const char*, ...)>(this, 25)(this, clr, format, args...);
+		}
+
+		template<typename... Args>
+		void const ConsolePrintf(const char* format, Args... args)
+		{
+			GetMethod<void(__cdecl*)(void*, const char*, ...)>(this, 26)(this, format, args...);
+		}
+
 		Color GetColor()
 		{
 			using OriginalFn = Color(__thiscall *)(void *);

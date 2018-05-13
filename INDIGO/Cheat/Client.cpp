@@ -199,6 +199,8 @@ namespace Client
 
 		RefreshConfigs();
 
+		//Interfaces::GetConVar()->ConsoleColorPrintf(Color(255, 20, 20, 255), "Injected");
+
 		return true;
 	}
 

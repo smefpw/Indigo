@@ -528,6 +528,10 @@ namespace Engine
 
 		return false;
 	}
+	void PrintToConsole(string print)
+	{
+		
+	}
 	void correct_movement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove)
 	{
 		float deltaView = pCmd->viewangles.y - vOldAngles.y;
