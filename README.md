@@ -4,7 +4,21 @@
 
 **WARNING: This cheat is _not_ SMAC-safe! Do not use Convar spoofers and Legit AntiAim while on community servers.**
 
+## Reporting bugs
+
+When reporting a bug, please include the following:
+- Your Windows version
+- Your injector (+ injection method)
+- Current cheat version **(any old versions will not be supported!)**
+- Bug details
+       - What happens?
+       - How do you reproduce it (+ video if possible)?
+       - Is it game-breaking?
+
+**Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!
+
 **NOTE: Any configs generated before 4.4.1 will not work with 4.4.1+ (crashes the game)!**
+## Changelogs
 
 **4.4.1**
 + Fixed Time-based Backtrack (last time I swear!)
