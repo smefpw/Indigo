@@ -821,7 +821,7 @@ namespace Client
 
 			if (ImGui::Button("Apply##Skin"))
 			{
-				/*if (iWeaponSelectSkinIndex >= 0) {
+				if (iWeaponSelectSkinIndex >= 0) {
 					g_SkinChangerCfg[iWeaponSelectIndex].nFallbackPaintKit = WeaponSkins[iWeaponID].SkinPaintKit[iWeaponSelectSkinIndex];
 				}
 
@@ -841,7 +841,7 @@ namespace Client
 				{
 					Settings::Skin::knf_tt_skin = 0;
 					iSelectKnifeTTSkinIndex = -1;
-				}*/
+				}
 
 				ForceFullUpdate();
 			}
