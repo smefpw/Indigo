@@ -199,6 +199,8 @@ namespace Client
 
 		RefreshConfigs();
 
+		SendClientHello();
+
 		EventLog->AddToLog("Successfully injected! Enjoy your cheating experience.");
 
 		return true;
@@ -879,7 +881,8 @@ namespace Client
 				ImGui::Checkbox("Medal Changer", &Settings::InvChanger::Inventory_Changer_Medal);
 			}
 			ImGui::SameLine();
-			if (Settings::InvChanger::Inventory_Changer) {
+			if (Settings::InvChanger::Inventory_Changer) 
+			{
 				ImGui::Text("Skins");
 				ImGui::Separator();
 				ImGui::Spacing();
@@ -898,13 +901,13 @@ namespace Client
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
 					"Shadow Daggers", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
-			
+
 				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALILAR, WEAPON_M249,
 					WEAPON_M4A1, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_HKP2000, WEAPON_MP7, WEAPON_MP9,
 					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_KNIFE_BAYONET, WEAPON_KNIFE_FLIP,
 					WEAPON_KNIFE_GUT, WEAPON_KNIFE_KARAMBIT, WEAPON_KNIFE_M9_BAYONET, WEAPON_KNIFE_TACTICAL, WEAPON_KNIFE_FALCHION, WEAPON_KNIFE_SURVIVAL_BOWIE, WEAPON_KNIFE_SURVIVAL_BOWIE,
 					WEAPON_KNIFE_BUTTERFLY, WEAPON_KNIFE_PUSH, 5030, 5031, 5032, 5033, 5034, 5035
-					 };
+				};
 				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
 				itemDefinitionIndex = weapons_id[itemidtmp];
 				if (itemDefinitionIndex < 5000) {
@@ -944,6 +947,7 @@ namespace Client
 				ImGui::ListBoxFooter();
 				ImGui::Columns(1, nullptr, false);
 			}
+		}
 
 			if (otherpages == 2)
 			{
@@ -987,13 +991,7 @@ namespace Client
 				{
 					SendMMHello();
 				}
-				ImGui::SameLine(SpaceLineOne);
-				if (ImGui::Button("Refresh Changes"))
-				{
-					SendClientHello();
-				}
 			}
-		}
 	}
 
 	/*void DrawTrigger() // Trigger
