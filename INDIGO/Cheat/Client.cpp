@@ -199,7 +199,8 @@ namespace Client
 
 		RefreshConfigs();
 
-		//Interfaces::GetConVar()->ConsoleColorPrintf(Color(255, 20, 20, 255), "Injected");
+		EventLog->AddToLog("Successfully injected!");
+		EventLog->AddToLog("Enjoy your cheating experience.");
 
 		return true;
 	}
@@ -261,6 +262,8 @@ namespace Client
 			g_vCenterScreen.x = iScreenWidth / 2.f;
 			g_vCenterScreen.y = iScreenHeight / 2.f;
 
+			EventLog->DrawLogs();
+
 			if (Settings::Esp::esp_Watermark)
 			{
 				static float rainbow;
@@ -293,7 +296,6 @@ namespace Client
 
 			//if (Settings::Aimbot::aim_Backtrack)
 				//g_pRender->Text(15, 66, false, true, Color::White(), to_string(BacktrackTicks()).c_str());
-
 			g_pRender->EndRender();
 		}
 	}
@@ -1135,10 +1137,7 @@ namespace Client
 			ImGui::Checkbox("Dynamic Lights", &Settings::Esp::esp_Dlightz);
 			ImGui::SameLine(SpaceLineThr);
 			ImGui::Checkbox("Watermarks", &Settings::Esp::esp_Watermark);
-			 if (&Settings::Esp::esp_Watermark)
-			 {
-				 Settings::Esp::esp_Time == 0;
-			 }
+			Settings::Esp::esp_Time = Settings::Esp::esp_Watermark;
 
 			ImGui::Spacing();
 			ImGui::Separator();

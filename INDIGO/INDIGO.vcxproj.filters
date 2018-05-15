@@ -54,6 +54,7 @@
     <ClCompile Include="Cheat\InventoryChanger\InventoryChanger.cpp" />
     <ClCompile Include="Cheat\Knifebot\Knifebot.cpp" />
     <ClCompile Include="Cheat\AntiAim\AntiAim.cpp" />
+    <ClCompile Include="Engine\EventLogs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gui\Gui.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Cheat\InventoryChanger\InventoryChanger.h" />
     <ClInclude Include="Cheat\Knifebot\Knifebot.h" />
     <ClInclude Include="Cheat\AntiAim\AntiAim.h" />
+    <ClInclude Include="Engine\EventLogs.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="protobuf\libprotobuf.lib" />

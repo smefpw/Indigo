@@ -34,6 +34,10 @@ namespace CSX
 		/* Unicode To Utf8 Convert */
 		BSTR ConvertStringToBSTR_UTF8( const char* szBuff );
 
+		std::string WstringToString(std::wstring wstr);
+
+		std::wstring StringToWstring(std::string str);
+
 		/* GetHackWorkingDirectory */
 		std::string GetHackWorkingDirectory();
 //[/swap_lines]

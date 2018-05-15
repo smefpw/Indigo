@@ -30,6 +30,7 @@
     <ClCompile Include="CSX\CSX_Utils.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Entity.cpp" />
+    <ClCompile Include="Engine\EventLogs.cpp" />
     <ClCompile Include="Engine\Hook.cpp" />
     <ClCompile Include="Engine\NetVar.cpp" />
     <ClCompile Include="Engine\Offset.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="CSX\CSX_Utils.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Entity.h" />
+    <ClInclude Include="Engine\EventLogs.h" />
     <ClInclude Include="Engine\Hook.h" />
     <ClInclude Include="Engine\NetVar.h" />
     <ClInclude Include="Engine\Offset.h" />

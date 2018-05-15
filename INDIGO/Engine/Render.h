@@ -35,6 +35,7 @@ namespace Engine
 		void DrawCoalBox( int x , int y , int w , int h , Color color );
 		void DrawOutlineCoalBox( int x , int y , int w , int h , Color color );
 		void DrawWave1(Vector loc, float radius, Color color);
+		void GetTextDimensions(const char * text, int & width, int & height);
 
 		void DrawWindow( int x , int y , int w , int h , Color Border , Color Background );
 
@@ -42,6 +43,7 @@ namespace Engine
 		void DrawVerBar( int x , int y , int w , int h , int val , Color color1 , Color color2 );
 		
 		void Text( int x , int y , bool center , bool shadow , Color color , const char* format , ... );
+		void TextToConsole(int x, int y, bool center, bool shadow, Color color, const char * format, ...);
 //[/swap_lines]
 		IDirect3DDevice9*		m_pDevice;
 
@@ -49,11 +51,15 @@ namespace Engine
 //[swap_lines]
 		bool CreateObject();
 
+		int GetTextHeight(const char * text);
+
+
 		void SetVertexState();
 
 		void CreateVertex( int x , int y , DWORD dxColor , PD3DTLVERTEX pVertext , DWORD index );
 
 		ID3DXFont*				m_pFont;
+		ID3DXFont*				LogFont;
 		IDirect3DStateBlock9*	m_pStateBlockDraw;
 		IDirect3DStateBlock9*	m_pStateBlockText;
 

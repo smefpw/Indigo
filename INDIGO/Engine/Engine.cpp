@@ -7,6 +7,8 @@
 
 namespace Engine
 {
+	template<typename ...Args>
+	void PrintToConsole(const char * format, Args ...args);
 	bool Initialize()
 	{
 		CLicense License;
@@ -527,10 +529,6 @@ namespace Engine
 		}
 
 		return false;
-	}
-	void PrintToConsole(string print)
-	{
-		
 	}
 	void correct_movement(QAngle vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove)
 	{

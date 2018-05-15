@@ -8,22 +8,6 @@ SDK::PlayerInfo GetInfo(int Index)
 	return info;
 }
 
-typedef void(__cdecl* MsgFn)(const char* msg, va_list);
-void Msg(const char* msg, ...)
-{
-	if (msg == nullptr)
-		return;
-	static MsgFn fn = (MsgFn)GetProcAddress(GetModuleHandle("tier0.dll"), "Msg");
-	char buffer[989];
-	va_list list;
-	va_start(list, msg);
-
-	vsprintf(buffer, msg, list);
-	va_end(list);
-
-	fn(buffer, list);
-}
-
 char* HitgroupToName(int hitgroup)
 {
 	switch (hitgroup)
@@ -299,26 +283,9 @@ void CEsp::HitEvents(IGameEvent* event)
 			{
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
 				SDK::PlayerInfo killer_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nUserID));
-				string print;
-				print += "[smef's Indigo] ";
-				print += "hit ";
-				print += killed_info.m_szPlayerName;
-				print += " in the ";
-				print += HitgroupToName(event->GetInt("hitgroup"));
-				print += " for ";
-				print += event->GetString("dmg_health");
-				print += " damage";
-				print += " (";
-				print += event->GetString("health");
-				print += " health remaining)\n";
-				if (Settings::Esp::esp_HitMarker)
-				{
-					Interfaces::Engine()->ExecuteClientCmd("developer 1");
-					Interfaces::Engine()->ExecuteClientCmd("con_filter_enable 2 ");
-					Interfaces::Engine()->ExecuteClientCmd("con_filter_text Hit ");
-					Msg(print.c_str());
-				}
-
+				char buf[512];
+				sprintf_s(buf, "Hit %s in the %s for %s damage (%s health remaining)", killed_info.m_szPlayerName, HitgroupToName(event->GetInt("hitgroup")), event->GetString("dmg_health"), event->GetString("health"));
+				EventLog->AddToLog(buf);
 			}
 		}
 	}
@@ -568,6 +535,9 @@ void CEsp::GrenadePrediction()
 
 void CEsp::OnRender()
 {
+	if (!g_pPlayers || !Interfaces::Engine()->IsConnected())
+		return;
+
 	if ( Settings::Esp::esp_Sound )
 		SoundEsp.DrawSoundEsp();
 

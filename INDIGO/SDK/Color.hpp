@@ -166,6 +166,13 @@ namespace SDK
 			}
 		}
 
+		ImU32 GetU32()
+		{
+			return ((_color[3] & 0xff) << 24) + ((_color[2] & 0xff) << 16) + ((_color[1] & 0xff) << 8)
+				+ (_color[0] & 0xff);
+			//return (ImU32)(((_color[3] & 0xff) << 24) + ((_color[0] & 0xff) << 16) + ((_color[1] & 0xff) << 8) + (_color[2] & 0xff));
+		}
+
 		DEFCOLOR_SRC(Black, 0, 0, 0);
 		DEFCOLOR_SRC(White, 255, 255, 255);
 		DEFCOLOR_SRC(Red, 255, 0, 0);
@@ -234,6 +241,8 @@ namespace SDK
 		DEFCOLOR_SRC(DarkGray, 169, 169, 169);
 		DEFCOLOR_SRC(LightGray, 211, 211, 211);
 		DEFCOLOR_SRC(Gainsboro, 220, 220, 220);
+		DEFCOLOR_SRC(LtBlue, 0, 150, 255);
+		DEFCOLOR_SRC(LtGreen, 0, 255, 100);
 	private:
 		uint8_t _color[4];
 	};

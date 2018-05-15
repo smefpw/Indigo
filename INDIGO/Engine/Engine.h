@@ -9,6 +9,7 @@
 #include "Offset.h"
 #include "Render.h"
 #include "Players.h"
+#include "EventLogs.h"
 
 //[enc_string_enable /]
 
@@ -29,6 +30,18 @@
 #define SMOK_PATTERN "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\x00\x00\x00\x00\x0F\x57\xC0"
 
 typedef void(*LPSEARCHFUNC)(LPCTSTR lpszFileName);
+
+template<typename... Args> extern void PrintToConsole(const char* format, Args... args) // Compiler will complain when this is put into .cpp files. Ugh.
+{
+	//Interfaces::GetConVar()->FindVar("developer")->SetValue(1); // Does not want to work when any parts of the text is colored. :(
+	//Interfaces::GetConVar()->FindVar("con_filter_enable")->SetValue(1);
+	//Interfaces::GetConVar()->FindVar("con_filter_text")->SetValue("[smef's Indigo] ");
+	//Interfaces::GetConVar()->FindVar("con_filter_text_out")->SetValue("");
+
+	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef's Indigo] ");
+	Interfaces::GetConVar()->ConsolePrintf(format, args...);
+	Interfaces::GetConVar()->ConsolePrintf("\n");
+};
 
 namespace Engine
 {

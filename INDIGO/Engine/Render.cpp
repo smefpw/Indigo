@@ -8,6 +8,7 @@ namespace Engine
 	CRender::CRender(IDirect3DDevice9* pDevice)
 	{
 		m_pFont = nullptr;
+		LogFont = nullptr;
 		m_pDevice = pDevice;
 
 		m_pStateBlockDraw = nullptr;
@@ -15,7 +16,7 @@ namespace Engine
 
 		if (!CreateObject())
 		{
-			MessageBoxA(0, "Fail to create d3d9 objects", "Error", MB_OK | MB_ICONERROR);
+			MessageBoxA(0, "Failed to create D3D9 objects", "Error", MB_OK | MB_ICONERROR);
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
 	}
@@ -24,6 +25,9 @@ namespace Engine
 	{
 		if (m_pFont)
 			m_pFont = nullptr;
+
+		if (LogFont)
+			LogFont = nullptr;
 
 		if (m_pStateBlockDraw)
 			m_pStateBlockDraw = nullptr;
@@ -44,13 +48,29 @@ namespace Engine
 				return false;
 		}
 
+		if (!LogFont)
+		{
+			HRESULT lFont = D3DXCreateFontA(m_pDevice, 12, 0, 666, 0, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FW_DONTCARE, "Vernada", &LogFont);
+			if (lFont != D3D_OK)
+				return false;
+		}
+
 		return true;
 	}
-
+	int CRender::GetTextHeight(const char* text)
+	{
+		RECT rcRect = { 0,0,0,0 };
+		if (LogFont)
+			LogFont->DrawTextA(NULL, text, strlen(text), &rcRect, DT_CALCRECT, D3DCOLOR_XRGB(0, 0, 0));
+		return rcRect.bottom - rcRect.top;
+	}
 	void CRender::OnLostDevice()
 	{
 		if (m_pFont)
 			m_pFont->OnLostDevice();
+
+		if (LogFont)
+			LogFont->OnLostDevice();
 
 		if (m_pStateBlockDraw)
 			m_pStateBlockDraw = nullptr;
@@ -64,9 +84,12 @@ namespace Engine
 		if (m_pFont)
 			m_pFont->OnResetDevice();
 
+		if (LogFont)
+			LogFont->OnResetDevice();
+
 		if (!CreateObject())
 		{
-			MessageBoxA(0, "Fail to reset d3d9 objects", "Error", MB_OK | MB_ICONERROR);
+			MessageBoxA(0, "Failed to create D3D9 objects", "Error", MB_OK | MB_ICONERROR);
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
 	}
@@ -310,6 +333,79 @@ namespace Engine
 				drawShadow(rec);
 
 			m_pFont->DrawTextW(NULL, text, -1, &rec, DT_TOP | DT_LEFT | DT_NOCLIP, dxTextColor);
+		}
+
+		if (m_pStateBlockText)
+			m_pStateBlockText->Apply();
+
+		SysFreeString(text);
+	}
+
+	void CRender::TextToConsole(int x, int y, bool center, bool shadow, Color color, const char* format, ...)
+	{
+		if (m_pStateBlockText)
+			m_pStateBlockText->Capture();
+
+		m_pDevice->SetFVF(D3DFVF_CUSTOM_TEXT);
+
+		m_pDevice->SetRenderState(D3DRS_LIGHTING, false);
+		m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+		m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
+		m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		char Buffer[128] = { '\0' };
+		va_list va_alist;
+		va_start(va_alist, format);
+		vsprintf_s(Buffer, format, va_alist);
+		va_end(va_alist);
+
+		BSTR text = CSX::Utils::ConvertStringToBSTR_UTF8(Buffer);
+
+		DWORD dxTextColor = D3DCOLOR_XRGB(color.r(), color.g(), color.b());
+
+		auto drawShadow = [&](RECT rect)
+		{
+			rect.left++;
+			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+			rect.top++;
+			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+		};
+
+		if (center)
+		{
+			RECT rec = { 0,0,0,0 };
+
+			LogFont->DrawTextW(NULL, text, -1, &rec, DT_CALCRECT | DT_NOCLIP, dxTextColor);
+
+			rec =
+			{
+				static_cast<LONG>(x) - rec.right / 2,
+				static_cast<LONG>(y),
+				0,
+				0
+			};
+
+			if (shadow)
+				drawShadow(rec);
+
+			LogFont->DrawTextW(NULL, text, -1, &rec, DT_TOP | DT_LEFT | DT_NOCLIP, dxTextColor);
+		}
+		else
+		{
+			RECT rec =
+			{
+				static_cast<LONG>(x),
+				static_cast<LONG>(y),
+				0,
+				0
+			};
+
+			if (shadow)
+				drawShadow(rec);
+
+			LogFont->DrawTextW(NULL, text, -1, &rec, DT_TOP | DT_LEFT | DT_NOCLIP, dxTextColor);
 		}
 
 		if (m_pStateBlockText)

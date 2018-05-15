@@ -1,4 +1,7 @@
 #include "CSX_Utils.h"
+#include <locale>
+#include <codecvt>
+#include <sstream>
 
 static const DWORD dwModuleDelay = 100;
 //[junk_enable /]
@@ -163,6 +166,38 @@ namespace CSX
 			};
 
 			return wsOut;
+		}
+
+		std::string WstringToString(std::wstring wstr)
+		{
+			wstring_convert<codecvt_utf8<wchar_t>, wchar_t> converter;
+
+			try
+			{
+				return converter.to_bytes(wstr);
+			}
+			catch (std::range_error)
+			{
+				stringstream s;
+				s << wstr.c_str();
+				return s.str();
+			}
+		}
+
+		std::wstring StringToWstring(std::string str)
+		{
+			wstring_convert<codecvt_utf8<wchar_t>, wchar_t> converter;
+
+			try
+			{
+				return converter.from_bytes(str);
+			}
+			catch (range_error)
+			{
+				wostringstream s;
+				s << str.c_str();
+				return s.str();
+			}
 		}
 
 		std::string GetHackWorkingDirectory()
