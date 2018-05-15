@@ -4,7 +4,23 @@
 
 **WARNING: This cheat is _not_ SMAC-safe! Do not use Convar spoofers and Legit AntiAim while on community servers.**
 
+## Reporting bugs
+
+When reporting a bug, please include the following:
+- Your Windows version
+- Your injector (+ injection method)
+- Current cheat version **(any old versions will not be supported!)**
+
+
+- Bug details? Is it important to fix?
+
+- How do you reproduce it (+ video if possible)?
+
+
+**Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
+
 **NOTE: Any configs generated before 4.4.1 will not work with 4.4.1+ (crashes the game)!**
+## Changelogs
 
 **4.4.1**
 + Fixed Time-based Backtrack (last time I swear!)
@@ -13,8 +29,6 @@
 + Updated imgui
 + Player Status (reloading , flashed , scoped , defusing ) (credits for choZen#1878)
 + Triggerbot (fixed) (credits for choZen#1878)
-+ Colors (added esp colors to others strings)
-+ Weapon Icons
 
 **Old Changelogs**
 
