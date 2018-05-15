@@ -33,11 +33,18 @@ typedef void(*LPSEARCHFUNC)(LPCTSTR lpszFileName);
 
 template<typename... Args> extern void PrintToConsole(const char* format, Args... args)
 {
-	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef's Indigo] "); // pls no rename me sad!!!!!!
+	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef.cc] "); // pls no rename me sad!!!!!!
 	Interfaces::GetConVar()->ConsolePrintf(format, args...);
 	Interfaces::GetConVar()->ConsolePrintf("\n");
 };
-
+template<class T, class U> T clampMinMax(T in, U low, U high)
+{
+	if (in <= low)
+		return low;
+	if (in >= high)
+		return high;
+	return in;
+}
 namespace Engine
 {
 	enum WEAPON_TYPE;
