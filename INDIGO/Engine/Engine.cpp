@@ -553,9 +553,52 @@ namespace Engine
 
 		deltaView = 360.0f - deltaView;
 		
-		pCmd->Move.x = cos(DEG2RAD(deltaView)) * fOldForward + cos(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
-		pCmd->Move.y = sin(DEG2RAD(deltaView)) * fOldForward + sin(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+		float ForwardMove = cos(DEG2RAD(deltaView)) * fOldForward + cos(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+		float SideMove = sin(DEG2RAD(deltaView)) * fOldForward + sin(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
+		pCmd->Move.x = clampMinMax(ForwardMove, -450, 450); // always remember to clamp ffs!
+		pCmd->Move.y = clampMinMax(SideMove, -450, 450);
 	}
+	/*void correct_movement(CUserCmd* cmd, QAngle localview) // b1g antipaste here, how about u finish this up?
+	{
+		Vector view_fwd, view_side, view_up, cmd_fwd, cmd_side, cmd_up;
+		auto current_viewangles = cmd->viewangles;
+		normalize_angles(current_viewangles);
+
+		AngleVectors(localview, view_fwd, view_side, view_up);
+		AngleVectors(current_viewangles, cmd_fwd, cmd_side, cmd_up);
+
+		const float v8 = sqrtf((view_fwd.x * view_fwd.x) + (view_fwd.y * view_fwd.y));
+		const float v10 = sqrtf((view_side.x * view_side.x) + (view_side.y * view_side.y));
+		const float v12 = sqrtf(view_up.z * view_up.z);
+
+		const Vector norm_view_fwd((1.f / v8) * view_fwd.x, (1.f / v8) * view_fwd.y, 0.f);
+		const Vector norm_view_side((1.f / v10) * view_side.x, (1.f / v10) * view_side.y, 0.f);
+		const Vector norm_view_side(0.f, 0.f, (1.f / v12) * view_up.z);
+
+	}
+	void SinCos(float a, float* s, float*c)
+	{
+		*s = sin(a);
+		*c = cos(a);
+	}
+	void AngleVectors(const QAngle &angles, Vector& forward, Vector& right, Vector& up)
+	{
+		float sr, sp, sy, cr, cp, cy;
+
+		SinCos(DEG2RAD(angles[1]), &sy, &cy);
+		SinCos(DEG2RAD(angles[0]), &sp, &cp);
+		SinCos(DEG2RAD(angles[2]), &sr, &cr);
+
+		forward.x = cp * cy;
+		forward.y = cp * sy;
+		forward.z = -sp;
+		right.x = (-1 * sr * sp * cy) + (-1 * cr * -sy);
+		right.y = (-1 * sr * sp * sy) + (-1 * cr * cy);
+		right.z = -1 * sr * cp;
+		up.x = (cr * sp * cy) + (-sr * -sy);
+		up.y = (cr * sp * sy) + (-sr * cy);
+		up.z = cr * cp;
+	}*/
 	void normalize_angles(QAngle& angles)
 	{
 		for (auto i = 0; i < 3; i++) {

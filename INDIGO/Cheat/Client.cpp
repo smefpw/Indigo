@@ -199,8 +199,7 @@ namespace Client
 
 		RefreshConfigs();
 
-		EventLog->AddToLog("Successfully injected!");
-		EventLog->AddToLog("Enjoy your cheating experience.");
+		EventLog->AddToLog("Successfully injected! Enjoy your cheating experience.");
 
 		return true;
 	}

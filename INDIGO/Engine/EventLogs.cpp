@@ -1,6 +1,7 @@
 #include "EventLogs.h"
 using namespace Client;
 #define LOG_DURATION 3.f
+#define STAY_ON_SCREEN_DURATION 0.5f
 
 namespace Engine
 {
@@ -19,12 +20,10 @@ namespace Engine
 		// Construct our log.
 		log.text = buffer;
 		log.deathtime = Interfaces::GlobalVars()->curtime + LOG_DURATION;
-		//
 
-		// Push our logs
+		// Push our log.
 		PrintToConsole(buffer);
 		logs.emplace_back(log);
-		//
 	}
 
 	void EventLogs::DrawLogs()
@@ -34,15 +33,15 @@ namespace Engine
 
 		for (size_t i = 0; i < logs.size(); i++) 
 		{
-			float diff = logs[i].deathtime - Interfaces::GlobalVars()->curtime;
+			float v22 = (logs[i].deathtime - Interfaces::GlobalVars()->curtime) + STAY_ON_SCREEN_DURATION;
 
-			if (diff < 0) { // Remove that log if death time has reached.
+			if (v22 < STAY_ON_SCREEN_DURATION) { // Remove that log if death time has reached.
 				logs.erase(logs.begin() + i);
 				continue;
 			}
 
-			float alpha = 0.8f - (diff / 0.8f);
-			g_pRender->TextToConsole(5, 5 + (12 * i), false, true, Color(255, 255, 255, (int)(255.f * alpha)), logs[i].text.c_str());
+			float v23 = 255.f * (v22 / LOG_DURATION);
+			g_pRender->TextToConsole(5, 2 + (12 * i), false, true, Color(255, 255, 255, (int)clampMinMax(v23, 0.f, 255.f)), logs[i].text.c_str());
 		}
 	}
 	EventLogs* EventLog = new EventLogs();

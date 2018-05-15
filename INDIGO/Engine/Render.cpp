@@ -291,14 +291,16 @@ namespace Engine
 
 		BSTR text = CSX::Utils::ConvertStringToBSTR_UTF8(Buffer);
 
-		DWORD dxTextColor = D3DCOLOR_XRGB(color.r(), color.g(), color.b());
+		DWORD
+			dxTextColor = D3DCOLOR_ARGB(color.a(), color.r(), color.g(), color.b()),
+			shadowColor = D3DCOLOR_ARGB(color.a(), 0, 0, 0);
 
 		auto drawShadow = [&](RECT rect)
 		{
 			rect.left++;
-			m_pFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+			m_pFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, shadowColor);
 			rect.top++;
-			m_pFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+			m_pFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, shadowColor);
 		};
 
 		if (center)
@@ -364,14 +366,16 @@ namespace Engine
 
 		BSTR text = CSX::Utils::ConvertStringToBSTR_UTF8(Buffer);
 
-		DWORD dxTextColor = D3DCOLOR_XRGB(color.r(), color.g(), color.b());
+		DWORD
+			dxTextColor = D3DCOLOR_ARGB(color.a(), color.r(), color.g(), color.b()),
+			shadowColor = D3DCOLOR_ARGB(color.a(), 0, 0, 0);
 
 		auto drawShadow = [&](RECT rect)
 		{
 			rect.left++;
-			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, shadowColor);
 			rect.top++;
-			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, 0xFF000000);
+			LogFont->DrawTextW(NULL, text, -1, &rect, DT_TOP | DT_LEFT | DT_NOCLIP, shadowColor);
 		};
 
 		if (center)
