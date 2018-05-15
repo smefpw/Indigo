@@ -31,14 +31,9 @@
 
 typedef void(*LPSEARCHFUNC)(LPCTSTR lpszFileName);
 
-template<typename... Args> extern void PrintToConsole(const char* format, Args... args) // Compiler will complain when this is put into .cpp files. Ugh.
+template<typename... Args> extern void PrintToConsole(const char* format, Args... args)
 {
-	//Interfaces::GetConVar()->FindVar("developer")->SetValue(1); // Does not want to work when any parts of the text is colored. :(
-	//Interfaces::GetConVar()->FindVar("con_filter_enable")->SetValue(1);
-	//Interfaces::GetConVar()->FindVar("con_filter_text")->SetValue("[smef's Indigo] ");
-	//Interfaces::GetConVar()->FindVar("con_filter_text_out")->SetValue("");
-
-	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef's Indigo] ");
+	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef's Indigo] "); // pls no rename me sad!!!!!!
 	Interfaces::GetConVar()->ConsolePrintf(format, args...);
 	Interfaces::GetConVar()->ConsolePrintf("\n");
 };
@@ -59,12 +54,12 @@ namespace Engine
 	int			GetWeaponSettingsSelectID();
 	bool		ScanColorFromCvar(const char* str, float* colors);
 	bool		WorldToScreen(const Vector& vOrigin, Vector& vScreen);
-	void correct_movement(QAngle vOldAngles, CUserCmd * pCmd, float fOldForward, float fOldSidemove);
-	bool sanitize_angles(QAngle & angles);
+	void		correct_movement(QAngle vOldAngles, CUserCmd * pCmd, float fOldForward, float fOldSidemove);
+	bool		sanitize_angles(QAngle & angles);
 	bool		GetVisibleOrigin(const Vector& vOrigin);
 	void		AngleVectors(const Vector &vAngles, Vector& vForward);
-	Vector AngleVector(QAngle meme);
-	float	DistancePointToLine(Vector Point, Vector LineOrigin, Vector Dir);
+	Vector		AngleVector(QAngle meme);
+	float		DistancePointToLine(Vector Point, Vector LineOrigin, Vector Dir);
 	void		VectorAngles(const Vector vForward, Vector& vAngle);
 	void		AngleNormalize(Vector& vAngles);
 	void		SmoothAngles(Vector MyViewAngles, Vector AimAngles, Vector &OutAngles, float Smoothing);

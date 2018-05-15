@@ -368,10 +368,10 @@ namespace Client
 				if (Settings::Aimbot::aim_Backtrack)
 					 backtracking->legitBackTrack(pCmd);
 				
-					if (Settings::Misc::misc_LegitAA)
+				if (Settings::Misc::misc_LegitAA)
 					 AntiAim().LegitAA(pCmd, bSendPacket);
 				
-					correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
+				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
 				AngleNormalize(pCmd->viewangles);
 			}
 		}
@@ -1255,7 +1255,7 @@ namespace Client
 			if (Settings::Esp::esp_HitMarker) ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
 		}
 	}
-	void DrawRadar() // Radar // Dont fucking know why this has configs in it but it does so deal with it
+	void DrawConfig()
 	{
 		ImGui::Separator();
 		ImGui::Text("Configs");
@@ -1476,17 +1476,17 @@ namespace Client
 
 	void DrawColors()
 	{
-		// if you want to use old MyColorEdit3 , go to ImGui -> OldImGui , and there is " imguicolorpicker.cpp" 
-		/*ImGui::MyColorEdit3("Color CT", Settings::Esp::esp_Color_CT);
-		ImGui::MyColorEdit3("Color T", Settings::Esp::esp_Color_TT);
-		ImGui::MyColorEdit3("Color Visible CT", Settings::Esp::esp_Color_VCT);
-		ImGui::MyColorEdit3("Color Visible T", Settings::Esp::esp_Color_VTT);
-		ImGui::MyColorEdit3("Chams Color CT", Settings::Esp::chams_Color_CT);
-		ImGui::MyColorEdit3("Chams Color T", Settings::Esp::chams_Color_TT);
-		ImGui::MyColorEdit3("Chams Color Visible CT", Settings::Esp::chams_Color_VCT);
-		ImGui::MyColorEdit3("Chams Color Visible T", Settings::Esp::chams_Color_VTT);
-		ImGui::MyColorEdit3("Color Hitmarker", Settings::Esp::esp_HitMarkerColor);
-		ImGui::MyColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);*/
+		// uncomment if ur gay 
+		//ImGui::ColorEdit3("Color CT", Settings::Esp::esp_Color_CT);
+		//ImGui::ColorEdit3("Color T", Settings::Esp::esp_Color_TT);
+		//ImGui::ColorEdit3("Color Visible CT", Settings::Esp::esp_Color_VCT);
+		//ImGui::ColorEdit3("Color Visible T", Settings::Esp::esp_Color_VTT);
+		//ImGui::ColorEdit3("Chams Color CT", Settings::Esp::chams_Color_CT);
+		//ImGui::ColorEdit3("Chams Color T", Settings::Esp::chams_Color_TT);
+		//ImGui::ColorEdit3("Chams Color Visible CT", Settings::Esp::chams_Color_VCT);
+		//ImGui::ColorEdit3("Chams Color Visible T", Settings::Esp::chams_Color_VTT);
+		//ImGui::ColorEdit3("Color Hitmarker", Settings::Esp::esp_HitMarkerColor);
+		//ImGui::ColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
 
 		const char* espcolornames[] = { "ESP Invisible CT", "ESP Invisible T", "ESP Visible CT", "ESP Visible T", "Chams Invisible CT",
 			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights"};
@@ -1581,7 +1581,7 @@ namespace Client
 		if (Global::MenuTab == 3)
 			DrawMisc();
 		if (Global::MenuTab == 4)
-			DrawRadar();
+			DrawConfig();
 		if (Global::MenuTab == 5)
 			DrawColors();
 		ImGui::End();

@@ -96,12 +96,16 @@ void CEsp::Dlight(CPlayer* pPlayer)
 
 void CEsp::NightMode()
 {
+	static auto sv_skyname = Interfaces::GetConVar()->FindVar("sv_skyname");
+	static auto sv_skyname_backup = Interfaces::GetConVar()->FindVar("sv_skyname")->GetString();
+	static auto r_DrawSpecificStaticProp = Interfaces::GetConVar()->FindVar("r_DrawSpecificStaticProp");
+	static auto r_DrawSpecificStaticProp_backup = Interfaces::GetConVar()->FindVar("r_DrawSpecificStaticProp")->GetInt();
+
+
 	if (Settings::Esp::esp_NightMode)
 	{
 		if (!done)
 		{
-			static auto sv_skyname = Interfaces::GetConVar()->FindVar("sv_skyname");
-			static auto r_DrawSpecificStaticProp = Interfaces::GetConVar()->FindVar("r_DrawSpecificStaticProp");
 			r_DrawSpecificStaticProp->SetValue(1);
 			sv_skyname->SetValue("sky_csgo_night02");
 
@@ -138,6 +142,8 @@ void CEsp::NightMode()
 	{
 		if (done)
 		{
+			r_DrawSpecificStaticProp->SetValue(r_DrawSpecificStaticProp_backup);
+			sv_skyname->SetValue(sv_skyname_backup);
 			for (MaterialHandle_t i = Interfaces::MaterialSystem()->FirstMaterial(); i != Interfaces::MaterialSystem()->InvalidMaterial(); i = Interfaces::MaterialSystem()->NextMaterial(i))
 			{
 				IMaterial *pMaterial = Interfaces::MaterialSystem()->GetMaterial(i);
@@ -272,7 +278,8 @@ void CEsp::HitEvents(IGameEvent* event)
 	if (!Settings::Esp::esp_hitevent)
 		return;
 
-	if (!strcmp(event->GetName(), "player_hurt")) {
+	if (!strcmp(event->GetName(), "player_hurt")) 
+	{
 		int attackerid = event->GetInt("attacker");
 		int entityid = Interfaces::Engine()->GetPlayerForUserID(attackerid);
 		if (entityid == Interfaces::Engine()->GetLocalPlayer())
@@ -282,10 +289,11 @@ void CEsp::HitEvents(IGameEvent* event)
 			if (nUserID || nDead)
 			{
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
-				SDK::PlayerInfo killer_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nUserID));
-				char buf[512];
-				sprintf_s(buf, "Hit %s in the %s for %s damage (%s health remaining)", killed_info.m_szPlayerName, HitgroupToName(event->GetInt("hitgroup")), event->GetString("dmg_health"), event->GetString("health"));
-				EventLog->AddToLog(buf);
+				EventLog->AddToLog("Hit %s in the %s for %i damage (%i health remaining)", // much skeet pasta yes?
+					killed_info.m_szPlayerName, 
+					HitgroupToName(event->GetInt("hitgroup")), 
+					event->GetInt("dmg_health"), 
+					event->GetInt("health"));
 			}
 		}
 	}
@@ -535,7 +543,7 @@ void CEsp::GrenadePrediction()
 
 void CEsp::OnRender()
 {
-	if (!g_pPlayers || !Interfaces::Engine()->IsConnected())
+	if (!g_pPlayers || !Interfaces::Engine()->IsConnected()) // should help with dlight crashes??? idk
 		return;
 
 	if ( Settings::Esp::esp_Sound )
@@ -758,9 +766,9 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead() && pPlayer->bVisible)
 					{
-						for (int t = 0; t < 13; ++t)
+						for (int t = 0; t < BacktrackTicks(); ++t)
 						{
-							Vector screenbacktrack[64][12];
+							Vector screenbacktrack[64][25];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{
@@ -779,9 +787,9 @@ void CEsp::OnRender()
 				{
 					if (!local->IsDead())
 					{
-						for (int t = 0; t < 13; ++t)
+						for (int t = 0; t < BacktrackTicks(); ++t)
 						{
-							Vector screenbacktrack[64][12];
+							Vector screenbacktrack[64][25];
 
 							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
 							{

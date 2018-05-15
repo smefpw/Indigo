@@ -11,7 +11,7 @@ namespace Engine
 	class EventLogs
 	{
 	public:
-		void AddToLog(const char* text);
+		void AddToLog(const char* text, ...);
 		void DrawLogs();
 	private:
 		vector<EventLog_t> logs;

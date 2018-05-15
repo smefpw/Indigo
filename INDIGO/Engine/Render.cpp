@@ -48,6 +48,7 @@ namespace Engine
 				return false;
 		}
 
+		// stream proof event logs cause why not
 		if (!LogFont)
 		{
 			HRESULT lFont = D3DXCreateFontA(m_pDevice, 12, 0, 666, 0, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FW_DONTCARE, "Vernada", &LogFont);
