@@ -19,7 +19,7 @@ When reporting a bug, please include the following:
 
 **Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
 
-**TODO: Fix skin names for languages other than English.**
+**TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
 ## Changelogs
 
 **4.4.1**
