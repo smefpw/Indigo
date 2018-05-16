@@ -84,10 +84,9 @@ void CInventoryChanger::PostRetrieveMessage(uint32_t* punMsgType, void* pubDest,
 {
 	uint32_t MessageType = *punMsgType & 0x7FFFFFFF;
 
-	if (MessageType != k_EMsgGCClientWelcome)
-		return;
-
-	if (MessageType == k_EMsgGCCStrike15_v2_MatchmakingGC2ClientHello)
+	switch (MessageType) 
+	{
+	case k_EMsgGCCStrike15_v2_MatchmakingGC2ClientHello:
 	{
 		CMsgGCCStrike15_v2_MatchmakingGC2ClientHello Message;
 		try
@@ -120,8 +119,9 @@ void CInventoryChanger::PostRetrieveMessage(uint32_t* punMsgType, void* pubDest,
 			*pcubMsgSize = Message.ByteSize() + 8;
 		}
 	}
+	break;
 
-	else
+	case k_EMsgGCClientWelcome:
 	{
 		CMsgClientWelcome Message;
 
@@ -186,6 +186,12 @@ void CInventoryChanger::PostRetrieveMessage(uint32_t* punMsgType, void* pubDest,
 
 			*pcubMsgSize = Message.ByteSize() + 8;
 		}
+	}
+	break;
+
+	default:
+		return;
+		break;
 	}
 }
 
