@@ -7,6 +7,7 @@ namespace Engine
 	{
 		float deathtime;
 		string text;
+		float alpha = 1.f;
 	};
 	class EventLogs
 	{

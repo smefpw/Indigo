@@ -1,23 +1,12 @@
 #include "Client.h"
 #include <ctime>
-static int iSlot;
-const char* Slot[] = {
-	"1",
-	"2",
-	"3",
-	"4"
-};
-
-void CL_FullUpdate()
-{
-	Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
-}
 
 bool Aimbot, Triggerbot, Visuals, Misc, Radar, Colors;
 
-float	SpaceLineOne = 140.f,
-		SpaceLineTwo = 280.f,
-		SpaceLineThr = 420.f;
+float	
+	SpaceLineOne = 140.f,
+	SpaceLineTwo = 280.f,
+	SpaceLineThr = 420.f;
 
 namespace Client
 {
@@ -876,32 +865,19 @@ namespace Client
 		{
 			ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
-			if (Settings::InvChanger::Inventory_Changer) {
-				ImGui::SameLine();
-				ImGui::Checkbox("Medal Changer", &Settings::InvChanger::Inventory_Changer_Medal);
-			}
-			ImGui::SameLine();
 			if (Settings::InvChanger::Inventory_Changer) 
 			{
 				ImGui::Text("Skins");
 				ImGui::Separator();
 				ImGui::Spacing();
 				ImGui::Columns(2, nullptr, false);
-				static int itemidtmp = 0;
-				static int itemDefinitionIndex = 0;
-				static int paintKit = 0;
-				static int paintkit_temp_skin = 0;
-				static int paintkit_temp_gloves = 0;
-				static int rarity = 0;
-				static int seed = 0;
+				static int itemidtmp = 0, itemDefinitionIndex = 0, paintKit = 0, paintkit_temp_skin = 0, paintkit_temp_gloves = 0, rarity = 0, seed = 0, raritypick = 0;
 				static float wear = 0.f;
-				static int raritypick = 0;
 				const char* raritynames[] = { "Default (gray)", "Consumer Grade (white)", "Industrial Grade (light blue)", "Mil-Spec (darker blue)", "Restricted (purple)", "Classified (pinkish purple)", "Covert (red)", "Exceedingly Rare (gold)" };
 				const char* itemnames[] = { "Desert Eagle", "Dual Berettas", "Five-Seven", "Glock-18", "AK-47", "AUG", "AWP", "FAMAS", "G3SG1", "Galil AR", "M249", "M4A4",
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
 					"Shadow Daggers", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
-
 				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALILAR, WEAPON_M249,
 					WEAPON_M4A1, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_HKP2000, WEAPON_MP7, WEAPON_MP9,
 					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_KNIFE_BAYONET, WEAPON_KNIFE_FLIP,
@@ -910,16 +886,16 @@ namespace Client
 				};
 				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
 				itemDefinitionIndex = weapons_id[itemidtmp];
+
 				if (itemDefinitionIndex < 5000) {
-					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, WeaponSkins[0].SkinNames);
+					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, KnifeSkins[0].SkinNames);
 					paintKit = WeaponSkins[0].SkinPaintKit[paintkit_temp_skin];
-				}
-				else {
+				} else {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_gloves, GloveSkin[0].Names);
 					paintKit = GloveSkin[0].PaintKit[paintkit_temp_gloves];
 				}
+
 				ImGui::Combo(("Rarity"), &rarity, raritynames, ARRAYSIZE(raritynames));
-				//ImGui::InputInt("Rarity", &rarity);
 				ImGui::InputInt("Seed", &seed);
 				ImGui::SliderFloat("Wear", &wear, FLT_MIN, 1.f, "%.10f", 5);
 
@@ -928,14 +904,13 @@ namespace Client
 					Settings::InvChanger::CustomWeaponCount = Settings::InvChanger::weapons.size();
 				} ImGui::SameLine();
 
-				if (ImGui::Button("Apply##Skin")) {
+				if (ImGui::Button("Apply##Skin"))
 					SendClientHello();
-				}
 
 				ImGui::NextColumn();
 
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
-				//ImGui::ListBoxHeader("Skins");
+				ImGui::ListBoxHeader("Skins");
 				int weapon_index = 0;
 				for (auto weapon : Settings::InvChanger::weapons) {
 					if (ImGui::Selectable(std::string(std::to_string(weapon.itemDefinitionIndex) + " " + std::to_string(weapon.paintKit)).c_str())) {
@@ -945,6 +920,7 @@ namespace Client
 					weapon_index++;
 				}
 				ImGui::ListBoxFooter();
+				ImGui::PopStyleColor();
 				ImGui::Columns(1, nullptr, false);
 			}
 		}
@@ -953,7 +929,6 @@ namespace Client
 			{
 				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
 				const char* MMRank[] = {
-					//"Unknown",
 					"Silver I",
 					"Silver II",
 					"Silver III",
@@ -965,22 +940,23 @@ namespace Client
 					"Gold Nova II",
 					"Gold Nova III",
 					"Gold Nova Master",
+
 					"Master Guardian I",
 					"Master Guardian II",
-
 					"Master Guardian Elite",
 					"Distinguished Master Guardian",
+
 					"Legendary Eagle",
 					"Legendary Eagle Master",
 					"Supreme Master First Class",
 					"Global Elite" };
-
-				ImGui::Combo(("Rank"), &Settings::InvChanger::Profile_Info_Rank_Combo, MMRank, ARRAYSIZE(MMRank));
-				Settings::InvChanger::Profile_Info_Rank = Settings::InvChanger::Profile_Info_Rank_Combo + 1;
+				static int selected = 0;
+				ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
+				Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
 
 				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
 				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
-				ImGui::InputInt("Win", &Settings::InvChanger::Profile_Info_Win);
+				ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
 				ImGui::Spacing();
 				ImGui::Text("Commends");
 				ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
@@ -988,9 +964,7 @@ namespace Client
 				ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
 				ImGui::Spacing();
 				if (ImGui::Button("Apply Changes"))
-				{
 					SendMMHello();
-				}
 			}
 	}
 
@@ -1265,14 +1239,16 @@ namespace Client
 
 		ImGui::Separator();
 
-		if (ImGui::Button("Load Config"))
+		if (ImGui::Button("Load Config")) {
 			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-
+			EventLog->AddToLog("Loaded configuration.");
+		}
 		ImGui::SameLine();
 
-		if (ImGui::Button("Save Config"))
+		if (ImGui::Button("Save Config")) {
 			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-
+			EventLog->AddToLog("Saved configuration.");
+		}
 		ImGui::SameLine();
 
 		if (ImGui::Button("Refresh Config List"))
@@ -1290,6 +1266,7 @@ namespace Client
 				ConfigFileName = "settings";
 
 			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".ini");
+			EventLog->AddToLog("Configuration created.");
 			RefreshConfigs();
 		}
 
