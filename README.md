@@ -19,7 +19,7 @@ When reporting a bug, please include the following:
 
 **Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
 
-**NOTE: Any configs generated before 4.4.1 will not work with 4.4.1+ (crashes the game)!**
+**TODO: Fix skin names for languages other than English.**
 ## Changelogs
 
 **4.4.1**
