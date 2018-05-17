@@ -4,20 +4,7 @@
 
 **WARNING: This cheat is _not_ SMAC-safe! Do not use Convar spoofers and Legit AntiAim while on community servers.**
 
-## Reporting bugs
-
-When reporting a bug, please include the following:
-- Your Windows version
-- Your injector (+ injection method)
-- Current cheat version **(any old versions will not be supported!)**
-
-
-- Bug details? Is it important to fix?
-
-- How do you reproduce it (+ video if possible)?
-
-
-**Failure to follow these guidelines when reporting will immediately result in your case being marked as invalid!**
+## READ WIKI BEFORE POSTING
 
 **TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
 ## Changelogs
