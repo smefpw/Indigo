@@ -233,6 +233,22 @@ namespace Settings
 		string Color_TEXT = CSX::Cvar::LoadCvar(MISC_TEXT, "misc_TextColor", "255,255,255");
 
 		ScanColorFromCvar(Color_TEXT.c_str(), Misc::misc_TextColor);
+		
+		
+		MedalChanger::CustomWeaponCount = CSX::Cvar::LoadCvar(PROFILE_TEXT, "MedalCount", 100);
+		for (int i = 0; i < Settings::MedalChanger::CustomWeaponCount; i++) {
+			string slots = "medalslots_" + to_string(i);
+			MedalChanger::medals[i] = CSX::Cvar::LoadCvar(PROFILE_TEXT, (char*)slots.c_str(), 0);
+		}
+ 
+		ProfileChanger::rank_id = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_RANK_ID, ProfileChanger::rank_id);
+		ProfileChanger::wins = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_WINS, ProfileChanger::wins);
+		ProfileChanger::cmd_friendly = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_CMD_FRIENDLY, ProfileChanger::cmd_friendly);
+		ProfileChanger::cmd_leader = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_CMD_LEADER, ProfileChanger::cmd_leader);
+		ProfileChanger::cmd_teaching = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_CMD_TEACHING, ProfileChanger::cmd_teaching);
+		ProfileChanger::level = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_LEVEL, ProfileChanger::level);
+		ProfileChanger::xp = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_XP, ProfileChanger::xp);
+		SendMMHello();
 }
 
 	void SaveSettings( string szIniFile )
@@ -511,6 +527,33 @@ namespace Settings
 			to_string(int(Misc::misc_TextColor[2] * 255.f));
 
 		CSX::Cvar::SaveCvar(MISC_TEXT, "misc_TextColor", Color_TEXT);
+		
+		CSX::Cvar::SaveCvar(PROFILE_TEXT, "MedalCount", Settings::MedalChanger::MedalsCount);
+		for (int i = 0; i < Settings::MedalChanger::MedalsCount; i++)
+		{
+			string slots = "medalslots_" + to_string(i);
+			CSX::Cvar::SaveCvar(PROFILE_TEXT, (char*)slots.c_str(), Settings::MedalChanger::medals[i]);
+		} 
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_RANK_ID, ProfileChanger::rank_id);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_WINS, ProfileChanger::wins);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_CMD_FRIENDLY, ProfileChanger::cmd_friendly);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_CMD_LEADER, ProfileChanger::cmd_leader);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_CMD_TEACHING, ProfileChanger::cmd_teaching);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_LEVEL, ProfileChanger::level);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_XP, ProfileChanger::xp);
+ 
+		CSX::Cvar::SaveCvar(SKIN_TEXT, "ItemCount", Settings::InventoryChanger::CustomWeaponCount);
+		for (int i = 0; i < Settings::InventoryChanger::CustomWeaponCount; i++) {
+			string itemidstr = "item" + to_string(i) + "_id";
+			string paintkitstr = "item" + to_string(i) + "_paintkit";
+			string raritystr = "item" + to_string(i) + "_rarity";
+			string seedstr = "item" + to_string(i) + "_seed";
+			string wearstr = "item" + to_string(i) + "_wear";
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)itemidstr.c_str(), Settings::InventoryChanger::weapons[i].itemDefinitionIndex);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)paintkitstr.c_str(), Settings::InventoryChanger::weapons[i].paintKit);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)raritystr.c_str(), Settings::InventoryChanger::weapons[i].rarity);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)seedstr.c_str(), Settings::InventoryChanger::weapons[i].seed);
+			CSX::Cvar::SaveCvar(INVENTORY_TEXT, (char*)wearstr.c_str(), Settings::InventoryChanger::weapons[i].wear);
 }
 
 	float hitmarkerAlpha;
