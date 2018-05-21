@@ -525,7 +525,7 @@ namespace Client
 
 			ImGui::PopItemWidth();
 
-			const char* Aimspot[] = { "Head" , "Neck" , "Lower Neck" , "Body" , "Thorax" , "Chest" , "Right Thigh" ,
+			const char* Aimspot[] = { "Head" , "Neck" , "Body" , "Thorax" , "Chest" , "Right Thigh" ,
 				"Left Thigh" , "Right Hand" , "Left Hand" , "Right Upperarm" , "Right Forearm" ,
 				"Left Upperarm" , "Left Forearm" };
 			ImGui::PushItemWidth(362.f);
