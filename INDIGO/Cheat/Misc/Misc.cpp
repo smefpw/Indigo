@@ -43,36 +43,35 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 		}
 	}*/ // old bhop
 	
-	CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 
-if (Settings::Misc::misc_Bhop)
-{
-int flag = *(PINT)((DWORD)pPlayer + 600); // offset for movetype
-if (flag & MOVETYPE_LADDER)
-return;
+	if (Settings::Misc::misc_Bhop)
+	{
+		int flag = *(PINT)((DWORD)pPlayer + 600); // offset for movetype
+		if (flag & MOVETYPE_LADDER)
+		return;
 
-static bool bLastJumped = false;
-static bool bShouldFake = false;
-
-if (!bLastJumped && bShouldFake) {
-bShouldFake = false;
-pCmd->buttons |= IN_JUMP;
-}
-else if (pCmd->buttons & IN_JUMP) {
-if (pPlayer->GetFlags() & FL_ONGROUND) {
-bLastJumped = true;
-bShouldFake = true;
-}
-else {
-pCmd->buttons &= ~IN_JUMP;
-bLastJumped = false;
-}
-}
-else {
-bLastJumped = false;
-bShouldFake = false;
-}
-
+		static bool bLastJumped = false;
+		static bool bShouldFake = false;
+	
+		if (!bLastJumped && bShouldFake) {
+			bShouldFake = false;
+			pCmd->buttons |= IN_JUMP;
+		}
+		else if (pCmd->buttons & IN_JUMP) {
+		if (pPlayer->GetFlags() & FL_ONGROUND) {
+			bLastJumped = true;
+			bShouldFake = true;
+			}
+			else {
+				pCmd->buttons &= ~IN_JUMP;
+				bLastJumped = false;
+			}
+		}
+		else {
+			bLastJumped = false;
+			bShouldFake = false;
+		}
 }
 
 	if (Settings::Misc::misc_spamregular)
