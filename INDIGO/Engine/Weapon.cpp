@@ -49,7 +49,7 @@ namespace Engine
 	const char*	CBaseWeapon::GetName()
 	{
 		typedef const char* ( __thiscall* GetNameFn )( void* );
-		return GetMethod<GetNameFn>( this , 378 )( this );
+		return GetMethod<GetNameFn>( this , 376 )( this ); //378
 	}
 
 	const char*	CBaseWeapon::GetPrintName()
