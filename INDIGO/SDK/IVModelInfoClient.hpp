@@ -14,7 +14,6 @@ namespace SDK
 	enum HitboxEnum_t {
 		HITBOX_HEAD ,
 		HITBOX_NECK ,
-		HITBOX_LOWER_NECK ,
 		HITBOX_PELVIS_REMOVED ,
 		HITBOX_BODY ,
 		HITBOX_THORAX ,

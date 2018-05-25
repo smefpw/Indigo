@@ -11,7 +11,6 @@ byte tt_ct_best_hit_1[14] =
 	//All Spots
 	HITBOX_HEAD ,
 	HITBOX_NECK ,
-	HITBOX_LOWER_NECK ,
 	HITBOX_BODY ,
 	HITBOX_THORAX ,
 	HITBOX_CHEST ,
@@ -29,7 +28,6 @@ byte tt_ct_best_hit_2[13] =
 {
 	//No Headshot
 	HITBOX_NECK ,
-	HITBOX_LOWER_NECK ,
 	HITBOX_BODY ,
 	HITBOX_THORAX ,
 	HITBOX_CHEST ,
@@ -48,7 +46,6 @@ byte tt_ct_best_hit_3[6] =
 	//No Arms/Legs
 	HITBOX_HEAD ,
 	HITBOX_NECK ,
-	HITBOX_LOWER_NECK ,
 	HITBOX_BODY ,
 	HITBOX_THORAX ,
 	HITBOX_CHEST

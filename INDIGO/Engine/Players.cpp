@@ -220,12 +220,11 @@ namespace Engine
 			if ( Client::g_pEsp && Settings::Esp::esp_Skeleton && m_pMe->bAlive )
 			{
 				// BODY
-				GetHitBoxSkeleton( HITBOX_HEAD , HITBOX_NECK , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[0] );
-				GetHitBoxSkeleton( HITBOX_NECK , HITBOX_LOWER_NECK , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[1] );
-				GetHitBoxSkeleton( HITBOX_LOWER_NECK , HITBOX_UPPER_CHEST , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[2] );
-				GetHitBoxSkeleton( HITBOX_UPPER_CHEST , HITBOX_CHEST , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[3] );
-				GetHitBoxSkeleton( HITBOX_CHEST , HITBOX_THORAX , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[4] );
-				GetHitBoxSkeleton( HITBOX_THORAX , HITBOX_BODY , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[5] );
+				GetHitBoxSkeleton(HITBOX_HEAD, HITBOX_NECK, pEntity, m_pPlayers[EntIndex].vHitboxSkeletonArray[0]);
+				GetHitBoxSkeleton(HITBOX_NECK, HITBOX_UPPER_CHEST, pEntity, m_pPlayers[EntIndex].vHitboxSkeletonArray[1]);
+				GetHitBoxSkeleton(HITBOX_UPPER_CHEST, HITBOX_CHEST, pEntity, m_pPlayers[EntIndex].vHitboxSkeletonArray[3]);
+				GetHitBoxSkeleton(HITBOX_CHEST, HITBOX_THORAX, pEntity, m_pPlayers[EntIndex].vHitboxSkeletonArray[4]);
+				GetHitBoxSkeleton(HITBOX_THORAX, HITBOX_BODY, pEntity, m_pPlayers[EntIndex].vHitboxSkeletonArray[5]);
 
 				// RIGHT LEG
 				GetHitBoxSkeleton( HITBOX_BODY , HITBOX_LEFT_THIGH , pEntity , m_pPlayers[EntIndex].vHitboxSkeletonArray[6] );
