@@ -1420,12 +1420,12 @@ namespace Client
 
 		if (otherpages == 1)
 		{
-			ImGui::Text("All features below can either cause SMAC or Untrusted bans");
+			ImGui::Text("Experimental features");
 			ImGui::Separator();
 			ImGui::Spacing();
 			ImGui::Checkbox("Enable Untrusted Features", &Settings::Untrusted);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("sv_cheats 1/smac ban");
+				ImGui::SetTooltip("sv_cheats 1 (will cause SMAC and possibly trigger vacnet)");
 			if (Settings::Untrusted)
 			{
 				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
