@@ -1124,9 +1124,9 @@ namespace Client
 			ImGui::Text("Visuals");
 			ImGui::Separator();
 			ImGui::Spacing();
-			const char* items2[] = { "Enemy" , "Team" ,"All" , "Only Visible" };
+			const char* items2[] = { "Enemy" , "Team" , "Both" }; // Only Visible /// need XQZ on ro be invisible
 
-			const char* items5[] = { "None" , "Flat" , "Texture" };
+			const char* items5[] = { "Disable" , "Flat" , "Textured" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Chams", &Settings::Esp::esp_Chams, items5, IM_ARRAYSIZE(items5));
 			ImGui::PushItemWidth(362.f);
@@ -1176,6 +1176,7 @@ namespace Client
 				"Anime",
 				"Roblox",
 				"Gamesense",
+				"Bameware",
 			};
 
 			const char* material_items[] = {
@@ -1190,12 +1191,12 @@ namespace Client
 			};
 
 			const char* armtype_items[] = {
-				"Arms Only",
-				"Arms + Weapon"
+				"Hands",
+				"Hands & Weapon"
 			};
 
-			ImGui::Checkbox("Chams XQZ", &Settings::Esp::esp_XQZ);
-			ImGui::Checkbox("Chams Materials", &Settings::Misc::misc_ChamsMaterials);
+			ImGui::Checkbox("XQZ Chams", &Settings::Esp::esp_XQZ); //invisible
+			ImGui::Checkbox("Material Cham", &Settings::Misc::misc_ChamsMaterials);
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("##CHAMSMATERIALS", &Settings::Misc::misc_ChamsMaterialsList, material_items, ARRAYSIZE(material_items));
 
@@ -1203,7 +1204,7 @@ namespace Client
 			ImGui::Separator();
 			ImGui::Spacing();
 
-			ImGui::Checkbox("Arms Materials", &Settings::Misc::misc_ArmMaterials);
+			ImGui::Checkbox("Hand Materials", &Settings::Misc::misc_ArmMaterials);
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("##ARMMATERIALTYPE", &Settings::Misc::misc_ArmMaterialsType, armtype_items, ARRAYSIZE(armtype_items));
 			ImGui::SameLine();
@@ -1221,9 +1222,9 @@ namespace Client
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("##HITSOUND", &Settings::Esp::esp_HitMarkerSound, iHitSound, ARRAYSIZE(iHitSound));
 			ImGui::SameLine();
-			ImGui::Text("Hitmarker Sound");
-
+			ImGui::Text("Hitsound");
 			if (Settings::Esp::esp_HitMarker) ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
+			else ImGui::Text("Hitlogs (enable hitmarker)");
 		}
 	}
 	void DrawConfig()

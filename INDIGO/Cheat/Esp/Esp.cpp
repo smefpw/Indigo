@@ -289,7 +289,7 @@ void CEsp::HitEvents(IGameEvent* event)
 			if (nUserID || nDead)
 			{
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
-				EventLog->AddToLog("Hit %s in the %s for %i damage (%i health remaining)", // much skeet pasta yes?
+				EventLog->AddToLog("hit %s in the %s for %i damage (%i health remaining)", // much skeet pasta yes?
 					killed_info.m_szPlayerName, 
 					HitgroupToName(event->GetInt("hitgroup")), 
 					event->GetInt("dmg_health"), 
@@ -310,10 +310,11 @@ void CEsp::HitmarkerEvents(IGameEvent* event)
 			switch (Settings::Esp::esp_HitMarkerSound)
 			{
 				case 0: break;
-				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break;
-				case 2: PlaySoundA(pew, NULL, SND_ASYNC | SND_MEMORY); break;
-				case 3: PlaySoundA(roblox, NULL, SND_ASYNC | SND_MEMORY); break;
-				case 4: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav");
+				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break; // default
+				case 2: PlaySoundA(pew, NULL, SND_ASYNC | SND_MEMORY); break; // anime
+				case 3: PlaySoundA(roblox, NULL, SND_ASYNC | SND_MEMORY); break; // roblox
+				case 4: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav"); // metallic
+				case 5: PlaySoundA(bameware, NULL, SND_ASYNC | SND_MEMORY); break; // bameware
 			}
 
 			Settings::hitmarkerAlpha = 1.f;

@@ -9,7 +9,14 @@
 **TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
 ## Changelogs
 
-**4.4.1**
+**4.4.2**
++ Cleaned even more code up (removed some old unused hitsounds (commented out))
++ Renamed some shit
++ Added bameware hitsound
+
+**Old Changelogs**
+
+4.4.1
 + Fixed Time-based Backtrack
 + Cleaned up even more
 + Settings for Inventory Changer/Medals now save/load (for Medals you'll need to edit your configs for now)
@@ -17,8 +24,6 @@
 + Player Status (reloading , flashed , scoped , defusing ) (credits for choZen#1878)
 + Triggerbot (fixed) (credits for choZen#1878)
 + Small fixes
-
-**Old Changelogs**
 
 4.4
 + Reworked SKINCHANGER
