@@ -192,6 +192,7 @@ namespace Client
 
 		EventLog->AddToLog("Successfully injected! Enjoy cheating with smef's Indigo");
 		EventLog->AddToLog("We are aware of some saving bugs and will be fixed soon!");
+		EventLog->AddToLog("Older configs since 4.4.3 are now BROKEN!");
 
 		return true;
 	}
@@ -518,11 +519,11 @@ namespace Client
 			ImGui::Combo("Fov Type", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_FovType, AimFovType, IM_ARRAYSIZE(AimFovType));
 			ImGui::PopItemWidth();
 
-			const char* BestHit[] = { "Prefer Manually" , "All Spots" , "No Headshot" , "No Arms/Legs" , "No Arms/Legs/Neck" };
+			const char* BestHit[] = { "Prefer Manually" , "Nearest" , "Ignore Head" , "Ignore Arms/Legs" , "Ignore Arms/Legs/Neck" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Hit Scan", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit, BestHit, IM_ARRAYSIZE(BestHit));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("if disabled then used Aimspot");
+				ImGui::SetTooltip("If 'Prefer Manually' then use Hitbox");
 
 			ImGui::PopItemWidth();
 
@@ -553,7 +554,7 @@ namespace Client
 				ImGui::SliderInt("RCS Smooth", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_RcsSmooth, 1, 300);
 				ImGui::PopItemWidth();
 
-				const char* ClampType[] = { "All Target" , "Shot" , "Shot + Target" };
+				const char* ClampType[] = { "On Target" , "On Shot" , "On Shot & Target" };
 				ImGui::PushItemWidth(362.f);
 				ImGui::Combo("RCS Clamp", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_RcsClampType, ClampType, IM_ARRAYSIZE(ClampType));
 				ImGui::PopItemWidth();
@@ -639,7 +640,7 @@ namespace Client
 			ImGui::PopItemWidth();
 			ImGui::SameLine(SpaceLineTwo);
 
-			const char* items2[] = { "Hold" , "Press" };
+			const char* items2[] = { "Held" , "Toggle" };
 			ImGui::PushItemWidth(130.f);
 			ImGui::Combo("Key Mode", &Settings::Triggerbot::trigger_KeyMode, items2, IM_ARRAYSIZE(items2));
 			ImGui::PopItemWidth();
@@ -650,9 +651,9 @@ namespace Client
 			ImGui::PushItemWidth(362.f);
 			//ImGui::SliderInt("Min Distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMin, 0, 5000);
 			//ImGui::SliderInt("Max Distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMax, 0, 5000);
-			ImGui::SliderInt("Fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Fov, 1, 100);
-			ImGui::SliderInt("Delay Before", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayBefore, 0, 200);
-			ImGui::SliderInt("Delay After", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayAfter, 0, 1000);
+			ImGui::SliderInt("FOV", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Fov, 1, 100);
+			ImGui::SliderInt("First Shot Delay", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayBefore, 0, 200);
+			ImGui::SliderInt("Next Shot Delay", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayAfter, 0, 1000);
 			ImGui::PopItemWidth();
 
 			ImGui::Separator();
