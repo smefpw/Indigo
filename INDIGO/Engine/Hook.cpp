@@ -9,7 +9,7 @@ CAimbot* g_Aim;
 namespace Engine
 {
 	namespace Hook
-	{
+	{ // uses VMT / VTable hooking (like most cheats).... Until further dumps show more this is "safe"
 		CSX::Hook::VTable IDirect3DDevice9Table;
 		CSX::Hook::VTable SoundTable;
 		CSX::Hook::VTable ClientModeTable;

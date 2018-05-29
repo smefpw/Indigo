@@ -85,13 +85,13 @@ CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(I
 
 	ConVar* skybox = Interfaces::GetConVar()->FindVar("sv_skyname");
 
-	if (Settings::Misc::misc_SkyName) { if (skybox) skybox->SetValue(Settings::Misc::misc_SkyName); }
-	if (Settings::Misc::misc_NoSky) { if (skybox) skybox->SetValue("sky_l4d_rural02_ldr"); }
+	if (Settings::Misc::misc_SkyName && Settings::Untrusted) { if (skybox) skybox->SetValue(Settings::Misc::misc_SkyName); }
+	if (Settings::Misc::misc_NoSky && Settings::Untrusted) { if (skybox) skybox->SetValue("sky_l4d_rural02_ldr"); }
 
 
 	ConVar* PostProcess = Interfaces::GetConVar()->FindVar("mat_postprocess_enable");
 	*(int*)((DWORD)&PostProcess->fnChangeCallback + 0xC) = 0;
-	PostProcess->SetValue(!Settings::Misc::misc_EPostprocess);
+	PostProcess->SetValue(!Settings::Misc::misc_Postprocess);
 
 	if (Settings::Misc::misc_namespamidkmemes)
 	{
@@ -146,7 +146,7 @@ void CMisc::FrameStageNotify(ClientFrameStage_t Stage)
 	{
 		static QAngle vecAngles;
 		Interfaces::Engine()->GetViewAngles(vecAngles);
-		if (Settings::Misc::misc_ThirdPerson && !localplayer->IsDead())
+		if (Settings::Misc::misc_ThirdPerson && !localplayer->IsDead() && Settings::Untrusted)
 		{
 			if (!Interfaces::Input()->m_fCameraInThirdPerson)
 				Interfaces::Input()->m_fCameraInThirdPerson = true;

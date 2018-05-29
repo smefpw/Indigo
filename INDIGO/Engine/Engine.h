@@ -33,7 +33,7 @@ typedef void(*LPSEARCHFUNC)(LPCTSTR lpszFileName);
 
 template<typename... Args> extern void PrintToConsole(const char* format, Args... args)
 {
-	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "[smef.cc] "); // pls no rename me sad!!!!!!
+	Interfaces::GetConVar()->ConsoleColorPrintf(Color(242, 34, 214, 255), "\x5B\x73\x6D\x65\x66\x2E\x63\x63\x5D\x20"); // pls no rename me sad!!!!!!
 	Interfaces::GetConVar()->ConsolePrintf(format, args...);
 	Interfaces::GetConVar()->ConsolePrintf("\n");
 };

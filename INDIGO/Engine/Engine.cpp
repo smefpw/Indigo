@@ -11,7 +11,7 @@ namespace Engine
 	void PrintToConsole(const char * format, Args ...args);
 	bool Initialize()
 	{
-		CLicense License;
+		//CLicense License;
 		
 		//if ENABLE_LICENSING == 1
 		//if ( !License.CheckLicense() )
@@ -288,30 +288,15 @@ namespace Engine
 		switch (value)
 		{
 		case 1:
-		{
-			SetMyClanTag("", "");
-			break;
-		}
+			SetMyClanTag("", ""); break;
 		case 2:
-		{
-			SetMyClanTag("smef.cc", "smef.cc");
-			break;
-		}
+			SetMyClanTag("smef.cc", "smef.cc"); break;
 		case 3:
-		{
-			SetMyClanTag("smef.cc \r", "smef.cc");
-			break;
-		}
+			SetMyClanTag("smef.cc \r", "smef.cc"); break;
 		case 4:
-		{
-			SetMyClanTag("[VALV\xE1\xB4\xB1]", "Valve");
-			break;
-		}
+			SetMyClanTag("[VALV\xE1\xB4\xB1]", "Valve Corporation"); break;
 		case 5:
-		{
-			SetMyClanTag("[VALV\xE1\xB4\xB1] \r", "Valve Only");
-			break;
-		}
+			SetMyClanTag("[VALV\xE1\xB4\xB1] \r", "Valve Corporation"); break;
 		case 6:
 		{
 			static int motion = 0;
@@ -323,91 +308,23 @@ namespace Engine
 			int value = ServerTime % 17;
 			switch (value)
 			{
-			case 0:
-			{
-				SetMyClanTag("", "smef.cc");
-				break;
-			}
-			case 1:
-			{
-				SetMyClanTag("s", "smef.cc");
-				break;
-			}
-			case 2:
-			{
-				SetMyClanTag("sm", "smef.cc");
-				break;
-			}
-			case 3:
-			{
-				SetMyClanTag("sme", "smef.cc");
-				break;
-			}
-			case 4:
-			{
-				SetMyClanTag("smef", "smef.cc");
-				break;
-			}
-			case 5:
-			{
-				SetMyClanTag("smef.", "smef.cc");
-				break;
-			}
-			case 6:
-			{
-				SetMyClanTag("smef.c", "smef.cc");
-				break;
-			}
-			case 7:
-			{
-				SetMyClanTag("smef.cc", "smef.cc");
-				break;
-			}
-			case 8:
-			{
-				SetMyClanTag("smef.cc", "smef.cc");
-				break;
-			}
-			case 9:
-			{
-				SetMyClanTag("smef.cc", "smef.cc");
-				break;
-			}
-			case 10:
-			{
-				SetMyClanTag("smef.c", "smef.cc");
-				break;
-			}
-			case 11:
-			{
-				SetMyClanTag("smef.", "smef.cc");
-				break;
-			}
-			case 12:
-			{
-				SetMyClanTag("smef", "smef.cc");
-				break;
-			}
-			case 13:
-			{
-				SetMyClanTag("sme", "smef.cc");
-				break;
-			}
-			case 14:
-			{
-				SetMyClanTag("sm", "smef.cc");
-				break;
-			}
-			case 15:
-			{
-				SetMyClanTag("s", "smef.cc");
-				break;
-			}
-			case 16:
-			{
-				SetMyClanTag("", "smef.cc");
-				break;
-			}
+			case 0: SetMyClanTag("             ", "smef's Indigo"); break;
+			case 1: SetMyClanTag("            s", "smef's Indigo"); break;
+			case 2: SetMyClanTag("           sm", "smef's Indigo"); break;
+			case 3: SetMyClanTag("          sme", "smef's Indigo"); break;
+			case 4: SetMyClanTag("         smef", "smef's Indigo"); break;
+			case 5: SetMyClanTag("        smef ", "smef's Indigo"); break;
+			case 6: SetMyClanTag("       smef  ", "smef's Indigo"); break;
+			case 7: SetMyClanTag("      smef   ", "smef's Indigo"); break;
+			case 8: SetMyClanTag("     smef    ", "smef's Indigo"); break;
+			case 9: SetMyClanTag("    smef     ", "smef's Indigo"); break;
+			case 10:SetMyClanTag("   smef      ", "smef's Indigo"); break;
+			case 11:SetMyClanTag("  smef       ", "smef's Indigo"); break;
+			case 12:SetMyClanTag(" smef        ", "smef's Indigo"); break;
+			case 13:SetMyClanTag("smef         ", "smef's Indigo"); break;
+			case 14:SetMyClanTag("mef          ", "smef's Indigo"); break;
+			case 15:SetMyClanTag("ef           ", "smef's Indigo"); break;
+			case 16:SetMyClanTag("f            ", "smef's Indigo"); break;
 			}
 			counter++;
 		}
@@ -429,7 +346,7 @@ namespace Engine
 
 	void ChatSpamRandom()
 	{
-		std::vector<std::string> chatspamsss = { "I'm using smef.cc's Indigo Remastered!", "My Paste > Your Paste", "Open Source Cheat > Your Cheat (which is pasted)", "Sinclair.zone has dog fingers" };
+		std::vector<std::string> chatspamsss = { "I'm using smef.cc's Indigo Remastered!", "My Paste > Your Paste", "Open Source Cheat > Your Cheat", "Sinclair.zone has dog fingers" };
 
 		static DWORD lastspammed = 0;
 		if (GetTickCount() - lastspammed > 800)

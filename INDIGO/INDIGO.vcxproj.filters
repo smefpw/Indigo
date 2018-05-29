@@ -5,7 +5,6 @@
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
-    <ClCompile Include="License\License.cpp" />
     <ClCompile Include="Main\Main.cpp" />
     <ClCompile Include="RL\ReflectiveLoader.cpp" />
     <ClCompile Include="SDK\CRC.cpp" />
@@ -65,7 +64,6 @@
     <ClInclude Include="ImGui\stb_rect_pack.h" />
     <ClInclude Include="ImGui\stb_textedit.h" />
     <ClInclude Include="ImGui\stb_truetype.h" />
-    <ClInclude Include="License\License.h" />
     <ClInclude Include="Main\Main.h" />
     <ClInclude Include="RL\ReflectiveDLLInjection.h" />
     <ClInclude Include="RL\ReflectiveLoader.h" />

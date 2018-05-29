@@ -133,7 +133,6 @@ namespace Settings
 
 		extern bool esp_Time;
 		extern bool esp_Watermark;
-		extern bool esp_Cheatbuild;
 		extern bool esp_Name;
 		extern bool esp_Rank;
 		extern int esp_Health;
@@ -244,7 +243,6 @@ namespace Settings
 		extern bool misc_SkinChanger;
 		extern bool misc_KnifeChanger;
 		extern bool misc_NoSky;
-		extern bool misc_EPostprocess;
 		extern bool misc_Postprocess;
 		extern bool misc_Bhop;
 		extern int misc_Clan;
@@ -301,18 +299,18 @@ namespace Settings
 }
 
 #define CHEAT_NAME "smef.cc"
-#define WATER_MARK "smef.cc 4.5"
-#define AIMBOT_TEXT "Aim"
+#define WATER_MARK "smef's Indigo Remastered | Version: 4.4.2"
+#define AIMBOT_TEXT "Legitbot"
 #define COLORS_TEXT "Colors"
 #define CONFIG_TEXT "Config"
-#define TRIGGER_TEXT "Trigger"
-#define VISUAL_TEXT "ESP"
-#define RADAR_TEXT "Radar"
+#define TRIGGER_TEXT "Triggerbot"
+#define VISUAL_TEXT "Visuals"
+#define RADAR_TEXT "Radarhack"
 #define KNIFEBOT_TEXT "Knifebot"
-#define SKIN_TEXT "Skin"
+#define SKIN_TEXT "Skins"
 #define MISC_TEXT "Misc"
-#define PROFILE_TEXT "PROFILE"
-#define INVENTORY_TEXT "INVENTORY"
+#define PROFILE_TEXT "ProfileChanger"
+#define INVENTORY_TEXT "InventoryChanger"
 
 #define CVAR_AIMBOT_DEATHMATCH "aim_Deathmatch"
 #define CVAR_AIMBOT_WALLATTACK "aim_WallAttack"
@@ -368,14 +366,12 @@ namespace Settings
 #define CVAR_KEY_MOUSE5 "MOUSE5"
 
 #define CVAR_ESP_STYLE "ESP_Style"
-#define CVAR_ESP_SIZE "ESP_Size"
 #define CVAR_ESP_LINE "ESP_Line"
 #define CVAR_ESP_OUTLINE "ESP_Outline"
 #define CVAR_ESP_NAME "ESP_Name"
 #define CVAR_ESP_RANK "ESP_Rank"
 #define CVAR_ESP_TIME "ESP_Time"
 #define CVAR_ESP_WATER "ESP_Watermark"
-#define CVAR_ESP_CHEATBUILD "ESP_Cheatbuild"
 
 #define CVAR_ESP_HITMARKER_COLOR "ESP_HitMarkerColor"
 
@@ -441,8 +437,7 @@ namespace Settings
 #define CVAR_MISC_MENU_COLOR "misc_MenuColor"
 #define CVAR_MISC_SKIN_CHANGER "misc_SkinChanger"
 #define CVAR_MISC_KNIFE_CHANGER "misc_KnifeChanger"
-#define CVAR_MISC_EPOSTPROCESS "misc_EPostprocess"
-#define CVAR_MISC_POSTPROCESS "misc_Postprocess"
+#define CVAR_misc_Postprocess "misc_Postprocess"
 #define CVAR_AIMBOT_BACKTRACK "aim_Backtrack"
 #define CVAR_AIMBOT_BACKTRACK_TICK "aim_Backtracktickrate"
 #define CVAR_MISC_BHOP "misc_Bhop"

@@ -94,14 +94,12 @@ namespace Settings
 		}
 
 		Esp::esp_Style = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_STYLE , Esp::esp_Style );
-		Esp::esp_Size = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_SIZE , Esp::esp_Size );
 		Esp::esp_Line = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_LINE , Esp::esp_Line ) != false;
 		Esp::esp_Outline = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_OUTLINE , Esp::esp_Outline ) != false;
 
 		Esp::esp_Name = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_NAME , Esp::esp_Name ) != false;
 		Esp::esp_Time = CSX::Cvar::LoadCvar(VISUAL_TEXT, CVAR_ESP_TIME, Esp::esp_Time) != false;
 		Esp::esp_Watermark = CSX::Cvar::LoadCvar(VISUAL_TEXT, CVAR_ESP_WATER, Esp::esp_Watermark) != false;
-		Esp::esp_Cheatbuild = CSX::Cvar::LoadCvar(VISUAL_TEXT, CVAR_ESP_CHEATBUILD, Esp::esp_Cheatbuild) != false;
 		Esp::esp_Rank = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_RANK , Esp::esp_Rank ) != false;
 		Esp::esp_Health = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_HEALTH , Esp::esp_Health );
 		Esp::esp_Armor = CSX::Cvar::LoadCvar( VISUAL_TEXT , CVAR_ESP_ARMOR , Esp::esp_Armor );
@@ -211,7 +209,7 @@ namespace Settings
 
 		Misc::misc_SkinChanger = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_SKIN_CHANGER, Misc::misc_SkinChanger) != false;
 		Misc::misc_KnifeChanger = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_KNIFE_CHANGER, Misc::misc_KnifeChanger) != false;
-		Misc::misc_EPostprocess = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_EPOSTPROCESS, Misc::misc_EPostprocess) != false;
+		Misc::misc_Postprocess = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_misc_Postprocess, Misc::misc_Postprocess) != false;
 		Misc::misc_Bhop = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_BHOP , Misc::misc_Bhop ) != false;
 		Misc::misc_Punch = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_PUNCH , Misc::misc_Punch ) != false;
 		Misc::misc_AwpAim = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim ) != false;
@@ -338,14 +336,12 @@ namespace Settings
 		}
 
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_STYLE , Settings::Esp::esp_Style );
-		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_SIZE , Settings::Esp::esp_Size );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_LINE , Settings::Esp::esp_Line );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_OUTLINE , Settings::Esp::esp_Outline );
 
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_NAME , Settings::Esp::esp_Name );
 		CSX::Cvar::SaveCvar(VISUAL_TEXT, CVAR_ESP_TIME, Settings::Esp::esp_Time);
 		CSX::Cvar::SaveCvar(VISUAL_TEXT, CVAR_ESP_WATER, Settings::Esp::esp_Watermark);
-		CSX::Cvar::SaveCvar(VISUAL_TEXT, CVAR_ESP_CHEATBUILD, Settings::Esp::esp_Cheatbuild);
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_RANK , Settings::Esp::esp_Rank );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_HEALTH , Settings::Esp::esp_Health );
 		CSX::Cvar::SaveCvar( VISUAL_TEXT , CVAR_ESP_ARMOR , Settings::Esp::esp_Armor );
@@ -498,7 +494,7 @@ namespace Settings
 
 		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_SKIN_CHANGER, Misc::misc_SkinChanger);
 		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_KNIFE_CHANGER, Misc::misc_KnifeChanger);
-		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_EPOSTPROCESS, Misc::misc_EPostprocess);
+		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_misc_Postprocess, Misc::misc_Postprocess);
 		CSX::Cvar::SaveCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACK, Aimbot::aim_Backtrack);
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_BHOP , Misc::misc_Bhop );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_PUNCH , Misc::misc_Punch );
@@ -623,17 +619,16 @@ namespace Settings
 	namespace Esp
 	{
 		int esp_Style = 0; // 0 - Box 1 - CoalBox
-		int esp_Size = 1;
+		int esp_Size = 10;
 		bool esp_Line = false;
 		bool esp_Outline = false; // Box ( 0 - Box 1 - OutlineBox ) ,
 						  // CoalBox ( 0 - CoalBox 1 - OutlineCoalBox )	
 
-		bool esp_Time = true;
+		bool esp_Time = false;
 		bool esp_Watermark = true;
-		bool esp_Cheatbuild = true;
 		bool esp_Name = false;
 		bool esp_Rank = false;
-		bool esp_Chicken = false;
+		bool esp_Chicken = false;;
 		int esp_Health = 0;
 		int esp_Armor = 0;
 		bool esp_Weapon = false;
@@ -737,7 +732,6 @@ namespace Settings
 		const char* misc_SkyName;
 		int misc_CurrentSky;
 		bool misc_NoSky = false;
-		bool misc_EPostprocess = false;
 		bool misc_Postprocess = false;
 		bool misc_Bhop = false;
 		bool misc_Punch = false;
@@ -763,7 +757,7 @@ namespace Settings
 		float misc_RainbowSpeed = 0.001f;
 		bool misc_FovChanger = false;
 		int misc_FovView = 90;
-		int misc_FovModelView = 90;
+		int misc_FovModelView = 68;
 		float misc_AwpAimColor[3] = { 0.f,0.f,0.f };
 		float misc_TextColor[3] = { 0.f, 0.f, 0.f };
 		float hitmarkerAlpha;

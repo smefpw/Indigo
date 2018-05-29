@@ -1,12 +1,11 @@
 #pragma once
-
 #include "../../Engine/Engine.h"
 #include "../../SDK/Spoofed.h"
 
 class CMisc
 {
 public:
-//[swap_lines]
+	//[swap_lines]
 	void OnRender();
 	void OnCreateMove( CUserCmd* pCmd );
 	void FrameStageNotify(ClientFrameStage_t Stage);

@@ -9,12 +9,23 @@
 **TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
 ## Changelogs
 
-**4.4.2**
+**4.4.3**
+*OLDER CONFIGS ARE BROKEN*
++ Changed Animation Clantag to be more editable and better looking
++ Removed debug mode as it never worked right
++ Commented stuff that doesn't work
++ Made Config selection look cleaner
++ Made "Untrusted Features" more secure.
++ Changed file format from .ini to .smef
++ Make configs more cleaner to edit in Notepad
++ Removed unused files
++ probs did some more but forgot!
+
+**Old Changelogs**
+4.4.2
 + Cleaned even more code up (removed some old unused hitsounds (commented out))
 + Renamed some shit
 + Added bameware hitsound
-
-**Old Changelogs**
 
 4.4.1
 + Fixed Time-based Backtrack

@@ -44,15 +44,15 @@ namespace Client
 
 	void ReadConfigs(LPCTSTR lpszFileName)
 	{
-		if (!strstr(lpszFileName, "gui.ini"))
+		if (!strstr(lpszFileName, "gui.smef"))
 			ConfigList.push_back(lpszFileName);
 	}
 
 	void RefreshConfigs()
 	{
 		ConfigList.clear();
-		string ConfigDir = BaseDir + "\\" + "*.ini";
-		GuiFile = BaseDir + "\\" + "gui.ini";
+		string ConfigDir = BaseDir + "\\" + "*.smef";
+		GuiFile = BaseDir + "\\" + "gui.smef";
 		CreateDirectoryW(L"C:\\Indigo", NULL);
 		SearchFiles(ConfigDir.c_str(), ReadConfigs, FALSE);
 	}
@@ -175,8 +175,8 @@ namespace Client
 		g_pMisc = new CMisc();
 		g_pInventoryChanger = new CInventoryChanger();
 
-		GuiFile = BaseDir + "\\" + "gui.ini";
-		IniFile = BaseDir + "\\" + "settings.ini";
+		GuiFile = BaseDir + "\\" + "gui.smef";
+		IniFile = BaseDir + "\\" + "settings.smef";
 
 		g_pSkin->InitalizeSkins();
 
@@ -190,7 +190,8 @@ namespace Client
 
 		SendClientHello();
 
-		EventLog->AddToLog("Successfully injected! Enjoy your cheating experience.");
+		EventLog->AddToLog("Successfully injected! Enjoy cheating with smef's Indigo");
+		EventLog->AddToLog("We are aware of some saving bugs and will be fixed soon!");
 
 		return true;
 	}
@@ -259,7 +260,7 @@ namespace Client
 				static float rainbow;
 				rainbow += 0.005f;
 				if (rainbow > 1.f) rainbow = 0.f;
-				g_pRender->Text(15, 15, false, true, Color::FromHSB(rainbow, 1.f, 1.f), WATER_MARK);
+				g_pRender->Text(30, 30, false, true, Color::FromHSB(rainbow, 1.f, 1.f), WATER_MARK);
 			}
 
 			g_pGui->MenuColor();
@@ -282,7 +283,7 @@ namespace Client
 			}
 
 			if (Settings::Esp::esp_Time)
-				g_pRender->Text(15, 30, false, true, Color::White(), std::asctime(std::localtime(&result)));
+				g_pRender->Text(30, 45, false, true, Color::White(), std::asctime(std::localtime(&result)));
 
 			//if (Settings::Aimbot::aim_Backtrack)
 				//g_pRender->Text(15, 66, false, true, Color::White(), to_string(BacktrackTicks()).c_str());
@@ -579,7 +580,7 @@ namespace Client
 			ImGui::Text("Anti Aim Options");
 			ImGui::Separator();
 			ImGui::Spacing();
-			ImGui::Checkbox("Legit Anti Aim", &Settings::Misc::misc_LegitAA);
+			ImGui::Checkbox("Legit Anti-Aim", &Settings::Misc::misc_LegitAA);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("left + right arrow key to change angles");
 			ImGui::Checkbox("Silent Aim", &Settings::Misc::misc_LegitAAToggle);
@@ -687,9 +688,9 @@ namespace Client
 	{
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
-			"SKINCHANGER", 
-			"INVENTORY CHANGER", 
-			"PROFILE CHANGER" 
+			"Skinchanger", 
+			"Inventory", 
+			"Profile" 
 		};
 		static int tabOrder[] = { 0 , 1 , 2 };
 		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
@@ -705,13 +706,13 @@ namespace Client
 			const char* quality_items[] =
 			{
 				"Use PaintKit Default",
-				"Consumer Grade (white)",
-				"Industrial Grade (light blue)",
-				"Mil-Spec (darker blue)",
-				"Restricted (purple)",
-				"Classified (pinkish purple)",
-				"Covert (red)",
-				"Exceedingly Rare (gold)",
+				"Consumer Grade (White)",
+				"Industrial Grade (Light Blue)",
+				"Mil-Spec (Darker Blue)",
+				"Restricted (Purple)",
+				"Classified (Pinkish Purple)",
+				"Covert (Red)",
+				"Exceedingly Rare (Gold)",
 			};
 			//[enc_string_enable /]
 			const char* GlovesType[] = {
@@ -863,7 +864,7 @@ namespace Client
 
 		if (otherpages == 1)
 		{
-			ImGui::Text("Other Changers");
+			//ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
 			if (Settings::InvChanger::Inventory_Changer) 
 			{
@@ -873,7 +874,7 @@ namespace Client
 				ImGui::Columns(2, nullptr, false);
 				static int itemidtmp = 0, itemDefinitionIndex = 0, paintKit = 0, paintkit_temp_skin = 0, paintkit_temp_gloves = 0, rarity = 0, seed = 0, raritypick = 0;
 				static float wear = 0.f;
-				const char* raritynames[] = { "Default (gray)", "Consumer Grade (white)", "Industrial Grade (light blue)", "Mil-Spec (darker blue)", "Restricted (purple)", "Classified (pinkish purple)", "Covert (red)", "Exceedingly Rare (gold)" };
+				const char* raritynames[] = { "Default (Gray)", "Consumer Grade (White)", "Industrial Grade (Light Blue)", "Mil-Spec (Darker Blue)", "Restricted (Purple)", "Classified (Pinkish Purple)", "Covert (Red)", "Exceedingly Rare (Gold)" };
 				const char* itemnames[] = { "Desert Eagle", "Dual Berettas", "Five-Seven", "Glock-18", "AK-47", "AUG", "AWP", "FAMAS", "G3SG1", "Galil AR", "M249", "M4A4",
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
@@ -928,43 +929,46 @@ namespace Client
 			if (otherpages == 2)
 			{
 				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
-				const char* MMRank[] = {
-					"Silver I",
-					"Silver II",
-					"Silver III",
-					"Silver IV",
-					"Silver Elite",
-					"Silver Elite Master",
+				if (Settings::InvChanger::Profile_Info)
+				{
+					const char* MMRank[] = {
+						"Silver I",
+						"Silver II",
+						"Silver III",
+						"Silver IV",
+						"Silver Elite",
+						"Silver Elite Master",
 
-					"Gold Nova I",
-					"Gold Nova II",
-					"Gold Nova III",
-					"Gold Nova Master",
+						"Gold Nova I",
+						"Gold Nova II",
+						"Gold Nova III",
+						"Gold Nova Master",
 
-					"Master Guardian I",
-					"Master Guardian II",
-					"Master Guardian Elite",
-					"Distinguished Master Guardian",
+						"Master Guardian I",
+						"Master Guardian II",
+						"Master Guardian Elite",
+						"Distinguished Master Guardian",
 
-					"Legendary Eagle",
-					"Legendary Eagle Master",
-					"Supreme Master First Class",
-					"Global Elite" };
-				static int selected = 0;
-				ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
-				Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
+						"Legendary Eagle",
+						"Legendary Eagle Master",
+						"Supreme Master First Class",
+						"The Global Elite" };
+					static int selected = 0;
+					ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
+					Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
 
-				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
-				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
-				ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
-				ImGui::Spacing();
-				ImGui::Text("Commends");
-				ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
-				ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
-				ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
-				ImGui::Spacing();
-				if (ImGui::Button("Apply Changes"))
-					SendMMHello();
+					ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
+					ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
+					ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
+					ImGui::Spacing();
+					ImGui::Text("Commends");
+					ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
+					ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
+					ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
+					ImGui::Spacing();
+					if (ImGui::Button("Apply Changes"))
+						SendMMHello();
+				}
 			}
 	}
 
@@ -1054,9 +1058,9 @@ namespace Client
 		ImGui::BeginGroup();
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
-			"Part 1",
-			"Part 2",
-			"Part 3"
+			"Part I",
+			"Part II",
+			"Part III"
 		};
 		static int tabOrder[] = { 0 , 1 , 2 };
 		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
@@ -1137,16 +1141,14 @@ namespace Client
 			ImGui::Spacing();
 
 			ImGui::PushItemWidth(362.f);
-			ImGui::Combo("Visible", &Settings::Esp::esp_Visible, items2, IM_ARRAYSIZE(items2));
+			ImGui::Combo("ESP Visible", &Settings::Esp::esp_Visible, items2, IM_ARRAYSIZE(items2));
 
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
 
 			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Size", &Settings::Esp::esp_Size, 0, 10);
-			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("Bomb Timer", &Settings::Esp::esp_BombTimer, 0, 65);
+			ImGui::SliderInt("Custom Bomb Timer", &Settings::Esp::esp_BombTimer, 0, 65);
 			ImGui::PushItemWidth(362.f);
 			ImGui::SliderInt("Bullet Trace", &Settings::Esp::esp_BulletTrace, 0, 3000);
 
@@ -1154,11 +1156,11 @@ namespace Client
 			ImGui::Separator();
 			ImGui::Spacing();
 
-			const char* items3[] = { "None" , "Number" , "Bottom" , "Left" };
+			const char* items3[] = { "None" , "Number Bottom" , "Bar Bottom" , "Bar Left" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Health", &Settings::Esp::esp_Health, items3, IM_ARRAYSIZE(items3));
 
-			const char* items4[] = { "None" , "Number" , "Bottom" , "Right" };
+			const char* items4[] = { "None" , "Number Bottom" , "Bar Bottom" , "Bar Right" };
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("Armor", &Settings::Esp::esp_Armor, items4, IM_ARRAYSIZE(items4));
 
@@ -1196,6 +1198,7 @@ namespace Client
 			};
 
 			ImGui::Checkbox("XQZ Chams", &Settings::Esp::esp_XQZ); //invisible
+			ImGui::PushItemWidth(362.f);
 			ImGui::Checkbox("Material Cham", &Settings::Misc::misc_ChamsMaterials);
 			ImGui::PushItemWidth(362.f);
 			ImGui::Combo("##CHAMSMATERIALS", &Settings::Misc::misc_ChamsMaterialsList, material_items, ARRAYSIZE(material_items));
@@ -1223,8 +1226,7 @@ namespace Client
 			ImGui::Combo("##HITSOUND", &Settings::Esp::esp_HitMarkerSound, iHitSound, ARRAYSIZE(iHitSound));
 			ImGui::SameLine();
 			ImGui::Text("Hitsound");
-			if (Settings::Esp::esp_HitMarker) ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
-			else ImGui::Text("Hitlogs (enable hitmarker)");
+			ImGui::Checkbox("Hitlogs", &Settings::Esp::esp_hitevent);
 		}
 	}
 	void DrawConfig()
@@ -1234,53 +1236,51 @@ namespace Client
 		ImGui::Separator();
 		static int iConfigSelect = 0;
 		static int iMenuSheme = 1;
-		static char ConfigName[64] = { 0 };
+		static char ConfigName[11] = { 0 };
+
+		ImGui::PushItemWidth(128.f);
 
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
 
-		ImGui::Separator();
-
 		if (ImGui::Button("Load Config")) {
 			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Loaded configuration.");
+			EventLog->AddToLog("Selected Config Loaded.");
 		}
 		ImGui::SameLine();
 
 		if (ImGui::Button("Save Config")) {
 			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Saved configuration.");
+			EventLog->AddToLog("Selected Config Saved.");
 		}
 		ImGui::SameLine();
-
 		if (ImGui::Button("Refresh Config List"))
 			RefreshConfigs();
 
-		ImGui::Separator();
 
-		ImGui::InputText("Config Name", ConfigName, 64);
-
-		if (ImGui::Button("Create & Save new Config"))
+		ImGui::InputText("", ConfigName, 11);
+		ImGui::SameLine();
+		if (ImGui::Button("Make New Config"))
 		{
 			string ConfigFileName = ConfigName;
 
 			if (ConfigFileName.size() < 1)
-				ConfigFileName = "settings";
+				ConfigFileName = "default";
 
-			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".ini");
-			EventLog->AddToLog("Configuration created.");
+			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef");
+			EventLog->AddToLog("Created New Config.");
 			RefreshConfigs();
 		}
 
-		ImGui::Separator();
+		//ImGui::Separator();
 
-		const char* ThemesList[] = { "Purple" , "Default" , "Light Pink" , "Dark Blue" , "MidNight" , "Night" , "Dunno" , "Blue"  , "Black" , "Green" , "Yellow" , "Light Blue" , "Light Grey" , "pHooK" };
+		//const char* ThemesList[] = { "Purple" , "Default" , "Light Pink" , "Dark Blue" , "MidNight" , "Night" , "Dunno" , "Blue"  , "Black" , "Green" , "Yellow" , "Light Blue" , "Light Grey" , "pHooK" };
 
-		ImGui::PushItemWidth(362.f);
-		ImGui::Combo("Menu Color", &iMenuSheme, ThemesList, IM_ARRAYSIZE(ThemesList));
+		//ImGui::PushItemWidth(362.f);
+		//ImGui::Combo("Menu Color", &iMenuSheme, ThemesList, IM_ARRAYSIZE(ThemesList));
 
-		ImGui::Separator();
+		//ImGui::Separator();
 
-		if (ImGui::Button("Apply Color"))
+		/*if (ImGui::Button("Apply Color"))
 		{
 			if (iMenuSheme == 0)
 				g_pGui->purple();
@@ -1310,7 +1310,7 @@ namespace Client
 				g_pGui->yellow();
 			else if (iMenuSheme == 13)
 				g_pGui->BlackSheme();
-		}
+		}*/
 	}
 
 	void DrawMisc() // Misc
@@ -1360,14 +1360,15 @@ namespace Client
 			ImGui::Checkbox("Show Spectators", &Settings::Misc::misc_Spectators);
 			ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("Recoil Crosshair", &Settings::Misc::misc_Punch);
-			ImGui::SameLine(SpaceLineTwo);
-			ImGui::Checkbox("Inventory Unlocker", &Settings::Misc::misc_inventory);
+			//ImGui::SameLine(SpaceLineTwo);
+			//ImGui::Checkbox("Inventory Unlocker", &Settings::Misc::misc_inventory); // doesn't work
 
 			ImGui::Checkbox("No Flash", &Settings::Misc::misc_NoFlash);
 			ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("No Smoke", &Settings::Misc::misc_NoSmoke);
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("No Hands", &Settings::Misc::misc_NoHands);
+			ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
 
 			ImGui::Separator();
 
@@ -1378,27 +1379,30 @@ namespace Client
 			ImGui::Checkbox("Static Name Spam", &Settings::Misc::misc_namespamidkmemes_static);
 			ImGui::Separator();
 			ImGui::Checkbox("FOV Changer", &Settings::Misc::misc_FovChanger);
-			ImGui::PushItemWidth(362.f);
-			ImGui::SliderInt("FOV View", &Settings::Misc::misc_FovView, 1, 170);
-			ImGui::SliderInt("FOV Model View", &Settings::Misc::misc_FovModelView, 1, 190);
+			if (Settings::Misc::misc_FovChanger)
+			{
+				ImGui::PushItemWidth(362.f);
+				ImGui::SliderInt("vFoV", &Settings::Misc::misc_FovView, 1, 170);
+				ImGui::SliderInt("mFoV", &Settings::Misc::misc_FovModelView, 1, 190);
+				ImGui::Separator();
+			}
+			
+			//ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim); // doesn't work
+			//ImGui::SameLine(SpaceLineOne);
+			ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_Postprocess);
 			ImGui::Separator();
 
-			ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim);
-			ImGui::SameLine(SpaceLineOne);
-			ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_EPostprocess);
-			ImGui::Separator();
-
-			const char* items5[] = { "None" , "Clear" , "smef.cc" , "smef.cc No-name" , "Valve" , "Valve No-name" , "Animation" };
-			ImGui::Combo("Clantag Changer", &Settings::Misc::misc_Clan, items5, IM_ARRAYSIZE(items5));
+			const char* items5[] = { "None" , "Reset" , "smef.cc" , "smef.cc Remove name" , "Valve" , "Valve Remove name" , "Aninmated" };
+			ImGui::Combo("Clantag", &Settings::Misc::misc_Clan, items5, IM_ARRAYSIZE(items5));
 
 			ImGui::Separator();
-			ImGui::Text("Custom Changers");
+			ImGui::Text("Custom");
 			ImGui::Separator();
 			ImGui::Spacing();
 
 			static char name[128] = { 0 };
 			ImGui::PushItemWidth(362.f);
-			ImGui::InputText("Name", name, 16, Settings::Misc::misc_NameChanger);
+			ImGui::InputText("Custom Name", name, 16, Settings::Misc::misc_NameChanger);
 			ImGui::PopItemWidth();
 			if (ImGui::Button("Apply"))
 			{
@@ -1430,14 +1434,11 @@ namespace Client
 			{
 				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
 				ImGui::SameLine(SpaceLineOne);
-				ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
-
-				ImGui::Separator();
-				ImGui::Spacing();
-
 				ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
+				ImGui::SameLine(SpaceLineTwo);
 				ImGui::PushItemWidth(362.f);
-				ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
+				if (Settings::Misc::misc_ThirdPerson)
+					ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
 
 				ImGui::Separator();
 				ImGui::Spacing();
