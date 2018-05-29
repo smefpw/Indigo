@@ -628,7 +628,7 @@ namespace Settings
 		bool esp_Watermark = true;
 		bool esp_Name = false;
 		bool esp_Rank = false;
-		bool esp_Chicken = false;;
+		bool esp_Chicken = false;
 		int esp_Health = 0;
 		int esp_Armor = 0;
 		bool esp_Weapon = false;
