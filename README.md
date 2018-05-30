@@ -58,19 +58,6 @@
 + Hit Logs (added)
 + Watermark checkbox
 
-4.3.1
- + Config saving updated to C:/Indigo (fix for ManualMap injectors)
- + LegitAA Crash fix (confirmed not working!)
-
-4.3
- - Fake Lag (removed)
- + Custom Name Changer (added)
- + Legit AA (thank you smef for source / shahzam for help)
- - Slide Walk (don't work with legit aa (removed)) 
- + KnifeBot (fixed)
- + Inventory Unlocker (added) 
- - Radar (kept only INGAME radar)
-
 smef's Indigo is published under the MIT License;
 MIT License
 
