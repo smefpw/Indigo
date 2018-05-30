@@ -38,47 +38,40 @@ void CMisc::OnRender()
 
 void CMisc::OnCreateMove( CUserCmd* pCmd )
 {
-
-	/*if ( Settings::Misc::misc_Bhop )
-	{
-		if (g_pPlayers->GetLocal()->m_pEntity->GetMoveType() == MOVETYPE_LADDER) return;			
-		
-		if ( pCmd->buttons & IN_JUMP && !( g_pPlayers->GetLocal()->iFlags & FL_ONGROUND ) )
-		{
-			pCmd->buttons &= ~IN_JUMP;
-		}
-	}*/ // old bhop
-	
-CBaseEntity* pPlayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+	CMe* local = Client::g_pPlayers->GetLocal();
 
 	if (Settings::Misc::misc_Bhop)
 	{
-		int flag = *(PINT)((DWORD)pPlayer + 600); // offset for movetype
-		if (flag & MOVETYPE_LADDER)
-		return;
+		if (local->m_pEntity->GetMoveType() == MOVETYPE_LADDER)
+			return;
 
 		static bool bLastJumped = false;
 		static bool bShouldFake = false;
 	
-		if (!bLastJumped && bShouldFake) {
+		if (!bLastJumped && bShouldFake) 
+		{
 			bShouldFake = false;
 			pCmd->buttons |= IN_JUMP;
 		}
-		else if (pCmd->buttons & IN_JUMP) {
-		if (pPlayer->GetFlags() & FL_ONGROUND) {
-			bLastJumped = true;
-			bShouldFake = true;
+		else if (pCmd->buttons & IN_JUMP) 
+		{
+			if (pPlayer->m_pEntity->GetFlags() & FL_ONGROUND) 
+			{
+				bLastJumped = true;
+				bShouldFake = true;
 			}
-			else {
+			else 
+			{
 				pCmd->buttons &= ~IN_JUMP;
 				bLastJumped = false;
 			}
 		}
-		else {
+		else 
+		{
 			bLastJumped = false;
 			bShouldFake = false;
 		}
-}
+	}
 
 	if (Settings::Misc::misc_spamregular)
 		ChatSpamRegular();
