@@ -639,7 +639,7 @@ void CAimbot::AimbotSet()
 	else
 		fSmooth = Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Smooth;
 
-	AngleNormalize(vAimAngle);
+
 
 	if (fSmooth < 10.f)
 		fSmooth = 10.f;
