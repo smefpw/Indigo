@@ -178,10 +178,6 @@ void CMisc::OnDrawModelExecute()
 	static bool NoFlashReset = false;
 	IMaterial* flash = Interfaces::MaterialSystem()->FindMaterial("effects\\flashbang", TEXTURE_GROUP_CLIENT_EFFECTS);
 	IMaterial* flashWhite = Interfaces::MaterialSystem()->FindMaterial("effects\\flashbang_white", TEXTURE_GROUP_CLIENT_EFFECTS);
-	IMaterial* vistasmokev1_smokegrenade = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_smokegrenade", TEXTURE_GROUP_CLIENT_EFFECTS);
-	IMaterial* vistasmokev1_emods = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods", TEXTURE_GROUP_CLIENT_EFFECTS);
-	IMaterial* vistasmokev1_emods_impactdust = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_emods_impactdust", TEXTURE_GROUP_CLIENT_EFFECTS);
-	IMaterial* vistasmokev1_fire = Interfaces::MaterialSystem()->FindMaterial("particle/vistasmokev1/vistasmokev1_fire", TEXTURE_GROUP_CLIENT_EFFECTS);
 
 	if (flash && flashWhite)
 	{
@@ -201,26 +197,19 @@ void CMisc::OnDrawModelExecute()
 		}
 	}
 
-	if (vistasmokev1_smokegrenade && vistasmokev1_emods && vistasmokev1_emods_impactdust && vistasmokev1_fire)
+	if (Settings::Misc::misc_NoSmoke && !NoSmoke)
 	{
-		if (Settings::Misc::misc_NoSmoke && !NoSmoke)
-		{
-			vistasmokev1_smokegrenade->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
-			vistasmokev1_emods->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
-			vistasmokev1_emods_impactdust->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
-			vistasmokev1_fire->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
+		for (auto mat : smoke_materials)
+			Interfaces::MaterialSystem()->FindMaterial(mat, TEXTURE_GROUP_CLIENT_EFFECTS)->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
 
-			NoSmoke = true;
-		}
-		else if (!Settings::Misc::misc_NoSmoke && NoSmoke)
-		{
-			vistasmokev1_smokegrenade->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-			vistasmokev1_emods->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-			vistasmokev1_emods_impactdust->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
-			vistasmokev1_fire->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
+		NoSmoke = true;
+	}
+	else if (!Settings::Misc::misc_NoSmoke && NoSmoke)
+	{
+		for (auto mat : smoke_materials)
+			Interfaces::MaterialSystem()->FindMaterial(mat, TEXTURE_GROUP_CLIENT_EFFECTS)->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 
-			NoSmoke = false;
-		}
+		NoSmoke = false;
 	}
 }
 
@@ -242,10 +231,7 @@ void CMisc::OnPlaySound( const char* pszSoundName )
 			#endif
 		}
 
-		if ( IsReadyCallBack )
-		{
-			IsReadyCallBack();
-		}
+		IsReadyCallBack();
 	}
 }
 
