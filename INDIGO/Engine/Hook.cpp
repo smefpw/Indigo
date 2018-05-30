@@ -9,7 +9,13 @@ CAimbot* g_Aim;
 namespace Engine
 {
 	namespace Hook
-	{ // uses VMT / VTable hooking (like most cheats).... Until further dumps show more this is "safe"
+	{
+		/*
+			WARNING: This cheat (like pretty much any other pastes out there) uses Virtual Method Table (VMT) hooking, which is now detected by Valve Anti-Cheat.
+			We are NOT responsible for ANY bans that may occur during the process of using this cheat. This includes, but not limited to, VAC, Untrusted and
+			Overwatch bans.
+		*/
+
 		CSX::Hook::VTable IDirect3DDevice9Table;
 		CSX::Hook::VTable SoundTable;
 		CSX::Hook::VTable ClientModeTable;
@@ -97,6 +103,7 @@ namespace Engine
 								if (Client::g_pEsp->CheckPlayerTeam(entity))
 									glow_target(glowObject, Color(255, 255, 255, 255));
 							}
+							break;
 						}
 
 					}
