@@ -25,6 +25,7 @@ namespace SDK
 	ILocalize*          Interfaces::g_pILocalize = nullptr;
 	ISteamGameCoordinator* Interfaces::g_pSteamGameCoordinator = nullptr;
 	ISteamUser* Interfaces::g_pSteamUser = nullptr;
+	CGlowObjectManager*	Interfaces::g_GlowObjManager = nullptr;
 	//[/swap_lines]
 	//[junk_enable /]
 	CreateInterfaceFn CaptureFactory(char* FactoryModule)
@@ -73,6 +74,17 @@ namespace SDK
 		}
 
 		return g_pEngine;
+	}
+
+	CGlowObjectManager* Interfaces::GlowManager()
+	{
+		if (!g_GlowObjManager)
+		{
+			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
+			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::NewPatternScan(pfnFactory, "0F 11 05 ? ? ? ? 83 C8 01") + 3);
+		}
+
+		return g_GlowObjManager;
 	}
 
 	IBaseClientDLL* Interfaces::Client()

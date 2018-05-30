@@ -113,12 +113,6 @@ namespace SDK
 	struct cplane_t;
 	struct virtualmeshlist_t;
 
-	template< class T , class I = int >
-	class CUtlMemory {};
-
-	template< class T , class A = CUtlMemory<T> >
-	class CUtlVector {};
-
 	enum hitgroup_t {
 		HITGROUP_GENERIC ,
 		HITGROUP_HEAD ,

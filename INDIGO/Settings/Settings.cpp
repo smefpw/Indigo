@@ -662,6 +662,7 @@ namespace Settings
 		bool esp_WorldWeapons = false;
 		bool esp_WorldGrenade = false;
 		bool esp_BoxNade = false;
+		bool glow = false;
 
 		float esp_Color_CT[3] = { 0.f,0.0f,0.f };
 		float esp_Color_TT[3] = { 0.f,0.0f,0.f };

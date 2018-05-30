@@ -54,6 +54,7 @@
     <ClCompile Include="Cheat\Knifebot\Knifebot.cpp" />
     <ClCompile Include="Cheat\AntiAim\AntiAim.cpp" />
     <ClCompile Include="Engine\EventLogs.cpp" />
+    <ClCompile Include="License\License.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gui\Gui.h" />
@@ -196,6 +197,9 @@
     <ClInclude Include="Cheat\Knifebot\Knifebot.h" />
     <ClInclude Include="Cheat\AntiAim\AntiAim.h" />
     <ClInclude Include="Engine\EventLogs.h" />
+    <ClInclude Include="License\License.h" />
+    <ClInclude Include="SDK\CGlowObjManager.h" />
+    <ClInclude Include="SDK\platform.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="protobuf\libprotobuf.lib" />

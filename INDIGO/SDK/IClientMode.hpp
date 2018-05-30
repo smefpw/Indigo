@@ -117,5 +117,11 @@ namespace SDK
 			VirtualFn( float )( PVOID );
 			return GetMethod< OriginalFn >( this , TABLE::IClientMode::GetViewModelFOV )( this );
 		}
+		bool DoPostScreenSpaceEffects(int callback)
+		{
+			VirtualFn(int)(IClientMode*, int);
+			return GetMethod< OriginalFn >(this, 44)(this, callback);
+		}
+
 	};
 }

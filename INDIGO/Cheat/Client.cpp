@@ -1114,6 +1114,7 @@ namespace Client
 			ImGui::SameLine(SpaceLineThr);
 			ImGui::Checkbox("Watermarks", &Settings::Esp::esp_Watermark);
 			Settings::Esp::esp_Time = Settings::Esp::esp_Watermark;
+			ImGui::Checkbox("Glow (BETA)", &Settings::Esp::glow);
 
 			ImGui::Spacing();
 			ImGui::Separator();

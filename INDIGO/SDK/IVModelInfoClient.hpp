@@ -226,7 +226,7 @@ namespace SDK
 		virtual bool					ModelHasMaterialProxy( const model_t *model ) const = 0;
 		virtual bool					IsTranslucent( model_t const* model ) const = 0;
 		virtual bool					IsTranslucentTwoPass( const model_t *model ) const = 0;
-		virtual void					Unused0() {};
+		virtual void					Unused() = 0;
 		virtual RenderableTranslucencyType_t ComputeTranslucencyType( const model_t *model , int nSkin , int nBody ) = 0;
 		virtual int						GetModelMaterialCount( const model_t* model ) const = 0;
 		virtual void					GetModelMaterials( const model_t *model , int count , IMaterial** ppMaterials ) = 0;
@@ -249,8 +249,8 @@ namespace SDK
 															  QAngle const& angles , Vector* pLightingCenter ) = 0;
 
 		virtual int  					GetModelContents(int modelIndex) const = 0;
-		virtual void					UNUSED() = 0;
-		virtual void 					UNUSE11D() = 0;
+		virtual void					Unused_1() = 0;
+		virtual void 					Unused_2() = 0;
 		virtual studiohdr_t  			*GetStudioModel(const model_t *mod) = 0;
 		virtual int   					GetModelSpriteWidth(const model_t *model) const = 0;
 		virtual int   					GetModelSpriteHeight(const model_t *model) const = 0;

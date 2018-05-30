@@ -63,6 +63,52 @@ namespace Engine
 			return false;
 		}
 
+		int WINAPI Hook_DoPostScreenSpaceEffects(int callback)
+		{
+			ClientModeTable.UnHook();
+			static auto* glowmat = Interfaces::MaterialSystem()->FindMaterial("dev/glow_color", TEXTURE_GROUP_OTHER, true);
+			Interfaces::ModelRender()->ForcedMaterialOverride(glowmat);
+
+			// S T A R T
+			auto glow_target = [](GlowObjectDefinition_t& glowObject, Color color) -> void
+			{
+				glowObject.m_flRed = color.r() / 255;
+				glowObject.m_flGreen = color.g() / 255;
+				glowObject.m_flBlue = color.b() / 255;
+				glowObject.m_flAlpha = color.a() / 255;
+				glowObject.m_bRenderWhenOccluded = true;
+				glowObject.m_bRenderWhenUnoccluded = false;
+			};
+
+			if (Interfaces::GlowManager && Interfaces::Engine()->IsConnected())
+			{
+				if (Settings::Esp::glow)
+				{
+					for (auto i = 0; i < Interfaces::GlowManager()->m_GlowObjectDefinitions.Count(); i++)
+					{
+						auto &glowObject = Interfaces::GlowManager()->m_GlowObjectDefinitions[i];
+						auto entity = reinterpret_cast<CPlayer*>(glowObject.m_pEntity);
+						if (!entity || glowObject.IsUnused()) continue;
+
+						switch (entity->m_pEntity->GetClientClass()->m_ClassID)
+						{
+							case (int)CLIENT_CLASS_ID::CCSPlayer:
+							{
+								if (Client::g_pEsp->CheckPlayerTeam(entity))
+									glow_target(glowObject, Color(255, 255, 255, 255));
+							}
+						}
+
+					}
+				}
+			}
+
+			// E N D
+			int ret = Interfaces::ClientMode()->DoPostScreenSpaceEffects(callback);
+			ClientModeTable.ReHook();
+			return ret;
+		}
+
 		bool WINAPI Hook_IsConnected()
 		{
 			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client.dll"), "75 04 B0 01 5F") - 2;
@@ -246,6 +292,7 @@ namespace Engine
 					ClientModeTable.HookIndex(TABLE::IClientMode::CreateMove, Hook_CreateMove);
 					ClientModeTable.HookIndex(TABLE::IClientMode::OverrideView, Hook_OverrideView);
 					ClientModeTable.HookIndex(TABLE::IClientMode::GetViewModelFOV, Hook_GetViewModelFOV);
+					ClientModeTable.HookIndex(44, Hook_DoPostScreenSpaceEffects);
 
 					if (!SteamGameCoordinatorTable.InitTable(Interfaces::SteamGameCoordinator()))
 						return false;

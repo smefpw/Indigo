@@ -37,6 +37,7 @@
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="License\License.cpp" />
     <ClCompile Include="Main\Main.cpp" />
     <ClCompile Include="protobuf\base_gcmessages.pb.cc" />
     <ClCompile Include="protobuf\cstrike15_gcmessages.pb.cc" />
@@ -99,6 +100,7 @@
     <ClInclude Include="ImGui\stb_rect_pack.h" />
     <ClInclude Include="ImGui\stb_textedit.h" />
     <ClInclude Include="ImGui\stb_truetype.h" />
+    <ClInclude Include="License\License.h" />
     <ClInclude Include="Main\Main.h" />
     <ClInclude Include="protobuf\base_gcmessages.pb.h" />
     <ClInclude Include="protobuf\cstrike15_gcmessages.pb.h" />
@@ -118,6 +120,7 @@
     <ClInclude Include="SDK\BaseTypes.h" />
     <ClInclude Include="SDK\ButtonCode.h" />
     <ClInclude Include="SDK\CGlobalVarsBase.hpp" />
+    <ClInclude Include="SDK\CGlowObjManager.h" />
     <ClInclude Include="SDK\CHandle.hpp" />
     <ClInclude Include="SDK\CInput.hpp" />
     <ClInclude Include="SDK\ClientClass.hpp" />
@@ -151,6 +154,7 @@
     <ClInclude Include="SDK\IVModelRender.h" />
     <ClInclude Include="SDK\IVRenderView.h" />
     <ClInclude Include="SDK\KeyValues.h" />
+    <ClInclude Include="SDK\platform.h" />
     <ClInclude Include="SDK\PlayerInfo.hpp" />
     <ClInclude Include="SDK\QAngle.hpp" />
     <ClInclude Include="SDK\Recv.hpp" />

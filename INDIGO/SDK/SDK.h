@@ -44,6 +44,7 @@
 #include "IGameEvent.h"
 #include "TextureGroupNames.h"
 #include "CVar.h"
+#include "CGlowObjManager.h"
 #include "../steam_sdk/steam_api.h"
 
 //[enc_string_enable /]
@@ -103,8 +104,9 @@ namespace SDK
 		static ConVar*              GetConVar();
 		static ILocalize*           GetLocalize();
 		static CEffects*			Effects();
+		static CGlowObjectManager*	GlowManager();
 		static ISteamGameCoordinator* SteamGameCoordinator();
-		static ISteamUser* SteamUser();
+		static ISteamUser*			SteamUser();
 
 	private:
 		static IVEngineClient*		g_pEngine;
@@ -125,8 +127,9 @@ namespace SDK
 		static ConVar*              g_pConVar;
 		static CEffects*			g_pEffects;
 		static ILocalize*           g_pILocalize;
+		static CGlowObjectManager*	g_GlowObjManager;
 		static ISteamGameCoordinator* g_pSteamGameCoordinator;
-		static ISteamUser* g_pSteamUser;
+		static ISteamUser*			g_pSteamUser;
 	};
 }
 

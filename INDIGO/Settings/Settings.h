@@ -160,6 +160,7 @@ namespace Settings
 		extern int esp_Visible;
 		extern int esp_ChamsVisible;
 		extern bool esp_Dlightz;
+		extern bool glow;
 
 		extern int esp_Chams;
 		extern bool esp_XQZ;
