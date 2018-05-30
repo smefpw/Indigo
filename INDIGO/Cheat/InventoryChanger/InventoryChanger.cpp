@@ -1,3 +1,9 @@
+/*
+	WARNING: This cheat (like pretty much any other pastes out there) uses Virtual Method Table (VMT) hooking, which is now detected by Valve Anti-Cheat.
+	We are NOT responsible for ANY bans that may occur during the process of using this cheat. This includes, but not limited to, VAC, Untrusted and
+	Overwatch bans.
+*/
+
 #include "InventoryChanger.h"
 #include "../Skin/Skin.h"
 #include <vector>
@@ -7,7 +13,8 @@
 
 using namespace std::chrono;
 
-void AddSkins(CMsgSOCacheSubscribed::SubscribedType* pInventoryCacheObject) {
+void AddSkins(CMsgSOCacheSubscribed::SubscribedType* pInventoryCacheObject) 
+{
 	int c = 20001;
 	for (auto weapon : Settings::InvChanger::weapons) {
 		CSOEconItem Skin;
@@ -199,7 +206,8 @@ bool CInventoryChanger::PreSendMessage(uint32_t &unMsgType, void* pubData, uint3
 {
 	uint32_t MessageType = unMsgType & 0x7FFFFFFF;
 
-	switch (MessageType) {
+	switch (MessageType) 
+	{
 		case k_EMsgGCAdjustItemEquippedState:
 		{
 			CMsgAdjustItemEquippedState Message;
@@ -234,6 +242,7 @@ bool CInventoryChanger::PreSendMessage(uint32_t &unMsgType, void* pubData, uint3
 			return false;
 		}
 		break;
+
 		default:
 			return true;
 			break;

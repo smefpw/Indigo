@@ -8,7 +8,6 @@
 namespace Engine
 {
 	template<typename ...Args>
-	void PrintToConsole(const char * format, Args ...args);
 	bool Initialize()
 	{
 		//CLicense License;
