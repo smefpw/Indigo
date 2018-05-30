@@ -16,7 +16,7 @@ void AntiAim::LegitAA(CUserCmd* cmd, bool& bSendPacket)
 		cmd->viewangles.y += Direction ? 90 : -90;
 
 
-		//Direction = !Direction; // remove comment if you want autoswitch
+
 		ChokedTicks++;
 	}
 	else {
