@@ -1,3 +1,9 @@
+/*
+	WARNING: This cheat (like pretty much any other pastes out there) uses Virtual Method Table (VMT) hooking, which is now detected by Valve Anti-Cheat.
+	We are NOT responsible for ANY bans that may occur during the process of using this cheat. This includes, but not limited to, VAC, Untrusted and
+	Overwatch bans.
+*/
+
 #include "LagComp.h"
 using namespace SDK;
 

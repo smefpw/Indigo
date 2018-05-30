@@ -1,3 +1,9 @@
+/*
+	WARNING: This cheat (like pretty much any other pastes out there) uses Virtual Method Table (VMT) hooking, which is now detected by Valve Anti-Cheat.
+	We are NOT responsible for ANY bans that may occur during the process of using this cheat. This includes, but not limited to, VAC, Untrusted and
+	Overwatch bans.
+*/
+
 #include "Client.h"
 #include <ctime>
 
@@ -200,28 +206,37 @@ namespace Client
 	void SendMMHello()
 	{
 		CMsgGCCStrike15_v2_MatchmakingClient2GCHello Message;
+
 		void* ptr = malloc(Message.ByteSize() + 8);
 		if (!ptr)
 			return;
+
 		auto unMsgType = k_EMsgGCCStrike15_v2_MatchmakingClient2GCHello | ((DWORD)1 << 31);
 		((uint32_t*)ptr)[0] = unMsgType;
 		((uint32_t*)ptr)[1] = 0;
+
 		Message.SerializeToArray((void*)((DWORD)ptr + 8), Message.ByteSize());
 		bool result = Interfaces::SteamGameCoordinator()->SendMessage(unMsgType, ptr, Message.ByteSize() + 8) == k_EGCResultOK;
+
 		free(ptr);
 	}
 	void SendClientHello()
 	{
 		CMsgClientHello Message;
+
 		Message.set_client_session_need(1);
 		Message.clear_socache_have_versions();
+
 		void* ptr = malloc(Message.ByteSize() + 8);
 		if (!ptr)
 			return;
+
 		((uint32_t*)ptr)[0] = k_EMsgGCClientHello | ((DWORD)1 << 31);
 		((uint32_t*)ptr)[1] = 0;
+
 		Message.SerializeToArray((void*)((DWORD)ptr + 8), Message.ByteSize());
 		bool result = Interfaces::SteamGameCoordinator()->SendMessage(k_EMsgGCClientHello | ((DWORD)1 << 31), ptr, Message.ByteSize() + 8) == k_EGCResultOK;
+
 		free(ptr);
 	}
 
@@ -364,7 +379,7 @@ namespace Client
 					 AntiAim().LegitAA(pCmd, bSendPacket);
 				
 				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-				AngleNormalize(pCmd->viewangles);
+				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return;
 			}
 		}
 	}

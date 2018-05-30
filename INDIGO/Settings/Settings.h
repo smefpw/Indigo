@@ -300,7 +300,7 @@ namespace Settings
 }
 
 #define CHEAT_NAME "smef.cc"
-#define WATER_MARK "smef's Indigo Remastered | Version: 4.4.2"
+#define WATER_MARK "smef's Indigo Remastered"
 #define AIMBOT_TEXT "Legitbot"
 #define COLORS_TEXT "Colors"
 #define CONFIG_TEXT "Config"

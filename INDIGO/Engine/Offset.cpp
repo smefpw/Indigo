@@ -134,8 +134,6 @@ namespace Engine
 
 			Entity::m_flSimulationTime = g_NetVar.GetOffset(BASE_ENTITY, SimTime);
 
-
-
 			return true;
 		}
 

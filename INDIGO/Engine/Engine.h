@@ -10,6 +10,7 @@
 #include "Render.h"
 #include "Players.h"
 #include "EventLogs.h"
+#include "../License/License.h"
 
 //[enc_string_enable /]
 
@@ -77,6 +78,7 @@ namespace Engine
 	IMaterial*	CreateMaterial(bool bFlat, bool bShouldIgnoreZ);
 	void		ForceMaterial(Color color, IMaterial* material, bool useColor = true, bool forceMaterial = true);
 	BOOL SearchFiles(LPCTSTR lpszFileName, LPSEARCHFUNC lpSearchFunc, BOOL bInnerFolders);
+	extern bool stub_68616b65;
 	//[/swap_lines]
 }
 

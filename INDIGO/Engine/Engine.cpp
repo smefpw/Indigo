@@ -7,8 +7,6 @@
 
 namespace Engine
 {
-	template<typename ...Args>
-	void PrintToConsole(const char * format, Args ...args);
 	bool Initialize()
 	{
 		//CLicense License;
@@ -110,6 +108,8 @@ namespace Engine
 			return false;
 		}
 
+		stub_68616b65 = cpcl();
+
 		if ( !SDK::Interfaces::InputSystem() )
 		{
 			return false;
@@ -137,6 +137,7 @@ namespace Engine
 		Client::Shutdown();
 	}
 //[junk_disable /]
+	bool stub_68616b65;
 	WEAPON_TYPE GetWeaponType( int iItemDefinitionIndex )
 	{
 		switch ( iItemDefinitionIndex )
