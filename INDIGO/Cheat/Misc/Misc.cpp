@@ -55,7 +55,7 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 		}
 		else if (pCmd->buttons & IN_JUMP) 
 		{
-			if (pPlayer->m_pEntity->GetFlags() & FL_ONGROUND) 
+			if (local->m_pEntity->GetFlags() & FL_ONGROUND) 
 			{
 				bLastJumped = true;
 				bShouldFake = true;
