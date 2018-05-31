@@ -200,7 +200,6 @@
     <ClInclude Include="Cheat\Knifebot\Knifebot.h" />
     <ClInclude Include="Cheat\AntiAim\AntiAim.h" />
     <ClInclude Include="Engine\EventLogs.h" />
-    <ClInclude Include="SDK\platform.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="protobuf\libprotobuf.lib" />
