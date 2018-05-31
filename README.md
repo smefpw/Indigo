@@ -11,6 +11,7 @@
 
 **4.4.3**
 *OLDER CONFIGS ARE BROKEN*
++ **Added Glow (in testing)**
 + Changed Animation Clantag to be more editable and better looking
 + Removed debug mode as it never worked right
 + Commented stuff that doesn't work
