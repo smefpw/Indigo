@@ -9,8 +9,10 @@
 **TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
 ## Changelogs
 
-**4.4.3**
-*OLDER CONFIGS ARE BROKEN*
+**4.4.3** *OLDER CONFIGS ARE BROKEN*
++ Removed more "meme" hitsounds (you can re add them)
++ Added Penguware hitsound
++ Removed More Unused hitsounds ONTOP od the mem ones
 + **Added Glow (in testing)**
 + Changed Animation Clantag to be more editable and better looking
 + Removed debug mode as it never worked right

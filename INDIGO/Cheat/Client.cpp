@@ -1192,10 +1192,9 @@ namespace Client
 			const char* iHitSound[] = {
 				"Off",
 				"Default",
-				"Anime",
-				"Roblox",
 				"Gamesense",
 				"Bameware",
+				"Penguware" // you CAN add old ones back
 			};
 
 			const char* material_items[] = {

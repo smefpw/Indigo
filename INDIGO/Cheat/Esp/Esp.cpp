@@ -315,12 +315,11 @@ void CEsp::HitmarkerEvents(IGameEvent* event)
 		if (Interfaces::Engine()->GetPlayerForUserID(attacker) == Interfaces::Engine()->GetLocalPlayer()) {
 			switch (Settings::Esp::esp_HitMarkerSound)
 			{
-				case 0: break;
-				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break; // default
-				case 2: PlaySoundA(pew, NULL, SND_ASYNC | SND_MEMORY); break; // anime
-				case 3: PlaySoundA(roblox, NULL, SND_ASYNC | SND_MEMORY); break; // roblox
-				case 4: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav"); // metallic
-				case 5: PlaySoundA(bameware, NULL, SND_ASYNC | SND_MEMORY); break; // bameware
+				case 0: break; // do nothing
+				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break; // default / cod 
+				case 2: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav"); // metallic
+				case 3: PlaySoundA(bameware, NULL, SND_ASYNC | SND_MEMORY); break; // bameware
+				case 4: PlaySoundA(penguware, NULL, SND_ASYNC | SND_MEMORY); break; // penguware
 			}
 
 			Settings::hitmarkerAlpha = 1.f;
