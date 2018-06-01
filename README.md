@@ -24,7 +24,7 @@
 + Made Config selection look cleaner
 + Made "Untrusted Features" more secure.
 + Changed file format from .ini to .smef
-+ Make configs more cleaner to edit in Notepad
++ Made configs more cleaner to edit in Notepad
 + Removed unused files
 + probs did some more but forgot!
 
