@@ -6,7 +6,11 @@
 
 ## READ WIKI BEFORE POSTING
 
-**TODO: Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.**
+**TODO:** 
++ Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.
++ Fix Glow
++ Fix Other broken features
++ Optimize cheat more (make a "lite" version!?!?!?)
 ## Changelogs
 
 **4.4.3** *OLDER CONFIGS ARE BROKEN*
