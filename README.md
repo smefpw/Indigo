@@ -12,7 +12,7 @@
 **4.4.3** *OLDER CONFIGS ARE BROKEN*
 + Removed more "meme" hitsounds (you can re add them)
 + Added Penguware hitsound
-+ Removed More Unused hitsounds ONTOP od the mem ones
++ Removed previously commented hitsounds
 + **Added Glow (in testing)**
 + Changed Animation Clantag to be more editable and better looking
 + Removed debug mode as it never worked right
