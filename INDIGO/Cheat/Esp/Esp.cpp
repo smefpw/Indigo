@@ -295,7 +295,7 @@ void CEsp::HitEvents(IGameEvent* event)
 			if (nUserID || nDead)
 			{
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
-				EventLog->AddToLog("hit %s in the %s for %i damage (%i health remaining)", // much skeet pasta yes?
+				EventLog->AddToLog("Damaged %s in the %s for %i damage (%i health left)", // much skeet pasta yes?
 					killed_info.m_szPlayerName, 
 					HitgroupToName(event->GetInt("hitgroup")), 
 					event->GetInt("dmg_health"), 

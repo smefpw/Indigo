@@ -1195,7 +1195,7 @@ namespace Client
 				"Default",
 				"Gamesense",
 				"Bameware",
-				"Penguware" // you CAN add old ones back
+				"Penguware"
 			};
 
 			const char* material_items[] = {
@@ -1287,6 +1287,8 @@ namespace Client
 			EventLog->AddToLog("Created New Config.");
 			RefreshConfigs();
 		}
+
+		// old themes outdated since 4.0
 
 		//ImGui::Separator();
 
@@ -1386,6 +1388,8 @@ namespace Client
 			ImGui::SameLine(SpaceLineTwo);
 			ImGui::Checkbox("No Hands", &Settings::Misc::misc_NoHands);
 			ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
+			//ImGui::SameLine(SpaceLineOne);
+			//ImGui::Checkbox(("Map Prediction"), &Settings::Misc::misc_mappredict);
 
 			ImGui::Separator();
 

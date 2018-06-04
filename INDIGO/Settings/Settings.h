@@ -254,6 +254,7 @@ namespace Settings
 		extern bool misc_NoFlash;	
 		extern bool misc_NoSmoke;
 		extern bool misc_WireHands;
+		extern bool misc_mappredict;
 		extern bool misc_NoHands;
 		extern bool misc_AutoStrafe;
 		extern bool misc_AutoAccept;
@@ -449,6 +450,7 @@ namespace Settings
 #define CVAR_MISC_NOHANDS "misc_NoHands"
 #define CVAR_ESP_NOWATER "esp_NoWater"
 #define CVAR_MISC_WIREHANDS "misc_WireHands"
+#define CVAR_MISC_MAPPREDICT "misc_mappredict"
 #define CVAR_MISC_AUTOSTRAFE "misc_AutoStrafe"
 #define CVAR_MISC_AUTOACCEPT "misc_AutoAccept"
 #define CVAR_MISC_SPECTATORS "misc_Spectators"

@@ -222,6 +222,7 @@ namespace Settings
 		Misc::misc_NoFlash = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_NOFLASH , Misc::misc_NoFlash ) != false;
 		Misc::misc_NoSmoke = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_NOSMOKE, Misc::misc_NoSmoke) != false;
 		Misc::misc_WireHands = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_WIREHANDS, Misc::misc_WireHands) != false;
+		Misc::misc_mappredict = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict) != false;
 		Misc::misc_NoHands = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_NOHANDS, Misc::misc_NoHands) != false;
 		Misc::misc_AutoStrafe = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AUTOSTRAFE , Misc::misc_AutoStrafe ) != false;
 		Misc::misc_AutoAccept = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AUTOACCEPT , Misc::misc_AutoAccept ) != false;
@@ -505,9 +506,10 @@ namespace Settings
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_BHOP , Misc::misc_Bhop );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_PUNCH , Misc::misc_Punch );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_NOFLASH , Misc::misc_NoFlash );
-		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_NOSMOKE, Misc::misc_NoSmoke);
-		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_WIREHANDS, Misc::misc_WireHands);
-		CSX::Cvar::SaveCvar(MISC_TEXT, CVAR_MISC_NOHANDS, Misc::misc_NoHands);
+		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_NOSMOKE, Misc::misc_NoSmoke);
+		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_WIREHANDS, Misc::misc_WireHands);
+		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict);
+		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_NOHANDS, Misc::misc_NoHands);
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AUTOSTRAFE , Misc::misc_AutoStrafe );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AUTOACCEPT , Misc::misc_AutoAccept );
@@ -745,6 +747,7 @@ namespace Settings
 		bool misc_NoFlash = false;
 		bool misc_NoSmoke = false;
 		bool misc_WireHands = false;
+		bool misc_mappredict = false;
 		bool misc_NoHands = false;
 		bool misc_AwpAim = false;
 		bool misc_AutoStrafe = false;
