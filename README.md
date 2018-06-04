@@ -17,7 +17,7 @@
 + Removed more "meme" hitsounds (you can re add them)
 + Added Penguware hitsound
 + Removed previously commented hitsounds
-+ **Added Glow (in testing)**
++ **Added Glow (in testing)** -- Removed
 + Changed Animation Clantag to be more editable and better looking
 + Removed debug mode as it never worked right
 + Commented stuff that doesn't work
