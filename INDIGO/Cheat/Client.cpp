@@ -1048,8 +1048,8 @@ namespace Client
 			ImGui::SameLine(SpaceLineThr);
 			ImGui::Checkbox("Watermarks", &Settings::Esp::esp_Watermark);
 			Settings::Esp::esp_Time = Settings::Esp::esp_Watermark;
-			// ImGui::Checkbox("Glow (BETA)", &Settings::Esp::glow);
-			/// lmao glow is pp needs p fix
+			//ImGui::Checkbox("Glow (BETA)", &Settings::Esp::glow);
+			/// probably won't be fixed cause im lazy
 			
 			ImGui::Spacing();
 			ImGui::Separator();

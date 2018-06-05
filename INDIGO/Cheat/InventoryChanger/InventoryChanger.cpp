@@ -197,6 +197,28 @@ void CInventoryChanger::PostRetrieveMessage(uint32_t* punMsgType, void* pubDest,
 		}
 		break;
 
+		case k_EMsgGCCStrike15_v2_MatchmakingGC2ClientReserve:
+		{
+			CMsgGCCStrike15_v2_MatchmakingGC2ClientReserve Message;
+
+			try
+			{
+				if (!Message.ParsePartialFromArray((void*)((DWORD)pubDest + 8), *pcubMsgSize - 8))
+					return;
+			}
+			catch (...)
+			{
+				return;
+			}
+
+			if (!Message.has_map())
+				return;
+
+			//if (Settings::Misc::misc_mappredict)
+				EventLog->AddToLog("map: %s", Message.map().c_str());
+		}
+		break;
+
 	default:
 		return;
 		break;

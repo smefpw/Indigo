@@ -72,16 +72,15 @@ namespace Engine
 		int WINAPI Hook_DoPostScreenSpaceEffects(int callback)
 		{
 			ClientModeTable.UnHook();
-			static auto* glowmat = Interfaces::MaterialSystem()->FindMaterial("dev/glow_color", TEXTURE_GROUP_OTHER, true);
-			Interfaces::ModelRender()->ForcedMaterialOverride(glowmat);
+			int ret = Interfaces::ClientMode()->DoPostScreenSpaceEffects(callback);
+			ClientModeTable.ReHook();
 
-			// S T A R T
 			auto glow_target = [](GlowObjectDefinition_t& glowObject, Color color) -> void
 			{
-				glowObject.m_flRed = color.r() / 255;
-				glowObject.m_flGreen = color.g() / 255;
-				glowObject.m_flBlue = color.b() / 255;
-				glowObject.m_flAlpha = color.a() / 255;
+				glowObject.m_flRed = color.r() / 255.f;
+				glowObject.m_flGreen = color.g() / 255.f;
+				glowObject.m_flBlue = color.b() / 255.f;
+				glowObject.m_flAlpha = color.a() / 255.f;
 				glowObject.m_bRenderWhenOccluded = true;
 				glowObject.m_bRenderWhenUnoccluded = false;
 			};
@@ -92,27 +91,27 @@ namespace Engine
 				{
 					for (auto i = 0; i < Interfaces::GlowManager()->m_GlowObjectDefinitions.Count(); i++)
 					{
-						auto &glowObject = Interfaces::GlowManager()->m_GlowObjectDefinitions[i];
-						auto entity = reinterpret_cast<CPlayer*>(glowObject.m_pEntity);
-						if (!entity || glowObject.IsUnused()) continue;
+						auto& glowObject = Interfaces::GlowManager()->m_GlowObjectDefinitions[i];
+						auto entity = reinterpret_cast<CBaseEntity*>(glowObject.m_pEntity);
 
-						switch (entity->m_pEntity->GetClientClass()->m_ClassID)
+						if (!entity || glowObject.IsUnused())
+							continue;
+
+						switch (entity->GetClientClass()->m_ClassID)
 						{
 							case (int)CLIENT_CLASS_ID::CCSPlayer:
 							{
-								if (Client::g_pEsp->CheckPlayerTeam(entity))
+								if (entity->GetTeam() != Client::g_pPlayers->GetLocal()->m_pEntity->GetTeam())
 									glow_target(glowObject, Color(255, 255, 255, 255));
 							}
 							break;
-						}
 
+							default:
+								break;
+						}
 					}
 				}
 			}
-
-			// E N D
-			int ret = Interfaces::ClientMode()->DoPostScreenSpaceEffects(callback);
-			ClientModeTable.ReHook();
 			return ret;
 		}
 
