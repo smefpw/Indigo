@@ -1308,7 +1308,7 @@ namespace Client
 			ImGui::Checkbox("No Hands", &Settings::Misc::misc_NoHands);
 			ImGui::Checkbox("Wire Hands", &Settings::Misc::misc_WireHands);
 			//ImGui::SameLine(SpaceLineOne);
-			//ImGui::Checkbox(("Map Prediction"), &Settings::Misc::misc_mappredict);
+			ImGui::Checkbox("Map Prediction"), &Settings::Misc::misc_mappredict);
 
 			ImGui::Separator();
 
