@@ -1,6 +1,8 @@
 # smef's Indigo Remastered
 
-### :warning: This cheat is detected by Valve Anti-Cheat and SMAC.
+### :warning: You need to add junk to be undetected from VAC.
+### :warning: Cheat is detected by SMAC. (Other AC's Untested)
+**This cheat uses VMT / vTable hooking! Use at own risk. (I personally haven't been banned)**
 
 
 
