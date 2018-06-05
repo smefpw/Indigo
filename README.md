@@ -2,7 +2,7 @@
 
 ### :warning: You need to add junk to be undetected from VAC.
 ### :warning: Cheat is detected by SMAC. (Other AC's Untested)
-**This cheat uses VMT / vTable hooking! Use at own risk. (I personally haven't been banned)**
+**This cheat uses VMT / vTable hooking! Use at own risk.**
 
 
 
