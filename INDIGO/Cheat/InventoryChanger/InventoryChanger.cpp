@@ -214,7 +214,7 @@ void CInventoryChanger::PostRetrieveMessage(uint32_t* punMsgType, void* pubDest,
 			if (!Message.has_map())
 				return;
 
-			//if (Settings::Misc::misc_mappredict)
+			if (Settings::Misc::misc_mappredict)
 				EventLog->AddToLog("map: %s", Message.map().c_str());
 		}
 		break;
