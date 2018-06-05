@@ -26,6 +26,7 @@
 + Changed file format from .ini to .smef
 + Made configs more cleaner to edit in Notepad
 + Removed unused files
++ Map Prediction
 + probs did some more but forgot!
 
 **Old Changelogs**
