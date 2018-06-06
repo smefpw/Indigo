@@ -1418,39 +1418,17 @@ namespace Client
 			done = true;
 		}
 		switch (selected) {
-		case 0:
-			ImGui::ColorPicker3(espcolornames[0], Settings::Esp::esp_Color_CT);
-			break;
-		case 1:
-			ImGui::ColorPicker3(espcolornames[1], Settings::Esp::esp_Color_TT);
-			break;
-		case 2:
-			ImGui::ColorPicker3(espcolornames[2], Settings::Esp::esp_Color_VCT);
-			break;
-		case 3:
-			ImGui::ColorPicker3(espcolornames[3], Settings::Esp::esp_Color_VTT);
-			break;
-		case 4:
-			ImGui::ColorPicker3(espcolornames[4], Settings::Esp::chams_Color_CT);
-			break;
-		case 5:
-			ImGui::ColorPicker3(espcolornames[5], Settings::Esp::chams_Color_TT);
-			break;
-		case 6:
-			ImGui::ColorPicker3(espcolornames[6], Settings::Esp::chams_Color_VCT);
-			break;
-		case 7:
-			ImGui::ColorPicker3(espcolornames[7], Settings::Esp::chams_Color_VTT);
-			break;
-		case 8:
-			ImGui::ColorPicker3(espcolornames[8], Settings::Esp::esp_HitMarkerColor);
-			break;
-		case 9:
-			ImGui::ColorPicker3(espcolornames[9], Settings::Esp::esp_Dlight);
-			break;
-		case 10:
-			ImGui::ColorPicker3(espcolornames[10], Settings::Esp::esp_Ambient);
-			break;
+		case 0: ImGui::ColorPicker3(espcolornames[0], Settings::Esp::esp_Color_CT); break;
+		case 1: ImGui::ColorPicker3(espcolornames[1], Settings::Esp::esp_Color_TT); break;
+		case 2: ImGui::ColorPicker3(espcolornames[2], Settings::Esp::esp_Color_VCT); break;
+		case 3: ImGui::ColorPicker3(espcolornames[3], Settings::Esp::esp_Color_VTT); break;
+		case 4: ImGui::ColorPicker3(espcolornames[4], Settings::Esp::chams_Color_CT); break;
+		case 5: ImGui::ColorPicker3(espcolornames[5], Settings::Esp::chams_Color_TT); break;
+		case 6: ImGui::ColorPicker3(espcolornames[6], Settings::Esp::chams_Color_VCT); break;
+		case 7: ImGui::ColorPicker3(espcolornames[7], Settings::Esp::chams_Color_VTT); break;
+		case 8: ImGui::ColorPicker3(espcolornames[8], Settings::Esp::esp_HitMarkerColor); break;
+		case 9: ImGui::ColorPicker3(espcolornames[9], Settings::Esp::esp_Dlight); break;
+		case 10:ImGui::ColorPicker3(espcolornames[10], Settings::Esp::esp_Ambient); break;
 		}
 		ImGui::Columns(1, nullptr, false);
 	}
@@ -1488,18 +1466,12 @@ namespace Client
 		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar ); //ImGuiWindowFlags_ShowBorders);
 		mainWindowPos = ImGui::GetWindowPos();
 
-		if (Global::MenuTab == 0)
-			DrawAimbot();
-		if (Global::MenuTab == 1)
-			DrawVisuals();
-		if (Global::MenuTab == 2)
-			DrawSkins();
-		if (Global::MenuTab == 3)
-			DrawMisc();
-		if (Global::MenuTab == 4)
-			DrawConfig();
-		if (Global::MenuTab == 5)
-			DrawColors();
+		if (Global::MenuTab == 0) DrawAimbot();
+		if (Global::MenuTab == 1) DrawVisuals();
+		if (Global::MenuTab == 2) DrawSkins();
+		if (Global::MenuTab == 3) DrawMisc();
+		if (Global::MenuTab == 4) DrawConfig();
+		if (Global::MenuTab == 5) DrawColors();
 		ImGui::End();
 		ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x - 6, mainWindowPos.y - 6));
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.f);
