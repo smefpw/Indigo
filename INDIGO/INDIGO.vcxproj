@@ -261,6 +261,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <FullProgramDatabaseFile>false</FullProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
