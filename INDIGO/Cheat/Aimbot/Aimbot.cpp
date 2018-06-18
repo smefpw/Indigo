@@ -6,7 +6,7 @@ using namespace Client;
 //[junk_enable /]
 //[enc_string_enable /]
 
-byte tt_ct_best_hit_1[14] =
+std::vector<byte> tt_ct_best_hit_1 =
 {
 	//All Spots
 	HITBOX_HEAD ,
@@ -24,7 +24,7 @@ byte tt_ct_best_hit_1[14] =
 	HITBOX_LEFT_FOREARM
 };
 
-byte tt_ct_best_hit_2[13] =
+std::vector<byte> tt_ct_best_hit_2 =
 {
 	//No Headshot
 	HITBOX_NECK ,
@@ -41,7 +41,7 @@ byte tt_ct_best_hit_2[13] =
 	HITBOX_LEFT_FOREARM
 };
 
-byte tt_ct_best_hit_3[6] =
+std::vector<byte> tt_ct_best_hit_3 =
 {
 	//No Arms/Legs
 	HITBOX_HEAD ,
@@ -51,7 +51,7 @@ byte tt_ct_best_hit_3[6] =
 	HITBOX_CHEST
 };
 
-byte tt_ct_best_hit_4[5] =
+std::vector<byte> tt_ct_best_hit_4 =
 {
 	//No Arms/Legs/Neck
 	HITBOX_HEAD ,
@@ -59,12 +59,6 @@ byte tt_ct_best_hit_4[5] =
 	HITBOX_THORAX ,
 	HITBOX_CHEST
 };
-
-
-#define TT_CT_BEST_HIT_SIZE_1 ( sizeof( tt_ct_best_hit_1 ) / sizeof( *tt_ct_best_hit_1 ) )
-#define TT_CT_BEST_HIT_SIZE_2 ( sizeof( tt_ct_best_hit_2 ) / sizeof( *tt_ct_best_hit_2 ) )
-#define TT_CT_BEST_HIT_SIZE_3 ( sizeof( tt_ct_best_hit_3 ) / sizeof( *tt_ct_best_hit_3 ) )
-#define TT_CT_BEST_HIT_SIZE_4 ( sizeof( tt_ct_best_hit_4 ) / sizeof( *tt_ct_best_hit_4 ) )
 
 
 CAimbot::CAimbot()
@@ -199,12 +193,11 @@ int CAimbot::GetBestHitBox()
 	{
 		if (m_lBestHitbox == -1)
 		{
-
-			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit >= 4)
+			auto doHitScan = [pPlayer, &ScreenDistanceBase, &m_lBestHitbox](std::vector<byte>& hitboxes) -> void
 			{
-				for (byte bHitbox = 0; bHitbox < TT_CT_BEST_HIT_SIZE_4; bHitbox++)
+				for (auto hitbox : hitboxes)
 				{
-					Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(tt_ct_best_hit_4[bHitbox]);
+					Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(hitbox);
 					Vector vHitBoxScreen;
 
 					if (!WorldToScreen(vHitBox, vHitBoxScreen))
@@ -217,99 +210,62 @@ int CAimbot::GetBestHitBox()
 					if (fDistanceScreen < ScreenDistanceBase)
 					{
 						ScreenDistanceBase = fDistanceScreen;
-						m_lBestHitbox = tt_ct_best_hit_4[bHitbox];
+						m_lBestHitbox = hitbox;
 					}
-				}
-			}
 
-			else if (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit >= 3)
+				}
+			};
+
+			switch (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit)
 			{
-				for (byte bHitbox = 0; bHitbox < TT_CT_BEST_HIT_SIZE_3; bHitbox++)
+				case 4:
 				{
-					Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(tt_ct_best_hit_3[bHitbox]);
-					Vector vHitBoxScreen;
-
-					if (!WorldToScreen(vHitBox, vHitBoxScreen))
-						continue;
-
-					Vector2D vHitboxSrc = Vector2D(vHitBoxScreen.x, vHitBoxScreen.y);
-
-					float fDistanceScreen = DistanceScreen(g_vCenterScreen, vHitboxSrc);
-
-					if (fDistanceScreen < ScreenDistanceBase)
-					{
-						ScreenDistanceBase = fDistanceScreen;
-						m_lBestHitbox = tt_ct_best_hit_3[bHitbox];
-					}
+					doHitScan(tt_ct_best_hit_4);
 				}
+				break;
+
+				case 3:
+				{
+					doHitScan(tt_ct_best_hit_3);
+				}
+				break;
+
+				case 2:
+				{
+					doHitScan(tt_ct_best_hit_2);
+				}
+				break;
+
+				case 1:
+				{
+					doHitScan(tt_ct_best_hit_1);
+				}
+				break;
+
+				default:
+				{
+					m_lBestHitbox = tt_ct_best_hit_1[Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Spot];
+				}
+				break;
 			}
 
-			else if (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit >= 2)
+			Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(m_lBestHitbox);
+
+			if (vHitBox.IsValid() && WorldToScreen(vHitBox, m_vAimBestHitboxScreen))
 			{
-				for (byte bHitbox = 0; bHitbox < TT_CT_BEST_HIT_SIZE_2; bHitbox++)
-				{
-					Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(tt_ct_best_hit_2[bHitbox]);
-					Vector vHitBoxScreen;
-
-					if (!WorldToScreen(vHitBox, vHitBoxScreen))
-						continue;
-
-					Vector2D vHitboxSrc = Vector2D(vHitBoxScreen.x, vHitBoxScreen.y);
-
-					float fDistanceScreen = DistanceScreen(g_vCenterScreen, vHitboxSrc);
-
-					if (fDistanceScreen < ScreenDistanceBase)
-					{
-						ScreenDistanceBase = fDistanceScreen;
-						m_lBestHitbox = tt_ct_best_hit_2[bHitbox];
-					}
-				}
+				m_vAimBestHitbox = vHitBox;
+				return m_lBestHitbox;
 			}
-
-			else if (Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_BestHit >= 1)
-			{
-				for (byte bHitbox = 0; bHitbox < TT_CT_BEST_HIT_SIZE_1; bHitbox++)
-				{
-					Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(tt_ct_best_hit_1[bHitbox]);
-					Vector vHitBoxScreen;
-
-					if (!WorldToScreen(vHitBox, vHitBoxScreen))
-						continue;
-
-					Vector2D vHitboxSrc = Vector2D(vHitBoxScreen.x, vHitBoxScreen.y);
-
-					float fDistanceScreen = DistanceScreen(g_vCenterScreen, vHitboxSrc);
-
-					if (fDistanceScreen < ScreenDistanceBase)
-					{
-						ScreenDistanceBase = fDistanceScreen;
-						m_lBestHitbox = tt_ct_best_hit_1[bHitbox];
-					}
-				}
-			}
-
 			else
 			{
-				m_lBestHitbox = tt_ct_best_hit_1[Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Spot];
+				m_vAimBestHitbox.Zero();
+				m_vAimBestHitboxScreen.Zero();
+				return -1;
 			}
 		}
 
-		Vector vHitBox = pPlayer->m_pEntity->GetHitboxPosition(m_lBestHitbox);
-
-		if (vHitBox.IsValid() && WorldToScreen(vHitBox, m_vAimBestHitboxScreen))
-		{
-			m_vAimBestHitbox = vHitBox;
-			return m_lBestHitbox;
-		}
-		else
-		{
-			m_vAimBestHitbox.Zero();
-			m_vAimBestHitboxScreen.Zero();
-			return -1;
-		}
+		return m_lBestHitbox;
 	}
-
-	return m_lBestHitbox;
 }
 
 void CAimbot::OnRender()
