@@ -1,5 +1,10 @@
 # smef's Indigo Remastered
 
+### This project is officially dead as of Friday 13th July 2018, it will now be supported by "Pull Requests".
+**Rip smef's Indigo September 2017 - July 2018
+**More information will be on the main page of Indigo soon!(https://smef.cc/indigo/)
+
+
 ### :warning: You need to add junk to be undetected from VAC.
 ### :warning: Cheat is detected by SMAC. (Other AC's Untested)
 **This cheat uses VMT / vTable hooking! Use at own risk.**
