@@ -6,19 +6,11 @@
 More information on the home page https://smef.cc/indigo
 
 ### :warning: You need to add junk to be undetected from VAC.
-### :warning: Cheat is detected by SMAC. (Other AC's Untested)
-**This cheat uses VMT / vTable hooking! Use at own risk.
-(No It does not insta ban! From my testing VMT hooking doesn't do shit really)**
+### :warning: Cheat is detected by SMAC. (Other AC's not tested)
+**This cheat uses VMT / vTable hooking! Use at own risk.**
 
+## IF YOU WANT ANY UPDATE , PULL A REQUEST
 
-
-## READ WIKI BEFORE POSTING
-
-**TODO:** 
-+ Fix skin names for languages other than English. For now, use English (launch option _-language english_) for paint kits to show properly.
-+ Fix Glow
-+ Fix Other broken features
-+ Optimize cheat more (make a "lite" version!?!?!?)
 ## Changelogs
 
 **4.5** *LAST RELEASE*
