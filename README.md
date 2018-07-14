@@ -21,21 +21,9 @@ More information on the home page https://smef.cc/indigo
 + Optimize cheat more (make a "lite" version!?!?!?)
 ## Changelogs
 
-**4.4.3** *OLDER CONFIGS ARE BROKEN*
-+ Removed more "meme" hitsounds (you can re add them)
-+ Added Penguware hitsound
-+ Removed previously commented hitsounds
-+ **Added Glow (in testing)** -- Removed
-+ Changed Animation Clantag to be more editable and better looking
-+ Removed debug mode as it never worked right
-+ Commented stuff that doesn't work
-+ Made Config selection look cleaner
-+ Made "Untrusted Features" more secure.
-+ Changed file format from .ini to .smef
-+ Made configs more cleaner to edit in Notepad
-+ Removed unused files
-+ Map Prediction
-+ probs did some more but forgot!
+**4.5** *LAST RELEASE*
++ Updated cheat to last game update
++ Fixed VMT hooking
 
 **Old Changelogs**
 
