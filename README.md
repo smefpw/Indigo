@@ -4,13 +4,12 @@
 **Rip smef's Indigo September 2017 - July 2018**
 
 More information on the home page https://smef.cc/indigo
+Skinchanger and Inventory Changer might not work due to Panorama!
+If you want it to work with Panorama refer to this: https://pasters.cc/showthread.php?tid=5692
 
 ### :warning: You need to add junk to be undetected from VAC.
 ### :warning: Cheat is detected by SMAC. (Other AC's not tested)
-**This cheat uses VMT / vTable hooking! Use at own risk.**
-
-## IF YOU WANT ANY UPDATE , PULL A REQUEST
-
+**This cheat uses VMT / vTable hooking! Use at own risk. No it doesn't "insta-ban".**
 ## Changelogs
 
 **4.5** *LAST RELEASE*
