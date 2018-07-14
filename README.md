@@ -3,7 +3,7 @@
 ### This project is officially dead as of Friday 13th July 2018, it will now be supported by "Pull Requests".
 **Rip smef's Indigo September 2017 - July 2018**
 
-**More information on the home page https://smef.cc/indigo **
+More information on the home page https://smef.cc/indigo
 
 **Source is outdated as of the 6th July 2018**
 
