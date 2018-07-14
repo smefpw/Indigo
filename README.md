@@ -5,10 +5,12 @@
 
 **More information will be on the main page of Indigo soon!(https://smef.cc/indigo/)**
 
+**Source is outdated as of the 6th July 2018**
 
 ### :warning: You need to add junk to be undetected from VAC.
 ### :warning: Cheat is detected by SMAC. (Other AC's Untested)
-**This cheat uses VMT / vTable hooking! Use at own risk.**
+**This cheat uses VMT / vTable hooking! Use at own risk.
+(No It does not insta ban! From my testing VMT hooking doesn't do shit really)**
 
 
 
