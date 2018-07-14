@@ -201,7 +201,7 @@ namespace Engine
 
 		int WINAPI Hook_EmitSound1(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
 			float flVolume, soundlevel_t iSoundlevel, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
-			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1)
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
 		{
 
 			if (pSample)
@@ -220,7 +220,7 @@ namespace Engine
 
 		int WINAPI Hook_EmitSound2(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
 			float flVolume, float flAttenuation, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
-			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1)
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
 		{
 			if (pSample)
 				Client::OnPlaySound(pOrigin, pSample);
@@ -264,6 +264,15 @@ namespace Engine
 			Interfaces::Surface()->PlaySound(pszSoundName);
 
 			SurfaceTable.ReHook();
+		}
+
+		void Hook_LockCursor()
+		{
+			SurfaceTable.UnHook();
+			Interfaces::Surface()->LockCursor();
+			SurfaceTable.ReHook();
+			if (bIsGuiVisible)
+				Interfaces::Surface()->UnlockCursor();
 		}
 
 		bool Initialize()
@@ -331,6 +340,7 @@ namespace Engine
 						return false;
 
 					SurfaceTable.HookIndex(TABLE::ISurface::PlaySound, Hook_PlaySound);
+					SurfaceTable.HookIndex(TABLE::ISurface::LockCursor, Hook_LockCursor);
 
 					if (Client::Initialize(g_pDevice))
 						return true;

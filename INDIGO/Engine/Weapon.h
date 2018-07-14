@@ -30,7 +30,7 @@ namespace Engine
 	{
 	public:
 //[swap_lines]
-		int*			GetItemDefinitionIndex();
+		short*			GetItemDefinitionIndex();
 		int*			GetItemIDHigh();
 		int*			GetAccountID();
 		int*			GetEntityQuality();

@@ -50,7 +50,7 @@ namespace Engine
 	{
 		typedef const char* ( __thiscall* GetNameFn )( void* );
 		return GetMethod<GetNameFn>( this , 376 )( this ); //378
-	}
+	} // tf you on PolarBear this was already 376
 
 	const char*	CBaseWeapon::GetPrintName()
 	{
@@ -58,10 +58,10 @@ namespace Engine
 		return GetMethod<GetPrintNameFn>( this , 379 )( this );
 	}
 
-	int* CBaseAttributableItem::GetItemDefinitionIndex()
+	short* CBaseAttributableItem::GetItemDefinitionIndex()
 	{
 		// DT_BaseAttributableItem -> m_AttributeManager -> m_Item -> m_iItemDefinitionIndex
-		return (PINT)( ( DWORD )this + Offset::Entity::m_iItemDefinitionIndex );
+		return (short*)( ( DWORD )this + Offset::Entity::m_iItemDefinitionIndex );
 	}
 
 	int* CBaseAttributableItem::GetItemIDHigh()

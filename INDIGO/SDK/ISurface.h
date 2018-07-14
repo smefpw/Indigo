@@ -23,6 +23,8 @@ namespace SDK
 				DrawSetTextColor = 24,
 				DrawSetTextPos = 26,
 				DrawPrintText = 28,
+				UnlockCursor = 66,
+				LockCursor = 67,
 				FontCreate = 71,
 				SetFontGlyphSet = 72,
 				GetTextSize = 79,
@@ -219,6 +221,18 @@ namespace SDK
 		{
 			VirtualFn(void)(PVOID, const char*);
 			GetMethod< OriginalFn >(this, TABLE::ISurface::PlaySound)(this, pszSoundName);
+		}
+
+		void UnlockCursor()
+		{
+			typedef void(__thiscall* OriginalFn)(void*);
+			GetMethod< OriginalFn >(this, TABLE::ISurface::UnlockCursor)(this);
+		}
+
+		void LockCursor()
+		{
+			typedef void(__thiscall* OriginalFn)(void*);
+			GetMethod< OriginalFn >(this, TABLE::ISurface::LockCursor)(this);
 		}
 	};
 }

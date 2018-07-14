@@ -251,13 +251,13 @@ namespace SDK
 
 		// NOTE: setting iEntIndex to -1 will cause the sound to be emitted from the local
 		// player (client-side only)
-		virtual int EmitSound1( IRecipientFilter& filter , int iEntIndex , int iChannel , const char *pSoundEntry , unsigned int nSoundEntryHash , const char *pSample ,
-								float flVolume , soundlevel_t iSoundlevel , int nSeed , int iFlags = 0 , int iPitch = PITCH_NORM ,
-								const Vector *pOrigin = NULL , const Vector *pDirection = NULL , CUtlVector< Vector >* pUtlVecOrigins = NULL , bool bUpdatePositions = true , float soundtime = 0.0f , int speakerentity = -1 ) = 0;
+		virtual int EmitSound1(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
+			float flVolume, soundlevel_t iSoundlevel, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0) = 0;
 
-		virtual int EmitSound2( IRecipientFilter& filter , int iEntIndex , int iChannel , const char *pSoundEntry , unsigned int nSoundEntryHash , const char *pSample ,
-								float flVolume , float flAttenuation , int nSeed , int iFlags = 0 , int iPitch = PITCH_NORM ,
-								const Vector *pOrigin = NULL , const Vector *pDirection = NULL , CUtlVector< Vector >* pUtlVecOrigins = NULL , bool bUpdatePositions = true , float soundtime = 0.0f , int speakerentity = -1 ) = 0;
+		virtual int EmitSound2(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
+			float flVolume, float flAttenuation, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0) = 0;
 
 		virtual void EmitSentenceByIndex( IRecipientFilter& filter , int iEntIndex , int iChannel , int iSentenceIndex ,
 										  float flVolume , soundlevel_t iSoundlevel , int nSeed , int iFlags = 0 , int iPitch = PITCH_NORM ,
