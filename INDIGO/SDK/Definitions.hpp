@@ -54,7 +54,7 @@ struct CHudTexture
 }; //Size=0x00AC
 
 #pragma pack(push, 1)
-class CCSWeaponInfo
+class CWeaponInfo
 {
 public:
 	void*   vftbl;                             //0x0000
