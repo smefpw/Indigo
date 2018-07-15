@@ -19,7 +19,7 @@ namespace SDK
 		{
 			enum
 			{
-				FrameStageNotify = 36
+				FrameStageNotify = 37
 			};
 		}
 	}
@@ -35,6 +35,7 @@ namespace SDK
 		virtual void			LevelInitPostEntity() = 0;
 		virtual void			LevelShutdown( void ) = 0;
 		virtual ClientClass		*GetAllClasses( void ) = 0;
+		virtual void                    unknown() = 0;
 		virtual int				HudVidInit( void ) = 0;
 		virtual void			HudProcessInput( bool bActive ) = 0;
 		virtual void			HudUpdate( bool bActive ) = 0;
