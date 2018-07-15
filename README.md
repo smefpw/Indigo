@@ -15,4 +15,4 @@ More information on the home page https://smef.cc/indigo
 
 https://github.com/smefcc/smefs-Indigo-Remastered/wiki/Changelogs
 
-smef's Indigo is published under the [MIT License](LICENSE);
+smef's Indigo is published under the [MIT License](LICENSE).
