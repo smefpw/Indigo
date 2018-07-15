@@ -138,36 +138,36 @@ public:
 	int     iRecoveryTransitionStartBullet;    //0x01B8
 	int     iRecoveryTransitionEndBullet;      //0x01BC
 	bool    bUnzoomAfterShot;                  //0x01C0
-	bool    bHideViewModelZoomed;              //0x01C4
-	char    pad_0x01C8[2];                     //0x01C8
-	char    iZoomLevels[3];                    //0x01CA
-	int     iZoomFOV[2];                       //0x01CD
-	float   fZoomTime[3];                      //0x01CF
-	char*   szWeaponClass;                     //0x01D2
-	float   flAddonScale;                      //0x01D6
-	char    pad_0x01DA[4];                     //0x01DA
-	char*   szEjectBrassEffect;                //0x01DE
-	char*   szTracerEffect;                    //0x01E2
-	int     iTracerFrequency;                  //0x01E6
-	int     iTracerFrequencyAlt;               //0x01EA
-	char*   szMuzzleFlashEffect_1stPerson;     //0x01EE
-	char    pad_0x01F2[4];                     //0x01F2
-	char*   szMuzzleFlashEffect_3rdPerson;     //0x01F6
-	char    pad_0x01FA[4];                     //0x01FA
-	char*   szMuzzleSmokeEffect;               //0x01FE
-	float   flHeatPerShot;                     //0x0202
-	char*   szZoomInSound;                     //0x0206
-	char*   szZoomOutSound;                    //0x020A
-	float   flInaccuracyPitchShift;            //0x020E
-	float   flInaccuracySoundThreshold;        //0x0212
-	float   flBotAudibleRange;                 //0x0216
-	char    pad_0x021A[8];                     //0x021A
-	char*   pWrongTeamMsg;                     //0x0222
-	bool    bHasBurstMode;                     //0x0226
-	char    pad_0x0225[3];                     //0x0227
-	bool    bIsRevolver;                       //0x022A
-	bool    bCannotShootUnderwater;            //0x022B
-}; // Size = 0x022C
+	bool    bHideViewModelZoomed;              //0x01C1
+	char    pad_0x01C2[2];                     //0x01C2
+	char    iZoomLevels[3];                    //0x01C4
+	int     iZoomFOV[2];                       //0x01C7
+	float   fZoomTime[3];                      //0x01C9
+	char*   szWeaponClass;                     //0x01CC
+	float   flAddonScale;                      //0x01D0
+	char    pad_0x01D4[4];                     //0x01D4
+	char*   szEjectBrassEffect;                //0x01D8
+	char*   szTracerEffect;                    //0x01DC
+	int     iTracerFrequency;                  //0x01E0
+	int     iTracerFrequencyAlt;               //0x01E4
+	char*   szMuzzleFlashEffect_1stPerson;     //0x01E8
+	char    pad_0x01EC[4];                     //0x01EC
+	char*   szMuzzleFlashEffect_3rdPerson;     //0x01F0
+	char    pad_0x01F4[4];                     //0x01F4
+	char*   szMuzzleSmokeEffect;               //0x01F8
+	float   flHeatPerShot;                     //0x01FC
+	char*   szZoomInSound;                     //0x0200
+	char*   szZoomOutSound;                    //0x0204
+	float   flInaccuracyPitchShift;            //0x0208
+	float   flInaccuracySoundThreshold;        //0x020C
+	float   flBotAudibleRange;                 //0x0210
+	char    pad_0x0214[8];                     //0x0214
+	char*   pWrongTeamMsg;                     //0x021C
+	bool    bHasBurstMode;                     //0x0220
+	char    pad_0x0221[3];                     //0x0221
+	bool    bIsRevolver;                       //0x0224
+	bool    bCannotShootUnderwater;            //0x0225
+}; // Size = 0x0226
 #pragma pack(pop)
 
 namespace SDK
