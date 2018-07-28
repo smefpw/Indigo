@@ -1,111 +1,62 @@
 #include "CSX_Hook.h"
 //[junk_enable /]
-namespace CSX
+
+vfunc_hook::vfunc_hook()
+	: class_base(nullptr), vftbl_len(0), new_vftbl(nullptr), old_vftbl(nullptr)
 {
-	namespace Hook
-	{
-		PVOID WriteVTable( PVOID pTablePtr , PVOID pFuncAddress , DWORD dwIndex )
-		{
-			if ( IsBadReadPtr( pTablePtr , sizeof( PVOID ) ) )
-				return nullptr;
+}
+vfunc_hook::vfunc_hook(void* base)
+	: class_base(base), vftbl_len(0), new_vftbl(nullptr), old_vftbl(nullptr)
+{
+}
+vfunc_hook::~vfunc_hook()
+{
+	unhook_all();
 
-			DWORD dwOffset = dwIndex * sizeof( PVOID );
-			
-			PVOID pFunc = (PVOID)( (DWORD)pTablePtr + dwOffset );
-			PVOID Func_o = (PVOID)*(PDWORD)pFunc;
+	delete[] new_vftbl;
+}
 
-			if ( IsBadReadPtr( pFunc , sizeof( PVOID ) ) )
-				return nullptr;
 
-			DWORD dwOld = 0;
-			VirtualProtect( pFunc , sizeof( PVOID ) , PAGE_READWRITE , &dwOld );
+bool vfunc_hook::setup(void* base /*= nullptr*/)
+{
+	if (base != nullptr)
+		class_base = base;
 
-			*(PDWORD)pFunc = (DWORD)pFuncAddress;
+	if (class_base == nullptr)
+		return false;
 
-			VirtualProtect( pFunc , sizeof( PVOID ) , dwOld , &dwOld );
+	old_vftbl = *(std::uintptr_t**)class_base;
+	vftbl_len = estimate_vftbl_length(old_vftbl);
 
-			return Func_o;
-		}
+	if (vftbl_len == 0)
+		return false;
 
-		VTable::VTable()
-		{
-			pPtrPtrTable = nullptr;
-			pPtrOldTable = nullptr;
-			pPtrNewTable = nullptr;
-			pPtrPtrTable = nullptr;
+	new_vftbl = new std::uintptr_t[vftbl_len + 1]();
 
-			dwCountFunc = 0;
-			dwSizeTable = 0;
-		}
+	std::memcpy(&new_vftbl[1], old_vftbl, vftbl_len * sizeof(std::uintptr_t));
 
-		bool VTable::InitTable( PVOID pTablePtrPtr )
-		{
-			if ( IsBadReadPtr( pTablePtrPtr , sizeof( PVOID ) ) )
-				return false;
 
-			pPtrPtrTable = (PVOID*)pTablePtrPtr;
-			pPtrOldTable = (PVOID*)( *(PDWORD)pPtrPtrTable );
-
-			while ( !CSX::Utils::IsBadReadPtr( pPtrOldTable[dwCountFunc] ) )
-				dwCountFunc++;
-
-			//while ( !IsBadCodePtr( (FARPROC)pPtrOldTable[dwCountFunc] ) && !CSX::Utils::IsBadReadPtr( pPtrOldTable[dwCountFunc] ) )
-			//	dwCountFunc++;
-
-			if ( dwCountFunc )
-			{
-				dwSizeTable = sizeof( PVOID ) * dwCountFunc;
-
-				pPtrNewTable = (PVOID*)HeapAlloc( GetProcessHeap() , HEAP_ZERO_MEMORY , dwSizeTable );
-				memcpy( pPtrNewTable , pPtrOldTable , dwSizeTable );
-
-				*(PDWORD)pPtrPtrTable = (DWORD)pPtrNewTable;
-
-				return true;
-			}
-
-			return false;
-		}
-
-		void VTable::HookIndex( DWORD dwIndex , PVOID pNewAddress )
-		{
-			if ( pPtrNewTable )
-				( (PVOID*)pPtrNewTable )[dwIndex] = pNewAddress;
-		}
-
-		PVOID VTable::GetFuncAddress( DWORD dwIndex )
-		{
-			if ( pPtrOldTable )
-			{
-				PVOID pAddres = ( (PVOID*)pPtrOldTable )[dwIndex];
-				return pAddres;
-			}
-
-			return nullptr;
-		}
-
-		PVOID VTable::GetHookIndex( DWORD dwIndex , PVOID pNewAddress )
-		{
-			if ( pPtrNewTable )
-			{
-				PVOID pOld = ( (PVOID*)pPtrNewTable )[dwIndex];
-				( (PVOID*)pPtrNewTable )[dwIndex] = pNewAddress;
-				return pOld;
-			}
-
-			return nullptr;
-		}
-
-		void VTable::UnHook()
-		{
-			if ( !CSX::Utils::IsBadReadPtr( pPtrPtrTable ) )
-				*(PDWORD)pPtrPtrTable = (DWORD)pPtrOldTable;
-		}
-
-		void VTable::ReHook()
-		{
-			if ( !CSX::Utils::IsBadReadPtr( pPtrPtrTable ) )
-				*(PDWORD)pPtrPtrTable = (DWORD)pPtrNewTable;
-		}
+	try {
+		auto guard = detail::protect_guard{ class_base, sizeof(std::uintptr_t), PAGE_READWRITE };
+		new_vftbl[0] = old_vftbl[-1];
+		*(std::uintptr_t**)class_base = &new_vftbl[1];
 	}
+	catch (...) {
+		delete[] new_vftbl;
+		return false;
+	}
+
+	return true;
+}
+std::size_t vfunc_hook::estimate_vftbl_length(std::uintptr_t* vftbl_start)
+{
+	auto len = std::size_t{};
+
+	while (vftbl_start[len] >= 0x00010000 &&
+		vftbl_start[len] <  0xFFF00000 &&
+		len < 512 /* Hard coded value. Can cause problems, beware.*/) {
+		len++;
+	}
+
+	return len;
 }

@@ -85,7 +85,7 @@ public:
 	void GrenadePrediction();
 
 	void OnRender();
-	void OnCreateMove( CUserCmd* pCmd );
+	void OnCreateMove(CUserCmd* pCmd);
 	void OnReset();
 	void OnEvents( IGameEvent* pEvent );
 	void OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &state , const ModelRenderInfo_t &pInfo , matrix3x4_t *pCustomBoneToWorld = NULL );

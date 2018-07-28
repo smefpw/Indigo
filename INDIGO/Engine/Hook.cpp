@@ -1,30 +1,20 @@
 #include "Hook.h"
-#include "intrin.h"
 
 //[enc_string_enable /]
 //[junk_enable /]
-
-CAimbot* g_Aim;
 
 namespace Engine
 {
 	namespace Hook
 	{
-		/*
-			WARNING: This cheat (like pretty much any other pastes out there) uses Virtual Method Table (VMT) hooking, which is now detected by Valve Anti-Cheat.
-			We are NOT responsible for ANY bans that may occur during the process of using this cheat. This includes, but not limited to, VAC, Untrusted and
-			Overwatch bans.
-		*/
-
-		CSX::Hook::VTable IDirect3DDevice9Table;
-		CSX::Hook::VTable SoundTable;
-		CSX::Hook::VTable ClientModeTable;
-		CSX::Hook::VTable GameEventTable;
-		CSX::Hook::VTable ModelRenderTable;
-		CSX::Hook::VTable ClientTable;
-		CSX::Hook::VTable SurfaceTable;
-		CSX::Hook::VTable EngineTable;
-		CSX::Hook::VTable SteamGameCoordinatorTable;
+		vfunc_hook panel;
+		vfunc_hook client;
+		vfunc_hook clientmode;
+		vfunc_hook modelrender;
+		vfunc_hook sound;
+		vfunc_hook surface;
+		vfunc_hook eventmanager;
+		vfunc_hook device;
 		IDirect3DDevice9* g_pDevice = nullptr;
 
 		typedef HRESULT(WINAPI* Present_t)(IDirect3DDevice9* pDevice, CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion);
@@ -39,242 +29,94 @@ namespace Engine
 
 			return Present_o(pDevice, pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 		}
-
-		HRESULT WINAPI Hook_Reset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters)
+		void __stdcall Hook_Reset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters)
 		{
+			static auto ofunc = device.get_original<ResetHook>(D3D9::TABLE::Reset);
+			ofunc(pDevice, pPresentationParameters);
 			Client::OnLostDevice();
-
 			HRESULT hRes = Reset_o(pDevice, pPresentationParameters);
-
 			Client::OnResetDevice();
-
-			return hRes;
 		}
 
-		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
+		void __stdcall Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd)
 		{
-			if (!pCmd->command_number)
-				return true;
-
-			ClientModeTable.UnHook();
-
-			auto ebp = (uintptr_t*)(uintptr_t(_AddressOfReturnAddress()) - sizeof(void*));
-			bool& bSendPacket = *reinterpret_cast<bool*>( *ebp - 0x1C );
-
-			Client::OnCreateMove(pCmd, bSendPacket);
-
-			bool ret = Interfaces::ClientMode()->CreateMove(flInputSampleTime, pCmd);
-			ClientModeTable.ReHook();
-
-			return false;
+			static auto ofunc = clientmode.get_original<CreateMove>(TABLE::IClientMode::CreateMove);
+			ofunc(Interfaces::ClientMode(), flInputSampleTime, pCmd);
+			Client::OnCreateMove(pCmd);
 		}
 
-		int WINAPI Hook_DoPostScreenSpaceEffects(int callback)
+		void __fastcall Hook_OverrideView(CViewSetup* pSetup)
 		{
-			ClientModeTable.UnHook();
-			int ret = Interfaces::ClientMode()->DoPostScreenSpaceEffects(callback);
-			ClientModeTable.ReHook();
-
-			auto glow_target = [](GlowObjectDefinition_t& glowObject, Color color) -> void
-			{
-				glowObject.m_flRed = color.r() / 255.f;
-				glowObject.m_flGreen = color.g() / 255.f;
-				glowObject.m_flBlue = color.b() / 255.f;
-				glowObject.m_flAlpha = color.a() / 255.f;
-				glowObject.m_bRenderWhenOccluded = true;
-				glowObject.m_bRenderWhenUnoccluded = false;
-			};
-
-			if (Interfaces::GlowManager && Interfaces::Engine()->IsConnected())
-			{
-				if (Settings::Esp::glow)
-				{
-					for (auto i = 0; i < Interfaces::GlowManager()->m_GlowObjectDefinitions.Count(); i++)
-					{
-						auto& glowObject = Interfaces::GlowManager()->m_GlowObjectDefinitions[i];
-						auto entity = reinterpret_cast<CBaseEntity*>(glowObject.m_pEntity);
-
-						if (!entity || glowObject.IsUnused())
-							continue;
-
-						switch (entity->GetClientClass()->m_ClassID)
-						{
-							case (int)CLIENT_CLASS_ID::CCSPlayer:
-							{
-								if (entity->GetTeam() != Client::g_pPlayers->GetLocal()->m_pEntity->GetTeam())
-									glow_target(glowObject, Color(255, 255, 255, 255));
-							}
-							break;
-
-							default:
-								break;
-						}
-					}
-				}
-			}
-			return ret;
-		}
-
-		bool WINAPI Hook_IsConnected()
-		{
-			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client.dll"), "75 04 B0 01 5F") - 2;
-			if (_ReturnAddress() == unk && Settings::Misc::misc_inventory)
-				return false;
-
-			EngineTable.UnHook();
-			bool ret = Interfaces::Engine()->IsConnected();
-			EngineTable.ReHook();
-			return ret;
-		}
-
-		bool WINAPI Hook_OverrideView(CViewSetup* pSetup)
-		{
+			static auto ofunc = clientmode.get_original<GetFov>(TABLE::IClientMode::OverrideView);
 			Client::OnOverrideView(pSetup);
-
-			ClientModeTable.UnHook();
-			bool ret = Interfaces::ClientMode()->OverrideView(pSetup);
-			ClientModeTable.ReHook();
-			return ret;
+			ofunc(pSetup);
+		}
+		float __stdcall Hook_GetViewModelFOV()
+		{
+			//i dont need that
+			return 0;
 		}
 
-		float WINAPI Hook_GetViewModelFOV()
+		bool __fastcall Hook_FireEventClientSideThink(void* ecx, void* edx, IGameEvent* pEvent)
 		{
-			ClientModeTable.UnHook();
-			float fov = Interfaces::ClientMode()->GetViewModelFOV();
-			ClientModeTable.ReHook();
-
-			Client::OnGetViewModelFOV(fov);
-
-			return fov;
-		}
-
-		EGCResults __fastcall Hook_RetrieveMessage(void* ecx, void* edx, uint32_t *punMsgType, void *pubDest, uint32_t cubDest, uint32_t *pcubMsgSize)
-		{
-			SteamGameCoordinatorTable.UnHook();
-			EGCResults status = Interfaces::SteamGameCoordinator()->RetrieveMessage(punMsgType, pubDest, cubDest, pcubMsgSize);
-			SteamGameCoordinatorTable.ReHook();
-			if (status != k_EGCResultOK)
-				return status;
-			Client::OnRetrieveMessage(ecx, edx, punMsgType, pubDest, cubDest, pcubMsgSize);
-			return status;
-		}
-		EGCResults __fastcall Hook_SendMessage(void* ecx, void* edx, uint32_t unMsgType, const void* pubData, uint32_t cubData)
-		{
-			uint32_t messageType = unMsgType & 0x7FFFFFFF;
-			void* pubDataMutable = const_cast<void*>(pubData);
-			Client::OnSendMessage(ecx, edx, unMsgType, pubData, cubData);
-			SteamGameCoordinatorTable.UnHook();
-			EGCResults status = Interfaces::SteamGameCoordinator()->SendMessage(unMsgType, pubData, cubData);
-			SteamGameCoordinatorTable.ReHook();
-			return status;
-		}
-
-		bool WINAPI Hook_FireEventClientSideThink(IGameEvent* pEvent)
-		{
-			bool ret = false;
-
+			static auto ofunc = eventmanager.get_original<GameEvent>(TABLE::IGameEventManager2::FireEventClientSide);
 			if (!pEvent)
-			{
-				GameEventTable.UnHook();
-				ret = Interfaces::GameEvent()->FireEventClientSide(pEvent);
-				GameEventTable.ReHook();
-				return ret;
-			}
-
+				return ofunc(ecx, pEvent);
 			Client::OnFireEventClientSideThink(pEvent);
-
-			GameEventTable.UnHook();
-			ret = Interfaces::GameEvent()->FireEventClientSide(pEvent);
-			GameEventTable.ReHook();
-
-			return ret;
+			return ofunc(ecx, pEvent);
 		}
 
-		void WINAPI Hook_FrameStageNotify(ClientFrameStage_t Stage)
+		void __stdcall Hook_FrameStageNotify(ClientFrameStage_t stage)
 		{
-			Client::OnFrameStageNotify(Stage);
-
-			ClientTable.UnHook();
-			Interfaces::Client()->FrameStageNotify(Stage);
-			ClientTable.ReHook();
+			static auto ofunc = client.get_original<FrameStageNotify>(TABLE::IBaseClientDLL::FrameStageNotify);
+			ofunc(Interfaces::Client(), stage);
+			Skin_OnFrameStageNotify(stage);
+			Gloves_OnFrameStageNotify(stage);
 		}
 
-		int WINAPI Hook_EmitSound1(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
+		void __stdcall Hook_EmitSound(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
 			float flVolume, soundlevel_t iSoundlevel, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
-			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int test = 0)
 		{
-
-			if (pSample)
-				Client::OnPlaySound(pOrigin, pSample);
-
-			SoundTable.UnHook();
-
-			int ret = Interfaces::Sound()->EmitSound1(filter, iEntIndex, iChannel, pSoundEntry, nSoundEntryHash, pSample,
-				flVolume, iSoundlevel, nSeed, iFlags, iPitch,
-				pOrigin, pDirection, pUtlVecOrigins, bUpdatePositions, soundtime, speakerentity);
-
-			SoundTable.ReHook();
-
-			return ret;
-		}
-
-		int WINAPI Hook_EmitSound2(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
-			float flVolume, float flAttenuation, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
-			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
-		{
-			if (pSample)
-				Client::OnPlaySound(pOrigin, pSample);
-
-			SoundTable.UnHook();
-
-			int ret = Interfaces::Sound()->EmitSound2(filter, iEntIndex, iChannel, pSoundEntry, nSoundEntryHash, pSample,
-				flVolume, flAttenuation, nSeed, iFlags, iPitch,
-				pOrigin, pDirection, pUtlVecOrigins, bUpdatePositions, soundtime, speakerentity);
-
-			SoundTable.ReHook();
-
-			return ret;
-		}
-
-		void WINAPI Hook_DrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state,
-			const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld = NULL)
-		{
-			ModelRenderTable.UnHook();
-
-			if (ctx && pCustomBoneToWorld)
-				Client::OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-
-			Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-
-			if (ctx && pCustomBoneToWorld && Client::g_pEsp && Settings::Esp::esp_Chams)
+			auto oEmitsound = sound.get_original<EmitsoundXD>(TABLE::IEngineSound::EmitSound1);
+			if (pSample && Client::g_pPlayers->GetPlayer(iEntIndex)->Team != Client::g_pPlayers->GetLocal()->Team)
 			{
-				Interfaces::ModelRender()->ForcedMaterialOverride(0);
+				Client::OnPlaySound(pOrigin, pSample);
 			}
+			return oEmitsound(filter, iEntIndex, iChannel, pSoundEntry, nSoundEntryHash, pSample,
+				flVolume, iSoundlevel, nSeed, iFlags, iPitch,
+				pOrigin, pDirection, pUtlVecOrigins, bUpdatePositions, soundtime, speakerentity, 0);
 
-			ModelRenderTable.ReHook();
+
+		}
+		void __stdcall Hook_EmitSound2(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
+			float flVolume, soundlevel_t iSoundlevel, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
+			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int test = 0)
+		{
+			auto oEmitsound = sound.get_original<EmitsoundXD>(TABLE::IEngineSound::EmitSound2);
+			if (pSample && Client::g_pPlayers->GetPlayer(iEntIndex)->Team != Client::g_pPlayers->GetLocal()->Team)
+			{
+				Client::OnPlaySound(pOrigin, pSample);
+			}
+			return oEmitsound(filter, iEntIndex, iChannel, pSoundEntry, nSoundEntryHash, pSample,
+				flVolume, iSoundlevel, nSeed, iFlags, iPitch,
+				pOrigin, pDirection, pUtlVecOrigins, bUpdatePositions, soundtime, speakerentity, 0);
+
+
 		}
 
-		void WINAPI Hook_PlaySound(const char* pszSoundName)
+		void __fastcall Hook_DrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state, const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld)
 		{
-			SurfaceTable.UnHook();
+			// you need to rewrite chams or find some online
+		}
 
+		void __stdcall Hook_PlaySound(const char* pszSoundName)
+		{
+			static auto ofunc = surface.get_original<PlaySound>(TABLE::ISurface::PlaySound);
+			ofunc(Interfaces::Surface(), pszSoundName);
 			if (pszSoundName)
 				Client::OnPlaySound(pszSoundName);
-
-			Interfaces::Surface()->PlaySound(pszSoundName);
-
-			SurfaceTable.ReHook();
 		}
-
-		void Hook_LockCursor()
-		{
-			SurfaceTable.UnHook();
-			Interfaces::Surface()->LockCursor();
-			SurfaceTable.ReHook();
-			if (bIsGuiVisible)
-				Interfaces::Surface()->UnlockCursor();
-		}
-
 		bool Initialize()
 		{
 			if (!CSX::Utils::IsModuleLoad(D3D9_DLL))
@@ -293,57 +135,50 @@ namespace Engine
 			{
 				g_pDevice = (IDirect3DDevice9*)(**(PDWORD*)d3d9TablePtrPtr);
 
-				if (IDirect3DDevice9Table.InitTable(g_pDevice))
+				if (device.setup(g_pDevice))
 				{
+					//all undetect and rewrite
 					DWORD_PTR* dwAddress = *dwPresent_o;
 					Present_o = (Present_t)(*dwAddress);
 					*dwAddress = (DWORD_PTR)(&Hook_Present);
 
-					Reset_o = (Reset_t)IDirect3DDevice9Table.GetHookIndex(D3D9::TABLE::Reset, Hook_Reset);
+					device.hook_index(D3D9::TABLE::Reset, Hook_Reset);
 
-					if (!ClientModeTable.InitTable(Interfaces::ClientMode()))
+					if (!clientmode.setup(Interfaces::ClientMode()))
 						return false;
 
-					ClientModeTable.HookIndex(TABLE::IClientMode::CreateMove, Hook_CreateMove);
-					ClientModeTable.HookIndex(TABLE::IClientMode::OverrideView, Hook_OverrideView);
-					ClientModeTable.HookIndex(TABLE::IClientMode::GetViewModelFOV, Hook_GetViewModelFOV);
-					ClientModeTable.HookIndex(44, Hook_DoPostScreenSpaceEffects);
+					clientmode.hook_index(TABLE::IClientMode::CreateMove, Hook_CreateMove);
+					clientmode.hook_index(TABLE::IClientMode::OverrideView, Hook_OverrideView);
+					//clientmode.hook_index(TABLE::IClientMode::GetViewModelFOV, Hook_GetViewModelFOV);
 
-					if (!SteamGameCoordinatorTable.InitTable(Interfaces::SteamGameCoordinator()))
+					if (!eventmanager.setup(Interfaces::GameEvent()))
 						return false;
 
-					SteamGameCoordinatorTable.HookIndex(0, Hook_SendMessage);
-					SteamGameCoordinatorTable.HookIndex(2, Hook_RetrieveMessage);
+					eventmanager.hook_index(TABLE::IGameEventManager2::FireEventClientSide, Hook_FireEventClientSideThink);
 
-					if (!GameEventTable.InitTable(Interfaces::GameEvent()))
+					if (!client.setup(Interfaces::Client()))
 						return false;
 
-					GameEventTable.HookIndex(TABLE::IGameEventManager2::FireEventClientSide, Hook_FireEventClientSideThink);
+					client.hook_index(TABLE::IBaseClientDLL::FrameStageNotify, Hook_FrameStageNotify);
 
-					if (!ClientTable.InitTable(Interfaces::Client()))
+					if (!sound.setup(Interfaces::Sound()))
 						return false;
 
-					ClientTable.HookIndex(TABLE::IBaseClientDLL::FrameStageNotify, Hook_FrameStageNotify);
+					sound.hook_index(TABLE::IEngineSound::EmitSound1, Hook_EmitSound);
 
-					if (!SoundTable.InitTable(Interfaces::Sound()))
+					//if (!modelrender.setup(Interfaces::ModelRender()))
+					//	return false;
+					// dont like chams so shit
+					//modelrender.hook_index(TABLE::IVModelRender::DrawModelExecute, Hook_DrawModelExecute);
+
+					if (!surface.setup(Interfaces::Surface()))
 						return false;
 
-					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound1, Hook_EmitSound1);
-					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound2, Hook_EmitSound2);
-
-					if (!ModelRenderTable.InitTable(Interfaces::ModelRender()))
-						return false;
-
-					ModelRenderTable.HookIndex(TABLE::IVModelRender::DrawModelExecute, Hook_DrawModelExecute);
-
-					if (!SurfaceTable.InitTable(Interfaces::Surface()))
-						return false;
-
-					SurfaceTable.HookIndex(TABLE::ISurface::PlaySound, Hook_PlaySound);
-					SurfaceTable.HookIndex(TABLE::ISurface::LockCursor, Hook_LockCursor);
+					surface.hook_index(TABLE::ISurface::PlaySound, Hook_PlaySound);
 
 					if (Client::Initialize(g_pDevice))
 						return true;
+					//all works
 				}
 			}
 
@@ -352,13 +187,12 @@ namespace Engine
 
 		void Shutdown()
 		{
-			IDirect3DDevice9Table.UnHook();
-			SoundTable.UnHook();
-			ClientModeTable.UnHook();
-			GameEventTable.UnHook();
-			ModelRenderTable.UnHook();
-			ClientTable.UnHook();
-			SteamGameCoordinatorTable.UnHook();
+			device.unhook_all();
+			sound.unhook_all();
+			clientmode.unhook_all();
+			eventmanager.unhook_all();
+			modelrender.unhook_all();
+			client.unhook_all();
 		}
 	}
 }

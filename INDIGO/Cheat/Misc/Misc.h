@@ -7,7 +7,7 @@ class CMisc
 public:
 	//[swap_lines]
 	void OnRender();
-	void OnCreateMove( CUserCmd* pCmd );
+	void OnCreateMove(CUserCmd* pCmd);
 	void FrameStageNotify(ClientFrameStage_t Stage);
 #define POSTPROCESS_VALUE
 	void OnDrawModelExecute();
