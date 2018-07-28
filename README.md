@@ -5,6 +5,9 @@
 
 More information on the home page https://smef.cc/indigo
 
+##INFO
+Some things like chams need a rewrite
+
 
 ## Changelogs
 
