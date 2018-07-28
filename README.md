@@ -6,8 +6,10 @@
 More information on the home page https://smef.cc/indigo
 
 ##INFO
-Some things like chams need a rewrite
-
+Things that dont work and need to be fixed:
+chams
+profile/medal
+dont know what else is broken
 
 ## Changelogs
 
