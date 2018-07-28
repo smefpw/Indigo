@@ -5,6 +5,11 @@
 
 More information on the home page https://smef.cc/indigo
 
+##INFO
+Things that dont work and need to be fixed:
+chams
+profile/medal
+dont know what else is broken
 
 ## Changelogs
 

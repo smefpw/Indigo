@@ -833,11 +833,11 @@ void MsgFunc_ServerRankRevealAll()
 	}
 }
 
-void CEsp::OnCreateMove( CUserCmd* pCmd )
+void CEsp::OnCreateMove(CUserCmd* pCmd)
 {
-	if ( Settings::Esp::esp_Rank && pCmd->buttons & IN_SCORE )
+	if (Settings::Esp::esp_Rank && pCmd->buttons & IN_SCORE)
 		MsgFunc_ServerRankRevealAll();
-	
+
 	g_pEsp->SoundEsp.Update();
 }
 

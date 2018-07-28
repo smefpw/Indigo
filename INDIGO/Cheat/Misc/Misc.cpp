@@ -36,7 +36,7 @@ void CMisc::OnRender()
 	}
 } 
 
-void CMisc::OnCreateMove( CUserCmd* pCmd )
+void CMisc::OnCreateMove(CUserCmd* pCmd)
 {
 	CMe* local = Client::g_pPlayers->GetLocal();
 

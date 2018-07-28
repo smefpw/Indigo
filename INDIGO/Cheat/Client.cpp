@@ -335,7 +335,7 @@ namespace Client
 		g_pInventoryChanger->PreSendMessage(unMsgType, pubDataMutable, cubData);
 	}
 
-	void OnCreateMove(CUserCmd* pCmd, bool& bSendPacket)
+	void OnCreateMove(CUserCmd* pCmd)
 	{
 		if (g_pPlayers && Interfaces::Engine()->IsInGame())
 		{
@@ -346,12 +346,6 @@ namespace Client
 
 			if (IsLocalAlive())
 			{
-				QAngle view;
-				Interfaces::Engine()->GetViewAngles(view);
-				
-					if (bSendPacket)
-					Settings::Misc::qLastTickAngle = pCmd->viewangles;
-				
 				if (!bIsGuiVisible)
 				{
 					int iWeaponSettingsSelectID = GetWeaponSettingsSelectID();
@@ -374,12 +368,12 @@ namespace Client
 
 				if (Settings::Aimbot::aim_Backtrack)
 					 backtracking->legitBackTrack(pCmd);
-				
-				if (Settings::Misc::misc_LegitAA)
-					 AntiAim().LegitAA(pCmd, bSendPacket);
-				
-				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return;
+				//I really dont wanna fix leggit aa (probably you need to delete bSendPacket or more dont really care
+				//if (Settings::Misc::misc_LegitAA)
+					// AntiAim().LegitAA(pCmd, bSendPacket);
+				//Same es the one above
+				//correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
+				//if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return;
 			}
 		}
 	}

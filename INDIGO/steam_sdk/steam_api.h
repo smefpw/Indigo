@@ -59,7 +59,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
 //	Steam API setup & shutdown
 //
-//	These functions manage loading, initializing and shutdown of the steamclient.dll
+//	These functions manage loading, initializing and shutdown of the steamclient_panorama.dll
 //
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -352,9 +352,9 @@ public:
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
-//	steamclient.dll private wrapper functions
+//	steamclient_panorama.dll private wrapper functions
 //
-//	The following functions are part of abstracting API access to the steamclient.dll, but should only be used in very specific cases
+//	The following functions are part of abstracting API access to the steamclient_panorama.dll, but should only be used in very specific cases
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 // SteamAPI_IsSteamRunning() returns true if Steam is currently running
