@@ -5,6 +5,7 @@
 
 More information on the home page https://smef.cc/indigo
 
+If you wish to get "undetected" hooking refer to here - https://github.com/smefcc/smefs-Indigo-Remastered/pull/113
 
 ## Changelogs
 
