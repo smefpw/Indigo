@@ -7,6 +7,8 @@ More information on the home page https://smef.cc/indigo
 
 If you wish to get "undetected" hooking refer to here - https://github.com/smefcc/smefs-Indigo-Remastered/pull/113
 
+Do not trust Jozkah#6748 (Discord ID: 226472189786980354), or email jozkahflix1@gmail.com. He's going around attempting to scam members for his Aimware Lifetime for £20 so he can afford his skeet sub, the Aimware account name is reported to be "jozkah".
+
 ## Changelogs
 
 **4.5** *LAST RELEASE*
