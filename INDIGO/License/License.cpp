@@ -344,7 +344,7 @@ bool CLicense::CheckLicenseURL( string URL , string GATE , string KEY )
 	return false;
 }
 
-bool cpcl()
+bool cpcl() // did no one ever find this anti paste #1?
 {
 	string stub_7864 = WATER_MARK;
 	char* stub_3008DA = new char[65] {54, 51, 51, 50, 51, 49, 54, 67, 53, 65, 54, 57, 54, 52, 55, 65, 52, 57, 52, 53, 54, 67, 55, 53, 53, 65, 52, 55, 54, 67, 54, 69, 54, 50, 55, 57, 52, 50, 53, 51, 53, 65, 53, 55, 51, 49, 54, 56, 54, 51, 51, 51, 53, 50, 54, 67, 54, 51, 54, 68, 53, 54, 54, 66, 0};
