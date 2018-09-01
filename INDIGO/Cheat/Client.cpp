@@ -379,7 +379,8 @@ namespace Client
 					 AntiAim().LegitAA(pCmd, bSendPacket);
 				
 				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return;
+				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return; 
+				// did no one ever find this anti paste #2?
 			}
 		}
 	}
