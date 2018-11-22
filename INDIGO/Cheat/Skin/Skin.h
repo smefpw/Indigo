@@ -76,16 +76,16 @@ const std::deque<GloveInfo> k_glove_names =
 { 5034, "Specialist", "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl" },
 { 5035, "Hydra", "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl" }
 };
-extern WeaponSkins_s WeaponSkins[33];
-extern KnifeSkins_s KnifeSkins[10];
+extern WeaponSkins_s WeaponSkins[34];
+extern KnifeSkins_s KnifeSkins[14];
 extern Gloves_s GloveSkin[10];
 extern unordered_map<int, EconomyItemCfg> g_SkinChangerCfg;
 extern unordered_map<int, const char*> g_ViewModelCfg;
 extern unordered_map<const char*, const char*> g_KillIconCfg;
 
-extern char* pWeaponData[33];
-extern int pWeaponItemIndexData[33];
-extern char* pKnifeData[10];
+extern char* pWeaponData[34];
+extern int pWeaponItemIndexData[34];
+extern char* pKnifeData[14];
 
 #define WEAPON_DATA_SIZE ( sizeof( pWeaponData ) / sizeof( *pWeaponData ) )
 #define KNIFE_DATA_SIZE ( sizeof( pKnifeData ) / sizeof( *pKnifeData ) )
@@ -147,6 +147,7 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 #define WEAPON_NEGEV_STR	"Negev"				// 23
 #define WEAPON_SAWEDOFF_STR	"Sawed-Off"			// 24
 #define WEAPON_MP7_STR		"MP7"				// 25
+#define WEAPON_MP5SD_STR    "MP5-SD"            // 22
 #define WEAPON_MP9_STR		"MP9"				// 26
 #define WEAPON_NOVA_STR		"Nova"				// 27
 #define WEAPON_SG553_STR	"SG553"				// 28
