@@ -117,7 +117,7 @@ namespace Engine
 
 		bool WINAPI Hook_IsConnected()
 		{
-			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client.dll"), "75 04 B0 01 5F") - 2;
+			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA("client_panorama.dll"), "75 04 B0 01 5F") - 2;
 			if (_ReturnAddress() == unk && Settings::Misc::misc_inventory)
 				return false;
 
