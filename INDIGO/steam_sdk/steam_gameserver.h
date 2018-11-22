@@ -125,9 +125,9 @@ private:
 	CCallback< thisclass, param, true > var; void func( param *pParam )
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
-//	steamclient_panorama.dll private wrapper functions
+//	steamclient.dll private wrapper functions
 //
-//	The following functions are part of abstracting API access to the steamclient_panorama.dll, but should only be used in very specific cases
+//	The following functions are part of abstracting API access to the steamclient.dll, but should only be used in very specific cases
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
 S_API HSteamPipe S_CALLTYPE SteamGameServer_GetHSteamPipe();
 S_API HSteamUser S_CALLTYPE SteamGameServer_GetHSteamUser();
