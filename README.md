@@ -9,7 +9,11 @@ If you wish to get "undetected" hooking refer to here - https://github.com/smefc
 
 ## Changelogs
 
-**4.5** *LAST RELEASE*
+**Unofficial "pull request" releases merged 4.5.1**
++ Updated cheat to panorama
++ Added new weapon skins
+
+**Official Release 4.5**
 + Updated cheat to last game update
 
 **Old Changelogs**
