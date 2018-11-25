@@ -6,10 +6,11 @@
 If you wish to get "undetected" hooking click [here](https://github.com/smefcc/smefs-Indigo-Remastered/pull/113)
 
 ## Changelogs
-**Unofficial "pull request" releases merged 4.5.1**
+**4.5.1**
 + Updated cheat to panorama
 + Updated cheat to last game update
 + Added new knives/skins
+- Removed map prediction (no longer needed)
 
 **Old Changelogs** 
 [here](https://github.com/smefcc/smefs-Indigo-Remastered/wiki/Changelogs)
