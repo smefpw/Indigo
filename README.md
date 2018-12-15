@@ -1,19 +1,18 @@
 # smef's Indigo Remastered
 
-### This project is officially dead as of Friday 13th July 2018, it will now be supported by "Pull Requests".
-**Rip smef's Indigo September 2017 - July 2018**
+### This project is officially closed as of Friday 13th July 2018, it will now be supported by "Pull Requests".
+**RIP smef's Indigo September 2017 - July 2018**
 
-More information on the home page https://smef.cc/indigo
-
-If you wish to get "undetected" hooking refer to here - https://github.com/smefcc/smefs-Indigo-Remastered/pull/113
+If you wish to get "undetected" hooking click [here](https://github.com/smefcc/smefs-Indigo-Remastered/pull/113)
 
 ## Changelogs
-
-**4.5** *LAST RELEASE*
+**4.5.1**
++ Updated cheat to panorama
 + Updated cheat to last game update
++ Added new knives/skins
+- Removed map prediction (no longer needed)
 
-**Old Changelogs**
-
-https://github.com/smefcc/smefs-Indigo-Remastered/wiki/Changelogs
+**Old Changelogs** 
+[here](https://github.com/smefcc/smefs-Indigo-Remastered/wiki/Changelogs)
 
 smef's Indigo is published under the [MIT License](LICENSE).
