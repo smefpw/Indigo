@@ -10,7 +10,7 @@ namespace Engine
 	class CBaseWeapon : public IClientEntity
 	{
 	public:
-//[swap_lines]
+		//[swap_lines]
 		int				GetWeaponId();
 		int				GetWeaponType();
 		int				GetWeaponAmmo();
@@ -23,13 +23,13 @@ namespace Engine
 
 		const char*		GetName();
 		const char*		GetPrintName();
-//[/swap_lines]
+		//[/swap_lines]
 	};
 
 	class CBaseAttributableItem : public IClientEntity
 	{
 	public:
-//[swap_lines]
+		//[swap_lines]
 		short*			GetItemDefinitionIndex();
 		int*			GetItemIDHigh();
 		int*			GetAccountID();
@@ -41,18 +41,18 @@ namespace Engine
 		int*			GetFallbackSeed();
 		int*			GetFallbackStatTrak();
 		CBaseViewModel*	GetViewModel();
-//[/swap_lines]
+		//[/swap_lines]
 	};
 
 	enum WEAPON_TYPE
 	{
-		WEAPON_TYPE_PISTOL ,
-		WEAPON_TYPE_SHOTGUN ,
-		WEAPON_TYPE_SNIPER ,
-		WEAPON_TYPE_GRENADE ,
-		WEAPON_TYPE_KNIFE ,
-		WEAPON_TYPE_C4 ,
-		WEAPON_TYPE_UNKNOWN ,
+		WEAPON_TYPE_PISTOL,
+		WEAPON_TYPE_SHOTGUN,
+		WEAPON_TYPE_SNIPER,
+		WEAPON_TYPE_GRENADE,
+		WEAPON_TYPE_KNIFE,
+		WEAPON_TYPE_C4,
+		WEAPON_TYPE_UNKNOWN,
 	};
 
 	enum WEAPON_ID {

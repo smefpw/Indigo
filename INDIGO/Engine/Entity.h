@@ -10,14 +10,14 @@ namespace Engine
 	class CBaseEntity : public IClientEntity
 	{
 	public:
-//[swap_lines]
+		//[swap_lines]
 		char*	GetPlayerName();
 
 		bool	IsPlayer();
 		bool	IsValid();
 		bool	IsDead();
 		Vector  GetOrigin();
-		bool	IsVisible( CBaseEntity* pLocalEntity );
+		bool	IsVisible(CBaseEntity* pLocalEntity);
 
 		int     GetMoveType();
 		bool	HasHelmet();
@@ -40,7 +40,7 @@ namespace Engine
 		int		GetTickBase();
 		ObserverMode_t GetObserverMode();
 		PVOID GetObserverTarget();
-		
+
 		PVOID			GetActiveWeapon();
 		CBaseWeapon*	GetBaseWeapon();
 		UINT*			GetWeapons();
@@ -51,42 +51,42 @@ namespace Engine
 
 		Vector	GetAimPunchAngle();
 		Vector	GetViewPunchAngle();
-				
+
 		Vector	GetVelocity();
 		Vector	GetViewOffset();
 		Vector	GetEyePosition();
 
 		QAngle	GetEyeAngles();
 
-		Vector	GetBonePosition( int nBone );
-		Vector	GetHitboxPosition( int nHitbox );
+		Vector	GetBonePosition(int nBone);
+		Vector	GetHitboxPosition(int nHitbox);
 
 		studiohdr_t* GetStudioModel();
 
-		mstudiobone_t* GetBone( int nBone );
-		mstudiobbox_t* GetHitBox( int nHitbox );
+		mstudiobone_t* GetBone(int nBone);
+		mstudiobbox_t* GetHitBox(int nHitbox);
 
 		mstudiohitboxset_t* GetHitBoxSet();
-//[/swap_lines]
+		//[/swap_lines]
 	};
 
 	class CBaseViewModel : public IClientEntity
 	{
 	public:
-//[swap_lines]
+		//[swap_lines]
 		int		GetModelIndex();
-		void	SetModelIndex( int nModelIndex );
-		void	SetWeaponModel( const char* Filename , IClientEntity* Weapon );
+		void	SetModelIndex(int nModelIndex);
+		void	SetWeaponModel(const char* Filename, IClientEntity* Weapon);
 
 		DWORD	GetOwner();
 		DWORD	GetWeapon();
-//[/swap_lines]
+		//[/swap_lines]
 	};
 
 	enum PLAYER_TEAM
 	{
-		TEAM_SPEC = 1 ,
-		TEAM_TT ,
+		TEAM_SPEC = 1,
+		TEAM_TT,
 		TEAM_CT
 	};
 

@@ -9,10 +9,10 @@
 
 bool Aimbot, Triggerbot, Visuals, Misc, Radar, Colors;
 
-float	
-	SpaceLineOne = 140.f,
-	SpaceLineTwo = 280.f,
-	SpaceLineThr = 420.f;
+float
+SpaceLineOne = 140.f,
+SpaceLineTwo = 280.f,
+SpaceLineThr = 420.f;
 
 namespace Client
 {
@@ -176,7 +176,7 @@ namespace Client
 		g_pEsp = new CEsp();
 		g_pKnifebot = new CKnifebot();
 		g_pRadar = new CRadar();
-	
+
 		g_pSkin = new CSkin();
 		g_pMisc = new CMisc();
 		g_pInventoryChanger = new CInventoryChanger();
@@ -291,7 +291,7 @@ namespace Client
 			}
 
 			std::time_t result = std::time(nullptr);
-			
+
 			if (Settings::Misc::misc_Spectators)
 			{
 				g_pRender->Text(150, 500, false, true, Color::White(), "Spectators List:");
@@ -348,10 +348,10 @@ namespace Client
 			{
 				QAngle view;
 				Interfaces::Engine()->GetViewAngles(view);
-				
-					if (bSendPacket)
+
+				if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
-				
+
 				if (!bIsGuiVisible)
 				{
 					int iWeaponSettingsSelectID = GetWeaponSettingsSelectID();
@@ -373,13 +373,13 @@ namespace Client
 					g_pMisc->OnCreateMove(pCmd);
 
 				if (Settings::Aimbot::aim_Backtrack)
-					 backtracking->legitBackTrack(pCmd);
-				
+					backtracking->legitBackTrack(pCmd);
+
 				if (Settings::Misc::misc_LegitAA)
-					 AntiAim().LegitAA(pCmd, bSendPacket);
-				
+					AntiAim().LegitAA(pCmd, bSendPacket);
+
 				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return; 
+				if (stub_68616b65) if (!sanitize_angles(pCmd->viewangles)) return;
 				// did no one ever find this anti paste #2?
 			}
 		}
@@ -421,7 +421,7 @@ namespace Client
 					sv_cheats_spoofed = new SpoofedConvar(Interfaces::GetConVar()->FindVar("sv_cheats"));
 				sv_cheats_spoofed->SetInt(1);
 			}
-			else 
+			else
 			{
 				if (sv_cheats_spoofed != nullptr) {
 					sv_cheats_spoofed->SetInt(0);
@@ -429,8 +429,8 @@ namespace Client
 					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
-			if (g_pMisc)
-				g_pMisc->FrameStageNotify(Stage);
+			/*if (g_pMisc) //broken lmao
+				g_pMisc->FrameStageNotify(Stage);*/
 
 			Skin_OnFrameStageNotify(Stage);
 			Gloves_OnFrameStageNotify(Stage);
@@ -492,8 +492,8 @@ namespace Client
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
 			"Aimbot Options",
-			"Weapon Options", 
-			"Trigger Options" 
+			"Weapon Options",
+			"Trigger Options"
 		};
 
 		static int tabOrder[] = { 0 , 1 , 2 };
@@ -705,9 +705,9 @@ namespace Client
 	{
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
-			"Skinchanger", 
-			"Inventory", 
-			"Profile" 
+			"Skinchanger",
+			"Inventory",
+			"Profile"
 		};
 		static int tabOrder[] = { 0 , 1 , 2 };
 		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
@@ -884,7 +884,7 @@ namespace Client
 		{
 			//ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
-			if (Settings::InvChanger::Inventory_Changer) 
+			if (Settings::InvChanger::Inventory_Changer)
 			{
 				ImGui::Text("Skins");
 				ImGui::Separator();
@@ -910,7 +910,8 @@ namespace Client
 				if (itemDefinitionIndex < 5000) {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, KnifeSkins[0].SkinNames);
 					paintKit = WeaponSkins[0].SkinPaintKit[paintkit_temp_skin];
-				} else {
+				}
+				else {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_gloves, GloveSkin[0].Names);
 					paintKit = GloveSkin[0].PaintKit[paintkit_temp_gloves];
 				}
@@ -945,52 +946,52 @@ namespace Client
 			}
 		}
 
-			if (otherpages == 2)
+		if (otherpages == 2)
+		{
+			ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
+			if (Settings::InvChanger::Profile_Info)
 			{
-				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
-				if (Settings::InvChanger::Profile_Info)
-				{
-					const char* MMRank[] = {
-						"Silver I",
-						"Silver II",
-						"Silver III",
-						"Silver IV",
-						"Silver Elite",
-						"Silver Elite Master",
+				const char* MMRank[] = {
+					"Silver I",
+					"Silver II",
+					"Silver III",
+					"Silver IV",
+					"Silver Elite",
+					"Silver Elite Master",
 
-						"Gold Nova I",
-						"Gold Nova II",
-						"Gold Nova III",
-						"Gold Nova Master",
+					"Gold Nova I",
+					"Gold Nova II",
+					"Gold Nova III",
+					"Gold Nova Master",
 
-						"Master Guardian I",
-						"Master Guardian II",
-						"Master Guardian Elite",
-						"Distinguished Master Guardian",
+					"Master Guardian I",
+					"Master Guardian II",
+					"Master Guardian Elite",
+					"Distinguished Master Guardian",
 
-						"Legendary Eagle",
-						"Legendary Eagle Master",
-						"Supreme Master First Class",
-						"The Global Elite" };
-					static int selected = 0;
-					ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
-					Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
+					"Legendary Eagle",
+					"Legendary Eagle Master",
+					"Supreme Master First Class",
+					"The Global Elite" };
+				static int selected = 0;
+				ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
+				Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
 
-					ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
-					ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
-					ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
-					ImGui::Spacing();
-					ImGui::Text("Commends");
-					ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
-					ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
-					ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
-					ImGui::Spacing();
-					if (ImGui::Button("Apply Changes"))
-						SendMMHello();
-				}
+				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
+				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
+				ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
+				ImGui::Spacing();
+				ImGui::Text("Commends");
+				ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
+				ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
+				ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
+				ImGui::Spacing();
+				if (ImGui::Button("Apply Changes"))
+					SendMMHello();
 			}
+		}
 	}
-	
+
 	void DrawVisuals() // Visuals
 	{
 		ImGui::BeginGroup();
@@ -1053,7 +1054,7 @@ namespace Client
 			Settings::Esp::esp_Time = Settings::Esp::esp_Watermark;
 			//ImGui::Checkbox("Glow (BETA)", &Settings::Esp::glow);
 			/// probably won't be fixed cause im lazy
-			
+
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
@@ -1327,7 +1328,7 @@ namespace Client
 				ImGui::SliderInt("mFoV", &Settings::Misc::misc_FovModelView, 1, 190);
 				ImGui::Separator();
 			}
-			
+
 			//ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim); // doesn't work
 			//ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_Postprocess);
@@ -1351,16 +1352,16 @@ namespace Client
 				*(int*)((DWORD)&Name->fnChangeCallback + 0xC) = 0;
 				Name->SetValue(name);
 			}
-/*			ImGui::Separator();
+			/*			ImGui::Separator();
 
-			static char clantag[128] = { 0 };
-			ImGui::PushItemWidth(362.f);
-			ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
-			ImGui::PopItemWidth();
-			if (ImGui::Button("Apply"))
-			{
-				Engine::ClanTagApply(clantag);
-			}*/
+						static char clantag[128] = { 0 };
+						ImGui::PushItemWidth(362.f);
+						ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
+						ImGui::PopItemWidth();
+						if (ImGui::Button("Apply"))
+						{
+							Engine::ClanTagApply(clantag);
+						}*/
 		}
 
 		if (otherpages == 1)
@@ -1406,7 +1407,7 @@ namespace Client
 		//ImGui::ColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
 
 		const char* espcolornames[] = { "ESP Invisible CT", "ESP Invisible T", "ESP Visible CT", "ESP Visible T", "Chams Invisible CT",
-			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights"};
+			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights" };
 
 		static int selected = 0;
 		static bool done = false;
@@ -1486,7 +1487,7 @@ namespace Client
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.95f);
 		ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiSetCond_Appearing);
 		BtnNormal();
-		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar ); //ImGuiWindowFlags_ShowBorders);
+		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar); //ImGuiWindowFlags_ShowBorders);
 		mainWindowPos = ImGui::GetWindowPos();
 
 		if (Global::MenuTab == 0)
