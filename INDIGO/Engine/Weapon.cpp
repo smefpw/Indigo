@@ -38,7 +38,7 @@ namespace Engine
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo()
 	{
 		typedef CWeaponInfo*( __thiscall* GetWeaponDataFn )( void* );
-		return GetMethod< GetWeaponDataFn >( this , 444 )( this ); //445
+		return GetMethod< GetWeaponDataFn >( this , 441 )( this ); //444
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()
@@ -48,10 +48,9 @@ namespace Engine
 
 	const char*	CBaseWeapon::GetName()
 	{
-		typedef const char* ( __thiscall* GetNameFn )( void* );
-		return GetMethod<GetNameFn>( this , 376 )( this ); //378
-	} // tf you on PolarBear this was already 376
-
+		typedef const char* (__thiscall* GetNameFn)(void*);
+		return GetMethod<GetNameFn>(this, 377)(this); //376
+	}
 	const char*	CBaseWeapon::GetPrintName()
 	{
 		typedef const char* ( __thiscall* GetPrintNameFn )( void* );
