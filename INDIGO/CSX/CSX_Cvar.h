@@ -7,7 +7,7 @@ namespace CSX
 	namespace Cvar
 	{
 //[swap_lines]
-		void	InitPath( const char* szPath );
+		int	InitPath(const char* szPath);
 
 		int		LoadCvar( char* szSection , char* szKey , int DefaultValue );
 		string	LoadCvar( char* szSection , char* szKey , string DefaultValue );

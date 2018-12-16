@@ -26,8 +26,8 @@ public:
 
 namespace Settings
 {
-	void LoadSettings( string szIniFile );
-	void SaveSettings( string szIniFile );
+	int LoadSettings(string szIniFile);
+	int SaveSettings(string szIniFile);
 	extern float hitmarkerAlpha;
 	int TriggerCharToKey( const char* Key );
 	extern bool Untrusted;

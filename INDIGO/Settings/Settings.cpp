@@ -13,9 +13,10 @@ using namespace Client;
 
 namespace Settings
 {
-	void LoadSettings( string szIniFile )
-	{
-		CSX::Cvar::InitPath( szIniFile.c_str() );
+	int LoadSettings(string szIniFile) {
+		if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
+			return 0;
+		}
 		Aimbot::aim_Backtrack = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACK, Aimbot::aim_Backtrack) != false;
 		Aimbot::aim_Backtracktime = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACK_TICK, Aimbot::aim_Backtracktime);
 		Aimbot::aim_Deathmatch = CSX::Cvar::LoadCvar( AIMBOT_TEXT , CVAR_AIMBOT_DEATHMATCH , Aimbot::aim_Deathmatch );
@@ -256,9 +257,15 @@ namespace Settings
 		SendMMHello();*/
 }
 
-	void SaveSettings( string szIniFile )
-	{
-		CSX::Cvar::InitPath( szIniFile.c_str() );
+	int SaveSettings(string szIniFile) {
+		try {
+			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
+				return 0;
+			}
+		}
+		catch (...) {
+			return 0;
+		}
 
 		CSX::Cvar::SaveCvar( AIMBOT_TEXT , CVAR_AIMBOT_DEATHMATCH , Aimbot::aim_Deathmatch );
 		CSX::Cvar::SaveCvar( AIMBOT_TEXT , CVAR_AIMBOT_WALLATTACK , Aimbot::aim_WallAttack );

@@ -764,7 +764,7 @@ void CEsp::OnRender()
 			CBaseEntity *entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
 			CPlayer* pPlayer = g_pPlayers->GetPlayer(i);
 			PlayerInfo pinfo;
-			if (entity == nullptr || entity == local || entity->IsDormant() || entity->GetTeam() == local->GetTeam())
+			if (entity == nullptr || entity == local || /*entity->IsDormant() ||*/ entity->GetTeam() == local->GetTeam())
 				continue;
 			if (Interfaces::Engine()->GetPlayerInfo(i, &pinfo) && !entity->IsDead())
 			{

@@ -1183,14 +1183,42 @@ namespace Client
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
 
 		if (ImGui::Button("Load Config")) {
-			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Selected Config Loaded.");
+			try {
+				if (ConfigList.size() == 0) {
+					EventLog->AddToLog("Failed To Load Settings.");
+				}
+				else {
+					if (!Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+						EventLog->AddToLog("Failed To Load Settings.");
+					}
+					else {
+						EventLog->AddToLog("Selected Config Loaded.");
+					}
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Load Settings.");
+			}
 		}
 		ImGui::SameLine();
 
 		if (ImGui::Button("Save Config")) {
-			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Selected Config Saved.");
+			try {
+				if (ConfigList.size() == 0) {
+					EventLog->AddToLog("Failed To Save Settings.");
+				}
+				else {
+					if (!Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+						EventLog->AddToLog("Failed To Save Settings.");
+					}
+					else {
+						EventLog->AddToLog("Selected Config Saved.");
+					}
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Save Settings.");
+			}
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Refresh Config List"))
@@ -1199,15 +1227,23 @@ namespace Client
 
 		ImGui::InputText("", ConfigName, 11);
 		ImGui::SameLine();
-		if (ImGui::Button("Make New Config"))
-		{
+		if (ImGui::Button("Make New Config")) {
 			string ConfigFileName = ConfigName;
 
-			if (ConfigFileName.size() < 1)
+			if (ConfigFileName.size() < 1 || ConfigFileName == "")
 				ConfigFileName = "default";
 
-			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef");
-			EventLog->AddToLog("Created New Config.");
+			try {
+				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 0) {
+					EventLog->AddToLog("Failed To Create Config.");
+				}
+				else {
+					EventLog->AddToLog("Created New Config.");
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Create Config.");
+			}
 			RefreshConfigs();
 		}
 

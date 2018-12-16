@@ -16,11 +16,16 @@ namespace CSX
 			}
 		}
 
-		void InitPath( const char* szPath )
-		{
-			IniFile = szPath;
-			IniFileLen = IniFile.size();
-			IniFileED();
+		int InitPath(const char* szPath) {
+			try {
+				IniFile = szPath;
+				IniFileLen = IniFile.size();
+				IniFileED();
+				return 1; //success!
+			}
+			catch (...) {
+				return 0; //fail!
+			}
 		}
 
 		int LoadCvar( char* szSection , char* szKey , int DefaultValue )

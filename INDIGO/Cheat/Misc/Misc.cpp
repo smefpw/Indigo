@@ -308,7 +308,7 @@ vector<int> CMisc::GetObservervators( int playerId )
 		if ( !pCheckPlayer )
 			continue;
 
-		if ( pCheckPlayer->IsDormant() || !pCheckPlayer->IsDead() )
+		if ( /*pCheckPlayer->IsDormant() ||*/ !pCheckPlayer->IsDead() )
 			continue;
 
 		CBaseEntity* pObserverTarget = (CBaseEntity*)Interfaces::EntityList()->GetClientEntityFromHandle( pCheckPlayer->GetObserverTarget() );
