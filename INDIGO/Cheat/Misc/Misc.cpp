@@ -137,12 +137,15 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 	}
 }
 
+//Broken for now, something wrong with m_fCameraInThirdPerson.
 void CMisc::FrameStageNotify(ClientFrameStage_t Stage)
 {
-	CBaseEntity* localplayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
-
-	if (Interfaces::Engine()->IsInGame() && localplayer && Stage == ClientFrameStage_t::FRAME_RENDER_START)
+	if (Interfaces::Engine()->IsInGame() && Stage == ClientFrameStage_t::FRAME_RENDER_START)
 	{
+		CBaseEntity* localplayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+		if (!localplayer)
+			return;
+
 		static QAngle vecAngles;
 		Interfaces::Engine()->GetViewAngles(vecAngles);
 		if (Settings::Misc::misc_ThirdPerson && !localplayer->IsDead() && Settings::Untrusted)

@@ -197,8 +197,6 @@ namespace Client
 		SendClientHello();
 
 		EventLog->AddToLog("Successfully injected! Enjoy cheating with smef's Indigo");
-		EventLog->AddToLog("We are aware of some saving bugs and will be fixed soon!");
-		EventLog->AddToLog("Older configs since 4.4.3 are now BROKEN!");
 
 		return true;
 	}
@@ -429,7 +427,7 @@ namespace Client
 					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
-			/*if (g_pMisc) //broken lmao
+			/*if (g_pMisc) //broken lul
 				g_pMisc->FrameStageNotify(Stage);*/
 
 			Skin_OnFrameStageNotify(Stage);
