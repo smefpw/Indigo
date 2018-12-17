@@ -10,48 +10,48 @@ namespace Engine
 	bool Initialize()
 	{
 		//CLicense License;
-		
+
 		//if ENABLE_LICENSING == 1
 		//if ( !License.CheckLicense() )
 		//{
 		//	return false;
 		//}
 		//#endif
-		
-		if ( !CSX::Utils::IsModuleLoad( CLIENT_DLL , 45000 ) )
+
+		if (!CSX::Utils::IsModuleLoad(CLIENT_DLL, 45000))
 			return false;
 
-		if ( !CSX::Utils::IsModuleLoad( ENGINE_DLL ) )
+		if (!CSX::Utils::IsModuleLoad(ENGINE_DLL))
 			return false;
 
-		if ( !CSX::Utils::IsModuleLoad( VGUI2_DLL ) )
+		if (!CSX::Utils::IsModuleLoad(VGUI2_DLL))
 			return false;
 
-		if ( !CSX::Utils::IsModuleLoad( VGUIMAT_DLL ) )
+		if (!CSX::Utils::IsModuleLoad(VGUIMAT_DLL))
 			return false;
 
-		if ( !CSX::Utils::IsModuleLoad( VSTDLIB_DLL ) )
+		if (!CSX::Utils::IsModuleLoad(VSTDLIB_DLL))
 			return false;
 
 		if (!CSX::Utils::IsModuleLoad(STEAMAPI_DLL))
 			return false;
 
-		if ( !SDK::Interfaces::Engine() )
+		if (!SDK::Interfaces::Engine())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::Client() )
+		if (!SDK::Interfaces::Client())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::EntityList() )
+		if (!SDK::Interfaces::EntityList())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::GlobalVars() )
+		if (!SDK::Interfaces::GlobalVars())
 		{
 			return false;
 		}
@@ -63,54 +63,54 @@ namespace Engine
 		}
 		*/
 
-		if ( !SDK::Interfaces::EngineTrace() )
+		if (!SDK::Interfaces::EngineTrace())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::ClientMode() )
+		if (!SDK::Interfaces::ClientMode())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::ModelInfo() )
+		if (!SDK::Interfaces::ModelInfo())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::Sound() )
+		if (!SDK::Interfaces::Sound())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::ModelRender() )
+		if (!SDK::Interfaces::ModelRender())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::RenderView() )
+		if (!SDK::Interfaces::RenderView())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::MaterialSystem() )
+		if (!SDK::Interfaces::MaterialSystem())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::Surface() )
+		if (!SDK::Interfaces::Surface())
 		{
 			return false;
 		}
 
-		if ( !SDK::Interfaces::GameEvent() )
+		if (!SDK::Interfaces::GameEvent())
 		{
 			return false;
 		}
 
 		stub_68616b65 = cpcl();
 
-		if ( !SDK::Interfaces::InputSystem() )
+		if (!SDK::Interfaces::InputSystem())
 		{
 			return false;
 		}
@@ -120,10 +120,10 @@ namespace Engine
 			return false;
 		}
 
-		if ( !g_NetVar.Init( SDK::Interfaces::Client()->GetAllClasses() ) )
+		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses()))
 			return false;
 
-		if ( !Engine::Hook::Initialize() || !Engine::Offset::Initialize() )
+		if (!Engine::Hook::Initialize() || !Engine::Offset::Initialize())
 		{
 			return false;
 		}
@@ -136,132 +136,132 @@ namespace Engine
 		Hook::Shutdown();
 		Client::Shutdown();
 	}
-//[junk_disable /]
+	//[junk_disable /]
 	bool stub_68616b65;
-	WEAPON_TYPE GetWeaponType( int iItemDefinitionIndex )
+	WEAPON_TYPE GetWeaponType(int iItemDefinitionIndex)
 	{
-		switch ( iItemDefinitionIndex )
+		switch (iItemDefinitionIndex)
 		{
-			case WEAPON_DEAGLE:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_ELITE:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_FIVESEVEN:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_GLOCK:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_AK47:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_AUG:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_AWP:
-				return WEAPON_TYPE_SNIPER;
-			case WEAPON_FAMAS:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_G3SG1:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_GALILAR:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_M249:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_M4A1:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_MAC10:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_P90:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_UMP45:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_XM1014:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_BIZON:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_MAG7:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_NEGEV:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_SAWEDOFF:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_TEC9:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_TASER:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_HKP2000:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_MP7:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_MP9:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_NOVA:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_P250:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_SCAR20:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_SG553:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_SSG08:
-				return WEAPON_TYPE_SNIPER;
-			case WEAPON_KNIFE:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_FLASHBANG:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_HEGRENADE:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_SMOKEGRENADE:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_MOLOTOV:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_DECOY:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_INCGRENADE:
-				return WEAPON_TYPE_GRENADE;
-			case WEAPON_C4:
-				return WEAPON_TYPE_C4;
-			case WEAPON_KNIFE_T:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_M4A1_SILENCER:
-				return WEAPON_TYPE_SHOTGUN;
-			case WEAPON_USP_SILENCER:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_CZ75A:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_REVOLVER:
-				return WEAPON_TYPE_PISTOL;
-			case WEAPON_KNIFE_BAYONET:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_FLIP:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_GUT:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_KARAMBIT:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_M9_BAYONET:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_TACTICAL:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_FALCHION:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_SURVIVAL_BOWIE:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_BUTTERFLY:
-				return WEAPON_TYPE_KNIFE;
-			case WEAPON_KNIFE_PUSH:
-				return WEAPON_TYPE_KNIFE;
-			default:
-				return WEAPON_TYPE_UNKNOWN;
+		case WEAPON_DEAGLE:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_ELITE:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_FIVESEVEN:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_GLOCK:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_AK47:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_AUG:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_AWP:
+			return WEAPON_TYPE_SNIPER;
+		case WEAPON_FAMAS:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_G3SG1:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_GALILAR:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_M249:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_M4A1:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_MAC10:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_P90:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_UMP45:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_XM1014:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_BIZON:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_MAG7:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_NEGEV:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_SAWEDOFF:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_TEC9:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_TASER:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_HKP2000:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_MP7:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_MP9:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_NOVA:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_P250:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_SCAR20:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_SG556:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_SSG08:
+			return WEAPON_TYPE_SNIPER;
+		case WEAPON_KNIFE:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_FLASHBANG:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_HEGRENADE:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_SMOKEGRENADE:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_MOLOTOV:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_DECOY:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_INCGRENADE:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_C4:
+			return WEAPON_TYPE_C4;
+		case WEAPON_KNIFE_T:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_M4A1_SILENCER:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_USP_SILENCER:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_CZ75A:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_REVOLVER:
+			return WEAPON_TYPE_PISTOL;
+		case WEAPON_BAYONET:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_FLIP:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_GUT:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_KARAMBIT:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_M9_BAYONET:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_TACTICAL:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_FALCHION:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_SURVIVAL_BOWIE:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_BUTTERFLY:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_PUSH:
+			return WEAPON_TYPE_KNIFE;
+		default:
+			return WEAPON_TYPE_UNKNOWN;
 		}
 
 		return WEAPON_TYPE_UNKNOWN;
 	}
-//[junk_enable /]
+	//[junk_enable /]
 	bool IsLocalAlive()
 	{
-		if ( Client::g_pPlayers && 
-			 Client::g_pPlayers->GetLocal() && 
-			 Client::g_pPlayers->GetLocal()->bAlive &&
-			 Client::g_pPlayers->GetLocal()->m_pEntity &&
-			 Client::g_pPlayers->GetLocal()->m_pWeaponEntity )
+		if (Client::g_pPlayers &&
+			Client::g_pPlayers->GetLocal() &&
+			Client::g_pPlayers->GetLocal()->bAlive &&
+			Client::g_pPlayers->GetLocal()->m_pEntity &&
+			Client::g_pPlayers->GetLocal()->m_pWeaponEntity)
 			return true;
 
 		return false;
@@ -375,27 +375,27 @@ namespace Engine
 
 	int GetWeaponSettingsSelectID()
 	{
-		for ( size_t i = 0; i < WEAPON_DATA_SIZE; i++ )
+		for (size_t i = 0; i < WEAPON_DATA_SIZE; i++)
 		{
-			if ( pWeaponItemIndexData[i] == Client::g_pPlayers->GetLocal()->WeaponIndex )
+			if (pWeaponItemIndexData[i] == Client::g_pPlayers->GetLocal()->WeaponIndex)
 				return i;
 		}
 
 		return -1;
 	}
 
-	bool ScanColorFromCvar( const char* str , float* colors )
+	bool ScanColorFromCvar(const char* str, float* colors)
 	{
-		int len = strlen( str );
-		if ( len>11 )return false;
+		int len = strlen(str);
+		if (len > 11)return false;
 		int clrnum = 0;
 		int clrsum = 0;
-		for ( int i = 0; i<len; i++ )
+		for (int i = 0; i < len; i++)
 		{
-			if ( clrnum >= 3 )return false;
-			if ( str[i] >= '0'&&str[i] <= '9' )
+			if (clrnum >= 3)return false;
+			if (str[i] >= '0'&&str[i] <= '9')
 			{
-				clrsum = clrsum * 10 + str[i] - ( int )'0';
+				clrsum = clrsum * 10 + str[i] - (int)'0';
 			}
 			else
 			{
@@ -470,7 +470,7 @@ namespace Engine
 			deltaView = 360.0f - abs(f1 - f2);
 
 		deltaView = 360.0f - deltaView;
-		
+
 		float ForwardMove = cos(DEG2RAD(deltaView)) * fOldForward + cos(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
 		float SideMove = sin(DEG2RAD(deltaView)) * fOldForward + sin(DEG2RAD(deltaView + 90.f)) * fOldSidemove;
 		pCmd->Move.x = clampMinMax(ForwardMove, -450, 450); // always remember to clamp ffs!
@@ -521,7 +521,7 @@ namespace Engine
 	{
 		for (auto i = 0; i < 3; i++) {
 			while (angles[i] < -180.0f) angles[i] += 360.0f;
-			while (angles[i] >  180.0f) angles[i] -= 360.0f;
+			while (angles[i] > 180.0f) angles[i] -= 360.0f;
 		}
 	}
 	//--------------------------------------------------------------------------------
@@ -552,18 +552,18 @@ namespace Engine
 		return true;
 	}
 
-	bool GetVisibleOrigin( const Vector& vOrigin )
+	bool GetVisibleOrigin(const Vector& vOrigin)
 	{
-		if ( Client::g_pEsp && IsLocalAlive() )
+		if (Client::g_pEsp && IsLocalAlive())
 		{
 			trace_t tr;
 			Ray_t ray;
 			CTraceFilter Filter;
 			Filter.pSkip = Client::g_pPlayers->GetLocal()->m_pEntity;
 
-			ray.Init( Client::g_pPlayers->GetLocal()->m_pEntity->GetEyePosition() , vOrigin );
+			ray.Init(Client::g_pPlayers->GetLocal()->m_pEntity->GetEyePosition(), vOrigin);
 
-			Interfaces::EngineTrace()->TraceRay( ray , MASK_VISIBLE , &Filter , &tr );
+			Interfaces::EngineTrace()->TraceRay(ray, MASK_VISIBLE, &Filter, &tr);
 
 			return tr.IsVisible();
 		}
@@ -581,8 +581,8 @@ namespace Engine
 		sp = sin(DEG2RAD(vAngles[0]));
 		cp = cos(DEG2RAD(vAngles[0]));
 
-		vForward.x = cp*cy;
-		vForward.y = cp*sy;
+		vForward.x = cp * cy;
+		vForward.y = cp * sy;
 		vForward.z = -sp;
 	}
 
@@ -608,14 +608,14 @@ namespace Engine
 
 		return (Point - PerpendicularPoint).Length();
 	}
-	void VectorAngles( const Vector vForward , Vector& vAngle )
+	void VectorAngles(const Vector vForward, Vector& vAngle)
 	{
-		float tmp , yaw , pitch;
+		float tmp, yaw, pitch;
 
-		if ( vForward[1] == 0 && vForward[0] == 0 )
+		if (vForward[1] == 0 && vForward[0] == 0)
 		{
 			yaw = 0;
-			if ( vForward[2] > 0 )
+			if (vForward[2] > 0)
 			{
 				pitch = 270;
 			}
@@ -626,15 +626,15 @@ namespace Engine
 		}
 		else
 		{
-			yaw = ( atan2( vForward[1] , vForward[0] ) * 180 / M_PI );
-			if ( yaw < 0 )
+			yaw = (atan2(vForward[1], vForward[0]) * 180 / M_PI);
+			if (yaw < 0)
 			{
 				yaw += 360;
 			}
-			tmp = sqrt( vForward[0] * vForward[0] + vForward[1] * vForward[1] );
-			pitch = ( atan2( -vForward[2] , tmp ) * 180 / M_PI );
+			tmp = sqrt(vForward[0] * vForward[0] + vForward[1] * vForward[1]);
+			pitch = (atan2(-vForward[2], tmp) * 180 / M_PI);
 
-			if ( pitch < 0 )
+			if (pitch < 0)
 			{
 				pitch += 360;
 			}
@@ -645,87 +645,87 @@ namespace Engine
 		vAngle[2] = 0;
 	}
 
-	void AngleNormalize( Vector& vAngles )
+	void AngleNormalize(Vector& vAngles)
 	{
-		if ( vAngles.x > 89.0f && vAngles.x <= 180.0f )
+		if (vAngles.x > 89.0f && vAngles.x <= 180.0f)
 			vAngles.x = 89.0f;
-		while ( vAngles.x > 180.f )
+		while (vAngles.x > 180.f)
 			vAngles.x -= 360.f;
-		while ( vAngles.x < -89.0f )
+		while (vAngles.x < -89.0f)
 			vAngles.x = -89.0f;
-		while ( vAngles.y > 180.f )
+		while (vAngles.y > 180.f)
 			vAngles.y -= 360.f;
-		while ( vAngles.y < -180.f )
+		while (vAngles.y < -180.f)
 			vAngles.y += 360.f;
 		vAngles.z = 0;
 	}
 
-	void SmoothAngles( Vector MyViewAngles , Vector AimAngles , Vector &OutAngles , float Smoothing )
+	void SmoothAngles(Vector MyViewAngles, Vector AimAngles, Vector &OutAngles, float Smoothing)
 	{
 		OutAngles = AimAngles - MyViewAngles;
 
-		AngleNormalize( OutAngles );
+		AngleNormalize(OutAngles);
 
 		OutAngles.x = OutAngles.x / Smoothing + MyViewAngles.x;
 		OutAngles.y = OutAngles.y / Smoothing + MyViewAngles.y;
 
-		AngleNormalize( OutAngles );
+		AngleNormalize(OutAngles);
 	}
 
-	float DistanceScreen( Vector2D vDstPos , Vector2D vSrcPos )
+	float DistanceScreen(Vector2D vDstPos, Vector2D vSrcPos)
 	{
-		return ( sqrt( pow( vSrcPos.x - vDstPos.x , 2 ) + pow( vSrcPos.y - vDstPos.y , 2 ) ) );
+		return (sqrt(pow(vSrcPos.x - vDstPos.x, 2) + pow(vSrcPos.y - vDstPos.y, 2)));
 	}
 
-	bool LineGoesThroughSmoke( Vector vStartPos , Vector vEndPos )
+	bool LineGoesThroughSmoke(Vector vStartPos, Vector vEndPos)
 	{
-		typedef bool( __cdecl* _LineGoesThroughSmoke ) ( Vector , Vector );
+		typedef bool(__cdecl* _LineGoesThroughSmoke) (Vector, Vector);
 
 		static _LineGoesThroughSmoke LineGoesThroughSmokeFn = 0;
 		static bool SearchFunction = false;
 
-		if ( !SearchFunction )
+		if (!SearchFunction)
 		{
-			DWORD dwFunctionAddress = CSX::Memory::FindPattern( CLIENT_DLL , SMOK_PATTERN , "xxxxxxxx????xxx" , 0 );
+			DWORD dwFunctionAddress = CSX::Memory::FindPattern(CLIENT_DLL, SMOK_PATTERN, "xxxxxxxx????xxx", 0);
 
-			if ( dwFunctionAddress )
+			if (dwFunctionAddress)
 			{
 				LineGoesThroughSmokeFn = (_LineGoesThroughSmoke)dwFunctionAddress;
 				SearchFunction = true;
 			}
 		}
 
-		if ( LineGoesThroughSmokeFn && SearchFunction )
+		if (LineGoesThroughSmokeFn && SearchFunction)
 		{
-			return LineGoesThroughSmokeFn( vStartPos , vEndPos );
+			return LineGoesThroughSmokeFn(vStartPos, vEndPos);
 		}
 
 		return false;
 	}
 
-	bool CheckPlayerFov( Vector vScreen , int iFov )
+	bool CheckPlayerFov(Vector vScreen, int iFov)
 	{
 		int	iFovX = (int)Client::g_vCenterScreen.x - (int)vScreen.x;
 		int	iFovY = (int)Client::g_vCenterScreen.y - (int)vScreen.y;
 
-		if ( iFovX < iFov && iFovX > -iFov && iFovY < iFov && iFovY > -iFov )
+		if (iFovX < iFov && iFovX > -iFov && iFovY < iFov && iFovY > -iFov)
 			return true;
 
 		return false;
 	}
 
-	bool CheckPlayerFov( Vector vScreen , int iFovX , int iFovY )
+	bool CheckPlayerFov(Vector vScreen, int iFovX, int iFovY)
 	{
 		int	FovX = (int)Client::g_vCenterScreen.x - vScreen.x;
 		int	FovY = (int)Client::g_vCenterScreen.y - vScreen.y;
 
-		if ( FovX < iFovX && FovX > -iFovX && FovY < iFovX && FovY > -iFovX )
+		if (FovX < iFovX && FovX > -iFovX && FovY < iFovX && FovY > -iFovX)
 			return true;
 
 		return false;
 	}
-//[enc_string_disable /]
-	IMaterial* CreateMaterial( bool bFlat , bool bShouldIgnoreZ )
+	//[enc_string_disable /]
+	IMaterial* CreateMaterial(bool bFlat, bool bShouldIgnoreZ)
 	{
 		static int iCreated = 0;
 
@@ -747,47 +747,47 @@ namespace Engine
 		char szMaterial[256];
 		char szBaseType[18];
 
-		if ( bFlat )
+		if (bFlat)
 		{
 			static const char pszBaseType[] = "UnlitGeneric";
-			sprintf_s( szMaterial , sizeof( szMaterial ) , szTmp , pszBaseType , ( bShouldIgnoreZ ) ? 1 : 0 , 0 );
-			strcpy_s( szBaseType , pszBaseType );
+			sprintf_s(szMaterial, sizeof(szMaterial), szTmp, pszBaseType, (bShouldIgnoreZ) ? 1 : 0, 0);
+			strcpy_s(szBaseType, pszBaseType);
 		}
 		else
 		{
 			static const char pszBaseType[] = "VertexLitGeneric";
-			sprintf_s( szMaterial , sizeof( szMaterial ) , szTmp , pszBaseType , ( bShouldIgnoreZ ) ? 1 : 0 , 0 );
-			sprintf_s( szBaseType , pszBaseType );
+			sprintf_s(szMaterial, sizeof(szMaterial), szTmp, pszBaseType, (bShouldIgnoreZ) ? 1 : 0, 0);
+			sprintf_s(szBaseType, pszBaseType);
 		}
 
 		char szName[25];
-		sprintf_s( szName , sizeof( szName ) , "custom_material_%i.vmt" , iCreated );
+		sprintf_s(szName, sizeof(szName), "custom_material_%i.vmt", iCreated);
 
 		++iCreated;
 
-		auto pKeyValues = new KeyValues( szBaseType );
-		pKeyValues->LoadFromBuffer( pKeyValues , szName , szMaterial );
-		auto pCreatedMaterial = Interfaces::MaterialSystem()->CreateMaterial( szName , pKeyValues );
+		auto pKeyValues = new KeyValues(szBaseType);
+		pKeyValues->LoadFromBuffer(pKeyValues, szName, szMaterial);
+		auto pCreatedMaterial = Interfaces::MaterialSystem()->CreateMaterial(szName, pKeyValues);
 		pCreatedMaterial->IncrementReferenceCount();
 		return pCreatedMaterial;
 	}
-//[enc_string_enable /]
-	void ForceMaterial( Color color , IMaterial* material , bool useColor , bool forceMaterial )
+	//[enc_string_enable /]
+	void ForceMaterial(Color color, IMaterial* material, bool useColor, bool forceMaterial)
 	{
-		if ( useColor )
+		if (useColor)
 		{
 			float blend[3] = { (float)color.r() / 255.f, (float)color.g() / 255.f, (float)color.b() / 255.f };
 			float alpha = (float)color.a() / 255.f;
 
-			Interfaces::RenderView()->SetBlend( alpha );
-			Interfaces::RenderView()->SetColorModulation( blend );
+			Interfaces::RenderView()->SetBlend(alpha);
+			Interfaces::RenderView()->SetColorModulation(blend);
 		}
 
-		if ( forceMaterial )
-			Interfaces::ModelRender()->ForcedMaterialOverride( material );
+		if (forceMaterial)
+			Interfaces::ModelRender()->ForcedMaterialOverride(material);
 	}
-//[enc_string_disable /]
-	BOOL SearchFiles( LPCTSTR lpszFileName , LPSEARCHFUNC lpSearchFunc , BOOL bInnerFolders = FALSE )
+	//[enc_string_disable /]
+	BOOL SearchFiles(LPCTSTR lpszFileName, LPSEARCHFUNC lpSearchFunc, BOOL bInnerFolders = FALSE)
 	{
 		LPTSTR part;
 		char tmp[MAX_PATH];
@@ -795,60 +795,60 @@ namespace Engine
 
 		HANDLE hSearch = NULL;
 		WIN32_FIND_DATA wfd;
-		memset( &wfd , 0 , sizeof( WIN32_FIND_DATA ) );
+		memset(&wfd, 0, sizeof(WIN32_FIND_DATA));
 
-		if ( bInnerFolders )
+		if (bInnerFolders)
 		{
-			if ( GetFullPathName( lpszFileName , MAX_PATH , tmp , &part ) == 0 ) return FALSE;
-			strcpy( name , part );
-			strcpy( part , "*.*" );
+			if (GetFullPathName(lpszFileName, MAX_PATH, tmp, &part) == 0) return FALSE;
+			strcpy(name, part);
+			strcpy(part, "*.*");
 			wfd.dwFileAttributes = FILE_ATTRIBUTE_DIRECTORY;
-			if ( !( ( hSearch = FindFirstFile( tmp , &wfd ) ) == INVALID_HANDLE_VALUE ) )
+			if (!((hSearch = FindFirstFile(tmp, &wfd)) == INVALID_HANDLE_VALUE))
 				do
 				{
-					if ( !strncmp( wfd.cFileName , "." , 1 ) || !strncmp( wfd.cFileName , ".." , 2 ) )
+					if (!strncmp(wfd.cFileName, ".", 1) || !strncmp(wfd.cFileName, "..", 2))
 						continue;
 
-					if ( wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
+					if (wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 					{
 						char next[MAX_PATH];
-						if ( GetFullPathName( lpszFileName , MAX_PATH , next , &part ) == 0 ) return FALSE;
-						strcpy( part , wfd.cFileName );
-						strcat( next , "\\" );
-						strcat( next , name );
+						if (GetFullPathName(lpszFileName, MAX_PATH, next, &part) == 0) return FALSE;
+						strcpy(part, wfd.cFileName);
+						strcat(next, "\\");
+						strcat(next, name);
 
-						SearchFiles( next , lpSearchFunc , TRUE );
+						SearchFiles(next, lpSearchFunc, TRUE);
 					}
-				} while ( FindNextFile( hSearch , &wfd ) );
-				FindClose( hSearch );
+				} while (FindNextFile(hSearch, &wfd));
+				FindClose(hSearch);
 		}
 
-		if ( ( hSearch = FindFirstFile( lpszFileName , &wfd ) ) == INVALID_HANDLE_VALUE )
-			return TRUE; 
+		if ((hSearch = FindFirstFile(lpszFileName, &wfd)) == INVALID_HANDLE_VALUE)
+			return TRUE;
 		do
-			if ( !( wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) )
+			if (!(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 			{
 				char file[MAX_PATH];
-				if ( GetFullPathName( lpszFileName , MAX_PATH , file , &part ) == 0 ) return FALSE;
-				strcpy( part , wfd.cFileName );
+				if (GetFullPathName(lpszFileName, MAX_PATH, file, &part) == 0) return FALSE;
+				strcpy(part, wfd.cFileName);
 
-				lpSearchFunc( wfd.cFileName );
+				lpSearchFunc(wfd.cFileName);
 			}
-		while ( FindNextFile( hSearch , &wfd ) );
-		FindClose( hSearch );
+		while (FindNextFile(hSearch, &wfd));
+		FindClose(hSearch);
 		return TRUE;
 	}
 }
 
-bool CTimer::delay( DWORD dwMsec )
+bool CTimer::delay(DWORD dwMsec)
 {
-	if ( !bEnable )
+	if (!bEnable)
 		return true;
 
-	if ( !dwTime )
+	if (!dwTime)
 		dwTime = GetTickCount64();
 
-	if ( dwTime + dwMsec < GetTickCount64() )
+	if (dwTime + dwMsec < GetTickCount64())
 	{
 		//dwTime = 0;
 		bEnable = false;

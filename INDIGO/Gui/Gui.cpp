@@ -106,17 +106,13 @@ LRESULT WINAPI GUI_WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	if (!bIsGuiVisible && !is_clicked && check_closed)
 	{
-		string msg = "cl_mouseenable " + to_string(!bIsGuiVisible);
-		Interfaces::Engine()->ClientCmd_Unrestricted2(msg.c_str());
 		check_closed = false;
 	}
 
 	if (is_clicked)
 	{
 		bIsGuiVisible = !bIsGuiVisible;
-
-		string msg = "cl_mouseenable " + to_string(!bIsGuiVisible);
-		Interfaces::Engine()->ClientCmd_Unrestricted2(msg.c_str());
+		Interfaces::InputSystem()->EnableInput(!bIsGuiVisible); //Cursor Fix
 
 		if (!check_closed)
 			check_closed = true;
@@ -135,7 +131,7 @@ void CGui::GUI_Draw_Elements()
 
 	g_pGui->GUI_Begin_Render();
 
-	ImGui::GetIO().MouseDrawCursor = bIsGuiVisible;
+	//ImGui::GetIO().MouseDrawCursor = bIsGuiVisible; //cursor fix
 
 	bool bOpenTimer = (bIsGuiVisible || (bC4Timer && iC4Timer));
 

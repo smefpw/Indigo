@@ -9,10 +9,10 @@
 
 bool Aimbot, Triggerbot, Visuals, Misc, Radar, Colors;
 
-float	
-	SpaceLineOne = 140.f,
-	SpaceLineTwo = 280.f,
-	SpaceLineThr = 420.f;
+float
+SpaceLineOne = 140.f,
+SpaceLineTwo = 280.f,
+SpaceLineThr = 420.f;
 
 namespace Client
 {
@@ -176,7 +176,7 @@ namespace Client
 		g_pEsp = new CEsp();
 		g_pKnifebot = new CKnifebot();
 		g_pRadar = new CRadar();
-	
+
 		g_pSkin = new CSkin();
 		g_pMisc = new CMisc();
 		g_pInventoryChanger = new CInventoryChanger();
@@ -197,8 +197,6 @@ namespace Client
 		SendClientHello();
 
 		EventLog->AddToLog("Successfully injected! Enjoy cheating with smef's Indigo");
-		EventLog->AddToLog("We are aware of some saving bugs and will be fixed soon!");
-		EventLog->AddToLog("Older configs since 4.4.3 are now BROKEN!");
 
 		return true;
 	}
@@ -291,7 +289,7 @@ namespace Client
 			}
 
 			std::time_t result = std::time(nullptr);
-			
+
 			if (Settings::Misc::misc_Spectators)
 			{
 				g_pRender->Text(150, 500, false, true, Color::White(), "Spectators List:");
@@ -348,10 +346,10 @@ namespace Client
 			{
 				QAngle view;
 				Interfaces::Engine()->GetViewAngles(view);
-				
-					if (bSendPacket)
+
+				if (bSendPacket)
 					Settings::Misc::qLastTickAngle = pCmd->viewangles;
-				
+
 				if (!bIsGuiVisible)
 				{
 					int iWeaponSettingsSelectID = GetWeaponSettingsSelectID();
@@ -373,13 +371,13 @@ namespace Client
 					g_pMisc->OnCreateMove(pCmd);
 
 				if (Settings::Aimbot::aim_Backtrack)
-					 backtracking->legitBackTrack(pCmd);
-				
+					backtracking->legitBackTrack(pCmd);
+
 				if (Settings::Misc::misc_LegitAA)
-					 AntiAim().LegitAA(pCmd, bSendPacket);
-				
+					AntiAim().LegitAA(pCmd, bSendPacket);
+
 				correct_movement(view, pCmd, pCmd->Move.x, pCmd->Move.y);
-				if (stub_68616b65) if(!sanitize_angles(pCmd->viewangles)) return; 
+				if (stub_68616b65) if (!sanitize_angles(pCmd->viewangles)) return;
 				// did no one ever find this anti paste #2?
 			}
 		}
@@ -421,7 +419,7 @@ namespace Client
 					sv_cheats_spoofed = new SpoofedConvar(Interfaces::GetConVar()->FindVar("sv_cheats"));
 				sv_cheats_spoofed->SetInt(1);
 			}
-			else 
+			else
 			{
 				if (sv_cheats_spoofed != nullptr) {
 					sv_cheats_spoofed->SetInt(0);
@@ -429,8 +427,8 @@ namespace Client
 					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
-			if (g_pMisc)
-				g_pMisc->FrameStageNotify(Stage);
+			/*if (g_pMisc) //broken lul
+				g_pMisc->FrameStageNotify(Stage);*/
 
 			Skin_OnFrameStageNotify(Stage);
 			Gloves_OnFrameStageNotify(Stage);
@@ -492,8 +490,8 @@ namespace Client
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
 			"Aimbot Options",
-			"Weapon Options", 
-			"Trigger Options" 
+			"Weapon Options",
+			"Trigger Options"
 		};
 
 		static int tabOrder[] = { 0 , 1 , 2 };
@@ -705,9 +703,9 @@ namespace Client
 	{
 		static int otherpages = 0;
 		const char* tabNames[] = { // change these to what you like
-			"Skinchanger", 
-			"Inventory", 
-			"Profile" 
+			"Skinchanger",
+			"Inventory",
+			"Profile"
 		};
 		static int tabOrder[] = { 0 , 1 , 2 };
 		const bool tabChanged = ImGui::TabLabels(tabNames, sizeof(tabNames) / sizeof(tabNames[0]), otherpages, tabOrder);
@@ -884,7 +882,7 @@ namespace Client
 		{
 			//ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
-			if (Settings::InvChanger::Inventory_Changer) 
+			if (Settings::InvChanger::Inventory_Changer)
 			{
 				ImGui::Text("Skins");
 				ImGui::Separator();
@@ -894,12 +892,12 @@ namespace Client
 				static float wear = 0.f;
 				const char* raritynames[] = { "Default (Gray)", "Consumer Grade (White)", "Industrial Grade (Light Blue)", "Mil-Spec (Darker Blue)", "Restricted (Purple)", "Classified (Pinkish Purple)", "Covert (Red)", "Exceedingly Rare (Gold)" };
 				const char* itemnames[] = { "Desert Eagle", "Dual Berettas", "Five-Seven", "Glock-18", "AK-47", "AUG", "AWP", "FAMAS", "G3SG1", "Galil AR", "M249", "M4A4",
-					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP5-SD", "MP9", "Nova", "P250", "SCAR-20", "SG 553", "SSG 08",
+					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP5-SD", "MP9", "Nova", "P250", "SCAR-20", "SG 556", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver", "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
 					"Shadow Daggers", "Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife", "Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
 				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALILAR, WEAPON_M249,
 					WEAPON_M4A1, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_HKP2000, WEAPON_MP7, WEAPON_MP5SD, WEAPON_MP9,
-					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_KNIFE_BAYONET, WEAPON_KNIFE_FLIP,
+					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG556, WEAPON_SSG08, WEAPON_M4A1_SILENCER, WEAPON_USP_SILENCER, WEAPON_CZ75A, WEAPON_REVOLVER, WEAPON_BAYONET, WEAPON_KNIFE_FLIP,
 					WEAPON_KNIFE_GUT, WEAPON_KNIFE_KARAMBIT, WEAPON_KNIFE_M9_BAYONET, WEAPON_KNIFE_TACTICAL, WEAPON_KNIFE_FALCHION, WEAPON_KNIFE_SURVIVAL_BOWIE, WEAPON_KNIFE_SURVIVAL_BOWIE,
 					WEAPON_KNIFE_BUTTERFLY, WEAPON_KNIFE_PUSH, WEAPON_KNIFE_GYPSY_JACKKNIFE, WEAPON_KNIFE_STILETTO, WEAPON_KNIFE_URSUS, WEAPON_KNIFE_WIDOWMAKER,
 					5030, 5031, 5032, 5033, 5034, 5035
@@ -910,7 +908,8 @@ namespace Client
 				if (itemDefinitionIndex < 5000) {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_skin, KnifeSkins[0].SkinNames);
 					paintKit = WeaponSkins[0].SkinPaintKit[paintkit_temp_skin];
-				} else {
+				}
+				else {
 					ImGui::ComboBoxArray("Skin", &paintkit_temp_gloves, GloveSkin[0].Names);
 					paintKit = GloveSkin[0].PaintKit[paintkit_temp_gloves];
 				}
@@ -945,52 +944,52 @@ namespace Client
 			}
 		}
 
-			if (otherpages == 2)
+		if (otherpages == 2)
+		{
+			ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
+			if (Settings::InvChanger::Profile_Info)
 			{
-				ImGui::Checkbox("Profile Changer", &Settings::InvChanger::Profile_Info);
-				if (Settings::InvChanger::Profile_Info)
-				{
-					const char* MMRank[] = {
-						"Silver I",
-						"Silver II",
-						"Silver III",
-						"Silver IV",
-						"Silver Elite",
-						"Silver Elite Master",
+				const char* MMRank[] = {
+					"Silver I",
+					"Silver II",
+					"Silver III",
+					"Silver IV",
+					"Silver Elite",
+					"Silver Elite Master",
 
-						"Gold Nova I",
-						"Gold Nova II",
-						"Gold Nova III",
-						"Gold Nova Master",
+					"Gold Nova I",
+					"Gold Nova II",
+					"Gold Nova III",
+					"Gold Nova Master",
 
-						"Master Guardian I",
-						"Master Guardian II",
-						"Master Guardian Elite",
-						"Distinguished Master Guardian",
+					"Master Guardian I",
+					"Master Guardian II",
+					"Master Guardian Elite",
+					"Distinguished Master Guardian",
 
-						"Legendary Eagle",
-						"Legendary Eagle Master",
-						"Supreme Master First Class",
-						"The Global Elite" };
-					static int selected = 0;
-					ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
-					Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
+					"Legendary Eagle",
+					"Legendary Eagle Master",
+					"Supreme Master First Class",
+					"The Global Elite" };
+				static int selected = 0;
+				ImGui::Combo(("Rank"), &selected, MMRank, ARRAYSIZE(MMRank));
+				Settings::InvChanger::Profile_Info_Rank = selected + 1; // could you be less retarded?
 
-					ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
-					ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
-					ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
-					ImGui::Spacing();
-					ImGui::Text("Commends");
-					ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
-					ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
-					ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
-					ImGui::Spacing();
-					if (ImGui::Button("Apply Changes"))
-						SendMMHello();
-				}
+				ImGui::SliderInt("Level", &Settings::InvChanger::Profile_Info_Level, 1, 40);
+				ImGui::InputInt("XP", &Settings::InvChanger::Profile_Info_XP);
+				ImGui::InputInt("Wins", &Settings::InvChanger::Profile_Info_Win);
+				ImGui::Spacing();
+				ImGui::Text("Commends");
+				ImGui::InputInt("Friendly", &Settings::InvChanger::Profile_Info_Friendly);
+				ImGui::InputInt("Leader", &Settings::InvChanger::Profile_Info_Leader);
+				ImGui::InputInt("Teacher", &Settings::InvChanger::Profile_Info_Teacher);
+				ImGui::Spacing();
+				if (ImGui::Button("Apply Changes"))
+					SendMMHello();
 			}
+		}
 	}
-	
+
 	void DrawVisuals() // Visuals
 	{
 		ImGui::BeginGroup();
@@ -1053,7 +1052,7 @@ namespace Client
 			Settings::Esp::esp_Time = Settings::Esp::esp_Watermark;
 			//ImGui::Checkbox("Glow (BETA)", &Settings::Esp::glow);
 			/// probably won't be fixed cause im lazy
-			
+
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
@@ -1182,14 +1181,42 @@ namespace Client
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
 
 		if (ImGui::Button("Load Config")) {
-			Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Selected Config Loaded.");
+			try {
+				if (ConfigList.size() == 0) {
+					EventLog->AddToLog("Failed To Load Settings.");
+				}
+				else {
+					if (!Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+						EventLog->AddToLog("Failed To Load Settings.");
+					}
+					else {
+						EventLog->AddToLog("Selected Config Loaded.");
+					}
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Load Settings.");
+			}
 		}
 		ImGui::SameLine();
 
 		if (ImGui::Button("Save Config")) {
-			Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]);
-			EventLog->AddToLog("Selected Config Saved.");
+			try {
+				if (ConfigList.size() == 0) {
+					EventLog->AddToLog("Failed To Save Settings.");
+				}
+				else {
+					if (!Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+						EventLog->AddToLog("Failed To Save Settings.");
+					}
+					else {
+						EventLog->AddToLog("Selected Config Saved.");
+					}
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Save Settings.");
+			}
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Refresh Config List"))
@@ -1198,15 +1225,23 @@ namespace Client
 
 		ImGui::InputText("", ConfigName, 11);
 		ImGui::SameLine();
-		if (ImGui::Button("Make New Config"))
-		{
+		if (ImGui::Button("Make New Config")) {
 			string ConfigFileName = ConfigName;
 
-			if (ConfigFileName.size() < 1)
+			if (ConfigFileName.size() < 1 || ConfigFileName == "")
 				ConfigFileName = "default";
 
-			Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef");
-			EventLog->AddToLog("Created New Config.");
+			try {
+				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 0) {
+					EventLog->AddToLog("Failed To Create Config.");
+				}
+				else {
+					EventLog->AddToLog("Created New Config.");
+				}
+			}
+			catch (...) {
+				EventLog->AddToLog("Failed To Create Config.");
+			}
 			RefreshConfigs();
 		}
 
@@ -1327,7 +1362,7 @@ namespace Client
 				ImGui::SliderInt("mFoV", &Settings::Misc::misc_FovModelView, 1, 190);
 				ImGui::Separator();
 			}
-			
+
 			//ImGui::Checkbox("Sniper Crosshair", &Settings::Misc::misc_AwpAim); // doesn't work
 			//ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("Disable Postprocess", &Settings::Misc::misc_Postprocess);
@@ -1351,16 +1386,16 @@ namespace Client
 				*(int*)((DWORD)&Name->fnChangeCallback + 0xC) = 0;
 				Name->SetValue(name);
 			}
-/*			ImGui::Separator();
+			/*			ImGui::Separator();
 
-			static char clantag[128] = { 0 };
-			ImGui::PushItemWidth(362.f);
-			ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
-			ImGui::PopItemWidth();
-			if (ImGui::Button("Apply"))
-			{
-				Engine::ClanTagApply(clantag);
-			}*/
+						static char clantag[128] = { 0 };
+						ImGui::PushItemWidth(362.f);
+						ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
+						ImGui::PopItemWidth();
+						if (ImGui::Button("Apply"))
+						{
+							Engine::ClanTagApply(clantag);
+						}*/
 		}
 
 		if (otherpages == 1)
@@ -1406,7 +1441,7 @@ namespace Client
 		//ImGui::ColorEdit3("Color Dynamic Lights", Settings::Esp::esp_Dlight);
 
 		const char* espcolornames[] = { "ESP Invisible CT", "ESP Invisible T", "ESP Visible CT", "ESP Visible T", "Chams Invisible CT",
-			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights"};
+			"Chams Invisible T", "Chams Visible CT", "Chams Visible T", "Hitmarkers", "Dynamic Lights" };
 
 		static int selected = 0;
 		static bool done = false;
@@ -1486,7 +1521,7 @@ namespace Client
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.95f);
 		ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiSetCond_Appearing);
 		BtnNormal();
-		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar ); //ImGuiWindowFlags_ShowBorders);
+		ImGui::Begin("!smef.cc", &bIsGuiVisible, ImVec2(828, 450), 0.98f, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar); //ImGuiWindowFlags_ShowBorders);
 		mainWindowPos = ImGui::GetWindowPos();
 
 		if (Global::MenuTab == 0)

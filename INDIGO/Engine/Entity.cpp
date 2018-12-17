@@ -26,7 +26,7 @@ namespace Engine
 
 	bool CBaseEntity::IsValid()
 	{
-		return (!IsDead() && GetHealth() > 0 && !IsDormant());
+		return (!IsDead() && GetHealth() > 0 /*&& !IsDormant()*/);
 	}
 
 	bool CBaseEntity::IsDead()

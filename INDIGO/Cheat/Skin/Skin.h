@@ -150,7 +150,7 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 #define WEAPON_MP5SD_STR    "MP5-SD"            // 22
 #define WEAPON_MP9_STR		"MP9"				// 26
 #define WEAPON_NOVA_STR		"Nova"				// 27
-#define WEAPON_SG553_STR	"SG553"				// 28
+#define WEAPON_SG556_STR	"SG556"				// 28
 #define WEAPON_G3SG1_STR	"G3SG1"				// 29
 #define WEAPON_SCAR20_STR	"SCAR-20"			// 30
 
