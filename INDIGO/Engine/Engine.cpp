@@ -5,12 +5,9 @@
 //[enc_string_enable /]
 //[junk_enable /]
 
-namespace Engine
-{
-	bool Initialize()
-	{
+namespace Engine {
+	bool Initialize() {
 		//CLicense License;
-
 		//if ENABLE_LICENSING == 1
 		//if ( !License.CheckLicense() )
 		//{
@@ -37,96 +34,70 @@ namespace Engine
 			return false;
 
 		if (!SDK::Interfaces::Engine())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::Client())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::EntityList())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::GlobalVars())
-		{
 			return false;
-		}
 
-		/*
-		if ( !SDK::Interfaces::Input() )
-		{
+		if (!SDK::Interfaces::Input())
 			return false;
-		}
-		*/
 
 		if (!SDK::Interfaces::EngineTrace())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::ClientMode())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::ModelInfo())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::Sound())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::ModelRender())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::RenderView())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::MaterialSystem())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::Surface())
-		{
 			return false;
-		}
 
 		if (!SDK::Interfaces::GameEvent())
-		{
 			return false;
-		}
-
-		stub_68616b65 = cpcl();
 
 		if (!SDK::Interfaces::InputSystem())
-		{
 			return false;
-		}
+
+		if (!SDK::Interfaces::GetConVar())
+			return false;
+
+		if (!SDK::Interfaces::GetLocalize())
+			return false;
+
+		if (!SDK::Interfaces::GlowManager())
+			return false;
 
 		if (!SDK::Interfaces::SteamGameCoordinator())
-		{
 			return false;
-		}
+
+		if (!SDK::Interfaces::SteamUser())
+			return false;
 
 		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses()))
 			return false;
 
 		if (!Engine::Hook::Initialize() || !Engine::Offset::Initialize())
-		{
 			return false;
-		}
 
 		return true;
 	}
@@ -160,11 +131,11 @@ namespace Engine
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_G3SG1:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_GALILAR:
+		case WEAPON_GALIL:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_M249:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_M4A1:
+		case WEAPON_M4A4:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_MAC10:
 			return WEAPON_TYPE_SHOTGUN;
@@ -184,9 +155,9 @@ namespace Engine
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_TEC9:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_TASER:
+		case WEAPON_ZEUS:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_HKP2000:
+		case WEAPON_P2000:
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_MP7:
 			return WEAPON_TYPE_SHOTGUN;
@@ -198,7 +169,7 @@ namespace Engine
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_SCAR20:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_SG556:
+		case WEAPON_SG553:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_SSG08:
 			return WEAPON_TYPE_SNIPER;
@@ -220,11 +191,11 @@ namespace Engine
 			return WEAPON_TYPE_C4;
 		case WEAPON_KNIFE_T:
 			return WEAPON_TYPE_KNIFE;
-		case WEAPON_M4A1_SILENCER:
+		case WEAPON_M4A1S:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_USP_SILENCER:
+		case WEAPON_USPS:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_CZ75A:
+		case WEAPON_CZ75:
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_REVOLVER:
 			return WEAPON_TYPE_PISTOL;
@@ -266,6 +237,8 @@ namespace Engine
 
 		return false;
 	}
+
+	//27th July 2019
 	void SetMyClanTag(const char* tag, const char* name)
 	{
 		static auto pSetClanTag = reinterpret_cast<void(__fastcall*)(const char*, const char*)>(((DWORD)CSX::Memory::FindPatternV2("engine.dll", "53 56 57 8B DA 8B F9 FF 15")));
@@ -368,6 +341,7 @@ namespace Engine
 			Client::g_pSkin->SetKillIconCfg();
 		}
 
+		//ForceFullUpdate - 27th July 2019
 		typedef void(*ForceUpdate) (void);
 		ForceUpdate FullUpdate = (ForceUpdate)CSX::Memory::FindSignature("engine.dll", "FullUpdate", "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85");
 		FullUpdate();
@@ -552,10 +526,11 @@ namespace Engine
 		return true;
 	}
 
-	bool GetVisibleOrigin(const Vector& vOrigin)
-	{
-		if (Client::g_pEsp && IsLocalAlive())
-		{
+	bool GetVisibleOrigin(const Vector& vOrigin) {
+		if (Client::g_pEsp && IsLocalAlive()) {
+			if (!Client::g_pPlayers->GetLocal() || !Client::g_pPlayers->GetLocal()->m_pEntity)
+				return false;
+
 			trace_t tr;
 			Ray_t ray;
 			CTraceFilter Filter;
@@ -567,7 +542,6 @@ namespace Engine
 
 			return tr.IsVisible();
 		}
-
 		return false;
 	}
 
@@ -677,29 +651,24 @@ namespace Engine
 		return (sqrt(pow(vSrcPos.x - vDstPos.x, 2) + pow(vSrcPos.y - vDstPos.y, 2)));
 	}
 
-	bool LineGoesThroughSmoke(Vector vStartPos, Vector vEndPos)
-	{
+	//27th July 2019
+	bool LineGoesThroughSmoke(Vector vStartPos, Vector vEndPos) {
 		typedef bool(__cdecl* _LineGoesThroughSmoke) (Vector, Vector);
-
 		static _LineGoesThroughSmoke LineGoesThroughSmokeFn = 0;
 		static bool SearchFunction = false;
 
-		if (!SearchFunction)
-		{
-			DWORD dwFunctionAddress = CSX::Memory::FindPattern(CLIENT_DLL, SMOK_PATTERN, "xxxxxxxx????xxx", 0);
-
-			if (dwFunctionAddress)
-			{
+		if (!SearchFunction) {
+			//LineGoesThroughSmoke
+			static DWORD dwFunctionAddress = CSX::Memory::FindPattern(CLIENT_DLL, "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\x00\x00\x00\x00\x0F\x57\xC0", "xxxxxxxx????xxx", 0);
+			if (dwFunctionAddress) {
 				LineGoesThroughSmokeFn = (_LineGoesThroughSmoke)dwFunctionAddress;
 				SearchFunction = true;
 			}
 		}
 
-		if (LineGoesThroughSmokeFn && SearchFunction)
-		{
+		if (LineGoesThroughSmokeFn && SearchFunction) {
 			return LineGoesThroughSmokeFn(vStartPos, vEndPos);
 		}
-
 		return false;
 	}
 

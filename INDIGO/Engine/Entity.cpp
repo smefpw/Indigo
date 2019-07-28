@@ -18,15 +18,14 @@ namespace Engine
 		return "";
 	}
 
-	bool CBaseEntity::IsPlayer()
-	{
+	//27th July 2019
+	bool CBaseEntity::IsPlayer() {
 		typedef bool(__thiscall* IsPlayerFn)(void*);
-		return GetMethod<IsPlayerFn>(this, 152)(this);
+		return GetMethod<IsPlayerFn>(this, 155)(this); //152
 	}
 
-	bool CBaseEntity::IsValid()
-	{
-		return (!IsDead() && GetHealth() > 0 /*&& !IsDormant()*/);
+	bool CBaseEntity::IsValid() {
+		return (!IsDead() && GetHealth() > 0 && !IsDormant()); //IsDormant lol
 	}
 
 	bool CBaseEntity::IsDead()

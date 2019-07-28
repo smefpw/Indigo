@@ -338,7 +338,7 @@ bool CTriggerbot::CheckPlayerTriggerLine(CPlayer * pPlayer)
 
 	if (Weapon)
 	{
-		vecFor *= Weapon->flRange;
+		vecFor *= Weapon->flWeaponRange;
 	}
 	else
 	{

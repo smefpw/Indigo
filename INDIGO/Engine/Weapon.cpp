@@ -35,10 +35,11 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	CWeaponInfo* CBaseWeapon::GetWeaponInfo()
-	{
+	//27th July 2019
+	//GetCCSWeapData
+	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
-		return GetMethod< GetWeaponDataFn >(this, 441)(this); //444
+		return GetMethod< GetWeaponDataFn >(this, 454)(this); //old = 448
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()
