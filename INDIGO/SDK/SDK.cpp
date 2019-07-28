@@ -76,14 +76,11 @@ namespace SDK
 		return g_pEngine;
 	}
 
-	CGlowObjectManager* Interfaces::GlowManager()
-	{
-		if (!g_GlowObjManager)
-		{
-			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
-			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::NewPatternScan(pfnFactory, "0F 11 05 ? ? ? ? 83 C8 01") + 3);
+	//27th July 2019
+	CGlowObjectManager* Interfaces::GlowManager() {
+		if (!g_GlowObjManager) {
+			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "A1 ? ? ? ? A8 01 75 4B") + 0x1);
 		}
-
 		return g_GlowObjManager;
 	}
 
@@ -135,19 +132,13 @@ namespace SDK
 		return g_pGlobals;
 	}
 
-	CInput* Interfaces::Input()
-	{
-		if (!g_pInput)
-		{
-			auto pdwClient = *(PDWORD_PTR*)g_pClient;
-			g_pInput = *(CInput**)(pdwClient[15] + 0x1);
-#if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pInput = %X", g_pInput);
-#endif
+	//27th July 2019
+	CInput* Interfaces::Input() {
+		if (!g_pInput) {
+			g_pInput = *(CInput**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 0x1);
 		}
-
 		return g_pInput;
-	}
+		}
 
 	IEngineTrace* Interfaces::EngineTrace()
 	{

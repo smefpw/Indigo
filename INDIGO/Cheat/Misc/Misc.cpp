@@ -216,25 +216,17 @@ void CMisc::OnDrawModelExecute()
 	}
 }
 
-void CMisc::OnPlaySound( const char* pszSoundName )
-{
-	if (Settings::Misc::misc_AutoAccept && !strcmp(pszSoundName, "!UI/competitive_accept_beep.wav"))
-	{
-		typedef void( *IsReadyCallBackFn )( );
-
-		IsReadyCallBackFn IsReadyCallBack = 0;
-
-		if ( !IsReadyCallBack )
-		{
-			IsReadyCallBack = (IsReadyCallBackFn)(
-				CSX::Memory::FindPattern(CLIENT_DLL, "55 8B EC 83 E4 F8 83 EC 08 56 8B 35 ? ? ? ? 57 83 BE", 0));
-
-			#if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add( "::IsReadyCallBack = %X", IsReadyCallBack);
-			#endif
+//27th July 2019 - panorama
+void CMisc::OnPlaySound(const char* pszSoundName) {
+	if (Settings::Misc::misc_AutoAccept && !strcmp(pszSoundName, "UIPanorama.popup_accept_match_beep")) {
+		typedef bool(__stdcall* IsReadyCallBack_t)(const char*);
+		static auto IsReadyCallBackFn = (IsReadyCallBack_t)CSX::Memory::FindPatternV2(CLIENT_DLL, "55 8B EC 83 E4 F8 8B 4D 08 BA ? ? ? ? E8 ? ? ? ? 85 C0 75 12");
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("::IsReadyCallBack = %X", IsReadyCallBackFn);
+#endif
+		if (IsReadyCallBackFn) {
+			IsReadyCallBackFn("deferred");
 		}
-
-		IsReadyCallBack();
 	}
 }
 
@@ -311,7 +303,7 @@ vector<int> CMisc::GetObservervators( int playerId )
 		if ( !pCheckPlayer )
 			continue;
 
-		if ( /*pCheckPlayer->IsDormant() ||*/ !pCheckPlayer->IsDead() )
+		if ( pCheckPlayer->IsDormant() || !pCheckPlayer->IsDead() )
 			continue;
 
 		CBaseEntity* pObserverTarget = (CBaseEntity*)Interfaces::EntityList()->GetClientEntityFromHandle( pCheckPlayer->GetObserverTarget() );

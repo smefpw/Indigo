@@ -26,7 +26,7 @@ void BackTrack::legitBackTrack(CUserCmd* cmd)
 	{
 		auto entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
 
-		if (!entity || !pLocal || (entity == pLocal) || (!Interfaces::Engine()->GetPlayerInfo(i, &info)) || /*(entity->IsDormant()) ||*/ (entity->GetTeam() == pLocal->GetTeam()))		
+		if (!entity || !pLocal || (entity == pLocal) || (!Interfaces::Engine()->GetPlayerInfo(i, &info)) || (entity->IsDormant()) || (entity->GetTeam() == pLocal->GetTeam()))		
 			continue;
 
 		if (!entity->IsDead())

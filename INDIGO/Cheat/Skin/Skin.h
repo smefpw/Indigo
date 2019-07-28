@@ -122,10 +122,10 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 #define WEAPON_FIVESEVEN_STR	"Five-Seven"	// 2
 #define WEAPON_GLOCK_STR		"Glock-18"		// 3
 #define WEAPON_TASER_STR		"Zeus x27"
-#define WEAPON_HKP2000_STR		"P2000"		    // 4
+#define WEAPON_P2000_STR		"P2000"		    // 4
 #define WEAPON_P250_STR			"P250"			// 5
 #define WEAPON_USP_S_STR		"USP-S"	        // 6
-#define WEAPON_CZ75A_STR		"CZ75-Auto"		// 7
+#define WEAPON_CZ75_STR		    "CZ75-Auto"		// 7
 #define WEAPON_REVOLVER_STR		"R8 Revolver"	// 8
 #define WEAPON_TEC9_STR			"Tec-9"			// 9
 
@@ -134,10 +134,10 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 #define WEAPON_AK47_STR		"AK-47"				// 10
 #define WEAPON_AUG_STR		"AUG"				// 11
 #define WEAPON_FAMAS_STR	"FAMAS"				// 12
-#define WEAPON_GALILAR_STR	"Galil AR"			// 13
+#define WEAPON_GALIL_STR	"Galil AR"			// 13
 #define WEAPON_M249_STR		"M249"				// 14
-#define WEAPON_M4A1_STR		"M4A4"				// 15
-#define WEAPON_M4A1_S_STR	"M4A1-S"     		// 16
+#define WEAPON_M4A4_STR		"M4A4"				// 15
+#define WEAPON_M4A1S_STR	"M4A1-S"     		// 16
 #define WEAPON_MAC10_STR	"MAC-10"			// 17
 #define WEAPON_P90_STR		"P90"				// 18
 #define WEAPON_UMP45_STR	"UMP-45"			// 19
@@ -150,7 +150,7 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 #define WEAPON_MP5SD_STR    "MP5-SD"            // 22
 #define WEAPON_MP9_STR		"MP9"				// 26
 #define WEAPON_NOVA_STR		"Nova"				// 27
-#define WEAPON_SG556_STR	"SG556"				// 28
+#define WEAPON_SG553_STR	"SG553"				// 28
 #define WEAPON_G3SG1_STR	"G3SG1"				// 29
 #define WEAPON_SCAR20_STR	"SCAR-20"			// 30
 

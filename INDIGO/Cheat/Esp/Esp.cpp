@@ -764,8 +764,18 @@ void CEsp::OnRender()
 			CBaseEntity *entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
 			CPlayer* pPlayer = g_pPlayers->GetPlayer(i);
 			PlayerInfo pinfo;
-			if (entity == nullptr || entity == local || /*entity->IsDormant() ||*/ entity->GetTeam() == local->GetTeam())
+
+			if (!local)
 				continue;
+
+			if (entity == nullptr || entity == local || entity->IsDormant() || entity->GetTeam() == local->GetTeam())
+				continue;
+
+			if (!Settings::Aimbot::aim_Deathmatch) {
+				if (entity->GetTeam() == local->GetTeam())
+					continue;
+			}
+
 			if (Interfaces::Engine()->GetPlayerInfo(i, &pinfo) && !entity->IsDead())
 			{
 				if (Settings::Esp::esp_Visible >= 3)
@@ -815,21 +825,18 @@ void CEsp::OnRender()
 	}
 }
 
-void MsgFunc_ServerRankRevealAll()
-{
+//27th July 2019 - Huge sig lol, there is a better way to do this.
+void MsgFunc_ServerRankRevealAll() {
 	using tServerRankRevealAllFn = bool( __cdecl* )( int* );
 	static tServerRankRevealAllFn ServerRankRevealAll = 0;
 
-	if ( !ServerRankRevealAll )
-	{
-		ServerRankRevealAll = (tServerRankRevealAllFn)(
-			CSX::Memory::FindPattern( CLIENT_DLL , "55 8B EC 8B 0D ? ? ? ? 68" , 0 ) );
+	if (!ServerRankRevealAll) {
+		ServerRankRevealAll = (tServerRankRevealAllFn)(CSX::Memory::FindPattern(CLIENT_DLL, "55 8B EC 8B 0D ? ? ? ? 85 C9 75 ? A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 ? 85 C0 74 ? 8B C8 E8 ? ? ? ? 8B C8 EB ? 33 C9 89 0D ? ? ? ? 8B 45 ? FF 70 ? E8 ? ? ? ? B0 ? 5D",0));
 	}
 
-	if ( ServerRankRevealAll )
-	{
+	if (ServerRankRevealAll) {
 		int fArray[3] = { 0,0,0 };
-		ServerRankRevealAll( fArray );
+		ServerRankRevealAll(fArray);
 	}
 }
 

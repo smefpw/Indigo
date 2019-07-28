@@ -31,6 +31,7 @@
 #define IN_GRENADE1		(1 << 23)
 #define IN_GRENADE2		(1 << 24)
 #define IN_LOOKSPIN		(1 << 25)
+#define MULTIPLAYER_BACKUP 150
 
 namespace SDK
 {
@@ -86,37 +87,42 @@ namespace SDK
 		CRC32_t   m_crc;
 	};
 
-	//Everything's shifted up by 8
+	//27th July 2019
 	class CInput {
 	public:
-		void*               pvftable;                     //0x00 - [0x04] (0x04)
-		char				pad_0x04[0x08];				  //0x04 - [0x0C] (pad)
-		bool                m_fTrackIRAvailable;          //0x0C - [0x0D] (0x01)
-		bool                m_fMouseInitialized;          //0x0D - [0x0E] (0x01)
-		bool                m_fMouseActive;               //0x0E - [0x0F] (0x01)
-		bool                m_fJoystickAdvancedInit;      //0x0F - [0x10] (0x01)
-		char                pad_0x10[0x2C];               //0x10 - [0x3C] (pad)
-		void*               m_pKeys;                      //0x3C - [0x40] (0x04)
-		char                pad_0x40[0x64];               //0x40 - [0xA4] (pad)
-		int					pad_0x41;
-		int					pad_0x42;
-		bool                m_fCameraInterceptingMouse;   //0xA4 - [0xA5] (0x01)
-		bool                m_fCameraInThirdPerson;       //0xA5 - [0xA6] (0x01)
-		bool                m_fCameraMovingWithMouse;     //0xA6 - [0xA7] (0x01)
-		Vector				m_vecCameraOffset;            //0xA7 - [0xB3] (0x0C)
-		bool                m_fCameraDistanceMove;        //0xB3 - [0xB4] (0x01)
-		int                 m_nCameraOldX;                //0xB4 - [0xB8] (0x04)
-		int                 m_nCameraOldY;                //0xB8 - [0xBC] (0x04)
-		int                 m_nCameraX;                   //0xBC - [0xC0] (0x04)
-		int                 m_nCameraY;                   //0xC0 - [0xC4] (0x04)
-		bool                m_CameraIsOrthographic;       //0xC4 - [0xC5] (0x01)
-		Vector              m_angPreviousViewAngles;      //0xC5 - [0xD1] (0x0C)
-		Vector              m_angPreviousViewAnglesTilt;  //0xD1 - [0xDD] (0x0C)
-		float               m_flLastForwardMove;          //0xDD - [0xE1] (0x04)
-		int                 m_nClearInputState;           //0xE1 - [0xE5] (0x04)
-		char                pad_0xE4[0x8];                //0xE5 - [0xED] (pad)
-		CUserCmd*           m_pCommands;                  //0xED - [0xF1] (0x04)
-		CVerifiedUserCmd*   m_pVerifiedCommands;		  //0xF1 - [0xF5] (0x04)
+		char pad_0x00[0x8];
+		bool m_fTrackIRAvailable;
+		bool m_fMouseInitialized;
+		bool m_fMouseActive;
+		bool m_fJoystickAdvancedInit;
+		char pad_0x08[0x2C];
+		void* m_pKeys;
+		char pad1[0x10];
+		float m_flKeyboardSampleTime;
+		char pad2[0x58];
+		bool m_fCameraInterceptingMouse;
+		bool m_fCameraInThirdPerson;
+		bool m_fCameraMovingWithMouse;
+		Vector m_vecCameraOffset;
+		bool m_fCameraDistanceMove;
+		int m_nCameraOldX;
+		int m_nCameraOldY;
+		int m_nCameraX;
+		int m_nCameraY;
+		bool m_CameraIsOrthographic;
+		Vector m_angPreviousViewAngles;
+		Vector m_angPreviousViewAnglesTilt;
+		float m_flLastForwardMove; // 0xEC
+		int m_nClearInputState;
+		CUserCmd* m_pCommands; // 0xF4
+		CVerifiedUserCmd* m_pVerifiedCommands;
+
+		inline CUserCmd& get_user_cmd(int sequence_number) const {
+			return m_pCommands[sequence_number % MULTIPLAYER_BACKUP];
+		}
+		inline CVerifiedUserCmd& get_verified_user_cmd(int sequence_number) const {
+			return m_pVerifiedCommands[sequence_number % MULTIPLAYER_BACKUP];
+		}
 	};
 
 	class IInputSystem
