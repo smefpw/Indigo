@@ -315,13 +315,14 @@ void CEsp::HitmarkerEvents(IGameEvent* event)
 		if (Interfaces::Engine()->GetPlayerForUserID(attacker) == Interfaces::Engine()->GetLocalPlayer()) {
 			switch (Settings::Esp::esp_HitMarkerSound)
 			{
-				case 0: break; // do nothing
-				case 1: PlaySoundA(rawData, NULL, SND_ASYNC | SND_MEMORY); break; // default / cod 
-				case 2: Interfaces::Engine()->ClientCmd_Unrestricted2("play buttons\\arena_switch_press_02.wav"); // metallic
-				case 3: PlaySoundA(bameware, NULL, SND_ASYNC | SND_MEMORY); break; // bameware
-				case 4: PlaySoundA(penguware, NULL, SND_ASYNC | SND_MEMORY); break; // penguware
+				case 0: break;
+				case 1: PlaySoundA(rawData, nullptr, SND_ASYNC | SND_MEMORY); break; // COD
+				case 2: Interfaces::Surface()->PlaySound("buttons\\arena_switch_press_02.wav"); break;
+				case 3: PlaySoundA(bameware, nullptr, SND_ASYNC | SND_MEMORY); break; // BAMEware
+				case 4: PlaySoundA(penguware, nullptr, SND_ASYNC | SND_MEMORY); break; // PENGUware
+				default: break;
 			}
-
+			
 			Settings::hitmarkerAlpha = 1.f;
 		}
 	}
@@ -907,7 +908,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
-					default: material = nullptr;
+					default: material = nullptr; break;
 				}
 				Color color = Color(255, 255, 255, 255);
 				if (Settings::Esp::esp_ChamsVisible <= 2)
@@ -942,7 +943,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
-					default: material = nullptr;
+					default: material = nullptr; break;
 				}
 				Color color = Color(255, 255, 255, 255);
 				ForceMaterial(color, material);
@@ -961,7 +962,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
-					default: material = nullptr;
+					default: material = nullptr; break;
 				}
 				Color color = Color(255, 255, 255, 255);
 				ForceMaterial(color, material);
