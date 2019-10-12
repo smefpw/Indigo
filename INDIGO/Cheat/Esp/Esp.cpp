@@ -825,7 +825,6 @@ void CEsp::OnRender()
 	}
 }
 
-//27th July 2019 - Huge sig lol, there is a better way to do this.
 void MsgFunc_ServerRankRevealAll()
 {
 	enum { CS_UM_ServerRankRevealAll = 50 };
