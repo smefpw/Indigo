@@ -139,7 +139,7 @@ namespace Engine
 
 		float* FindW2Matrix()
 		{
-			return (float*)(reinterpret_cast<DWORD>(&Interfaces::Engine()->WorldToScreenMatrix()) + 0x40);
+			return reinterpret_cast<float*>(reinterpret_cast<DWORD>(&Interfaces::Engine()->WorldToScreenMatrix()) + 0x40);
 		}
 	}
 }

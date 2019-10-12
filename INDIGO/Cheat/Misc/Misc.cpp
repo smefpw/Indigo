@@ -354,7 +354,7 @@ void CMisc::OnRenderSpectatorList()
 			if (!pPlayer)
 				continue;
 
-			PlayerInfo Pinfo;
+			PlayerInfo Pinfo{};
 			Interfaces::Engine()->GetPlayerInfo(playerId, &Pinfo);
 
 			if (Pinfo.m_bIsFakePlayer)

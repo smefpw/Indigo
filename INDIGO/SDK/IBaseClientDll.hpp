@@ -64,6 +64,11 @@ namespace SDK
 		virtual int				PlayerAudible( int audible ) = 0;
 		virtual void			InstallStringTableCallback( char const *tableName ) = 0;
 		virtual void			FrameStageNotify( ClientFrameStage_t curStage ) = 0;
-		virtual bool			DispatchUserMessage( int msg_type , int unk1 , int unk2 , bf_read &msg_data ) = 0;
+		
+		bool DispatchUserMessage(int messageType, int arg, int arg1, void* data)
+		{
+			using DispatchUserMessage_t = bool* (__thiscall*)(void*, int, int, int, void*);
+			return GetMethod<DispatchUserMessage_t>(this, 38)(this, messageType, arg, arg1, data);
+		}
 	};
 }

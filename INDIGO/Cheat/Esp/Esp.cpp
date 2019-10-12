@@ -7,14 +7,14 @@
 #include "ESP.h"
 
 using namespace Client;
-SDK::PlayerInfo GetInfo(int Index)
+PlayerInfo GetInfo(int Index)
 {
-	SDK::PlayerInfo info;
+	PlayerInfo info{};
 	Interfaces::Engine()->GetPlayerInfo(Index, &info);
 	return info;
 }
 
-char* HitgroupToName(int hitgroup)
+const char* hitgroup_to_name(int hitgroup)
 {
 	switch (hitgroup)
 	{
@@ -31,7 +31,7 @@ char* HitgroupToName(int hitgroup)
 	case HITGROUP_STOMACH:
 		return "chest";
 	default:
-		return "chest";
+		return "body";
 	}
 }
 
@@ -297,7 +297,7 @@ void CEsp::HitEvents(IGameEvent* event)
 				SDK::PlayerInfo killed_info = GetInfo(Interfaces::Engine()->GetPlayerForUserID(nDead));
 				EventLog->AddToLog("Damaged %s in the %s for %i damage (%i health left)", // much skeet pasta yes?
 					killed_info.m_szPlayerName, 
-					HitgroupToName(event->GetInt("hitgroup")), 
+					hitgroup_to_name(event->GetInt("hitgroup")), 
 					event->GetInt("dmg_health"), 
 					event->GetInt("health"));
 			}
@@ -826,18 +826,10 @@ void CEsp::OnRender()
 }
 
 //27th July 2019 - Huge sig lol, there is a better way to do this.
-void MsgFunc_ServerRankRevealAll() {
-	using tServerRankRevealAllFn = bool( __cdecl* )( int* );
-	static tServerRankRevealAllFn ServerRankRevealAll = 0;
-
-	if (!ServerRankRevealAll) {
-		ServerRankRevealAll = (tServerRankRevealAllFn)(CSX::Memory::FindPattern(CLIENT_DLL, "55 8B EC 8B 0D ? ? ? ? 85 C9 75 ? A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 ? 85 C0 74 ? 8B C8 E8 ? ? ? ? 8B C8 EB ? 33 C9 89 0D ? ? ? ? 8B 45 ? FF 70 ? E8 ? ? ? ? B0 ? 5D",0));
-	}
-
-	if (ServerRankRevealAll) {
-		int fArray[3] = { 0,0,0 };
-		ServerRankRevealAll(fArray);
-	}
+void MsgFunc_ServerRankRevealAll()
+{
+	enum { CS_UM_ServerRankRevealAll = 50 };
+	Interfaces::Client()->DispatchUserMessage(CS_UM_ServerRankRevealAll, 0, 0, nullptr);
 }
 
 void CEsp::OnCreateMove( CUserCmd* pCmd )
@@ -903,9 +895,9 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 		{
 			IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity(pInfo.entity_index);
 
-			if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CCSPlayer)
+			if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == static_cast<int>(CLIENT_CLASS_ID::CCSPlayer))
 			{
-				IMaterial *material;
+				IMaterial *material = nullptr;
 				switch (Settings::Misc::misc_ChamsMaterialsList)
 				{
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
@@ -916,6 +908,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+					default: material = nullptr;
 				}
 				Color color = Color(255, 255, 255, 255);
 				if (Settings::Esp::esp_ChamsVisible <= 2)
@@ -939,7 +932,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 		{
 			case 0: if (strModelName.find("arms") != std::string::npos)
 			{
-				IMaterial *material;
+				IMaterial *material = nullptr;
 				switch (Settings::Misc::misc_ArmMaterialsList)
 				{
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
@@ -950,6 +943,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+					default: material = nullptr;
 				}
 				Color color = Color(255, 255, 255, 255);
 				ForceMaterial(color, material);
@@ -957,7 +951,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 			} break;
 			case 1: if (strModelName.find("weapons/v") != std::string::npos)
 			{
-				IMaterial *material;
+				IMaterial *material = nullptr;
 				switch (Settings::Misc::misc_ArmMaterialsList)
 				{
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
@@ -968,6 +962,7 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 5:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/velvet", TEXTURE_GROUP_OTHER); break; // Velvet
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
+					default: material = nullptr;
 				}
 				Color color = Color(255, 255, 255, 255);
 				ForceMaterial(color, material);
