@@ -73,11 +73,7 @@ namespace Client
 	void TextColor(bool active)
 	{
 		auto& style = ImGui::GetStyle();
-
-		if (active)
-			style.Colors[ImGuiCol_Text] = ImVec4(0.98f, 0.98f, 0.98f, 1.f);
-		else
-			style.Colors[ImGuiCol_Text] = ImVec4(0.39f, 0.39f, 0.39f, 1.f);
+		active ? style.Colors[ImGuiCol_Text] = ImVec4(0.98f, 0.98f, 0.98f, 1.f) : style.Colors[ImGuiCol_Text] = ImVec4(0.39f, 0.39f, 0.39f, 1.f);
 	}
 
 	void DefineTab()

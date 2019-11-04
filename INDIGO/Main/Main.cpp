@@ -11,7 +11,7 @@
 //[junk_enable /]
 DWORD WINAPI CheatEntry( LPVOID lpThreadParameter )
 {
-	HMODULE hModule = (HMODULE)lpThreadParameter;
+	HMODULE hModule = HMODULE(lpThreadParameter);
 
 	if ( Engine::Initialize() )
 	{
@@ -43,7 +43,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL , DWORD fdwReason , LPVOID lpReserved )
 
 #endif
 
-		CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)CheatEntry, hinstDLL, 0, nullptr);
+		CreateThread(nullptr, 0, LPTHREAD_START_ROUTINE(CheatEntry), hinstDLL, 0, nullptr);
 	}
 	else if ( fdwReason == DLL_PROCESS_DETACH )
 	{
