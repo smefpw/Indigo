@@ -716,8 +716,7 @@ namespace Client
 			{
 				"Default","Bayonet","Flip","Gut","Karambit" ,"M9 Bayonet",
 				"Huntsman","Falchion","Bowie","Butterfly","Shadow Daggers",
-				"Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife",
-				"CSS Knife"
+				"Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife"
 			};
 
 			const char* quality_items[] =

@@ -35,11 +35,11 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	//26th September 2019
+	//27th July 2019
 	//GetCCSWeapData
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
-		return GetMethod< GetWeaponDataFn >(this, 456)(this); //old = 455
+		return GetMethod< GetWeaponDataFn >(this, 454)(this); //old = 448
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()
@@ -47,11 +47,10 @@ namespace Engine
 		return (CBaseAttributableItem*)(DWORD)this;
 	}
 
-	//26th Sep 2019
 	const char*	CBaseWeapon::GetName()
 	{
 		typedef const char* (__thiscall* GetNameFn)(void*);
-		return GetMethod<GetNameFn>(this, 383)(this); //377
+		return GetMethod<GetNameFn>(this, 377)(this); //376
 	}
 	const char*	CBaseWeapon::GetPrintName()
 	{
