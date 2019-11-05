@@ -193,10 +193,9 @@ namespace Engine
 		return reinterpret_cast<PVOID>(DWORD(this) + DWORD(Offset::Entity::m_hActiveWeapon));
 	}
 
-	CBaseWeapon* CBaseEntity::GetBaseWeapon()
-	{
-		return dynamic_cast<CBaseWeapon*>(Interfaces::EntityList()->GetClientEntityFromHandle(
-			PVOID(*PDWORD(GetActiveWeapon()))));
+	//reverted, as it wasn't working.
+	CBaseWeapon* CBaseEntity::GetBaseWeapon() {
+		return (CBaseWeapon*)Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)*(PDWORD)GetActiveWeapon());
 	}
 
 	UINT* CBaseEntity::GetWeapons()

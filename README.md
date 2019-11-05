@@ -7,9 +7,9 @@ If you wish to get "undetected" hooking click [here](https://github.com/smefcc/s
 
 ## Compilation
 **To compile smef's Indigo Remastered, you must have the following:**
-+ Windows SDK Version - 10.0.16299 - https://go.microsoft.com/fwlink/p/?linkid=864422
++ Windows SDK - Go to Project -> Properties and pick the latest available installed.
 + DirectX9 June 2010 SDK - https://www.microsoft.com/en-gb/download/details.aspx?id=6812
-+ Platform Toolset - Visual Studio 2017 (v141) (Use Visual Studio 2017 or later for this, you can check if you have it in the Project Properties)
++ Platform Toolset - Go to Project -> Properties and pick the latest available installed.
 
 ## Changelogs
 **4.5.1**
