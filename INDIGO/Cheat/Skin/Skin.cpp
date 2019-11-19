@@ -47,12 +47,12 @@ int pWeaponItemIndexData[34] =
 	WEAPON_AWP,WEAPON_SSG08
 };
 
-char* pKnifeData[14] =
-{
+char* pKnifeData[16] = {
 	"m9_bayonet","knife_flip","knife_gut","knife_karambit" ,"knife_m9_bayonet",
 	"knife_tactical","knife_falchion","knife_survival_bowie","knife_butterfly","knife_push",
-	"knife_gypsy_jackknife", "knife_stiletto", "knife_ursus", "knife_widowmaker"
+	"knife_gypsy_jackknife", "knife_stiletto", "knife_ursus", "knife_widowmaker", "knife_css"
 };
+
 
 //[enc_string_enable /]
 const char* bloodhound = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl";
@@ -61,11 +61,11 @@ const char* slick = "models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl"
 const char* sporty = "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl";
 const char* motorcycle = "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl";
 const char* specialist = "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl";
-const char* hydra = "models / weapons / v_models / arms / glove_bloodhound / v_glove_bloodhound_hydra.mdl";
+const char* hydra = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl";
 //[enc_string_disable /]
 
 WeaponSkins_s WeaponSkins[34];
-KnifeSkins_s KnifeSkins[14];
+KnifeSkins_s KnifeSkins[16];
 Gloves_s GloveSkin[10];
 //[junk_enable /]
 //[enc_string_enable /]
@@ -114,18 +114,17 @@ void CSkin::OnEvents(IGameEvent* pEvent)
 	}
 }
 
-void CSkin::SetSkinConfig()
+void CSkin::SetSkinConfig() 
 {
-	int KnifeModelsType[14] =
-	{
+	int KnifeModelsType[16] = {
 		WEAPON_BAYONET,WEAPON_KNIFE_FLIP,WEAPON_KNIFE_GUT,WEAPON_KNIFE_KARAMBIT,
 		WEAPON_KNIFE_M9_BAYONET,WEAPON_KNIFE_TACTICAL,WEAPON_KNIFE_FALCHION,
 		WEAPON_KNIFE_SURVIVAL_BOWIE,WEAPON_KNIFE_BUTTERFLY,WEAPON_KNIFE_PUSH,
 		WEAPON_KNIFE_GYPSY_JACKKNIFE,WEAPON_KNIFE_STILETTO,WEAPON_KNIFE_URSUS,
-		WEAPON_KNIFE_WIDOWMAKER
+		WEAPON_KNIFE_WIDOWMAKER, WEAPON_KNIFE_CSS
 	};
 
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 14)
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 16)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_ct_model - 1];
 	}
@@ -143,7 +142,7 @@ void CSkin::SetSkinConfig()
 		g_SkinChangerCfg[WEAPON_KNIFE].nFallbackPaintKit = 0;
 	}
 
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 14)
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 16)
 	{
 		g_SkinChangerCfg[WEAPON_KNIFE_T].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_tt_model - 1];
 	}
@@ -181,19 +180,19 @@ void CSkin::SetModelConfig()
 	char* pszKnifeStiletto = "models/weapons/v_knife_stiletto.mdl";
 	char* pszKnifeUrsus = "models/weapons/v_knife_ursus.mdl";
 	char* pszKnifeTalon = "models/weapons/v_knife_widowmaker.mdl";
+	char* pszKnifeCSS = "models/weapons/v_knife_css.mdl";
 
-	char* pszKnifeModels[14] =
-	{
+	char* pszKnifeModels[16] = {
 		pszKnifeBayonet,pszKnifeFlip,pszKnifeGut,pszKnifeKarambit,
 		pszKnifeM9Bay,pszKnifeHuntsman,pszKnifeFalchion,pszKnifeBowie,
 		pszKnifeButterfly,pszKnifeShadow, pszKnifeNavaja, pszKnifeStiletto,
-		pszKnifeUrsus, pszKnifeTalon
+		pszKnifeUrsus, pszKnifeTalon, pszKnifeCSS
 	};
 
 	int nOriginalKnifeCT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultCtModel);
 	int nOriginalKnifeT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultTtModel);
 
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 14)
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 16)
 	{
 		char* mdl_ct = pszKnifeModels[Settings::Skin::knf_ct_model - 1];
 		g_ViewModelCfg[nOriginalKnifeCT] = mdl_ct;
@@ -203,7 +202,7 @@ void CSkin::SetModelConfig()
 		g_ViewModelCfg[nOriginalKnifeCT] = pszDefaultCtModel;
 	}
 
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 14)
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 16)
 	{
 		char* mdl_tt = pszKnifeModels[Settings::Skin::knf_tt_model - 1];
 		g_ViewModelCfg[nOriginalKnifeT] = mdl_tt;
@@ -217,16 +216,16 @@ void CSkin::SetModelConfig()
 void CSkin::SetKillIconCfg()
 {
 	//[enc_string_disable /]
-	char* pszKnifeModelsIcon[14] =
+	char* pszKnifeModelsIcon[16] =
 	{
 		"bayonet","knife_flip","knife_gut","knife_karambit",
 		"knife_m9_bayonet","knife_tactical","knife_falchion",
 		"knife_survival_bowie","knife_butterfly","knife_push",
 		"knife_gypsy_jackknife", "knife_stiletto", "knife_ursus",
-		"knife_widowmaker"
+		"knife_widowmaker", "knife_css"
 	};
 	//[enc_string_enable /]
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 14)
+	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 16)
 	{
 		g_KillIconCfg["knife_default_ct"] = pszKnifeModelsIcon[Settings::Skin::knf_ct_model - 1];
 	}
@@ -234,7 +233,7 @@ void CSkin::SetKillIconCfg()
 	{
 		g_KillIconCfg["knife_default_ct"] = "knife_default_ct";
 	}
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 14)
+	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 16)
 	{
 		g_KillIconCfg["knife_t"] = pszKnifeModelsIcon[Settings::Skin::knf_tt_model - 1];
 	}
