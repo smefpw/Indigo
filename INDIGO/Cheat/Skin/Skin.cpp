@@ -785,6 +785,9 @@ void InitializeKits()
 
 	//27th July 2019
 	static auto sig_address = CSX::Memory::FindPBYTEPattern("client_panorama.dll", (PBYTE)"\xE8\x00\x00\x00\x00\xFF\x76\x0C\x8D\x48\x04\xE8", "x????xxxxxxx", NULL, NULL);
+#if ENABLE_DEBUG_FILE == 1
+	CSX::Log::Add("[FindPattern - InitializeKits = %X]", sig_address);
+#endif
 
 	// Skip the opcode, read rel32 address
 	auto item_system_offset = *reinterpret_cast<int32_t*>(sig_address + 1);
@@ -857,6 +860,9 @@ void InitializeKits()
 	{
 		//27th July 2019
 		static auto sticker_sig = CSX::Memory::FindPBYTEPattern("client_panorama.dll", (PBYTE)"\x53\x8D\x48\x04\xE8\x00\x00\x00\x00\x8B\x4D\x10", "xxxxx????xxx", NULL, NULL) + 4;
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[FindPattern - StickerKits = %X]", sticker_sig);
+#endif
 
 		// Skip the opcode, read rel32 address
 		auto get_sticker_kit_definition_offset = *reinterpret_cast<intptr_t*>(sticker_sig + 1);

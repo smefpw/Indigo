@@ -9,8 +9,10 @@ namespace SDK {
 
 		if (!SearchFunction) {
 			//LoadFromBuffer
-			CSX::Log::Add("[FindPattern - LoadFromBuffer]");
 			static DWORD dwFunctionAddress = CSX::Memory::FindPattern(CLIENT_DLL, "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89", 0);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[FindPattern - LoadFromBuffer = %X]", dwFunctionAddress);
+#endif
 			if (dwFunctionAddress) {
 				LoadFromBufferFn = (_LoadFromBuffer)dwFunctionAddress;
 				SearchFunction = true;

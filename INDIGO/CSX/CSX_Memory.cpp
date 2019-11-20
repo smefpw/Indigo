@@ -145,10 +145,6 @@ namespace CSX
 			bool bFound = false;
 			DWORD dwPtLen = lstrlenA( pszMask );
 
-			#if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add( "::FindPattern(%s) Init", pszMask);
-			#endif
-
 			for ( DWORD dwPtr = dwStart; dwPtr < dwEnd - dwPtLen; dwPtr++ ) {
 				bFound = true;
 
@@ -162,10 +158,6 @@ namespace CSX
 
 				if ( bFound )
 				{
-					#if ENABLE_DEBUG_FILE == 1
-						string pPattern_str = pPattern;
-						CSX::Log::Add( "::>>FindPattern(%s) = %X", pszMask, dwPtr + dwOffset - dwStart);
-					#endif
 					return dwPtr + dwOffset;
 				}
 			}

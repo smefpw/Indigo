@@ -222,7 +222,7 @@ void CMisc::OnPlaySound(const char* pszSoundName) {
 		typedef bool(__stdcall* IsReadyCallBack_t)(const char*);
 		static auto IsReadyCallBackFn = (IsReadyCallBack_t)CSX::Memory::FindPatternV2(CLIENT_DLL, "55 8B EC 83 E4 F8 8B 4D 08 BA ? ? ? ? E8 ? ? ? ? 85 C0 75 12");
 #if ENABLE_DEBUG_FILE == 1
-		CSX::Log::Add("::IsReadyCallBack = %X", IsReadyCallBackFn);
+		CSX::Log::Add("[FindPattern - IsReadyCallBack = %X]", IsReadyCallBackFn);
 #endif
 		if (IsReadyCallBackFn) {
 			IsReadyCallBackFn("deferred");

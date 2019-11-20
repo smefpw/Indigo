@@ -33,6 +33,11 @@ namespace Engine {
 		if (!CSX::Utils::IsModuleLoad(STEAMAPI_DLL))
 			return false;
 
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Delete();
+		CSX::Log::Add("[Indigo - Loaded!]");
+#endif
+
 		if (!SDK::Interfaces::Engine())
 			return false;
 
@@ -93,6 +98,10 @@ namespace Engine {
 		if (!SDK::Interfaces::SteamUser())
 			return false;
 
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[Indigo - All Interfaces Loaded!]\n");
+#endif
+
 		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses()))
 			return false;
 
@@ -109,10 +118,8 @@ namespace Engine {
 	}
 	//[junk_disable /]
 	bool stub_68616b65;
-	WEAPON_TYPE GetWeaponType(int iItemDefinitionIndex)
-	{
-		switch (iItemDefinitionIndex)
-		{
+	WEAPON_TYPE GetWeaponType(int iItemDefinitionIndex) {
+		switch (iItemDefinitionIndex) {
 		case WEAPON_DEAGLE:
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_ELITE:
@@ -140,6 +147,8 @@ namespace Engine {
 		case WEAPON_MAC10:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_P90:
+			return WEAPON_TYPE_SHOTGUN;
+		case WEAPON_MP5SD:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_UMP45:
 			return WEAPON_TYPE_SHOTGUN;
@@ -173,6 +182,8 @@ namespace Engine {
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_SSG08:
 			return WEAPON_TYPE_SNIPER;
+		case WEAPON_KNIFEGG:
+			return WEAPON_TYPE_KNIFE;
 		case WEAPON_KNIFE:
 			return WEAPON_TYPE_KNIFE;
 		case WEAPON_FLASHBANG:
@@ -199,6 +210,30 @@ namespace Engine {
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_REVOLVER:
 			return WEAPON_TYPE_PISTOL;
+		case WEAPON_TAGRENADE:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_FISTS:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_MELEE:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_AXE:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_HAMMER:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_SPANNER:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_GHOST:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_FIREBOMB:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_DIVERSION:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_FRAG_GRENADE:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_SNOWBALL:
+			return WEAPON_TYPE_GRENADE;
+		case WEAPON_BUMPMINE:
+			return WEAPON_TYPE_GRENADE;
 		case WEAPON_BAYONET:
 			return WEAPON_TYPE_KNIFE;
 		case WEAPON_KNIFE_FLIP:
@@ -219,10 +254,19 @@ namespace Engine {
 			return WEAPON_TYPE_KNIFE;
 		case WEAPON_KNIFE_PUSH:
 			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_URSUS:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_GYPSY_JACKKNIFE:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_STILETTO:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_WIDOWMAKER:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_CSS:
+			return WEAPON_TYPE_KNIFE;
 		default:
 			return WEAPON_TYPE_UNKNOWN;
 		}
-
 		return WEAPON_TYPE_UNKNOWN;
 	}
 	//[junk_enable /]
@@ -242,6 +286,9 @@ namespace Engine {
 	void SetMyClanTag(const char* tag, const char* name)
 	{
 		static auto pSetClanTag = reinterpret_cast<void(__fastcall*)(const char*, const char*)>(((DWORD)CSX::Memory::FindPatternV2("engine.dll", "53 56 57 8B DA 8B F9 FF 15")));
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[FindPattern - pSetClanTag = %X]", pSetClanTag);
+#endif
 		pSetClanTag(tag, name);
 	}
 
@@ -344,6 +391,9 @@ namespace Engine {
 		//ForceFullUpdate - 27th July 2019
 		typedef void(*ForceUpdate) (void);
 		ForceUpdate FullUpdate = (ForceUpdate)CSX::Memory::FindSignature("engine.dll", "FullUpdate", "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85");
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[FindPattern - FullUpdate = %X]", FullUpdate);
+#endif
 		FullUpdate();
 	}
 
@@ -660,6 +710,9 @@ namespace Engine {
 		if (!SearchFunction) {
 			//LineGoesThroughSmoke
 			static DWORD dwFunctionAddress = CSX::Memory::FindPattern(CLIENT_DLL, "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\x00\x00\x00\x00\x0F\x57\xC0", "xxxxxxxx????xxx", 0);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[FindPattern - LineGoesThroughSmoke = %X]", dwFunctionAddress);
+#endif
 			if (dwFunctionAddress) {
 				LineGoesThroughSmokeFn = (_LineGoesThroughSmoke)dwFunctionAddress;
 				SearchFunction = true;
@@ -740,6 +793,7 @@ namespace Engine {
 		pCreatedMaterial->IncrementReferenceCount();
 		return pCreatedMaterial;
 	}
+
 	//[enc_string_enable /]
 	void ForceMaterial(Color color, IMaterial* material, bool useColor, bool forceMaterial)
 	{
