@@ -69,7 +69,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pEngine = CaptureInterface<IVEngineClient>(pfnFactory, VENGINE_CLIENT_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pEngine = %X", g_pEngine);
+			CSX::Log::Add("g_pEngine = %X", g_pEngine);
 #endif
 		}
 
@@ -80,6 +80,9 @@ namespace SDK
 	CGlowObjectManager* Interfaces::GlowManager() {
 		if (!g_GlowObjManager) {
 			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "A1 ? ? ? ? A8 01 75 4B") + 0x1);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_GlowObjManager = %X", g_GlowObjManager);
+#endif
 		}
 		return g_GlowObjManager;
 	}
@@ -97,7 +100,7 @@ namespace SDK
 			}
 
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pClient = %X", g_pClient);
+			CSX::Log::Add("g_pClient = %X", g_pClient);
 #endif
 		}
 
@@ -111,7 +114,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
 			g_pEntityList = CaptureInterface<IClientEntityList>(pfnFactory, VCLIENTENTITYLIST_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pEntityList = %X", g_pEntityList);
+			CSX::Log::Add("g_pEntityList = %X", g_pEntityList);
 #endif
 		}
 
@@ -125,7 +128,7 @@ namespace SDK
 			auto pClientVFTable = *(uint32_t**)Client();
 			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1B);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pGlobals = %X", g_pGlobals);
+			CSX::Log::Add("g_pGlobals = %X", g_pGlobals);
 #endif
 		}
 
@@ -136,6 +139,9 @@ namespace SDK
 	CInput* Interfaces::Input() {
 		if (!g_pInput) {
 			g_pInput = *(CInput**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 0x1);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pInput = %X", g_pInput);
+#endif
 		}
 		return g_pInput;
 		}
@@ -147,7 +153,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pEngineTrace = CaptureInterface<IEngineTrace>(pfnFactory, INTERFACEVERSION_ENGINETRACE_CLIENT);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pEngineTrace = %X", g_pEngineTrace);
+			CSX::Log::Add("g_pEngineTrace = %X", g_pEngineTrace);
 #endif
 		}
 
@@ -160,9 +166,8 @@ namespace SDK
 		{
 			auto pClientVFTable = *(uint32_t**)Client();
 			g_pClientMode = **(IClientMode***)(pClientVFTable[10] + 0x5);
-
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pClientMode = %X", g_pClientMode);
+			CSX::Log::Add("g_pClientMode = %X", g_pClientMode);
 #endif
 		}
 
@@ -176,7 +181,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pModelInfo = CaptureInterface<IVModelInfoClient>(pfnFactory, VMODELINFO_CLIENT_INTERACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pModelInfo = %X", g_pModelInfo);
+			CSX::Log::Add("g_pModelInfo = %X", g_pModelInfo);
 #endif
 		}
 
@@ -190,7 +195,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pSound = CaptureInterface<IEngineSound>(pfnFactory, IENGINESOUND_CLIENT_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pSound = %X", g_pSound);
+			CSX::Log::Add("g_pSound = %X", g_pSound);
 #endif
 		}
 
@@ -204,7 +209,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pModelRender = CaptureInterface<IVModelRender>(pfnFactory, VENGINE_HUDMODEL_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pModelRender = %X", g_pModelRender);
+			CSX::Log::Add("g_pModelRender = %X", g_pModelRender);
 #endif
 		}
 
@@ -218,7 +223,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pRenderView = CaptureInterface<IVRenderView>(pfnFactory, VENGINE_RENDERVIEW_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pRenderView = %X", g_pRenderView);
+			CSX::Log::Add("g_pRenderView = %X", g_pRenderView);
 #endif
 		}
 
@@ -232,7 +237,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(MATERIAL_DLL);
 			g_pMaterialSystem = CaptureInterface<IMaterialSystem>(pfnFactory, MATERIAL_SYSTEM_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pMaterialSystem = %X", g_pMaterialSystem);
+			CSX::Log::Add("g_pMaterialSystem = %X", g_pMaterialSystem);
 #endif
 		}
 
@@ -246,7 +251,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(VGUIMT_DLL);
 			g_pSurface = CaptureInterface<ISurface>(pfnFactory, VGUI_SURFACE_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pSurface = %X", g_pSurface);
+			CSX::Log::Add("g_pSurface = %X", g_pSurface);
 #endif
 		}
 
@@ -260,7 +265,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pGameEventMgr = CaptureInterface<IGameEventManager2>(pfnFactory, GAMEEVENTMANAGER_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pGameEventMgr = %X", g_pGameEventMgr);
+			CSX::Log::Add("g_pGameEventMgr = %X", g_pGameEventMgr);
 #endif
 		}
 
@@ -274,7 +279,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(INPUTSYSTEM_DLL);
 			g_pInputSystem = CaptureInterface<IInputSystem>(pfnFactory, INPUTSYSTEM_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("::g_pInputSystem = %X", g_pInputSystem);
+			CSX::Log::Add("g_pInputSystem = %X", g_pInputSystem);
 #endif
 		}
 
@@ -285,6 +290,9 @@ namespace SDK
 	{
 		if (!g_pSteamUser) {
 			SteamGameCoordinator();
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pSteamUser = %X", g_pSteamUser);
+#endif
 		}
 		return g_pSteamUser;
 	}
@@ -302,6 +310,9 @@ namespace SDK
 			auto SteamFriends = SteamClient->GetISteamFriends(hSteamUser, hSteamPipe, "SteamFriends015");
 			auto SteamInventory = SteamClient->GetISteamInventory(hSteamUser, hSteamPipe, "STEAMINVENTORY_INTERFACE_V002");
 			g_pSteamGameCoordinator = (ISteamGameCoordinator*)SteamClient->GetISteamGenericInterface(hSteamUser, hSteamPipe, "SteamGameCoordinator001");
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pSteamGameCoordinator = %X", g_pSteamGameCoordinator);
+#endif
 		}
 		return g_pSteamGameCoordinator;
 	}
@@ -312,7 +323,9 @@ namespace SDK
 		{
 			CreateInterfaceFn pfnFactory = CaptureFactory(VSTDLIB_DLL);
 			g_pConVar = CaptureInterface<ConVar>(pfnFactory, VENGINEVCAR_INTERFACE_VERSION);
-
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pConVar = %X", g_pConVar);
+#endif
 		}
 
 		return g_pConVar;
@@ -324,7 +337,9 @@ namespace SDK
 		{
 			CreateInterfaceFn pfnFactory = CaptureFactory("localize.dll");
 			g_pILocalize = CaptureInterface<ILocalize>(pfnFactory, "Localize_001");
-
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pILocalize = %X", g_pILocalize);
+#endif
 		}
 
 		return g_pILocalize;
@@ -336,6 +351,9 @@ namespace SDK
 		{
 			CreateInterfaceFn pfnFactory = CaptureFactory(ENGINE_DLL);
 			g_pEffects = CaptureInterface<CEffects>(pfnFactory, VENGINEVEFFECTS_INTERFACE_VERSION);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("g_pEffects = %X", g_pEffects);
+#endif
 		}
 		return g_pEffects;
 	}

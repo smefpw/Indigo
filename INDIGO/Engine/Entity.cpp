@@ -1,6 +1,7 @@
 #include "Entity.h"
 #define ptr( x, x1, x2 ) *(x*)( (DWORD)x1 + (DWORD)x2 )
 
+bool isP, isP2;
 
 namespace Engine
 {
@@ -18,10 +19,10 @@ namespace Engine
 		return "";
 	}
 
-	bool CBaseEntity::IsPlayer()
-	{
-		typedef bool (__thiscall* IsPlayerFn)(void*);
-		return GetMethod<IsPlayerFn>(this, 157)(this);
+	//26th September 2019
+	bool CBaseEntity::IsPlayer() {
+		typedef bool(__thiscall* IsPlayerFn)(void*);
+		return GetMethod<IsPlayerFn>(this, 157)(this); //152
 	}
 
 	bool CBaseEntity::IsValid()

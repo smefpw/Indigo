@@ -1,17 +1,32 @@
 #include "Weapon.h"
 
+int wID, wType;
+CWeaponInfo* wInfo;
+
 namespace Engine
 {
 	//[junk_enable /]
-	int CBaseWeapon::GetWeaponId()
-	{
+	int CBaseWeapon::GetWeaponId() {
 		typedef int(__thiscall* GetWeaponIDFn)(void*);
+#if ENABLE_DEBUG_FILE == 1
+		if (!wID) {
+			wID = GetMethod<GetWeaponIDFn>(this, 458)(this);
+			CSX::Log::Add("GetWeaponID = %X", wID);
+			return wID;
+		}
+#endif
 		return GetMethod<GetWeaponIDFn>(this, 458)(this);
 	}
 
-	int	CBaseWeapon::GetWeaponType()
-	{
+	int	CBaseWeapon::GetWeaponType() {
 		typedef int(__thiscall* GetWeaponTypeFn)(void*);
+#if ENABLE_DEBUG_FILE == 1
+		if (!wType) {
+			wType = GetMethod<GetWeaponTypeFn>(this, 453)(this);
+			CSX::Log::Add("GetWeaponType = %X", wType);
+			return wType;
+		}
+#endif
 		return GetMethod<GetWeaponTypeFn>(this, 453)(this);
 	}
 
@@ -35,11 +50,18 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	//26th September 2019
-	//GetCCSWeapData
+	//18th November 2019
+	//GetCCSWeapData - GetWeaponData
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
-		return GetMethod< GetWeaponDataFn >(this, 456)(this); //old = 455
+#if ENABLE_DEBUG_FILE == 1
+		if (!wInfo) {
+			wInfo = GetMethod<GetWeaponDataFn>(this, 457)(this); //old = 456
+			CSX::Log::Add("GetWeaponInfo = %X", wInfo);
+			return wInfo;
+		}
+#endif
+		return GetMethod<GetWeaponDataFn>(this, 457)(this); //old = 456
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()

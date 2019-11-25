@@ -287,7 +287,13 @@ namespace Engine
 				return false;
 
 			DWORD d3d9TablePtrPtr = CSX::Memory::FindPattern(SHADERPIDX9_DLL, D3D9_PATTERN, D3D9_MASK, 1);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[FindPattern - pD3D9Table = %X]", d3d9TablePtrPtr);
+#endif
 			DWORD_PTR** dwPresent_o = (DWORD_PTR**)CSX::Memory::FindPattern(GAMEOVERLAYRENDERER_DLL, GMOR_PATTERN, GMOR_MASK, 1);
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[FindPattern - dwPresent = %X]", dwPresent_o);
+#endif
 
 			if (d3d9TablePtrPtr && dwPresent_o)
 			{
@@ -358,6 +364,8 @@ namespace Engine
 			GameEventTable.UnHook();
 			ModelRenderTable.UnHook();
 			ClientTable.UnHook();
+			SurfaceTable.UnHook();
+			EngineTable.UnHook();
 			SteamGameCoordinatorTable.UnHook();
 		}
 	}

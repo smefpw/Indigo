@@ -20,9 +20,9 @@ namespace Client
 	int	iScreenHeight = 0;
 
 	string BaseDir = "C:\\Indigo";
-	string LogFile = "";
-	string GuiFile = "";
-	string IniFile = "";
+	string LogFile = BaseDir + "\\" + "log.txt";
+	string GuiFile = BaseDir + "\\" + "gui.smef";
+	string IniFile = BaseDir + "\\" + "default.smef";
 
 	vector<string> ConfigList;
 
@@ -59,6 +59,7 @@ namespace Client
 		ConfigList.clear();
 		string ConfigDir = BaseDir + "\\" + "*.smef";
 		GuiFile = BaseDir + "\\" + "gui.smef";
+		IniFile = BaseDir + "\\" + "default.smef";
 		CreateDirectoryW(L"C:\\Indigo", NULL);
 		SearchFiles(ConfigDir.c_str(), ReadConfigs, FALSE);
 	}
@@ -234,19 +235,19 @@ namespace Client
 		free(ptr);
 	}
 
-	void Shutdown()
-	{
+	void Shutdown() {
 		DELETE_MOD(g_pPlayers);
 		DELETE_MOD(g_pRender);
 		DELETE_MOD(g_pGui);
-
 		DELETE_MOD(g_pAimbot);
 		DELETE_MOD(g_pKnifebot);
 		DELETE_MOD(g_pTriggerbot);
 		DELETE_MOD(g_pEsp);
 		DELETE_MOD(g_pRadar);
+		DELETE_MOD(g_pKnifebot);
 		DELETE_MOD(g_pSkin);
 		DELETE_MOD(g_pMisc);
+		DELETE_MOD(g_pInventoryChanger);
 	}
 
 	void OnRender()
