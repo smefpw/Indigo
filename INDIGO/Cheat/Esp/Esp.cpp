@@ -315,8 +315,7 @@ void CEsp::HitmarkerEvents(IGameEvent* event)
 		if (Interfaces::Engine()->GetPlayerForUserID(attacker) == Interfaces::Engine()->GetLocalPlayer()) {
 			switch (Settings::Esp::esp_HitMarkerSound)
 			{
-				case 0: break;
-				case 1: PlaySoundA(rawData, nullptr, SND_ASYNC | SND_MEMORY); break; // COD
+				case 1: PlaySoundA(cod, nullptr, SND_ASYNC | SND_MEMORY); break; // COD
 				case 2: Interfaces::Surface()->PlaySound("buttons\\arena_switch_press_02.wav"); break;
 				case 3: PlaySoundA(bameware, nullptr, SND_ASYNC | SND_MEMORY); break; // BAMEware
 				case 4: PlaySoundA(penguware, nullptr, SND_ASYNC | SND_MEMORY); break; // PENGUware
