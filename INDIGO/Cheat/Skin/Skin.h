@@ -77,7 +77,7 @@ const std::deque<GloveInfo> k_glove_names =
 { 5035, "Hydra", "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl" }
 };
 extern WeaponSkins_s WeaponSkins[34];
-extern KnifeSkins_s KnifeSkins[16];
+extern KnifeSkins_s KnifeSkins[20];
 extern Gloves_s GloveSkin[10];
 extern unordered_map<int, EconomyItemCfg> g_SkinChangerCfg;
 extern unordered_map<int, const char*> g_ViewModelCfg;
@@ -85,7 +85,7 @@ extern unordered_map<const char*, const char*> g_KillIconCfg;
 
 extern char* pWeaponData[34];
 extern int pWeaponItemIndexData[34];
-extern char* pKnifeData[16];
+extern char* pKnifeData[20];
 
 #define WEAPON_DATA_SIZE ( sizeof( pWeaponData ) / sizeof( *pWeaponData ) )
 #define KNIFE_DATA_SIZE ( sizeof( pKnifeData ) / sizeof( *pKnifeData ) )
