@@ -102,31 +102,40 @@ namespace Engine
 				WeaponStr = "";
 			}
 
-			m_pMe->WeaponName = WeaponStr;
-			m_pMe->WeaponType = GetWeaponType(*pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex());
-			m_pMe->WeaponIndex = *pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex();
-			m_pMe->WeaponAmmo = pWeaponEntity->GetWeaponAmmo();
-			m_pMe->bInReload = pWeaponEntity->GetWeaponReload();
+			try {
+				m_pMe->WeaponName = WeaponStr;
+				m_pMe->WeaponType = GetWeaponType(*pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex());
+				m_pMe->WeaponIndex = *pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex();
+				m_pMe->WeaponAmmo = pWeaponEntity->GetWeaponAmmo();
+				m_pMe->bInReload = pWeaponEntity->GetWeaponReload();
 
-			if ( m_pMe->WeaponAmmo < 0 )
-				m_pMe->WeaponAmmo = 0;
+				if (m_pMe->WeaponAmmo < 0)
+					m_pMe->WeaponAmmo = 0;
 
-			m_pMe->m_pWeaponEntity = pWeaponEntity;
+				m_pMe->m_pWeaponEntity = pWeaponEntity;
 
-			if ( m_pMe->WeaponType == WEAPON_TYPE_SNIPER )
-			{
-				if ( pWeaponEntity->GetZoomLevel() == 1 )
+				if (m_pMe->WeaponType == WEAPON_TYPE_SNIPER)
 				{
-					m_pMe->iFov = 40;
-				}
-				else if ( pWeaponEntity->GetZoomLevel() == 2 )
-				{
-					m_pMe->iFov = 15;
+					if (pWeaponEntity->GetZoomLevel() == 1)
+					{
+						m_pMe->iFov = 40;
+					}
+					else if (pWeaponEntity->GetZoomLevel() == 2)
+					{
+						m_pMe->iFov = 15;
+					}
 				}
 			}
+			catch (...) {
+				m_pMe->WeaponName = "";
+				m_pMe->WeaponType = WEAPON_TYPE_UNKNOWN;
+				m_pMe->WeaponIndex = 0;
+				m_pMe->WeaponAmmo = 0;
+
+				m_pMe->m_pWeaponEntity = nullptr;
+			}
 		}
-		else
-		{
+		else {
 			m_pMe->WeaponName = "";
 			m_pMe->WeaponType = WEAPON_TYPE_UNKNOWN;
 			m_pMe->WeaponIndex = 0;
@@ -134,9 +143,7 @@ namespace Engine
 
 			m_pMe->m_pWeaponEntity = nullptr;
 		}
-
 		m_pMe->Team = (PLAYER_TEAM)m_pMe->m_pEntity->GetTeam();
-
 		return true;
 	}
 
@@ -311,8 +318,7 @@ namespace Engine
 			}
 
 			CWeaponInfo* weaponinfo;
-			if (pWeaponEntity)
-			{
+			if (pWeaponEntity) {
 				string WeaponStr = "";
 				WeaponStr = WeaponStr.erase(0, 7);
 
@@ -340,19 +346,22 @@ namespace Engine
 					}
 				}
 
-				m_pPlayers[EntIndex].WeaponName = WeaponStr;
+				try {
+					m_pPlayers[EntIndex].WeaponName = WeaponStr;
 
-				if ( pWeaponEntity->GetWeaponAmmo() > 0 )
-				{
-					m_pPlayers[EntIndex].iWAmmo = pWeaponEntity->GetWeaponAmmo();
+					if (pWeaponEntity->GetWeaponAmmo() > 0) {
+						m_pPlayers[EntIndex].iWAmmo = pWeaponEntity->GetWeaponAmmo();
+					}
+					else {
+						m_pPlayers[EntIndex].iWAmmo = 0;
+					}
 				}
-				else
-				{
+				catch (...) {
+					m_pPlayers[EntIndex].WeaponName = "";
 					m_pPlayers[EntIndex].iWAmmo = 0;
 				}
 			}
-			else
-			{
+			else {
 				m_pPlayers[EntIndex].WeaponName = "";
 				m_pPlayers[EntIndex].iWAmmo = 0;
 			}
