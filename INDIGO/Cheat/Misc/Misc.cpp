@@ -216,7 +216,7 @@ void CMisc::OnDrawModelExecute()
 	}
 }
 
-//27th July 2019 - panorama
+//11th March 2020
 void CMisc::OnPlaySound(const char* pszSoundName) {
 	if (Settings::Misc::misc_AutoAccept && !strcmp(pszSoundName, "UIPanorama.popup_accept_match_beep")) {
 		typedef bool(__stdcall* IsReadyCallBack_t)(const char*);

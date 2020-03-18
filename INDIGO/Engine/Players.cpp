@@ -46,6 +46,7 @@ namespace Engine
 		return MAX_PLAYERS_SIZE;
 	}
 
+	int twc; //try weapon catch
 	bool CPlayers::UpdateLocal()
 	{
 		int LocalIndex = Interfaces::Engine()->GetLocalPlayer();
@@ -71,15 +72,38 @@ namespace Engine
 
 		m_pMe->vEyeOrigin = m_pMe->m_pEntity->GetRenderOrigin() + m_pMe->m_pEntity->GetViewOffset();
 
-		CBaseWeapon* pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+		//sanity check
+		CBaseWeapon* pWeaponEntity;
+		if (m_pMe->m_pEntity->GetBaseWeapon()) {
+			pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+		}
 
-		if ( pWeaponEntity && pWeaponEntity->GetName() )
-		{
-			string WeaponStr = pWeaponEntity->GetName();
-			WeaponStr = WeaponStr.erase( 0 , 7 );
+		if (pWeaponEntity && Interfaces::Engine()->IsInGame() && m_pMe->bAlive &&
+			!m_pMe->m_pEntity->IsDormant() && m_pMe->m_pEntity->IsPlayer() &&
+			m_pMe->m_pEntity->GetTeam() == PLAYER_TEAM::TEAM_CT
+			|| m_pMe->m_pEntity->GetTeam() == PLAYER_TEAM::TEAM_TT) {
+			string WeaponStr = "";
+			try {
+				if (pWeaponEntity->GetName()) { //TODO: fix properly
+					WeaponStr = pWeaponEntity->GetName();
+					WeaponStr = WeaponStr.erase(0, 7);
+				}
+				else {
+					WeaponStr = "";
+				}
+			}
+			catch (...) {
+#if ENABLE_DEBUG_FILE == 1
+				if (!twc) {
+					CSX::Log::Add("[CPlayersUpdateLocal - GetName fail!]");
+					twc = 1;
+				}
+#endif
+				WeaponStr = "";
+			}
 
 			m_pMe->WeaponName = WeaponStr;
-			m_pMe->WeaponType = GetWeaponType( *pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex() );
+			m_pMe->WeaponType = GetWeaponType(*pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex());
 			m_pMe->WeaponIndex = *pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex();
 			m_pMe->WeaponAmmo = pWeaponEntity->GetWeaponAmmo();
 			m_pMe->bInReload = pWeaponEntity->GetWeaponReload();
@@ -116,6 +140,7 @@ namespace Engine
 		return true;
 	}
 
+	int twc2; //try weapon catch 2
 	void CPlayers::Update()
 	{
 		if ( !UpdateLocal() )
@@ -279,12 +304,41 @@ namespace Engine
 
 			m_pPlayers[EntIndex].Name = pEntity->GetPlayerName();
 
-			CBaseWeapon* pWeaponEntity = pEntity->GetBaseWeapon();
+			//sanity check
+			CBaseWeapon* pWeaponEntity;
+			if (m_pMe->m_pEntity->GetBaseWeapon()) {
+				pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+			}
 
-			if ( pWeaponEntity && pWeaponEntity->GetName() )
+			CWeaponInfo* weaponinfo;
+			if (pWeaponEntity)
 			{
-				string WeaponStr = pWeaponEntity->GetName();
-				WeaponStr = WeaponStr.erase( 0 , 7 );
+				string WeaponStr = "";
+				WeaponStr = WeaponStr.erase(0, 7);
+
+				if (pWeaponEntity && Interfaces::Engine()->IsInGame() && m_pMe->bAlive &&
+					!m_pMe->m_pEntity->IsDormant() && m_pMe->m_pEntity->IsPlayer() &&
+					m_pMe->m_pEntity->GetTeam() == PLAYER_TEAM::TEAM_CT
+					|| m_pMe->m_pEntity->GetTeam() == PLAYER_TEAM::TEAM_TT) {
+					try {
+						if (pWeaponEntity->GetName()) { //TODO: fix properly
+							WeaponStr = pWeaponEntity->GetName();
+							WeaponStr = WeaponStr.erase(0, 7);
+						}
+						else {
+							WeaponStr = "";
+						}
+					}
+					catch (...) {
+#if ENABLE_DEBUG_FILE == 1
+						if (!twc2) {
+							CSX::Log::Add("[CPlayersUpdate - GetName fail!]");
+							twc2 = 1;
+						}
+#endif
+						WeaponStr = "";
+					}
+				}
 
 				m_pPlayers[EntIndex].WeaponName = WeaponStr;
 
