@@ -76,12 +76,11 @@ namespace Engine
 		return GetMethod<GetNameFn>(this, 386)(this); //383
 	}
 
-	//11th March 2020
-	const char*	CBaseWeapon::GetPrintName()
-	{
+	//11th March 2020 - dont need anyway as it's never called
+	/*const char*	CBaseWeapon::GetPrintName() {
 		typedef const char* (__thiscall* GetPrintNameFn)(void*);
-		return GetMethod<GetPrintNameFn>(this, 380)(this);
-	}
+		return GetMethod<GetPrintNameFn>(this, 380)(this); //379
+	}*/
 
 	short* CBaseAttributableItem::GetItemDefinitionIndex()
 	{

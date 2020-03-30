@@ -888,17 +888,15 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 	if ( strModelName.size() <= 1 )
 		return;
 
-	if (Settings::Misc::misc_ChamsMaterials)
-	{
-		if (strModelName.find("models/player") != std::string::npos)
-		{
-			IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity(pInfo.entity_index);
-
-			if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == static_cast<int>(CLIENT_CLASS_ID::CCSPlayer))
-			{
-				IMaterial *material = nullptr;
-				switch (Settings::Misc::misc_ChamsMaterialsList)
-				{
+	if (Settings::Misc::misc_ChamsMaterials) {
+		//check to avoid crash
+		CBaseEntity* lp = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+		if (!lp->IsDead() && !lp->IsDormant()) {
+			if (strModelName.find("models/player") != std::string::npos) {
+				IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity(pInfo.entity_index);
+				if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == static_cast<int>(CLIENT_CLASS_ID::CCSPlayer)) {
+					IMaterial *material = nullptr;
+					switch (Settings::Misc::misc_ChamsMaterialsList) {
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
 					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
 					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
@@ -908,19 +906,18 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					case 6: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_blue", TEXTURE_GROUP_OTHER); break; // Crystal Blue
 					case 7: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/wildfire_gold/wildfire_gold_detail", TEXTURE_GROUP_OTHER); break; // Detailed Gold
 					default: material = nullptr; break;
+					}
+					Color color = Color(255, 255, 255, 255);
+					if (Settings::Esp::esp_ChamsVisible <= 2) {
+						ForceMaterial(color, material);
+						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
+					}
+					else {
+						ForceMaterial(color, material);
+						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
+					}
+					Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 				}
-				Color color = Color(255, 255, 255, 255);
-				if (Settings::Esp::esp_ChamsVisible <= 2)
-				{
-					ForceMaterial(color, material);
-					material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
-				}
-				else
-				{
-					ForceMaterial(color, material);
-					material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
-				}
-				Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 			}
 		}
 	}

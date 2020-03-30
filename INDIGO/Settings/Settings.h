@@ -146,7 +146,7 @@ namespace Settings
 
 		extern float esp_Ambient[3];
 
-		extern bool esp_hitevent;
+		extern bool esp_hitevent; //hitlogs
 		extern bool esp_HitMarker;
 		extern int esp_HitMarkerSound;
 		extern float esp_HitMarkerColor[3];
@@ -395,14 +395,28 @@ namespace Settings
 
 #define CVAR_ESP_CHAMS "ESP_Chams"
 #define CVAR_ESP_BOMB "ESP_Bomb"
+#define CVAR_ESP_CHICKEN "ESP_Chicken"
 #define CVAR_ESP_BOMBTIMER "ESP_BombTimer"
 #define CVAR_ESP_WORLDWEAPONS "ESP_WorldWeapons"
 #define CVAR_ESP_WORLDGRENADE "ESP_WorldGrenade"
+#define CVAR_ESP_BOXNADE "ESP_BoxNade"
+#define CVAR_ESP_DLIGHTZ "ESP_Dlightz"
 
 #define CVAR_ESP_COLOR_CT "ESP_Color_CT"
 #define CVAR_ESP_COLOR_TT "ESP_Color_TT"
 #define CVAR_ESP_COLOR_VCT "ESP_Color_VCT"
 #define CVAR_ESP_COLOR_VTT "ESP_Color_VTT"
+
+//Visuals Page 3
+#define CVAR_ESP_XQZ "ESP_XQZ"
+#define CVAR_MISC_CHAMSMATERIALS "MISC_ChamsMaterials"
+#define CVAR_MISC_CHAMSMATERIALSLIST "MISC_ChamsMaterialsList"
+#define CVAR_MISC_ARMMATERIALS "MISC_ArmMaterials"
+#define CVAR_MISC_ARMMATERIALSTYPE "MISC_ArmMaterialsType"
+#define CVAR_MISC_ARMMATERIALSLIST "MISC_ArmMaterialsList"
+#define CVAR_ESP_HITMARKER "ESP_HitMarker"
+#define CVAR_ESP_HITMARKERSOUND "ESP_HitMarkerSound"
+#define CVAR_ESP_HITEVENT "ESP_hitevent" //hitlogs
 
 #define CVAR_CHAMS_COLOR_CT "chams_Color_CT"
 #define CVAR_CHAMS_COLOR_TT "chams_Color_TT"
@@ -441,7 +455,9 @@ namespace Settings
 #define CVAR_MISC_KNIFE_CHANGER "misc_KnifeChanger"
 #define CVAR_misc_Postprocess "misc_Postprocess"
 #define CVAR_AIMBOT_BACKTRACK "aim_Backtrack"
-#define CVAR_AIMBOT_BACKTRACK_TICK "aim_Backtracktickrate"
+#define CVAR_AIMBOT_BACKTRACKTICKRATE "aim_Backtracktickrate"
+#define CVAR_AIMBOT_BACKTRACKTIME "aim_Backtracktime"
+#define CVAR_AIMBOT_DRAWBACKTRACK "aim_DrawBacktrack"
 #define CVAR_MISC_BHOP "misc_Bhop"
 #define CVAR_MISC_PUNCH "misc_Punch"
 #define CVAR_MISC_AWPAIM "misc_AwpAim"
@@ -459,10 +475,26 @@ namespace Settings
 #define CVAR_MISC_FOV_MDL_VIEW "misc_FovModelView"
 #define CVAR_MISC_AWPAIM_COLOR "misc_AwpAimColor"
 
-#define CVAR_PROFILE_INFO_RANK_COMBO "Profile_Info_Rank_Combo"
+#define CVAR_INVENTORY_CHANGER "Inventory_Changer" //toggle
+#define CVAR_PROFILE_INFO "Profile_Info" //toggle
+#define CVAR_PROFILE_INFO_RANK "Profile_Info_Rank"
 #define CVAR_PROFILE_INFO_LEVEL "Profile_Info_Level"
 #define CVAR_PROFILE_INFO_XP "Profile_Info_XP"
 #define CVAR_PROFILE_INFO_WIN "Profile_Info_Win"
 #define CVAR_PROFILE_INFO_FRIENDLY "Profile_Info_Friendly"
 #define CVAR_PROFILE_INFO_LEADER "Profile_Info_Leader"
 #define CVAR_PROFILE_INFO_TEACHER "Profile_Info_Teacher"
+
+//Legit AA + Silent Aim
+#define CVAR_MISC_LEGITAA "misc_LegitAA" //Legit AA
+#define CVAR_MISC_LEGITAATOGGLE "misc_LegitAAToggle" //Silent Aim
+
+//more misc features
+#define CVAR_MISC_SPAMREGULAR "misc_spamregular"
+#define CVAR_MISC_SPAMRANDOM "misc_spamrandom"
+#define CVAR_MISC_NAMESPAMIDKMEMES_STATIC "misc_namespamidkmemes_static"
+#define CVAR_MISC_CLAN "misc_Clan"
+#define CVAR_MISC_NAMECHANGER "misc_NameChanger"
+#define CVAR_UNTRUSTED "Untrusted"
+#define CVAR_MISC_NOSKY "misc_NoSky"
+#define CVAR_MISC_CURRENTSKY "misc_CurrentSky"

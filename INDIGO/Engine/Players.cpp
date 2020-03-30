@@ -321,7 +321,6 @@ namespace Engine
 			if (pWeaponEntity) {
 				string WeaponStr = "";
 				WeaponStr = WeaponStr.erase(0, 7);
-
 				if (pWeaponEntity && Interfaces::Engine()->IsInGame() && m_pMe->bAlive &&
 					!m_pMe->m_pEntity->IsDormant() && m_pMe->m_pEntity->IsPlayer() &&
 					m_pMe->m_pEntity->GetTeam() == PLAYER_TEAM::TEAM_CT

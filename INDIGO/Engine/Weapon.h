@@ -22,7 +22,7 @@ namespace Engine
 		CBaseAttributableItem*	GeteAttributableItem();
 
 		const char*		GetName();
-		const char*		GetPrintName();
+		//const char*		GetPrintName(); //don't need as it's never called!
 		//[/swap_lines]
 	};
 
@@ -59,9 +59,10 @@ namespace Engine
 		WEAPON_TYPE_UNKNOWN,
 	};
 
-	//18th March 2020
+	//30th March 2020
 	//ItemDefinitionIndex
 	enum WEAPON_ID {
+		//weapons
 		WEAPON_INVALID = -1,
 		WEAPON_DEAGLE = 1,
 		WEAPON_ELITE,
@@ -77,6 +78,7 @@ namespace Engine
 		WEAPON_M4A4 = 16,
 		WEAPON_MAC10,
 		WEAPON_P90 = 19,
+		WEAPON_ZONE_REPULSOR, //new
 		WEAPON_MP5SD = 23,
 		WEAPON_UMP45,
 		WEAPON_XM1014,
@@ -143,6 +145,8 @@ namespace Engine
 		WEAPON_KNIFE_CANIS = 518, //survival
 		WEAPON_KNIFE_OUTDOOR = 521, //nomad
 		WEAPON_KNIFE_SKELETON = 525,
+
+		//gloves
 		GLOVE_STUDDED_BLOODHOUND = 5027,
 		GLOVE_T_SIDE = 5028,
 		GLOVE_CT_SIDE = 5029,

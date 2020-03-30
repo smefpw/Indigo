@@ -290,6 +290,7 @@ namespace Engine
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("[FindPattern - pD3D9Table = %X]", d3d9TablePtrPtr);
 #endif
+			//30th March 2020 - GameOverlayRenderer.dll v5.78.0.89
 			DWORD_PTR** dwPresent_o = (DWORD_PTR**)CSX::Memory::FindPattern(GAMEOVERLAYRENDERER_DLL, GMOR_PATTERN, GMOR_MASK, 1);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("[FindPattern - dwPresent = %X]", dwPresent_o);
@@ -307,8 +308,12 @@ namespace Engine
 
 					Reset_o = (Reset_t)IDirect3DDevice9Table.GetHookIndex(D3D9::TABLE::Reset, Hook_Reset);
 
-					if (!ClientModeTable.InitTable(Interfaces::ClientMode()))
+					if (!ClientModeTable.InitTable(Interfaces::ClientMode())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Clientmode - failed to init!]");
+#endif
 						return false;
+					}
 
 					ClientModeTable.HookIndex(TABLE::IClientMode::CreateMove, Hook_CreateMove);
 					ClientModeTable.HookIndex(TABLE::IClientMode::OverrideView, Hook_OverrideView);
@@ -321,38 +326,64 @@ namespace Engine
 					SteamGameCoordinatorTable.HookIndex(0, Hook_SendMessage);
 					SteamGameCoordinatorTable.HookIndex(2, Hook_RetrieveMessage);
 
-					if (!GameEventTable.InitTable(Interfaces::GameEvent()))
+					if (!GameEventTable.InitTable(Interfaces::GameEvent())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Eventmanager - failed to init!]");
+#endif
 						return false;
+					}
 
 					GameEventTable.HookIndex(TABLE::IGameEventManager2::FireEventClientSide, Hook_FireEventClientSideThink);
 
-					if (!ClientTable.InitTable(Interfaces::Client()))
+					if (!ClientTable.InitTable(Interfaces::Client())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Client - failed to init!]");
+#endif
 						return false;
+					}
 
 					ClientTable.HookIndex(TABLE::IBaseClientDLL::FrameStageNotify, Hook_FrameStageNotify);
 
-					if (!SoundTable.InitTable(Interfaces::Sound()))
+					if (!SoundTable.InitTable(Interfaces::Sound())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Sound - failed to init!]");
+#endif
 						return false;
+					}
 
 					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound1, Hook_EmitSound1);
 					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound2, Hook_EmitSound2);
 
-					if (!ModelRenderTable.InitTable(Interfaces::ModelRender()))
+					if (!ModelRenderTable.InitTable(Interfaces::ModelRender())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Model - failed to init!]");
+#endif
 						return false;
+					}
 
 					ModelRenderTable.HookIndex(TABLE::IVModelRender::DrawModelExecute, Hook_DrawModelExecute);
 
-					if (!SurfaceTable.InitTable(Interfaces::Surface()))
+					if (!SurfaceTable.InitTable(Interfaces::Surface())) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Surface - failed to init!]");
+#endif
 						return false;
+					}
 
 					SurfaceTable.HookIndex(TABLE::ISurface::PlaySound, Hook_PlaySound);
 					SurfaceTable.HookIndex(TABLE::ISurface::LockCursor, Hook_LockCursor);
 
-					if (Client::Initialize(g_pDevice))
-						return true;
+					if (Client::Initialize(g_pDevice)) {
+#if ENABLE_DEBUG_FILE == 1
+						CSX::Log::Add("[Client - Initialized!]");
+#endif
+						return false;
+					}
 				}
 			}
-
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Hook - failed to init!]");
+#endif
 			return false;
 		}
 

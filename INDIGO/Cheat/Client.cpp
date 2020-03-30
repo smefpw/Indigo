@@ -424,7 +424,7 @@ namespace Client
 					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
-			/*if (g_pMisc) //broken lul
+			/*if (g_pMisc) //broken lul - thirdperson
 				g_pMisc->FrameStageNotify(Stage);*/
 
 			Skin_OnFrameStageNotify(Stage);
@@ -1412,7 +1412,7 @@ namespace Client
 			{
 				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
 				ImGui::SameLine(SpaceLineOne);
-				ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
+				//ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson); //broken so commented out
 				ImGui::SameLine(SpaceLineTwo);
 				ImGui::PushItemWidth(362.f);
 				if (Settings::Misc::misc_ThirdPerson)
