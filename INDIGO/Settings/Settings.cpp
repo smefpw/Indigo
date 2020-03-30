@@ -227,16 +227,23 @@ namespace Settings
 	}
 
 	int LoadSettings(string szIniFile) {
-		if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
-			return 0;
+		try {
+			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
+				return 0; //success
+			}
+			else {
+				return 1; //fail
+			}
 		}
+		catch (...) {
+			return 1; //fail
+		}
+
 		//backtrack options
 		Aimbot::aim_Backtrack = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACK, Aimbot::aim_Backtrack); //backtrack toggle
 		Aimbot::aim_Backtracktickrate = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACKTICKRATE, Aimbot::aim_Backtracktickrate);
 		Aimbot::aim_Backtracktime = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_BACKTRACKTIME, Aimbot::aim_Backtracktime);
 		Aimbot::aim_DrawBacktrack = CSX::Cvar::LoadCvar(AIMBOT_TEXT, CVAR_AIMBOT_DRAWBACKTRACK, Aimbot::aim_DrawBacktrack);
-
-
 		Aimbot::aim_Deathmatch = CSX::Cvar::LoadCvar( AIMBOT_TEXT , CVAR_AIMBOT_DEATHMATCH , Aimbot::aim_Deathmatch );
 		Aimbot::aim_WallAttack = CSX::Cvar::LoadCvar( AIMBOT_TEXT , CVAR_AIMBOT_WALLATTACK , Aimbot::aim_WallAttack );
 		Aimbot::aim_CheckSmoke = CSX::Cvar::LoadCvar( AIMBOT_TEXT , CVAR_AIMBOT_CHECKSMOKE , Aimbot::aim_CheckSmoke );
@@ -520,11 +527,14 @@ namespace Settings
 	int SaveSettings(string szIniFile) {
 		try {
 			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
-				return 0;
+				return 0; //success
+			}
+			else {
+				return 1; //fail
 			}
 		}
 		catch (...) {
-			return 0;
+			return 1; //fail
 		}
 
 		CSX::Cvar::SaveCvar( AIMBOT_TEXT , CVAR_AIMBOT_DEATHMATCH , Aimbot::aim_Deathmatch );

@@ -162,7 +162,6 @@ namespace Engine {
 			}
 
 			Vector vTriggerHead, vTriggerHeadPos, vTriggerChest, vTriggerChestPos;
-
 			vTriggerHead = pEntity->GetHitboxPosition(HITBOX_HEAD);
 			vTriggerChest = pEntity->GetHitboxPosition(HITBOX_BODY);
 
