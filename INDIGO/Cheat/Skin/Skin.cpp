@@ -580,25 +580,14 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 			int m_nSequence = pData->m_Value.m_Int;
 
 			/*
-			Default works PERFECT, of course.
-			Bayonet works PERFECT.
-			Flip Knife works PERFECT.
-			Gut Knife works PERFECT.
-			Karambit works PERFECT.
-			M9 Bayonet works PERFECT.
-			Huntsman Knife works PERFECT.
-
-
-			Falchion Knife a tiny bit buggy does knife anim randomly - PF
-			bowie knife dissapears when doing look anim - PF
-			butterfly knife does take out anim twice and randomly too - PF
-			shadow daggers dodgy look anim, random knife anim - PF
-
-			Navaja knife works PERFECT
-			Stiletto knife works PERFECT
-
+			falchion knife is a tiny bit buggy does knife anim randomly
+			bowie knife dissapears when doing look anim
+			butterfly knife does take out anim twice and randomly too
+			shadow daggers dodgy look anim, random knife anim
 			ursus knife random pick up anim all the time very buggy
 			talon knife disappears when press f
+
+			all the other knives work perfect.
 			*/
 
 			if (!strcmp(szModel, "models/weapons/v_knife_butterfly.mdl")) {
