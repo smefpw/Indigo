@@ -228,10 +228,8 @@ namespace Settings
 
 	int LoadSettings(string szIniFile) {
 		try {
-			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
-				return 0; //success
-			}
-			else {
+			//check to see if path is init
+			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 1) {
 				return 1; //fail
 			}
 		}
@@ -526,10 +524,8 @@ namespace Settings
 
 	int SaveSettings(string szIniFile) {
 		try {
-			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 0) {
-				return 0; //success
-			}
-			else {
+			//check to see if path is init
+			if (CSX::Cvar::InitPath(szIniFile.c_str()) == 1) {
 				return 1; //fail
 			}
 		}
