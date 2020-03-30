@@ -35,7 +35,7 @@ namespace Engine {
 
 #if ENABLE_DEBUG_FILE == 1
 		CSX::Log::Delete();
-		CSX::Log::Add("[Indigo - Loaded!]");
+		CSX::Log::Add("[Indigo - loaded!]");
 		std::time_t result = std::time(nullptr);
 		string curt = std::asctime(std::localtime(&result));
 		curt.erase(std::remove(curt.begin(), curt.end(), '\n'), curt.end());
@@ -106,20 +106,41 @@ namespace Engine {
 			return false;
 
 #if ENABLE_DEBUG_FILE == 1
-		CSX::Log::Add("[Indigo - All Interfaces Loaded!]\n");
+		CSX::Log::Add("[Indigo - all interfaces initialized!]\n");
 #endif
 
-		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses()))
+		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses())) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[NetvarManager - failed to initialize!]");
+#endif
 			return false;
+		}
 
-		if (!Engine::Hook::Initialize() || !Engine::Offset::Initialize())
+		if (!Engine::Hook::Initialize()) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Hook - failed to initialize!]");
+#endif
 			return false;
-
+		}
+		else {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Hook - initialized!]");
+#endif
+		}
+		if (!Engine::Offset::Initialize()) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Offsets - failed to initialize!]");
+#endif
+			return false;
+		}
+		else {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Offsets - initialized!]");
+#endif
+		}
 		return true;
 	}
-
-	void Shutdown()
-	{
+	void Shutdown() {
 		Hook::Shutdown();
 		Client::Shutdown();
 	}
