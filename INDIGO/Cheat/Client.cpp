@@ -1174,21 +1174,18 @@ namespace Client
 		ImGui::Separator();
 		ImGui::Text("Configs");
 		ImGui::Separator();
-		static int iConfigSelect = 0;
 		static int iMenuSheme = 1;
+		static int iConfigSelect = 0;
 		static char ConfigName[11] = { 0 };
-
 		ImGui::PushItemWidth(128.f);
-
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
-
 		if (ImGui::Button("Load Config")) {
 			try {
 				if (ConfigList.size() == 0) {
 					EventLog->AddToLog("Failed To Load Settings.");
 				}
 				else {
-					if (!Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+					if (Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]) == 1) {
 						EventLog->AddToLog("Failed To Load Settings.");
 					}
 					else {
@@ -1201,14 +1198,13 @@ namespace Client
 			}
 		}
 		ImGui::SameLine();
-
 		if (ImGui::Button("Save Config")) {
 			try {
 				if (ConfigList.size() == 0) {
 					EventLog->AddToLog("Failed To Save Settings.");
 				}
 				else {
-					if (!Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+					if (Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]) == 1) {
 						EventLog->AddToLog("Failed To Save Settings.");
 					}
 					else {
@@ -1221,20 +1217,18 @@ namespace Client
 			}
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Refresh Config List"))
+		if (ImGui::Button("Refresh Config List")) {
 			RefreshConfigs();
-
-
+		}
 		ImGui::InputText("", ConfigName, 11);
 		ImGui::SameLine();
 		if (ImGui::Button("Make New Config")) {
 			string ConfigFileName = ConfigName;
-
-			if (ConfigFileName.size() < 1 || ConfigFileName == "")
+			if (ConfigFileName.size() < 1 || ConfigFileName == "") {
 				ConfigFileName = "default";
-
+			}
 			try {
-				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 0) {
+				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 1) {
 					EventLog->AddToLog("Failed To Create Config.");
 				}
 				else {
