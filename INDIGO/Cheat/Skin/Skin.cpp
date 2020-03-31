@@ -566,41 +566,30 @@ void Gloves_OnFrameStageNotify(ClientFrameStage_t Stage)
 	}
 }
 
+static auto random_sequence(const int low, const int high) {
+	return rand() % (high - low + 1) + low;
+}
 void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, void *pOut) {
 	CRecvProxyData* pData = const_cast<CRecvProxyData*>(pDataConst);
 	CBaseViewModel* pViewModel = (CBaseViewModel*)pStruct;
-
 	if (pViewModel) {
 		IClientEntity* pOwner = Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)pViewModel->GetOwner());
-
 		if (pOwner && pOwner->EntIndex() == Interfaces::Engine()->GetLocalPlayer()) {
 			const model_t* pModel = Interfaces::ModelInfo()->GetModel(pViewModel->GetModelIndex());
 			const char* szModel = Interfaces::ModelInfo()->GetModelName(pModel);
-
 			int m_nSequence = pData->m_Value.m_Int;
-
-			/*
-			falchion knife is a tiny bit buggy does knife anim randomly
-			bowie knife dissapears when doing look anim
-			butterfly knife does take out anim twice and randomly too
-			shadow daggers dodgy look anim, random knife anim
-			ursus knife random pick up anim all the time very buggy
-			talon knife disappears when press f
-
-			all the other knives work perfect.
-			*/
-
 			if (!strcmp(szModel, "models/weapons/v_knife_butterfly.mdl")) {
 				//Fix animations for the Butterfly Knife
 				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
 					break;
 				default:
-					m_nSequence++;
+					m_nSequence += 1;
+					break;
 				}
 			}
 			else if (!strcmp(szModel, "models/weapons/v_knife_falchion_advanced.mdl")) {
@@ -610,18 +599,29 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 					m_nSequence = SEQUENCE_FALCHION_IDLE1;
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_MISS1:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
+					m_nSequence = random_sequence(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
+					m_nSequence = random_sequence(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
 					break;
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				default:
-					m_nSequence--;
+					m_nSequence -= 1;
+					break;
 				}
 			}
+			/*else if (!strcmp(szModel, "models/weapons/v_knife_css.mdl")) {
+				//Fix animations for the CSS Knife
+				switch (m_nSequence) {
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence = random_sequence(SEQUENCE_CSS_LOOKAT01, SEQUENCE_CSS_LOOKAT02);
+					break;
+				default:
+					break; //do nothing
+				}
+			}*/
 			else if (!strcmp(szModel, "models/weapons/v_knife_push.mdl")) {
 				//Fix animations for the Shadow Daggers.
 				switch (m_nSequence) {
@@ -630,10 +630,10 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 					break;
 				case SEQUENCE_DEFAULT_LIGHT_MISS1:
 				case SEQUENCE_DEFAULT_LIGHT_MISS2:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
+					m_nSequence = random_sequence(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_MISS1:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
+					m_nSequence = random_sequence(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_HIT1:
 				case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
@@ -642,9 +642,10 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 					break;
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				default:
 					m_nSequence += 2;
+					break;
 				}
 			}
 			else if (!strcmp(szModel, "models/weapons/v_knife_survival_bowie.mdl")) {
@@ -652,90 +653,52 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				case SEQUENCE_DEFAULT_IDLE2:
 					m_nSequence = SEQUENCE_BOWIE_IDLE1;
 					break;
 				default:
-					m_nSequence--;
+					m_nSequence -= 1;
+					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_ursus.mdl")) {
-				//Fix Animations for the Ursus Knife
+			else if (!strcmp(szModel, "models/weapons/v_knife_ursus.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_cord.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_canis.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_outdoor.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_ursus.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_skeleton.mdl")) {
+				//Fix animations for Ursus,Paracord,Survival,Nomad and Skeleton Knives
 				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
 					break;
 				default:
-					m_nSequence++;
+					m_nSequence += 1;
 					break;
+				}
+			}
+			else if (!strcmp(szModel, "models/weapons/v_knife_stiletto.mdl")) {
+				//Fix animations for the Stiletto Knife
+				switch (m_nSequence) {
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence = random_sequence(12, 13);
+					break;
+				default:
+					break; //do nothing
 				}
 			}
 			else if (!strcmp(szModel, "models/weapons/v_knife_widowmaker.mdl")) {
-				//Fix Animations for the Talon Knife
+				//Fix animations for the Talon Knife
 				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(14, 15);
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_cord.mdl")) {
-				//Fix Animations for the Paracord Knife
-				switch (m_nSequence) {
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
+					m_nSequence = random_sequence(14, 15);
 					break;
 				default:
-					m_nSequence += 1;
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_canis.mdl")) {
-				//Fix Animations for the Survival Knife
-				switch (m_nSequence) {
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					break;
-				default:
-					m_nSequence += 1;
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_outdoor.mdl")) {
-				//Fix Animations for the Nomad Knife
-				switch (m_nSequence) {
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					break;
-				default:
-					m_nSequence += 1;
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_skeleton.mdl")) {
-				//Fix Animations for the Skeleton Knife
-				switch (m_nSequence) {
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					break;
-				default:
-					m_nSequence += 1;
-					break;
+					break; //do nothing
 				}
 			}
 			pData->m_Value.m_Int = m_nSequence;
