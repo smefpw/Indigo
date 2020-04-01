@@ -547,281 +547,255 @@ void CEsp::GrenadePrediction()
 	}
 }
 
-void CEsp::OnRender()
-{
-	if (!g_pPlayers || !Interfaces::Engine()->IsConnected()) // should help with dlight crashes??? idk
+bool espor; //esp on render
+void CEsp::OnRender() {
+	if (!g_pPlayers || !Interfaces::Engine()->IsConnected() || !Interfaces::Engine()->IsInGame()) {// should help with dlight crashes??? idk
 		return;
-
-	if ( Settings::Esp::esp_Sound )
-		SoundEsp.DrawSoundEsp();
-
-	if ( g_pAimbot )
-		g_pAimbot->OnRender();
-
-	if ( g_pTriggerbot )
-		g_pTriggerbot->TriggerShowStatus();
-
-	if (Settings::Esp::esp_GrenadePrediction)
-		GrenadePrediction();
-
-	if (Settings::Esp::esp_HitMarker)
-		DrawHitmarker();
-
-	NightMode();
-
-	Ambient();
-
-	if (Settings::Misc::misc_AwpAim && IsLocalAlive())
-		g_pRender->DrawFillBox(iScreenWidth, iScreenHeight, 1, 1, Color::Purple());
-
-	for ( BYTE PlayerIndex = 0; PlayerIndex < g_pPlayers->GetSize(); PlayerIndex++ )
-	{
-		CPlayer* pPlayer = g_pPlayers->GetPlayer( PlayerIndex );
-
-		if ( pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate )
-		{
-			if (CheckPlayerTeam(pPlayer))
-			{
-				if (g_pTriggerbot)
-					g_pTriggerbot->TriggerShow(pPlayer);
-
-				DrawPlayerEsp(pPlayer);
-
-				if (Settings::Esp::esp_Skeleton)
-					DrawPlayerSkeleton(pPlayer);
-			}
-			if ( Settings::Esp::esp_BulletTrace && pPlayer->Team != g_pPlayers->GetLocal()->Team)
-				DrawPlayerBulletTrace( pPlayer );
-
-			if (Settings::Esp::esp_Dlightz && pPlayer->Team != g_pPlayers->GetLocal()->Team)
-				Dlight(pPlayer);
-		}
 	}
+	try {
+		CBaseEntity* lp = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+		//check to see if player has a weapon so no crash XD
+		CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+		if (pWeaponEntity && !lp->IsDead() && !lp->IsDormant()) {
+			if (Settings::Esp::esp_Sound) {
+				SoundEsp.DrawSoundEsp();
+			}
+			if (g_pAimbot) {
+				g_pAimbot->OnRender();
+			}
+			if (g_pTriggerbot) {
+				g_pTriggerbot->TriggerShowStatus();
+			}
+			if (Settings::Esp::esp_GrenadePrediction) {
+				GrenadePrediction();
+			}
+			if (Settings::Esp::esp_HitMarker) {
+				DrawHitmarker();
+			}
+			NightMode();
 
-	if ( Settings::Esp::esp_BombTimer )
-	{
-		if ( bC4Timer && iC4Timer )
-		{
-			float fTimeStamp = Interfaces::Engine()->GetLastTimeStamp();
+			Ambient();
 
-			if ( !fExplodeC4Timer )
-				fExplodeC4Timer = fTimeStamp + (float)iC4Timer;
-			else
-			{
-				fC4Timer = fExplodeC4Timer - fTimeStamp;
-
-				if ( fC4Timer < 0.f )
+			//add back if you fix sniper crosshair
+			/*if (Settings::Misc::misc_AwpAim && IsLocalAlive()) {
+				g_pRender->DrawFillBox(iScreenWidth, iScreenHeight, 1, 1, Color::Purple());
+			}*/
+			for (BYTE PlayerIndex = 0; PlayerIndex < g_pPlayers->GetSize(); PlayerIndex++) {
+				CPlayer* pPlayer = g_pPlayers->GetPlayer(PlayerIndex);
+				if (pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate) {
+					if (CheckPlayerTeam(pPlayer)) {
+						if (g_pTriggerbot) {
+							g_pTriggerbot->TriggerShow(pPlayer);
+						}
+						DrawPlayerEsp(pPlayer);
+						if (Settings::Esp::esp_Skeleton) {
+							DrawPlayerSkeleton(pPlayer);
+						}
+					}
+					if (Settings::Esp::esp_BulletTrace && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
+						DrawPlayerBulletTrace(pPlayer);
+					}
+					if (Settings::Esp::esp_Dlightz && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
+						Dlight(pPlayer); //possible crash
+					}
+				}
+			}
+			if (Settings::Esp::esp_BombTimer) {
+				if (bC4Timer && iC4Timer) {
+					float fTimeStamp = Interfaces::Engine()->GetLastTimeStamp();
+					if (!fExplodeC4Timer) {
+						fExplodeC4Timer = fTimeStamp + (float)iC4Timer;
+					}
+					else {
+						fC4Timer = fExplodeC4Timer - fTimeStamp;
+						if (fC4Timer < 0.f) {
+							fC4Timer = 0.f;
+						}
+					}
+				}
+				else {
+					fExplodeC4Timer = 0.f;
 					fC4Timer = 0.f;
+				}
 			}
-		}
-		else
-		{
-			fExplodeC4Timer = 0.f;
-			fC4Timer = 0.f;
-		}
-	}
+			if (Settings::Esp::esp_Bomb || Settings::Esp::esp_WorldWeapons ||
+				Settings::Esp::esp_WorldGrenade || Settings::Esp::esp_Chicken || Settings::Esp::esp_BoxNade) {
+				for (int EntIndex = 0; EntIndex < Interfaces::EntityList()->GetHighestEntityIndex(); EntIndex++) {
+					CBaseEntity* pEntity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(EntIndex);
+					if (!pEntity || pEntity->IsPlayer()) {
+						continue;
+					}
+					const model_t* pModel = pEntity->GetModel();
+					if (pModel) {
+						const char* pModelName = Interfaces::ModelInfo()->GetModelName(pModel);
+						if (pModelName) {
+							Vector vEntScreen;
+							if (!lp->IsDead() && !lp->IsDormant()) {
+								if (WorldToScreen(pEntity->GetRenderOrigin(), vEntScreen)) {
+									if (Settings::Esp::esp_Chicken && (pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CChicken)) {
+										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "Chicken");
+									}
+									if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CC4) {
+										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "[C4]");
+									}
+									if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4) {
+										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(), "[C4 PLANTED]");
+									}
+									if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_") && !strstr(pModelName, "models/weapons/w_ied")) {
+										if (strstr(pModelName, "models/weapons/w_") && strstr(pModelName, "_dropped.mdl")) {
+											string WeaponName = pModelName + 17;
+											WeaponName[WeaponName.size() - 12] = '\0';
+											if (strstr(pModelName, "models/weapons/w_rif") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName.erase(0, 4);
+											}
+											else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223")) {
+												WeaponName.erase(0, 5);
+											}
+											else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName = "usp-s";
+											}
+											else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName.erase(0, 4);
+											}
+											else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName.erase(0, 5);
+											}
+											else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName.erase(0, 5);
+											}
+											else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl")) {
+												WeaponName.erase(0, 5);
+											}
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(), WeaponName.c_str());
+										}
+									}
+									if (Settings::Esp::esp_BoxNade && (strstr(pModelName, "models/weapons/w_eq_")) || strstr(pModelName, "models/Weapons/w_eq_")) {
+										if (strstr(pModelName, "_dropped.mdl")) {
+											if (strstr(pModelName, "fraggrenade")) {
+												if (Settings::Esp::esp_BoxNade) {
+													g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Red());
+												}
+												else if (strstr(pModelName, "molotov")) {
+													if (Settings::Esp::esp_BoxNade) {
+														g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
+													}
+													else if (strstr(pModelName, "incendiarygrenade")) {
+														if (Settings::Esp::esp_BoxNade) {
+															g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
+														}
+														else if (strstr(pModelName, "flashbang")) {
+															if (Settings::Esp::esp_BoxNade) {
+																g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Yellow());
+															}
+														}
+													}
+												}
+											}
+										}
+										else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
+											if (Settings::Esp::esp_BoxNade) {
+												g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
+											}
+										}
+									}
+									if (Settings::Esp::esp_WorldGrenade && (strstr(pModelName, "models/weapons/w_eq_") || strstr(pModelName, "models/Weapons/w_eq_"))) {
+										if (strstr(pModelName, "_dropped.mdl")) {
+											string WeaponName = pModelName + 20;
+											WeaponName[WeaponName.size() - 12] = '\0';
+											Color GrenadeColor = Color::White();
+											if (strstr(pModelName, "fraggrenade")) {
+												WeaponName = "Grenade";
+												GrenadeColor = Color::Red();
+											}
+											else if (strstr(pModelName, "molotov")) {
+												WeaponName = "Molotov";
+												GrenadeColor = Color::OrangeRed();
+											}
+											else if (strstr(pModelName, "incendiarygrenade")) {
+												WeaponName = "Incendiary";
+												GrenadeColor = Color::OrangeRed();
+											}
+											else if (strstr(pModelName, "flashbang")) {
+												WeaponName = "Flashbang";
+												GrenadeColor = Color::Yellow();
+											}
 
-	if ( Settings::Esp::esp_Bomb || Settings::Esp::esp_WorldWeapons || Settings::Esp::esp_WorldGrenade || Settings::Esp::esp_Chicken || Settings::Esp::esp_BoxNade )
-	{
-		for ( int EntIndex = 0; EntIndex < Interfaces::EntityList()->GetHighestEntityIndex(); EntIndex++ )
-		{
-			CBaseEntity* pEntity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity( EntIndex );
-
-			if ( !pEntity || pEntity->IsPlayer() )
-				continue;
-
-			const model_t* pModel = pEntity->GetModel();
-
-			if ( pModel )
-			{
-				const char* pModelName = Interfaces::ModelInfo()->GetModelName( pModel );
-				if ( pModelName )
-				{
-					Vector vEntScreen;
-
-					if ( WorldToScreen( pEntity->GetRenderOrigin() , vEntScreen ) )
-					{
-
-						if (Settings::Esp::esp_Chicken && (pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CChicken))
-							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "Chicken");
-
-						if ( Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CC4 )
-							g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , Color::Green() , "[C4]" );
-
-						if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4)
-							g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(), "[C4 PLANTED]");
-
-						if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_") && !strstr(pModelName, "models/weapons/w_ied"))
-						{
-							if (strstr(pModelName, "models/weapons/w_") && strstr(pModelName, "_dropped.mdl"))
-							{
-								string WeaponName = pModelName + 17;
-
-								WeaponName[WeaponName.size() - 12] = '\0';
-
-								if (strstr(pModelName, "models/weapons/w_rif") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName.erase(0, 4);
-
-								else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223"))
-									WeaponName.erase(0, 5);
-
-								else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName = "usp-s";
-
-								else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName.erase(0, 4);
-
-								else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName.erase(0, 5);
-
-								else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName.erase(0, 5);
-
-								else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl"))
-									WeaponName.erase(0, 5);
-
-								g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(), WeaponName.c_str());
-							}
-						}
-
-						if (Settings::Esp::esp_BoxNade && (strstr(pModelName, "models/weapons/w_eq_")) || strstr(pModelName, "models/Weapons/w_eq_"))
-						{
-							if (strstr(pModelName, "_dropped.mdl"))
-							{
-								if (strstr(pModelName, "fraggrenade"))
-									if (Settings::Esp::esp_BoxNade)
-										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Red());
-
-								else if (strstr(pModelName, "molotov"))
-									if (Settings::Esp::esp_BoxNade)
-										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
-
-								else if (strstr(pModelName, "incendiarygrenade"))
-									if (Settings::Esp::esp_BoxNade)
-										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
-
-								else if (strstr(pModelName, "flashbang"))
-									if (Settings::Esp::esp_BoxNade)
-										g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Yellow());
-							}
-							else if (strstr(pModelName, "smokegrenade_thrown.mdl"))
-								if (Settings::Esp::esp_BoxNade)
-									g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
-						}
-						
-						if ( Settings::Esp::esp_WorldGrenade && ( strstr( pModelName , "models/weapons/w_eq_" ) || strstr( pModelName , "models/Weapons/w_eq_" ) ) )
-						{
-							if ( strstr( pModelName , "_dropped.mdl" ) )
-							{
-								string WeaponName = pModelName + 20;
-
-								WeaponName[WeaponName.size() - 12] = '\0';
-
-								Color GrenadeColor = Color::White();
-
-								if ( strstr( pModelName , "fraggrenade" ) )
-								{
-									WeaponName = "Grenade";
-									GrenadeColor = Color::Red();
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, GrenadeColor, WeaponName.c_str());
+										}
+										else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
+											string WeaponName = "Smoke";
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Gray(), WeaponName.c_str());
+										}
+									}
 								}
-								else if (strstr(pModelName, "molotov"))
-								{
-									WeaponName = "Molotov";
-									GrenadeColor = Color::OrangeRed();
-								}
-								else if (strstr(pModelName, "incendiarygrenade"))
-								{
-									WeaponName = "Incendiary";
-									GrenadeColor = Color::OrangeRed();
-								}
-								else if ( strstr( pModelName , "flashbang" ) )
-								{
-									WeaponName = "Flashbang";
-									GrenadeColor = Color::Yellow();
-								}
-
-								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , GrenadeColor , WeaponName.c_str() );
-							}
-							else if ( strstr( pModelName , "smokegrenade_thrown.mdl" ) )
-							{
-								string WeaponName = "Smoke";
-								g_pRender->Text( (int)vEntScreen.x , (int)vEntScreen.y , true , true , Color::Gray() , WeaponName.c_str() );
 							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	// Draw Ticks
-
-	if (Settings::Aimbot::aim_Backtrack && Settings::Aimbot::aim_DrawBacktrack) // Use Esp Visible Combo to change from visible only and not visible.
-	{
-		for (int i = 0; i < Interfaces::EntityList()->GetHighestEntityIndex(); i++)
-		{
-			CBaseEntity* local = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
-			CBaseEntity *entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
-			CPlayer* pPlayer = g_pPlayers->GetPlayer(i);
-			PlayerInfo pinfo;
-
-			if (!local)
-				continue;
-
-			if (entity == nullptr || entity == local || entity->IsDormant() || entity->GetTeam() == local->GetTeam())
-				continue;
-
-			if (!Settings::Aimbot::aim_Deathmatch) {
-				if (entity->GetTeam() == local->GetTeam())
+		// Draw Ticks
+		if (Settings::Aimbot::aim_Backtrack && Settings::Aimbot::aim_DrawBacktrack) { // Use Esp Visible Combo to change from visible only and not visible.
+			for (int i = 0; i < Interfaces::EntityList()->GetHighestEntityIndex(); i++) {
+				CBaseEntity* local = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+				CBaseEntity *entity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(i);
+				CPlayer* pPlayer = g_pPlayers->GetPlayer(i);
+				PlayerInfo pinfo;
+				if (!local) {
 					continue;
-			}
-
-			if (Interfaces::Engine()->GetPlayerInfo(i, &pinfo) && !entity->IsDead())
-			{
-				if (Settings::Esp::esp_Visible >= 3)
-				{
-					if (!local->IsDead() && pPlayer->bVisible)
-					{
-						for (int t = 0; t < BacktrackTicks(); ++t)
-						{
-							Vector screenbacktrack[64][25];
-
-							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
-							{
-								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
-								{
-									g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
-									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
-								}
-							}
-						}
-					}
-					else
-						memset(&headPositions[0][0], 0, sizeof(headPositions));
 				}
-				else
-				{
-					if (!local->IsDead())
-					{
-						for (int t = 0; t < BacktrackTicks(); ++t)
-						{
-							Vector screenbacktrack[64][25];
-
-							if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime())
-							{
-								if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t]))
-								{
-									g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
-									g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
+				if (entity == nullptr || entity == local || entity->IsDormant() || entity->GetTeam() == local->GetTeam()) {
+					continue;
+				}
+				if (!Settings::Aimbot::aim_Deathmatch) {
+					if (entity->GetTeam() == local->GetTeam()) {
+						continue;
+					}
+				}
+				if (Interfaces::Engine()->GetPlayerInfo(i, &pinfo) && !entity->IsDead()) {
+					if (Settings::Esp::esp_Visible >= 3) {
+						if (!local->IsDead() && !local->IsDormant() && pPlayer->bVisible) {
+							for (int t = 0; t < BacktrackTicks(); ++t) {
+								Vector screenbacktrack[64][25];
+								if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime()) {
+									if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t])) {
+										g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
+										g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
+									}
 								}
 							}
 						}
+						else {
+							memset(&headPositions[0][0], 0, sizeof(headPositions));
+						}
 					}
-					else
-						memset(&headPositions[0][0], 0, sizeof(headPositions));
+					else {
+						if (!local->IsDead() && !local->IsDormant()) {
+							for (int t = 0; t < BacktrackTicks(); ++t) {
+								Vector screenbacktrack[64][25];
+								if (headPositions[i][t].simtime && headPositions[i][t].simtime + 1 > local->GetSimTime()) {
+									if (WorldToScreen(headPositions[i][t].hitboxPos, screenbacktrack[i][t])) {
+										g_pRender->DrawLine(screenbacktrack[i][t].x - 3.5, screenbacktrack[i][t].y, screenbacktrack[i][t].x + 3.5, screenbacktrack[i][t].y, Color(255, 0, 0, 75));
+										g_pRender->DrawLine(screenbacktrack[i][t].x, screenbacktrack[i][t].y - 3.5, screenbacktrack[i][t].x, screenbacktrack[i][t].y + 3.5, Color(255, 0, 0, 75));
+									}
+								}
+							}
+						}
+						else {
+							memset(&headPositions[0][0], 0, sizeof(headPositions));
+						}
+					}
 				}
 			}
 		}
+	}
+	catch (...) {
+#if ENABLE_DEBUG_FILE == 1
+		if (!espor) {
+			CSX::Log::Add("[CEsp:OnRender - error!]");
+			espor = 1;
+		}
+#endif
 	}
 }
 
@@ -864,34 +838,29 @@ void CEsp::OnEvents( IGameEvent* pEvent )
 	}
 }
 
-void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &state , const ModelRenderInfo_t &pInfo , matrix3x4_t *pCustomBoneToWorld )
-{
-	if ( !g_pPlayers || Interfaces::Engine()->IsTakingScreenshot() || !Interfaces::Engine()->IsConnected() || !pInfo.pModel )
-		return;
-
-	static bool InitalizeMaterial = false;
-
-	if ( !InitalizeMaterial )
-	{
-		visible_flat = CreateMaterial( true , false );
-		visible_tex = CreateMaterial( false , false );
-		hidden_flat = CreateMaterial( true , true );
-		hidden_tex = CreateMaterial( false , true );
-
-		InitalizeMaterial = true;
-
+void CEsp::OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state, 
+	const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld) {
+	if (!g_pPlayers || Interfaces::Engine()->IsTakingScreenshot() 
+		|| !Interfaces::Engine()->IsConnected() || !pInfo.pModel) {
 		return;
 	}
-
-	string strModelName = Interfaces::ModelInfo()->GetModelName( pInfo.pModel );
-
-	if ( strModelName.size() <= 1 )
+	static bool InitalizeMaterial = false;
+	if (!InitalizeMaterial) {
+		visible_flat = CreateMaterial(true, false);
+		visible_tex = CreateMaterial(false, false);
+		hidden_flat = CreateMaterial(true, true);
+		hidden_tex = CreateMaterial(false, true);
+		InitalizeMaterial = true;
 		return;
-
+	}
+	string strModelName = Interfaces::ModelInfo()->GetModelName(pInfo.pModel);
+	if (strModelName.size() <= 1) {
+		return;
+	}
+	//TODO: fully check to avoid read access violation crash
 	if (Settings::Misc::misc_ChamsMaterials) {
-		//check to avoid crash
 		CBaseEntity* lp = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
-		if (!lp->IsDead() && !lp->IsDormant()) {
+		if (!lp->IsDead() && !lp->IsDormant() && Interfaces::Engine()->IsConnected()) {
 			if (strModelName.find("models/player") != std::string::npos) {
 				IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity(pInfo.entity_index);
 				if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == static_cast<int>(CLIENT_CLASS_ID::CCSPlayer)) {
@@ -909,12 +878,28 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 					}
 					Color color = Color(255, 255, 255, 255);
 					if (Settings::Esp::esp_ChamsVisible <= 2) {
-						ForceMaterial(color, material);
-						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
+						//check to see if player has a weapon so no crash
+						//one last check :D
+						if (lp && !lp->IsDead() && lp->IsDormant() && lp->IsValid()
+							&& Interfaces::Engine()->IsConnected()) {
+							CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+							if (pWeaponEntity) {
+								ForceMaterial(color, material); // <- hey :D
+								material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
+							}
+						}
 					}
 					else {
-						ForceMaterial(color, material);
-						material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
+						//check to see if player has a weapon so no crash
+						//one last check :D
+						if (lp && !lp->IsDead() && lp->IsDormant() && lp->IsValid()
+							&& Interfaces::Engine()->IsConnected()) {
+							CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+							if (pWeaponEntity) {
+								ForceMaterial(color, material); // <- hey :D
+								material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
+							}
+						}
 					}
 					Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 				}
@@ -922,15 +907,11 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 		}
 	}
 
-	if (Settings::Misc::misc_ArmMaterials)
-	{
-		switch (Settings::Misc::misc_ArmMaterialsType)
-		{
-			case 0: if (strModelName.find("arms") != std::string::npos)
-			{
+	if (Settings::Misc::misc_ArmMaterials) {
+		switch (Settings::Misc::misc_ArmMaterialsType) {
+			case 0: if (strModelName.find("arms") != std::string::npos) {
 				IMaterial *material = nullptr;
-				switch (Settings::Misc::misc_ArmMaterialsList)
-				{
+				switch (Settings::Misc::misc_ArmMaterialsList) {
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
 					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
 					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
@@ -945,11 +926,9 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 				ForceMaterial(color, material);
 				Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 			} break;
-			case 1: if (strModelName.find("weapons/v") != std::string::npos)
-			{
+			case 1: if (strModelName.find("weapons/v") != std::string::npos) {
 				IMaterial *material = nullptr;
-				switch (Settings::Misc::misc_ArmMaterialsList)
-				{
+				switch (Settings::Misc::misc_ArmMaterialsList) {
 					case 0: material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/cologne_prediction/cologne_prediction_glass", TEXTURE_GROUP_OTHER); break; // Glass
 					case 1:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/crystal_clear", TEXTURE_GROUP_OTHER); break; // Crystal
 					case 2:	material = Interfaces::MaterialSystem()->FindMaterial("models/inventory_items/trophy_majors/gold", TEXTURE_GROUP_OTHER); break; // Gold
@@ -967,132 +946,103 @@ void CEsp::OnDrawModelExecute( IMatRenderContext* ctx , const DrawModelState_t &
 		}
 	}
 
-	if (Settings::Misc::misc_NoHands)
-	{
-		if (strModelName.find("arms") != string::npos && Settings::Misc::misc_NoHands)
-		{
+	if (Settings::Misc::misc_NoHands) {
+		if (strModelName.find("arms") != string::npos && Settings::Misc::misc_NoHands) {
 			IMaterial* Hands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
 			Hands->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, true);
 			Interfaces::ModelRender()->ForcedMaterialOverride(Hands);
 		}
 	}
-	else if (strModelName.find("arms") != string::npos)
-	{
+	else if (strModelName.find("arms") != string::npos) {
 		IMaterial* Hands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
 		Hands->SetMaterialVarFlag(MATERIAL_VAR_NO_DRAW, false);
 	}
-
-	if (Settings::Misc::misc_WireHands) //Wireframe Hands
-	{
-		if (strModelName.find("arms") != string::npos)
-		{
+	if (Settings::Misc::misc_WireHands) { //Wireframe Hands
+		if (strModelName.find("arms") != string::npos) {
 			IMaterial* WireHands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
 			WireHands->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, true);
 			Interfaces::ModelRender()->ForcedMaterialOverride(WireHands);
 		}
 	}
-	else if (strModelName.find("arms") != string::npos)
-	{
+	else if (strModelName.find("arms") != string::npos) {
 		IMaterial* WireHands = Interfaces::MaterialSystem()->FindMaterial(strModelName.c_str(), TEXTURE_GROUP_MODEL);
 		WireHands->SetMaterialVarFlag(MATERIAL_VAR_WIREFRAME, false);
 	}
 
-	if ( Settings::Esp::esp_Chams && Client::g_pPlayers && Client::g_pPlayers->GetLocal() && strModelName.find( "models/player" ) != string::npos )
-	{
-		IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity( pInfo.entity_index );
-
-		if ( pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CCSPlayer )
-		{
-			CPlayer* pPlayer = g_pPlayers->GetPlayer( pInfo.entity_index );
-
-			if ( pPlayer && pPlayer->bUpdate )
-			{
+	if (Settings::Esp::esp_Chams && Client::g_pPlayers && Client::g_pPlayers->GetLocal() && strModelName.find("models/player") != string::npos) {
+		IClientEntity* pBaseEntity = Interfaces::EntityList()->GetClientEntity(pInfo.entity_index);
+		if (pBaseEntity && pBaseEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CCSPlayer) {
+			CPlayer* pPlayer = g_pPlayers->GetPlayer(pInfo.entity_index);
+			if (pPlayer && pPlayer->bUpdate) {
 				bool CheckTeam = false;
-
 				Color TeamHideColor;
 				Color TeamVisibleColor;
-
-				if ( Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+				if (Settings::Esp::esp_Enemy && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
 					CheckTeam = true;
-
-				if ( Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+				}
+				if (Settings::Esp::esp_Team && pPlayer->Team == g_pPlayers->GetLocal()->Team) {
 					CheckTeam = true;
-
-				if ( pPlayer->Team == TEAM_CT )
-				{
-					TeamHideColor = Color( int( Settings::Esp::chams_Color_CT[0] * 255.f ) ,
-										   int( Settings::Esp::chams_Color_CT[1] * 255.f ) ,
-										   int( Settings::Esp::chams_Color_CT[2] * 255.f ) );
 				}
-				else if ( pPlayer->Team == TEAM_TT )
-				{
-					TeamHideColor = Color( int( Settings::Esp::chams_Color_TT[0] * 255.f ) ,
-										   int( Settings::Esp::chams_Color_TT[1] * 255.f ) ,
-										   int( Settings::Esp::chams_Color_TT[2] * 255.f ) );
+				if (pPlayer->Team == TEAM_CT) {
+					TeamHideColor = Color(int(Settings::Esp::chams_Color_CT[0] * 255.f),
+						int(Settings::Esp::chams_Color_CT[1] * 255.f),
+						int(Settings::Esp::chams_Color_CT[2] * 255.f));
 				}
-
+				else if (pPlayer->Team == TEAM_TT) {
+					TeamHideColor = Color(int(Settings::Esp::chams_Color_TT[0] * 255.f),
+						int(Settings::Esp::chams_Color_TT[1] * 255.f),
+						int(Settings::Esp::chams_Color_TT[2] * 255.f));
+				}
 				bool SetColor = false;
-
-				if ( Settings::Esp::esp_ChamsVisible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team ) // Ïðîòèâíèêîâ
+				if (Settings::Esp::esp_ChamsVisible == 0 && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
 					SetColor = true;
-				else if ( Settings::Esp::esp_ChamsVisible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team ) // Ñâîèõ
+				}
+				else if (Settings::Esp::esp_ChamsVisible == 1 && pPlayer->Team == g_pPlayers->GetLocal()->Team) {
 					SetColor = true;
-				else if ( Settings::Esp::esp_ChamsVisible == 2 ) // Âñåõ
+				}
+				else if (Settings::Esp::esp_ChamsVisible == 2) {
 					SetColor = true;
-
-				if ( SetColor )
-				{
-					if ( pPlayer->Team == TEAM_CT )
-					{
+				}
+				if (SetColor) {
+					if (pPlayer->Team == TEAM_CT) {
 						TeamVisibleColor = Color( int( Settings::Esp::chams_Color_VCT[0] * 255.f ) ,
 												  int( Settings::Esp::chams_Color_VCT[1] * 255.f ) ,
-												  int( Settings::Esp::chams_Color_VCT[2] * 255.f ) );
+							int(Settings::Esp::chams_Color_VCT[2] * 255.f));
 					}
-					else if ( pPlayer->Team == TEAM_TT )
-					{
+					else if (pPlayer->Team == TEAM_TT) {
 						TeamVisibleColor = Color( int( Settings::Esp::chams_Color_VTT[0] * 255.f ) ,
 												  int( Settings::Esp::chams_Color_VTT[1] * 255.f ) ,
-												  int( Settings::Esp::chams_Color_VTT[2] * 255.f ) );
+							int(Settings::Esp::chams_Color_VTT[2] * 255.f));
 					}
 				}
-				else
+				else {
 					TeamVisibleColor = TeamHideColor;
-
-				if (CheckTeam && !Settings::Misc::misc_ChamsMaterials)
-				{
-					if (Settings::Esp::esp_ChamsVisible <= 2)
-					{
-						if (Settings::Esp::esp_Chams == 1 && Settings::Esp::esp_XQZ == true)
-						{
+				}
+				if (CheckTeam && !Settings::Misc::misc_ChamsMaterials) {
+					if (Settings::Esp::esp_ChamsVisible <= 2) {
+						if (Settings::Esp::esp_Chams == 1 && Settings::Esp::esp_XQZ == true) {
 							ForceMaterial(TeamHideColor, hidden_flat);
 							hidden_flat->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
 						}
-						else if (Settings::Esp::esp_Chams == 2 && Settings::Esp::esp_XQZ == true)
-						{
+						else if (Settings::Esp::esp_Chams == 2 && Settings::Esp::esp_XQZ == true) {
 							ForceMaterial(TeamHideColor, hidden_tex);
 							hidden_tex->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
 						}
-						else if (Settings::Esp::esp_Chams == 1 && Settings::Esp::esp_XQZ == false)
-						{
+						else if (Settings::Esp::esp_Chams == 1 && Settings::Esp::esp_XQZ == false) {
 							ForceMaterial(TeamHideColor, hidden_flat);
 							hidden_flat->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 						}
-						else if (Settings::Esp::esp_Chams == 2 && Settings::Esp::esp_XQZ == false)
-						{
+						else if (Settings::Esp::esp_Chams == 2 && Settings::Esp::esp_XQZ == false) {
 							ForceMaterial(TeamHideColor, hidden_tex);
 							hidden_tex->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 						}
 					}
-
 					Interfaces::ModelRender()->DrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-
-					if (Settings::Esp::esp_Chams == 1)
-					{
+					if (Settings::Esp::esp_Chams == 1) {
 						ForceMaterial(TeamVisibleColor, visible_flat);
 						visible_flat->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 					}
-					else if (Settings::Esp::esp_Chams >= 2)
-					{
+					else if (Settings::Esp::esp_Chams >= 2) {
 						ForceMaterial(TeamVisibleColor, visible_tex);
 						visible_tex->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 					}

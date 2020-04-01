@@ -276,11 +276,12 @@ namespace Client
 
 			g_pGui->MenuColor();
 
-			if (g_pEsp)
+			//potential crash
+			if (g_pEsp) {
 				g_pEsp->OnRender();
+			}
 
-			if (g_pMisc)
-			{
+			if (g_pMisc) {
 				g_pMisc->OnRender();
 				g_pMisc->OnRenderSpectatorList();
 			}
@@ -433,15 +434,14 @@ namespace Client
 	}
 
 	void OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state,
-		const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld)
-	{
-		if (Interfaces::Engine()->IsInGame() && ctx && pCustomBoneToWorld)
-		{
-			if (g_pEsp)
+		const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld) {
+		if (Interfaces::Engine()->IsInGame() && ctx && pCustomBoneToWorld) {
+			if (g_pEsp) { //potential crash
 				g_pEsp->OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-
-			if (g_pMisc)
+			}
+			if (g_pMisc) {
 				g_pMisc->OnDrawModelExecute();
+			}
 		}
 	}
 
@@ -852,34 +852,29 @@ namespace Client
 			}
 
 			//fix it if you want sticker changer
-			/*
+			/*if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)) {
+				Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
+			}
 
-			if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled))
-				CL_FullUpdate();
-
-
-			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
-			{
+			static int iSlot;
+			const char* Slot[] = {"1","2","3","4"};
+			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled) {
 				ImGui::Combo("Slot", &iSlot, Slot, ARRAYSIZE(Slot));
-				ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text)
-				{
+				ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text) {
 					*out_text = k_stickers.at(idx).name.c_str();
 					return true;
 				}, nullptr, k_stickers.size());
-
 				ImGui::SliderFloat("Wear ", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear, 0.f, 1.f);
 				ImGui::SliderInt("Rotation", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation, 0, 360);
 			}
 
-
-			if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f)))
-				CL_FullUpdate();
-				*/
+			if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f))) {
+				Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
+			}*/
 		}
 
 		if (otherpages == 1)
 		{
-			//ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
 			if (Settings::InvChanger::Inventory_Changer)
 			{
@@ -1332,6 +1327,7 @@ namespace Client
 			ImGui::Checkbox("Show Spectators", &Settings::Misc::misc_Spectators);
 			ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("Recoil Crosshair", &Settings::Misc::misc_Punch);
+
 			//ImGui::SameLine(SpaceLineTwo);
 			//ImGui::Checkbox("Inventory Unlocker", &Settings::Misc::misc_inventory); // doesn't work
 
@@ -1382,16 +1378,14 @@ namespace Client
 				*(int*)((DWORD)&Name->fnChangeCallback + 0xC) = 0;
 				Name->SetValue(name);
 			}
-			/*			ImGui::Separator();
-
-						static char clantag[128] = { 0 };
-						ImGui::PushItemWidth(362.f);
-						ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
-						ImGui::PopItemWidth();
-						if (ImGui::Button("Apply"))
-						{
-							Engine::ClanTagApply(clantag);
-						}*/
+			/*ImGui::Separator();
+			static char clantag[128] = { 0 };
+			ImGui::PushItemWidth(362.f);
+			ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
+			ImGui::PopItemWidth();
+			if (ImGui::Button("Apply")) {
+				Engine::ClanTagApply(clantag);
+			}*/
 		}
 
 		if (otherpages == 1)
@@ -1405,12 +1399,14 @@ namespace Client
 			if (Settings::Untrusted)
 			{
 				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
-				ImGui::SameLine(SpaceLineOne);
-				//ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson); //broken so commented out
+				
+				//broken
+				/*ImGui::SameLine(SpaceLineOne);
+				//ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
 				ImGui::SameLine(SpaceLineTwo);
 				ImGui::PushItemWidth(362.f);
 				if (Settings::Misc::misc_ThirdPerson)
-					ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
+					ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");*/
 
 				ImGui::Separator();
 				ImGui::Spacing();

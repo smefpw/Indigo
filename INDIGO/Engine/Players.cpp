@@ -71,17 +71,16 @@ namespace Engine {
 		CBaseEntity* local = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 
 		//sanity check
-		CBaseWeapon* pWeaponEntity;
-		if (!local->IsDead()) {
-			pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
-		}
+		try {
+			CBaseWeapon* pWeaponEntity;
+			if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
+				pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+			}
 
-		if (pWeaponEntity) {
-			try {
-				if (!local->IsDead()) {
+			if (pWeaponEntity) {
+				if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
 					string WeaponStr = pWeaponEntity->GetName();
 					WeaponStr = WeaponStr.erase(0, 7);
-
 					m_pMe->WeaponName = WeaponStr;
 					m_pMe->WeaponType = GetWeaponType(*pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex());
 					m_pMe->WeaponIndex = *pWeaponEntity->GeteAttributableItem()->GetItemDefinitionIndex();
@@ -103,27 +102,26 @@ namespace Engine {
 					}
 				}
 			}
-			catch (...) {
+			else {
 				m_pMe->WeaponName = "";
 				m_pMe->WeaponType = WEAPON_TYPE_UNKNOWN;
 				m_pMe->WeaponIndex = 0;
 				m_pMe->WeaponAmmo = 0;
 				m_pMe->m_pWeaponEntity = nullptr;
-
-#if ENABLE_DEBUG_FILE == 1
-				if (!twc) {
-					CSX::Log::Add("[CPlayersUpdateLocal - error!]");
-					twc = 1;
-				}
-#endif
 			}
 		}
-		else {
+		catch (...) {
 			m_pMe->WeaponName = "";
 			m_pMe->WeaponType = WEAPON_TYPE_UNKNOWN;
 			m_pMe->WeaponIndex = 0;
 			m_pMe->WeaponAmmo = 0;
 			m_pMe->m_pWeaponEntity = nullptr;
+#if ENABLE_DEBUG_FILE == 1
+			if (!twc) {
+				CSX::Log::Add("[CPlayersUpdateLocal - error!]");
+				twc = 1;
+			}
+#endif
 		}
 		m_pMe->Team = (PLAYER_TEAM)m_pMe->m_pEntity->GetTeam();
 		return true;
@@ -274,15 +272,15 @@ namespace Engine {
 
 			CBaseEntity* local = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 			//sanity check
-			CBaseWeapon* pWeaponEntity;
-			if (!local->IsDead()) {
-				pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
-			}
+			try {
+				CBaseWeapon* pWeaponEntity;
+				if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
+					pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+				}
 
-			CWeaponInfo* weaponinfo;
-			if (pWeaponEntity) {
-				try {
-					if (!local->IsDead()) {
+				CWeaponInfo* weaponinfo;
+				if (pWeaponEntity) {
+					if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
 						string WeaponStr = pWeaponEntity->GetName();
 						WeaponStr = WeaponStr.erase(0, 7);
 						m_pPlayers[EntIndex].WeaponName = WeaponStr;
@@ -294,28 +292,28 @@ namespace Engine {
 						m_pPlayers[EntIndex].iWAmmo = 0;
 					}
 				}
-				catch (...) {
+				else {
 					m_pPlayers[EntIndex].WeaponName = "";
 					m_pPlayers[EntIndex].iWAmmo = 0;
-#if ENABLE_DEBUG_FILE == 1
-					if (!twc2) {
-						CSX::Log::Add("[CPlayersUpdate - error!]");
-						twc2 = 1;
-					}
-#endif
 				}
+				m_pPlayers[EntIndex].Team = (PLAYER_TEAM)pEntity->GetTeam();
+				m_pPlayers[EntIndex].iHealth = pEntity->GetHealth();
+				m_pPlayers[EntIndex].iArmor = pEntity->GetArmor();
+				m_pPlayers[EntIndex].iDistance = int(m_pMe->m_pEntity->GetRenderOrigin().DistTo(pEntity->GetRenderOrigin()));
+				m_pPlayers[EntIndex].bUpdate = true;
+				m_pPlayers[EntIndex].bVisible = pEntity->IsVisible(m_pMe->m_pEntity);
+				m_pPlayers[EntIndex].m_pEntity = pEntity;
 			}
-			else {
+			catch (...) {
 				m_pPlayers[EntIndex].WeaponName = "";
 				m_pPlayers[EntIndex].iWAmmo = 0;
+#if ENABLE_DEBUG_FILE == 1
+				if (!twc2) {
+					CSX::Log::Add("[CPlayersUpdate - error!]");
+					twc2 = 1;
+				}
+#endif
 			}
-			m_pPlayers[EntIndex].Team = (PLAYER_TEAM)pEntity->GetTeam();
-			m_pPlayers[EntIndex].iHealth = pEntity->GetHealth();
-			m_pPlayers[EntIndex].iArmor = pEntity->GetArmor();
-			m_pPlayers[EntIndex].iDistance = int(m_pMe->m_pEntity->GetRenderOrigin().DistTo(pEntity->GetRenderOrigin()));
-			m_pPlayers[EntIndex].bUpdate = true;
-			m_pPlayers[EntIndex].bVisible = pEntity->IsVisible(m_pMe->m_pEntity);
-			m_pPlayers[EntIndex].m_pEntity = pEntity;
 		}
 	}
 	void CPlayers::Clear() {

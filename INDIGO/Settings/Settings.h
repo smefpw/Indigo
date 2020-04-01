@@ -92,8 +92,11 @@ namespace Settings
 		struct weapon_trigger_s
 		{
 			//[swap_lines]
+
+			//don't need to save these unless readded to menu
 			int trigger_DistanceMin;
 			int trigger_DistanceMax;
+
 			int trigger_Fov;
 			int trigger_DelayBefore;
 			int trigger_DelayAfter;
@@ -228,10 +231,10 @@ namespace Settings
 		extern bool misc_LegitAA;
 		extern bool misc_LegitAAToggle;
 		extern char misc_NameChanger;
-		extern char misc_ClanTagChanger;
+		//extern char misc_ClanTagChanger; //not used!
 		extern QAngle qLastTickAngle;
-		extern bool misc_ThirdPerson;
-		extern float misc_ThirdPersonRange;
+		/*extern bool misc_ThirdPerson;
+		extern float misc_ThirdPersonRange;*/ //broken
 		extern const char* misc_SkyName;
 		extern float misc_MenuColor[3];
 		extern float misc_TextColor[3];
@@ -250,23 +253,23 @@ namespace Settings
 		extern bool misc_spamregular;
 		extern bool misc_spamrandom;
 		extern bool misc_Punch;
-		extern bool misc_AwpAim;
+		//extern bool misc_AwpAim; //broken
 		extern bool misc_NoFlash;	
 		extern bool misc_NoSmoke;
 		extern bool misc_WireHands;
-		extern bool misc_mappredict;
+		//extern bool misc_mappredict; //not used!
 		extern bool misc_NoHands;
 		extern bool misc_AutoStrafe;
 		extern bool misc_AutoAccept;
 		extern bool misc_Spectators;
-		extern bool misc_RainbowMenu;
-		extern float misc_RainbowSpeed;
+		/*extern bool misc_RainbowMenu;
+		extern float misc_RainbowSpeed;*/ //not used!
 		extern bool misc_FovChanger;
 		extern int misc_FovView;
 		extern int misc_FovModelView;
 		extern float misc_fakelag_amount;
 		extern bool misc_Moonwalk;
-		extern bool misc_inventory;
+		//extern bool misc_inventory; //not in client
 
 		extern bool misc_namespamidkmemes;
 		extern bool misc_namespamidkmemes_static;

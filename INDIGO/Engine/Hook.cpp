@@ -30,19 +30,40 @@ namespace Engine {
 		typedef HRESULT(WINAPI* Reset_t)(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters);
 		Reset_t Reset_o;
 
+		bool ps;
 		HRESULT WINAPI Hook_Present(IDirect3DDevice9* pDevice, CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!ps) {
+				CSX::Log::Add("\n[Hooked - Present]");
+				ps = true;
+			}
+#endif
 			Client::OnRender();
 			return Present_o(pDevice, pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 		}
 
+		bool rs;
 		HRESULT WINAPI Hook_Reset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!rs) {
+				CSX::Log::Add("[Hooked - Reset]");
+				rs = true;
+			}
+#endif
 			Client::OnLostDevice();
 			HRESULT hRes = Reset_o(pDevice, pPresentationParameters);
 			Client::OnResetDevice();
 			return hRes;
 		}
 
+		bool cm;
 		bool WINAPI Hook_CreateMove(float flInputSampleTime, CUserCmd* pCmd) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!cm) {
+				CSX::Log::Add("[Hooked - CreateMove]");
+				cm = true;
+			}
+#endif
 			if (!pCmd->command_number) {
 				return true;
 			}
@@ -55,7 +76,14 @@ namespace Engine {
 			return false;
 		}
 
+		bool dpsse;
 		int WINAPI Hook_DoPostScreenSpaceEffects(int callback) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!dpsse) {
+				CSX::Log::Add("[Hooked - DoPostScreenSpaceEffects]");
+				dpsse = true;
+			}
+#endif
 			ClientModeTable.UnHook();
 			int ret = Interfaces::ClientMode()->DoPostScreenSpaceEffects(callback);
 			ClientModeTable.ReHook();
@@ -93,23 +121,31 @@ namespace Engine {
 
 		int ic1; //is connected 1
 		bool WINAPI Hook_IsConnected() {
+			//1st April 2020
 			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA(CLIENT_DLL), "75 04 B0 01 5F") - 2;
 #if ENABLE_DEBUG_FILE == 1
 			if (!ic1) {
-				CSX::Log::Add("[FindPattern] - IsConnected = %X]", unk);
+				CSX::Log::Add("[FindPattern/Hooked - IsConnected = %X]", unk);
 				ic1 = true;
 			}
 #endif
-			if (_ReturnAddress() == unk && Settings::Misc::misc_inventory) {
+			/*if (_ReturnAddress() == unk && Settings::Misc::misc_inventory) {
 				return false;
-			}
+			}*/ //not called anyway
 			EngineTable.UnHook();
 			bool ret = Interfaces::Engine()->IsConnected();
 			EngineTable.ReHook();
 			return ret;
 		}
 
+		bool orv; //ovr
 		bool WINAPI Hook_OverrideView(CViewSetup* pSetup) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!orv) {
+				CSX::Log::Add("[Hooked - OverrideView]");
+				orv = true;
+			}
+#endif
 			Client::OnOverrideView(pSetup);
 			ClientModeTable.UnHook();
 			bool ret = Interfaces::ClientMode()->OverrideView(pSetup);
@@ -117,7 +153,14 @@ namespace Engine {
 			return ret;
 		}
 
+		bool gvm; //gvm
 		float WINAPI Hook_GetViewModelFOV() {
+#if ENABLE_DEBUG_FILE == 1
+			if (!gvm) {
+				CSX::Log::Add("[Hooked - GetViewModelFOV]");
+				gvm = true;
+			}
+#endif
 			ClientModeTable.UnHook();
 			float fov = Interfaces::ClientMode()->GetViewModelFOV();
 			ClientModeTable.ReHook();
@@ -125,7 +168,14 @@ namespace Engine {
 			return fov;
 		}
 
+		bool rm;
 		EGCResults __fastcall Hook_RetrieveMessage(void* ecx, void* edx, uint32_t *punMsgType, void *pubDest, uint32_t cubDest, uint32_t *pcubMsgSize) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!rm) {
+				CSX::Log::Add("[Hooked - RetrieveMessage]");
+				rm = true;
+			}
+#endif
 			SteamGameCoordinatorTable.UnHook();
 			EGCResults status = Interfaces::SteamGameCoordinator()->RetrieveMessage(punMsgType, pubDest, cubDest, pcubMsgSize);
 			SteamGameCoordinatorTable.ReHook();
@@ -135,7 +185,15 @@ namespace Engine {
 			Client::OnRetrieveMessage(ecx, edx, punMsgType, pubDest, cubDest, pcubMsgSize);
 			return status;
 		}
+
+		bool sm;
 		EGCResults __fastcall Hook_SendMessage(void* ecx, void* edx, uint32_t unMsgType, const void* pubData, uint32_t cubData) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!sm) {
+				CSX::Log::Add("\n[Hooked - SendMessage]");
+				sm = true;
+			}
+#endif
 			uint32_t messageType = unMsgType & 0x7FFFFFFF;
 			void* pubDataMutable = const_cast<void*>(pubData);
 			Client::OnSendMessage(ecx, edx, unMsgType, pubData, cubData);
@@ -145,7 +203,14 @@ namespace Engine {
 			return status;
 		}
 
+		bool fecst;
 		bool WINAPI Hook_FireEventClientSideThink(IGameEvent* pEvent) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!fecst) {
+				CSX::Log::Add("[Hooked - FireEventClientSideThink]");
+				fecst = true;
+			}
+#endif
 			bool ret = false;
 			if (!pEvent) {
 				GameEventTable.UnHook();
@@ -160,17 +225,31 @@ namespace Engine {
 			return ret;
 		}
 
+		bool fsn;
 		void WINAPI Hook_FrameStageNotify(ClientFrameStage_t Stage) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!fsn) {
+				CSX::Log::Add("[Hooked - FrameStageNotify]");
+				fsn = true;
+			}
+#endif
 			Client::OnFrameStageNotify(Stage);
 			ClientTable.UnHook();
 			Interfaces::Client()->FrameStageNotify(Stage);
 			ClientTable.ReHook();
 		}
 
+		bool es1;
 		int WINAPI Hook_EmitSound1(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
 			float flVolume, soundlevel_t iSoundlevel, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
 			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
 		{
+#if ENABLE_DEBUG_FILE == 1
+			if (!es1) {
+				CSX::Log::Add("[Hooked - EmitSound1]");
+				es1 = true;
+			}
+#endif
 			if (pSample) {
 				Client::OnPlaySound(pOrigin, pSample);
 			}
@@ -182,10 +261,17 @@ namespace Engine {
 			return ret;
 		}
 
+		bool es2;
 		int WINAPI Hook_EmitSound2(IRecipientFilter& filter, int iEntIndex, int iChannel, const char *pSoundEntry, unsigned int nSoundEntryHash, const char *pSample,
 			float flVolume, float flAttenuation, int nSeed, int iFlags = 0, int iPitch = PITCH_NORM,
 			const Vector *pOrigin = NULL, const Vector *pDirection = NULL, CUtlVector< Vector >* pUtlVecOrigins = NULL, bool bUpdatePositions = true, float soundtime = 0.0f, int speakerentity = -1, int unklown = 0)
 		{
+#if ENABLE_DEBUG_FILE == 1
+			if (!es2) {
+				CSX::Log::Add("[Hooked - EmitSound2]");
+				es2 = true;
+			}
+#endif
 			if (pSample) {
 				Client::OnPlaySound(pOrigin, pSample);
 			}
@@ -197,9 +283,16 @@ namespace Engine {
 			return ret;
 		}
 
+		bool dme;
 		void WINAPI Hook_DrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state,
 			const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld = NULL)
 		{
+#if ENABLE_DEBUG_FILE == 1
+			if (!dme) {
+				CSX::Log::Add("[Hooked - DrawModelExecute]\n");
+				dme = true;
+			}
+#endif
 			ModelRenderTable.UnHook();
 			if (ctx && pCustomBoneToWorld) {
 				Client::OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
@@ -211,7 +304,14 @@ namespace Engine {
 			ModelRenderTable.ReHook();
 		}
 
+		bool plays;
 		void WINAPI Hook_PlaySound(const char* pszSoundName) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!plays) {
+				CSX::Log::Add("[Hooked - PlaySound]");
+				plays = true;
+			}
+#endif
 			SurfaceTable.UnHook();
 			if (pszSoundName) {
 				Client::OnPlaySound(pszSoundName);
@@ -220,7 +320,14 @@ namespace Engine {
 			SurfaceTable.ReHook();
 		}
 
+		bool lc;
 		void Hook_LockCursor() {
+#if ENABLE_DEBUG_FILE == 1
+			if (!lc) {
+				CSX::Log::Add("[Hooked - LockCursor]\n");
+				lc = true;
+			}
+#endif
 			SurfaceTable.UnHook();
 			Interfaces::Surface()->LockCursor();
 			SurfaceTable.ReHook();
@@ -232,21 +339,21 @@ namespace Engine {
 		bool Initialize() {
 			if (!CSX::Utils::IsModuleLoad(D3D9_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook] - module %s not loaded!]", D3D9_DLL);
+				CSX::Log::Add("[Hook - module %s not loaded!]", D3D9_DLL);
 #endif
 				return false;
 			}
 
 			if (!CSX::Utils::IsModuleLoad(SHADERPIDX9_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook] - module %s not loaded!]", SHADERPIDX9_DLL);
+				CSX::Log::Add("[Hook - module %s not loaded!]", SHADERPIDX9_DLL);
 #endif
 				return false;
 			}
 
 			if (!CSX::Utils::IsModuleLoad(GAMEOVERLAYRENDERER_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook] - module %s not loaded!]", GAMEOVERLAYRENDERER_DLL);
+				CSX::Log::Add("[Hook - module %s not loaded!]", GAMEOVERLAYRENDERER_DLL);
 #endif
 				return false;
 			}
@@ -267,15 +374,18 @@ namespace Engine {
 					DWORD_PTR* dwAddress = *dwPresent_o;
 					Present_o = (Present_t)(*dwAddress);
 					*dwAddress = (DWORD_PTR)(&Hook_Present);
+
+					//works
 					Reset_o = (Reset_t)IDirect3DDevice9Table.GetHookIndex(D3D9::TABLE::Reset, Hook_Reset);
 
 					if (!ClientModeTable.InitTable(Interfaces::ClientMode())) {
 #if ENABLE_DEBUG_FILE == 1
 						CSX::Log::Add("\n[Clientmode - failed to init!]");
-#endif
+#endif*/
 						return false;
 					}
 
+					//works
 					ClientModeTable.HookIndex(TABLE::IClientMode::CreateMove, Hook_CreateMove);
 					ClientModeTable.HookIndex(TABLE::IClientMode::OverrideView, Hook_OverrideView);
 					ClientModeTable.HookIndex(TABLE::IClientMode::GetViewModelFOV, Hook_GetViewModelFOV);
@@ -287,6 +397,8 @@ namespace Engine {
 #endif
 						return false;
 					}
+
+					//works
 					SteamGameCoordinatorTable.HookIndex(0, Hook_SendMessage);
 					SteamGameCoordinatorTable.HookIndex(2, Hook_RetrieveMessage);
 
@@ -297,6 +409,7 @@ namespace Engine {
 						return false;
 					}
 
+					//works
 					GameEventTable.HookIndex(TABLE::IGameEventManager2::FireEventClientSide, Hook_FireEventClientSideThink);
 
 					if (!ClientTable.InitTable(Interfaces::Client())) {
@@ -306,6 +419,7 @@ namespace Engine {
 						return false;
 					}
 
+					//works
 					ClientTable.HookIndex(TABLE::IBaseClientDLL::FrameStageNotify, Hook_FrameStageNotify);
 
 					if (!SoundTable.InitTable(Interfaces::Sound())) {
@@ -315,7 +429,7 @@ namespace Engine {
 						return false;
 					}
 
-					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound1, Hook_EmitSound1);
+					//works
 					SoundTable.HookIndex(TABLE::IEngineSound::EmitSound2, Hook_EmitSound2);
 
 					if (!ModelRenderTable.InitTable(Interfaces::ModelRender())) {
@@ -325,6 +439,7 @@ namespace Engine {
 						return false;
 					}
 
+					//works
 					ModelRenderTable.HookIndex(TABLE::IVModelRender::DrawModelExecute, Hook_DrawModelExecute);
 
 					if (!SurfaceTable.InitTable(Interfaces::Surface())) {
@@ -334,7 +449,10 @@ namespace Engine {
 						return false;
 					}
 
+					//doesn't work
 					SurfaceTable.HookIndex(TABLE::ISurface::PlaySound, Hook_PlaySound);
+
+					//works
 					SurfaceTable.HookIndex(TABLE::ISurface::LockCursor, Hook_LockCursor);
 
 					if (Client::Initialize(g_pDevice)) {

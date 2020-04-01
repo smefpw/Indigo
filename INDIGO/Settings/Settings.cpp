@@ -175,13 +175,13 @@ namespace Settings
 		bool misc_LegitAA = false;
 		bool misc_LegitAAToggle = false;
 		char misc_NameChanger = 0;
-		char misc_ClanTagChanger = 0;
+		//char misc_ClanTagChanger = 0; //not used
 		QAngle qLastTickAngle;
 		float misc_MenuColor[3] = { 0.f, 0.f, 0.f };
 		bool misc_SkinChanger = true;
 		bool misc_KnifeChanger = true;
-		bool misc_ThirdPerson = false;
-		float misc_ThirdPersonRange = 90.f;
+		/*bool misc_ThirdPerson = false;
+		float misc_ThirdPersonRange = 90.f;*/ //broken
 		float misc_fakelag_amount = 0.f;
 		bool misc_ChamsMaterials = false;
 		int misc_ChamsMaterialsList = 0;
@@ -200,9 +200,9 @@ namespace Settings
 		bool misc_NoFlash = false;
 		bool misc_NoSmoke = false;
 		bool misc_WireHands = false;
-		bool misc_mappredict = false;
+		//bool misc_mappredict = false; //not used
 		bool misc_NoHands = false;
-		bool misc_AwpAim = false;
+		//bool misc_AwpAim = false; //broken
 		bool misc_AutoStrafe = false;
 		bool misc_Moonwalk = false;
 
@@ -215,13 +215,13 @@ namespace Settings
 
 		bool misc_AutoAccept = false;
 		bool misc_Spectators = false;
-		bool misc_inventory = false;
-		bool misc_RainbowMenu = false;
-		float misc_RainbowSpeed = 0.001f;
+		//bool misc_inventory = false; //not in client
+		/*bool misc_RainbowMenu = false;
+		float misc_RainbowSpeed = 0.001f;*/ //not used!
 		bool misc_FovChanger = false;
 		int misc_FovView = 90;
 		int misc_FovModelView = 68;
-		float misc_AwpAimColor[3] = { 0.f,0.f,0.f };
+		//float misc_AwpAimColor[3] = { 0.f,0.f,0.f }; //broken
 		float misc_TextColor[3] = { 0.f, 0.f, 0.f };
 		float hitmarkerAlpha;
 	}
@@ -313,8 +313,8 @@ namespace Settings
 
 		for ( DWORD i = 0; i < WEAPON_DATA_SIZE; i++ )
 		{
-			Triggerbot::weapon_trigger_settings[i].trigger_DistanceMin = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DISTANCEMIN , 0 );
-			Triggerbot::weapon_trigger_settings[i].trigger_DistanceMax = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DISTANCEMAX , 5000 );
+			//Triggerbot::weapon_trigger_settings[i].trigger_DistanceMin = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DISTANCEMIN , 0 ); //not in client
+			//Triggerbot::weapon_trigger_settings[i].trigger_DistanceMax = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DISTANCEMAX , 5000 ); //not in client
 			Triggerbot::weapon_trigger_settings[i].trigger_Fov = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_FOV , 10 );
 			Triggerbot::weapon_trigger_settings[i].trigger_DelayBefore = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DELAYBEFORE , 10 );
 			Triggerbot::weapon_trigger_settings[i].trigger_DelayAfter = CSX::Cvar::LoadCvar( pWeaponData[i] , CVAR_TRIGGER_DELAYAFTER , 100 );
@@ -472,11 +472,11 @@ namespace Settings
 		Misc::misc_Bhop = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_BHOP , Misc::misc_Bhop );
 		Esp::esp_NightMode = CSX::Cvar::LoadCvar(VISUAL_TEXT, CVAR_ESP_NIGHTMODE, Esp::esp_NightMode); //in misc tab
 		Misc::misc_Punch = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_PUNCH , Misc::misc_Punch );
-		Misc::misc_AwpAim = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim );
+		//Misc::misc_AwpAim = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim );
 		Misc::misc_NoFlash = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_NOFLASH , Misc::misc_NoFlash );
 		Misc::misc_NoSmoke = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_NOSMOKE, Misc::misc_NoSmoke);
 		Misc::misc_WireHands = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_WIREHANDS, Misc::misc_WireHands);
-		Misc::misc_mappredict = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict);
+		//Misc::misc_mappredict = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict);
 		Misc::misc_NoHands = CSX::Cvar::LoadCvar(MISC_TEXT, CVAR_MISC_NOHANDS, Misc::misc_NoHands);
 		Misc::misc_AutoStrafe = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AUTOSTRAFE , Misc::misc_AutoStrafe );
 		Misc::misc_AutoAccept = CSX::Cvar::LoadCvar( MISC_TEXT , CVAR_MISC_AUTOACCEPT , Misc::misc_AutoAccept );
@@ -814,9 +814,9 @@ namespace Settings
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_NOFLASH , Misc::misc_NoFlash );
 		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_NOSMOKE, Misc::misc_NoSmoke);
 		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_WIREHANDS, Misc::misc_WireHands);
-		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict);
+		//CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_MAPPREDICT, Misc::misc_mappredict);
 		CSX::Cvar::SaveCvar( MISC_TEXT, CVAR_MISC_NOHANDS, Misc::misc_NoHands);
-		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim );
+		//CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AWPAIM , Misc::misc_AwpAim );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AUTOSTRAFE , Misc::misc_AutoStrafe );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_AUTOACCEPT , Misc::misc_AutoAccept );
 		CSX::Cvar::SaveCvar( MISC_TEXT , CVAR_MISC_SPECTATORS , Misc::misc_Spectators );

@@ -9,29 +9,39 @@
 using namespace Client;
 //[junk_enable /]
 //[enc_string_enable /]
-void CMisc::OnRender()
-{
-	if (Settings::Misc::misc_Punch)
-	{
-		CBaseEntity* localplayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
-		if (Interfaces::Engine()->IsInGame() && localplayer)
-		{
-			Vector ViewAngles;
-			Interfaces::Engine()->GetViewAngles(ViewAngles);
-			ViewAngles += (localplayer->GetAimPunchAngle()) * 2.f;
 
-			Vector fowardVec;
-			AngleVectors(ViewAngles, fowardVec);
-			fowardVec *= 10000;
+bool miscor; //misc on render
+void CMisc::OnRender() {
+	if (Settings::Misc::misc_Punch) {
+		CBaseEntity* lp = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
+		try {
+			if (Interfaces::Engine()->IsInGame()) {
+				//check to see if player has a weapon so no crash XD
+				CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+				if (lp && pWeaponEntity && !lp->IsDead() && !lp->IsDormant() && Interfaces::Engine()->IsConnected()){
+					Vector ViewAngles;
+					Interfaces::Engine()->GetViewAngles(ViewAngles);
+					ViewAngles += (lp->GetAimPunchAngle()) * 2.f;
+					Vector fowardVec;
+					AngleVectors(ViewAngles, fowardVec);
+					fowardVec *= 10000;
+					Vector start = lp->GetEyePosition();
+					Vector end = start + fowardVec, endScreen;
 
-			Vector start = localplayer->GetEyePosition();
-			Vector end = start + fowardVec, endScreen;
-
-			if (WorldToScreen(end, endScreen) && IsLocalAlive())
-			{
-				g_pRender->DrawFillBox(endScreen.x - 1, endScreen.y - 1, 3, 3, Color::Green());
+					//potential crash
+					if (WorldToScreen(end, endScreen) && IsLocalAlive()) {
+						g_pRender->DrawFillBox(endScreen.x - 1, endScreen.y - 1, 3, 3, Color::Green());
+					}
+				}
 			}
-
+		}
+		catch (...) {
+#if ENABLE_DEBUG_FILE == 1
+			if (!miscor) {
+				CSX::Log::Add("[CMisc:OnRender - error!]");
+				miscor = 1;
+			}
+#endif
 		}
 	}
 } 
@@ -137,10 +147,10 @@ void CMisc::OnCreateMove( CUserCmd* pCmd )
 	}
 }
 
-//Broken for now, something wrong with m_fCameraInThirdPerson.
+//broken
 void CMisc::FrameStageNotify(ClientFrameStage_t Stage)
 {
-	if (Interfaces::Engine()->IsInGame() && Stage == ClientFrameStage_t::FRAME_RENDER_START)
+	/*if (Interfaces::Engine()->IsInGame() && Stage == ClientFrameStage_t::FRAME_RENDER_START)
 	{
 		CBaseEntity* localplayer = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 		if (!localplayer)
@@ -165,7 +175,7 @@ void CMisc::FrameStageNotify(ClientFrameStage_t Stage)
 				Interfaces::Input()->m_vecCameraOffset = QAngle(vecAngles.x, vecAngles.y, 0);
 			}
 		}
-	}
+	}*/
 }
 
 std::vector<const char*> smoke_materials = {
