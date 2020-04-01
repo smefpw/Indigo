@@ -246,7 +246,7 @@ namespace Engine {
 		{
 #if ENABLE_DEBUG_FILE == 1
 			if (!es1) {
-				CSX::Log::Add("[Hooked - EmitSound1]");
+				CSX::Log::Add("\n[Hooked - EmitSound1]\n");
 				es1 = true;
 			}
 #endif
@@ -268,7 +268,7 @@ namespace Engine {
 		{
 #if ENABLE_DEBUG_FILE == 1
 			if (!es2) {
-				CSX::Log::Add("[Hooked - EmitSound2]");
+				CSX::Log::Add("\n[Hooked - EmitSound2]\n");
 				es2 = true;
 			}
 #endif
@@ -308,7 +308,7 @@ namespace Engine {
 		void WINAPI Hook_PlaySound(const char* pszSoundName) {
 #if ENABLE_DEBUG_FILE == 1
 			if (!plays) {
-				CSX::Log::Add("[Hooked - PlaySound]");
+				CSX::Log::Add("\n[Hooked - PlaySound]\n");
 				plays = true;
 			}
 #endif
@@ -339,21 +339,21 @@ namespace Engine {
 		bool Initialize() {
 			if (!CSX::Utils::IsModuleLoad(D3D9_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook - module %s not loaded!]", D3D9_DLL);
+				CSX::Log::Add("[Hooks - module %s not loaded!]", D3D9_DLL);
 #endif
 				return false;
 			}
 
 			if (!CSX::Utils::IsModuleLoad(SHADERPIDX9_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook - module %s not loaded!]", SHADERPIDX9_DLL);
+				CSX::Log::Add("[Hooks - module %s not loaded!]", SHADERPIDX9_DLL);
 #endif
 				return false;
 			}
 
 			if (!CSX::Utils::IsModuleLoad(GAMEOVERLAYRENDERER_DLL)) {
 #if ENABLE_DEBUG_FILE == 1
-				CSX::Log::Add("[Hook - module %s not loaded!]", GAMEOVERLAYRENDERER_DLL);
+				CSX::Log::Add("[Hooks - module %s not loaded!]", GAMEOVERLAYRENDERER_DLL);
 #endif
 				return false;
 			}

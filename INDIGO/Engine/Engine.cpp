@@ -118,13 +118,13 @@ namespace Engine {
 
 		if (!Engine::Hook::Initialize()) {
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("[Hook - failed to initialize!]");
+			CSX::Log::Add("[Hooks - failed to initialize!]");
 #endif
 			return false;
 		}
 		else {
 #if ENABLE_DEBUG_FILE == 1
-			CSX::Log::Add("[Hook - initialized!]");
+			CSX::Log::Add("[Hooks - initialized!]");
 #endif
 		}
 		if (!Engine::Offset::Initialize()) {
