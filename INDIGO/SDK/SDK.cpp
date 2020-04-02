@@ -76,7 +76,7 @@ namespace SDK
 		return g_pEngine;
 	}
 
-	//27th July 2019
+	//11th March 2020
 	CGlowObjectManager* Interfaces::GlowManager() {
 		if (!g_GlowObjManager) {
 			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "A1 ? ? ? ? A8 01 75 4B") + 0x1);
@@ -135,7 +135,7 @@ namespace SDK
 		return g_pGlobals;
 	}
 
-	//27th July 2019
+	//11th March 2020
 	CInput* Interfaces::Input() {
 		if (!g_pInput) {
 			g_pInput = *(CInput**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 0x1);

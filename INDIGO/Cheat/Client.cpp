@@ -276,11 +276,12 @@ namespace Client
 
 			g_pGui->MenuColor();
 
-			if (g_pEsp)
+			//potential crash
+			if (g_pEsp) {
 				g_pEsp->OnRender();
+			}
 
-			if (g_pMisc)
-			{
+			if (g_pMisc) {
 				g_pMisc->OnRender();
 				g_pMisc->OnRenderSpectatorList();
 			}
@@ -424,7 +425,7 @@ namespace Client
 					DELETE_MOD(sv_cheats_spoofed);
 				}
 			}
-			/*if (g_pMisc) //broken lul
+			/*if (g_pMisc) //broken lul - thirdperson
 				g_pMisc->FrameStageNotify(Stage);*/
 
 			Skin_OnFrameStageNotify(Stage);
@@ -433,15 +434,14 @@ namespace Client
 	}
 
 	void OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &state,
-		const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld)
-	{
-		if (Interfaces::Engine()->IsInGame() && ctx && pCustomBoneToWorld)
-		{
-			if (g_pEsp)
+		const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld) {
+		if (Interfaces::Engine()->IsInGame() && ctx && pCustomBoneToWorld) {
+			if (g_pEsp) { //potential crash
 				g_pEsp->OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
-
-			if (g_pMisc)
+			}
+			if (g_pMisc) {
 				g_pMisc->OnDrawModelExecute();
+			}
 		}
 	}
 
@@ -714,7 +714,8 @@ namespace Client
 				"Default","Bayonet","Flip","Gut","Karambit" ,"M9 Bayonet",
 				"Huntsman","Falchion","Bowie","Butterfly","Shadow Daggers",
 				"Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife",
-				"CSS Knife", "Nomad Knife", "Skeleton Knife", "Survival Knife", "Paracord Knife"
+				"CSS Knife", "Paracord Knife", "Survival Knife", "Nomad Knife",
+				"Skeleton Knife"
 			};
 
 			const char* quality_items[] =
@@ -851,34 +852,29 @@ namespace Client
 			}
 
 			//fix it if you want sticker changer
-			/*
+			/*if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)) {
+				Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
+			}
 
-			if (ImGui::Checkbox("Sticker Changer", &Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled))
-				CL_FullUpdate();
-
-
-			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled)
-			{
+			static int iSlot;
+			const char* Slot[] = {"1","2","3","4"};
+			if (Settings::Aimbot::weapon_aim_settings[iWeaponID].StickersEnabled) {
 				ImGui::Combo("Slot", &iSlot, Slot, ARRAYSIZE(Slot));
-				ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text)
-				{
+				ImGui::Combo("ID", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iID, [](void* data, int idx, const char** out_text) {
 					*out_text = k_stickers.at(idx).name.c_str();
 					return true;
 				}, nullptr, k_stickers.size());
-
 				ImGui::SliderFloat("Wear ", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].flWear, 0.f, 1.f);
 				ImGui::SliderInt("Rotation", &Settings::Aimbot::weapon_aim_settings[iWeaponID].Stickers[iSlot].iRotation, 0, 360);
 			}
 
-
-			if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f)))
-				CL_FullUpdate();
-				*/
+			if (ImGui::Button(("Apply"), ImVec2(93.f, 20.f))) {
+				Interfaces::Engine()->ClientCmd_Unrestricted2("record x; stop");
+			}*/
 		}
 
 		if (otherpages == 1)
 		{
-			//ImGui::Text("Other Changers");
 			ImGui::Checkbox("Inventory Changer", &Settings::InvChanger::Inventory_Changer);
 			if (Settings::InvChanger::Inventory_Changer)
 			{
@@ -893,14 +889,14 @@ namespace Client
 					"MAC-10", "P90", "UMP-45", "XM1014", "PP-Bizon", "MAG-7", "Negev", "Sawed-Off", "Tec-9", "P2000", "MP7", "MP5-SD", "MP9", "Nova", "P250", "SCAR-20", "SG 556", "SSG 08",
 					"M4A1-S", "USP-S", "CZ75-Auto", "R8 Revolver",
 					"Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman Knife", "Falchion Knife", "Bowie Knife", "Butterfly Knife",
-					"Shadow Daggers", "Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife", "CSS Knife", "Nomad Knife", "Skeleton Knife", "Survival Knife", "Paracord Knife",
+					"Shadow Daggers", "Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife", "CSS Knife", "Paracord Knife", "Survival Knife", "Nomad Knife", "Skeleton Knife",
 					"Sport Gloves", "Driver Gloves", "Hand Wraps", "Moto Gloves", "Specialist Gloves", "Hydra Gloves" };
 				const int weapons_id[] = { WEAPON_DEAGLE, WEAPON_ELITE, WEAPON_FIVESEVEN, WEAPON_GLOCK, WEAPON_AK47, WEAPON_AUG, WEAPON_AWP, WEAPON_FAMAS, WEAPON_G3SG1, WEAPON_GALIL, WEAPON_M249,
 					WEAPON_M4A4, WEAPON_MAC10, WEAPON_P90, WEAPON_UMP45, WEAPON_XM1014, WEAPON_BIZON, WEAPON_MAG7, WEAPON_NEGEV, WEAPON_SAWEDOFF, WEAPON_TEC9, WEAPON_P2000, WEAPON_MP7, WEAPON_MP5SD, WEAPON_MP9,
 					WEAPON_NOVA, WEAPON_P250, WEAPON_SCAR20, WEAPON_SG553, WEAPON_SSG08, WEAPON_M4A1S, WEAPON_USPS, WEAPON_CZ75, WEAPON_REVOLVER, WEAPON_BAYONET, WEAPON_KNIFE_FLIP,
 					WEAPON_KNIFE_GUT, WEAPON_KNIFE_KARAMBIT, WEAPON_KNIFE_M9_BAYONET, WEAPON_KNIFE_TACTICAL, WEAPON_KNIFE_FALCHION, WEAPON_KNIFE_SURVIVAL_BOWIE, WEAPON_KNIFE_SURVIVAL_BOWIE,
 					WEAPON_KNIFE_BUTTERFLY, WEAPON_KNIFE_PUSH, WEAPON_KNIFE_GYPSY_JACKKNIFE, WEAPON_KNIFE_STILETTO, WEAPON_KNIFE_URSUS, WEAPON_KNIFE_WIDOWMAKER, WEAPON_KNIFE_CSS,
-					WEAPON_KNIFE_OUTDOOR, WEAPON_KNIFE_SKELETON, WEAPON_KNIFE_CANIS, WEAPON_KNIFE_CORD,
+					WEAPON_KNIFE_CORD, WEAPON_KNIFE_CANIS, WEAPON_KNIFE_OUTDOOR, WEAPON_KNIFE_SKELETON,
 					5030, 5031, 5032, 5033, 5034, 5035
 				};
 				ImGui::Combo(("Item"), &itemidtmp, itemnames, ARRAYSIZE(itemnames));
@@ -1173,21 +1169,18 @@ namespace Client
 		ImGui::Separator();
 		ImGui::Text("Configs");
 		ImGui::Separator();
-		static int iConfigSelect = 0;
 		static int iMenuSheme = 1;
+		static int iConfigSelect = 0;
 		static char ConfigName[11] = { 0 };
-
 		ImGui::PushItemWidth(128.f);
-
 		ImGui::ComboBoxArray("Select Config", &iConfigSelect, ConfigList);
-
 		if (ImGui::Button("Load Config")) {
 			try {
 				if (ConfigList.size() == 0) {
 					EventLog->AddToLog("Failed To Load Settings.");
 				}
 				else {
-					if (!Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+					if (Settings::LoadSettings(BaseDir + "\\" + ConfigList[iConfigSelect]) == 1) {
 						EventLog->AddToLog("Failed To Load Settings.");
 					}
 					else {
@@ -1200,14 +1193,13 @@ namespace Client
 			}
 		}
 		ImGui::SameLine();
-
 		if (ImGui::Button("Save Config")) {
 			try {
 				if (ConfigList.size() == 0) {
 					EventLog->AddToLog("Failed To Save Settings.");
 				}
 				else {
-					if (!Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect])) {
+					if (Settings::SaveSettings(BaseDir + "\\" + ConfigList[iConfigSelect]) == 1) {
 						EventLog->AddToLog("Failed To Save Settings.");
 					}
 					else {
@@ -1220,20 +1212,18 @@ namespace Client
 			}
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Refresh Config List"))
+		if (ImGui::Button("Refresh Config List")) {
 			RefreshConfigs();
-
-
+		}
 		ImGui::InputText("", ConfigName, 11);
 		ImGui::SameLine();
 		if (ImGui::Button("Make New Config")) {
 			string ConfigFileName = ConfigName;
-
-			if (ConfigFileName.size() < 1 || ConfigFileName == "")
+			if (ConfigFileName.size() < 1 || ConfigFileName == "") {
 				ConfigFileName = "default";
-
+			}
 			try {
-				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 0) {
+				if (Settings::SaveSettings(BaseDir + "\\" + ConfigFileName + ".smef") == 1) {
 					EventLog->AddToLog("Failed To Create Config.");
 				}
 				else {
@@ -1337,6 +1327,7 @@ namespace Client
 			ImGui::Checkbox("Show Spectators", &Settings::Misc::misc_Spectators);
 			ImGui::SameLine(SpaceLineOne);
 			ImGui::Checkbox("Recoil Crosshair", &Settings::Misc::misc_Punch);
+
 			//ImGui::SameLine(SpaceLineTwo);
 			//ImGui::Checkbox("Inventory Unlocker", &Settings::Misc::misc_inventory); // doesn't work
 
@@ -1387,16 +1378,14 @@ namespace Client
 				*(int*)((DWORD)&Name->fnChangeCallback + 0xC) = 0;
 				Name->SetValue(name);
 			}
-			/*			ImGui::Separator();
-
-						static char clantag[128] = { 0 };
-						ImGui::PushItemWidth(362.f);
-						ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
-						ImGui::PopItemWidth();
-						if (ImGui::Button("Apply"))
-						{
-							Engine::ClanTagApply(clantag);
-						}*/
+			/*ImGui::Separator();
+			static char clantag[128] = { 0 };
+			ImGui::PushItemWidth(362.f);
+			ImGui::InputText("Clan Tag", clantag, 128, Settings::Misc::misc_ClanTagChanger);
+			ImGui::PopItemWidth();
+			if (ImGui::Button("Apply")) {
+				Engine::ClanTagApply(clantag);
+			}*/
 		}
 
 		if (otherpages == 1)
@@ -1410,12 +1399,14 @@ namespace Client
 			if (Settings::Untrusted)
 			{
 				ImGui::Checkbox("No Sky", &Settings::Misc::misc_NoSky);
-				ImGui::SameLine(SpaceLineOne);
-				ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
+				
+				//broken
+				/*ImGui::SameLine(SpaceLineOne);
+				//ImGui::Checkbox("Third Person", &Settings::Misc::misc_ThirdPerson);
 				ImGui::SameLine(SpaceLineTwo);
 				ImGui::PushItemWidth(362.f);
 				if (Settings::Misc::misc_ThirdPerson)
-					ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");
+					ImGui::SliderFloat("##THIRDPERSONRANGE", &Settings::Misc::misc_ThirdPersonRange, 0.f, 500.f, "Range: %0.f");*/
 
 				ImGui::Separator();
 				ImGui::Spacing();

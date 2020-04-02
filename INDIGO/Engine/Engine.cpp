@@ -35,7 +35,11 @@ namespace Engine {
 
 #if ENABLE_DEBUG_FILE == 1
 		CSX::Log::Delete();
-		CSX::Log::Add("[Indigo - Loaded!]");
+		CSX::Log::Add("[Indigo - loaded!]");
+		std::time_t result = std::time(nullptr);
+		string curt = std::asctime(std::localtime(&result));
+		curt.erase(std::remove(curt.begin(), curt.end(), '\n'), curt.end());
+		CSX::Log::Add("[%s]", curt);
 #endif
 
 		if (!SDK::Interfaces::Engine())
@@ -98,21 +102,45 @@ namespace Engine {
 		if (!SDK::Interfaces::SteamUser())
 			return false;
 
+		if (!SDK::Interfaces::Effects())
+			return false;
+
 #if ENABLE_DEBUG_FILE == 1
-		CSX::Log::Add("[Indigo - All Interfaces Loaded!]\n");
+		CSX::Log::Add("[Indigo - all interfaces initialized!]\n");
 #endif
 
-		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses()))
+		if (!g_NetVar.Init(SDK::Interfaces::Client()->GetAllClasses())) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[NetvarManager - failed to initialize!]");
+#endif
 			return false;
+		}
 
-		if (!Engine::Hook::Initialize() || !Engine::Offset::Initialize())
+		if (!Engine::Hook::Initialize()) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Hooks - failed to initialize!]");
+#endif
 			return false;
-
+		}
+		else {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Hooks - initialized!]");
+#endif
+		}
+		if (!Engine::Offset::Initialize()) {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Offsets - failed to initialize!]");
+#endif
+			return false;
+		}
+		else {
+#if ENABLE_DEBUG_FILE == 1
+			CSX::Log::Add("[Offsets - initialized!]");
+#endif
+		}
 		return true;
 	}
-
-	void Shutdown()
-	{
+	void Shutdown() {
 		Hook::Shutdown();
 		Client::Shutdown();
 	}
@@ -264,6 +292,14 @@ namespace Engine {
 			return WEAPON_TYPE_KNIFE;
 		case WEAPON_KNIFE_CSS:
 			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_CORD:
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_CANIS: //survival
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_OUTDOOR: //nomad
+			return WEAPON_TYPE_KNIFE;
+		case WEAPON_KNIFE_SKELETON:
+			return WEAPON_TYPE_KNIFE;
 		default:
 			return WEAPON_TYPE_UNKNOWN;
 		}
@@ -282,12 +318,16 @@ namespace Engine {
 		return false;
 	}
 
-	//27th July 2019
+	int sct; //set clan tag
+	//11th March 2020
 	void SetMyClanTag(const char* tag, const char* name)
 	{
 		static auto pSetClanTag = reinterpret_cast<void(__fastcall*)(const char*, const char*)>(((DWORD)CSX::Memory::FindPatternV2("engine.dll", "53 56 57 8B DA 8B F9 FF 15")));
 #if ENABLE_DEBUG_FILE == 1
-		CSX::Log::Add("[FindPattern - pSetClanTag = %X]", pSetClanTag);
+		if (!sct) {
+			CSX::Log::Add("[FindPattern - pSetClanTag = %X]", pSetClanTag);
+			sct = 1;
+		}
 #endif
 		pSetClanTag(tag, name);
 	}
@@ -379,20 +419,21 @@ namespace Engine {
 		}
 	}
 
-	void ForceFullUpdate()
-	{
-		if (Client::g_pSkin)
-		{
+	int ffu; //force full update
+	void ForceFullUpdate() {
+		if (Client::g_pSkin) {
 			Client::g_pSkin->SetSkinConfig();
 			Client::g_pSkin->SetModelConfig();
 			Client::g_pSkin->SetKillIconCfg();
 		}
-
-		//ForceFullUpdate - 27th July 2019
+		//ForceFullUpdate - 11th March 2020
 		typedef void(*ForceUpdate) (void);
-		ForceUpdate FullUpdate = (ForceUpdate)CSX::Memory::FindSignature("engine.dll", "FullUpdate", "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85");
+		static ForceUpdate FullUpdate = (ForceUpdate)CSX::Memory::FindSignature("engine.dll", "FullUpdate", "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85");
 #if ENABLE_DEBUG_FILE == 1
-		CSX::Log::Add("[FindPattern - FullUpdate = %X]", FullUpdate);
+		if (!ffu) {
+			CSX::Log::Add("[FindPattern - FullUpdate = %X]", FullUpdate);
+			ffu = 1;
+		}
 #endif
 		FullUpdate();
 	}
@@ -701,7 +742,7 @@ namespace Engine {
 		return (sqrt(pow(vSrcPos.x - vDstPos.x, 2) + pow(vSrcPos.y - vDstPos.y, 2)));
 	}
 
-	//27th July 2019
+	//11th March 2020
 	bool LineGoesThroughSmoke(Vector vStartPos, Vector vEndPos) {
 		typedef bool(__cdecl* _LineGoesThroughSmoke) (Vector, Vector);
 		static _LineGoesThroughSmoke LineGoesThroughSmokeFn = 0;

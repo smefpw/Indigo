@@ -90,9 +90,9 @@ namespace Engine
 		TEAM_CT
 	};
 
-	//27th July 2019 - ClientClass
+	//30th March 2020 - ClientClass - ClassID_t
 	enum class CLIENT_CLASS_ID {
-		CAI_BaseNPC,
+		CAI_BaseNPC = 0,
 		CAK47,
 		CBaseAnimating,
 		CBaseAnimatingOverlay,
@@ -365,6 +365,7 @@ namespace Engine
 		CWeaponUMP45,
 		CWeaponUSP,
 		CWeaponXM1014,
+		CWeaponZoneRepulsor,
 		CWorld,
 		CWorldVguiText,
 		DustTrail,
@@ -373,6 +374,6 @@ namespace Engine
 		RocketTrail,
 		SmokeTrail,
 		SporeExplosion,
-		SporeTrail
+		SporeTrail,
 	};
 }

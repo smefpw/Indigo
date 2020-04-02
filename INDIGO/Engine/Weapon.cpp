@@ -11,7 +11,7 @@ namespace Engine
 #if ENABLE_DEBUG_FILE == 1
 		if (!wID) {
 			wID = GetMethod<GetWeaponIDFn>(this, 458)(this);
-			CSX::Log::Add("GetWeaponID = %X", wID);
+			CSX::Log::Add("[GetWeaponID = %X]", wID);
 			return wID;
 		}
 #endif
@@ -23,7 +23,7 @@ namespace Engine
 #if ENABLE_DEBUG_FILE == 1
 		if (!wType) {
 			wType = GetMethod<GetWeaponTypeFn>(this, 453)(this);
-			CSX::Log::Add("GetWeaponType = %X", wType);
+			CSX::Log::Add("[GetWeaponType = %X]", wType);
 			return wType;
 		}
 #endif
@@ -50,18 +50,18 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	//18th November 2019
-	//GetCCSWeapData - GetWeaponData
+	//11th March 2020
+	//GetCCSWeapData - GetWeaponData - GetCSWpnData
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
 #if ENABLE_DEBUG_FILE == 1
 		if (!wInfo) {
-			wInfo = GetMethod<GetWeaponDataFn>(this, 457)(this); //old = 456
-			CSX::Log::Add("GetWeaponInfo = %X", wInfo);
+			wInfo = GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 460
+			CSX::Log::Add("[GetWeaponInfo = %X]", wInfo);
 			return wInfo;
 		}
 #endif
-		return GetMethod<GetWeaponDataFn>(this, 457)(this); //old = 456
+		return GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 460
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()
@@ -69,17 +69,18 @@ namespace Engine
 		return (CBaseAttributableItem*)(DWORD)this;
 	}
 
-	//26th Sep 2019
+	//18th March 2020
 	const char*	CBaseWeapon::GetName()
 	{
 		typedef const char* (__thiscall* GetNameFn)(void*);
-		return GetMethod<GetNameFn>(this, 383)(this); //377
+		return GetMethod<GetNameFn>(this, 386)(this); //383
 	}
-	const char*	CBaseWeapon::GetPrintName()
-	{
+
+	//11th March 2020 - dont need anyway as it's never called
+	/*const char*	CBaseWeapon::GetPrintName() {
 		typedef const char* (__thiscall* GetPrintNameFn)(void*);
-		return GetMethod<GetPrintNameFn>(this, 379)(this);
-	}
+		return GetMethod<GetPrintNameFn>(this, 380)(this); //379
+	}*/
 
 	short* CBaseAttributableItem::GetItemDefinitionIndex()
 	{

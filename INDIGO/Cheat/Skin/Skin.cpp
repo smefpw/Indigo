@@ -51,7 +51,7 @@ char* pKnifeData[20] = {
 	"m9_bayonet","knife_flip","knife_gut","knife_karambit" ,"knife_m9_bayonet",
 	"knife_tactical","knife_falchion","knife_survival_bowie","knife_butterfly","knife_push",
 	"knife_gypsy_jackknife", "knife_stiletto", "knife_ursus", "knife_widowmaker", "knife_css",
-	"knife_outdoor", "knife_skeleton", "knife_canis", "knife_cord"
+	"knife_cord", "knife_canis", "knife_outdoor", "knife_skeleton"
 };
 
 
@@ -122,8 +122,8 @@ void CSkin::SetSkinConfig()
 		WEAPON_KNIFE_M9_BAYONET,WEAPON_KNIFE_TACTICAL,WEAPON_KNIFE_FALCHION,
 		WEAPON_KNIFE_SURVIVAL_BOWIE,WEAPON_KNIFE_BUTTERFLY,WEAPON_KNIFE_PUSH,
 		WEAPON_KNIFE_GYPSY_JACKKNIFE,WEAPON_KNIFE_STILETTO,WEAPON_KNIFE_URSUS,
-		WEAPON_KNIFE_WIDOWMAKER, WEAPON_KNIFE_CSS, WEAPON_KNIFE_OUTDOOR,
-		WEAPON_KNIFE_SKELETON, WEAPON_KNIFE_CANIS, WEAPON_KNIFE_CORD
+		WEAPON_KNIFE_WIDOWMAKER, WEAPON_KNIFE_CSS, WEAPON_KNIFE_CORD,
+		WEAPON_KNIFE_CANIS, WEAPON_KNIFE_OUTDOOR, WEAPON_KNIFE_SKELETON
 	};
 
 	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20)
@@ -183,17 +183,17 @@ void CSkin::SetModelConfig()
 	char* pszKnifeUrsus = "models/weapons/v_knife_ursus.mdl";
 	char* pszKnifeTalon = "models/weapons/v_knife_widowmaker.mdl";
 	char* pszKnifeCSS = "models/weapons/v_knife_css.mdl";
-	char* pszKnifeOutdoor = "models/weapons/v_knife_outdoor.mdl";
-	char* pszKnifeSkeleton = "models/weapons/v_knife_skeleton.mdl";
-	char* pszKnifeCanis = "models/weapons/v_knife_canis.mdl";
 	char* pszKnifeCord = "models/weapons/v_knife_cord.mdl";
+	char* pszKnifeSurvival = "models/weapons/v_knife_canis.mdl";
+	char* pszKnifeNomad = "models/weapons/v_knife_outdoor.mdl";
+	char* pszKnifeSkeleton = "models/weapons/v_knife_skeleton.mdl";
 
 	char* pszKnifeModels[20] = {
 		pszKnifeBayonet,pszKnifeFlip,pszKnifeGut,pszKnifeKarambit,
 		pszKnifeM9Bay,pszKnifeHuntsman,pszKnifeFalchion,pszKnifeBowie,
 		pszKnifeButterfly,pszKnifeShadow, pszKnifeNavaja, pszKnifeStiletto,
-		pszKnifeUrsus, pszKnifeTalon, pszKnifeCSS, pszKnifeOutdoor,
-		pszKnifeSkeleton, pszKnifeCanis, pszKnifeCord
+		pszKnifeUrsus, pszKnifeTalon, pszKnifeCSS, pszKnifeCord,
+		pszKnifeSurvival, pszKnifeNomad, pszKnifeSkeleton
 	};
 
 	int nOriginalKnifeCT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultCtModel);
@@ -220,17 +220,15 @@ void CSkin::SetModelConfig()
 	}
 }
 
-void CSkin::SetKillIconCfg()
-{
+void CSkin::SetKillIconCfg() {
 	//[enc_string_disable /]
-	char* pszKnifeModelsIcon[20] =
-	{
+	char* pszKnifeModelsIcon[20] = {
 		"bayonet","knife_flip","knife_gut","knife_karambit",
 		"knife_m9_bayonet","knife_tactical","knife_falchion",
 		"knife_survival_bowie","knife_butterfly","knife_push",
 		"knife_gypsy_jackknife", "knife_stiletto", "knife_ursus",
-		"knife_widowmaker", "knife_css", "knife_outdoor",
-		"knife_skeleton", "knife_canis", "knife_cord"
+		"knife_widowmaker", "knife_css", "knife_cord", "knife_canis",
+		"knife_outdoor", "knife_skeleton"
 	};
 	//[enc_string_enable /]
 	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20)
@@ -568,72 +566,74 @@ void Gloves_OnFrameStageNotify(ClientFrameStage_t Stage)
 	}
 }
 
-void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, void *pOut)
-{
+static auto random_sequence(const int low, const int high) {
+	return rand() % (high - low + 1) + low;
+}
+void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, void *pOut) {
 	CRecvProxyData* pData = const_cast<CRecvProxyData*>(pDataConst);
 	CBaseViewModel* pViewModel = (CBaseViewModel*)pStruct;
-
-	if (pViewModel)
-	{
+	if (pViewModel) {
 		IClientEntity* pOwner = Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)pViewModel->GetOwner());
-
-		if (pOwner && pOwner->EntIndex() == Interfaces::Engine()->GetLocalPlayer())
-		{
+		if (pOwner && pOwner->EntIndex() == Interfaces::Engine()->GetLocalPlayer()) {
 			const model_t* pModel = Interfaces::ModelInfo()->GetModel(pViewModel->GetModelIndex());
 			const char* szModel = Interfaces::ModelInfo()->GetModelName(pModel);
-
 			int m_nSequence = pData->m_Value.m_Int;
-			//[junk_disable /]
-			if (!strcmp(szModel, "models/weapons/v_knife_butterfly.mdl"))
-			{
+			if (!strcmp(szModel, "models/weapons/v_knife_butterfly.mdl")) {
 				//Fix animations for the Butterfly Knife
-				switch (m_nSequence)
-				{
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
 					break;
 				default:
-					m_nSequence++;
+					m_nSequence += 1;
+					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_falchion_advanced.mdl"))
-			{
+			else if (!strcmp(szModel, "models/weapons/v_knife_falchion_advanced.mdl")) {
 				//Fix animations for the Falchion Knife.
-				switch (m_nSequence)
-				{
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_IDLE2:
 					m_nSequence = SEQUENCE_FALCHION_IDLE1;
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_MISS1:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
+					m_nSequence = random_sequence(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
+					m_nSequence = random_sequence(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
 					break;
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				default:
-					m_nSequence--;
+					m_nSequence -= 1;
+					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_push.mdl"))
-			{
+			/*else if (!strcmp(szModel, "models/weapons/v_knife_css.mdl")) {
+				//Fix animations for the CSS Knife
+				switch (m_nSequence) {
+				case SEQUENCE_DEFAULT_LOOKAT01:
+					m_nSequence = random_sequence(SEQUENCE_CSS_LOOKAT01, SEQUENCE_CSS_LOOKAT02);
+					break;
+				default:
+					break; //do nothing
+				}
+			}*/
+			else if (!strcmp(szModel, "models/weapons/v_knife_push.mdl")) {
 				//Fix animations for the Shadow Daggers.
-				switch (m_nSequence)
-				{
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_IDLE2:
 					m_nSequence = SEQUENCE_DAGGERS_IDLE1;
 					break;
 				case SEQUENCE_DEFAULT_LIGHT_MISS1:
 				case SEQUENCE_DEFAULT_LIGHT_MISS2:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
+					m_nSequence = random_sequence(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_MISS1:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
+					m_nSequence = random_sequence(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
 					break;
 				case SEQUENCE_DEFAULT_HEAVY_HIT1:
 				case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
@@ -642,121 +642,68 @@ void Hook_SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, 
 					break;
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				default:
 					m_nSequence += 2;
+					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_survival_bowie.mdl"))
-			{
+			else if (!strcmp(szModel, "models/weapons/v_knife_survival_bowie.mdl")) {
 				//Fix Animations for the Bowie Knife
-				switch (m_nSequence)
-				{
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
 				case SEQUENCE_DEFAULT_IDLE1:
-					break;
+					break; //do nothing
 				case SEQUENCE_DEFAULT_IDLE2:
 					m_nSequence = SEQUENCE_BOWIE_IDLE1;
 					break;
 				default:
-					m_nSequence--;
+					m_nSequence -= 1;
+					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_ursus.mdl"))
-			{
-				//Fix Animations for the Ursus Knife
-				switch (m_nSequence)
-				{
+			else if (!strcmp(szModel, "models/weapons/v_knife_ursus.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_cord.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_canis.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_outdoor.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_ursus.mdl") ||
+				!strcmp(szModel, "models/weapons/v_knife_skeleton.mdl")) {
+				//Fix animations for Ursus,Paracord,Survival,Nomad and Skeleton Knives
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
 					break;
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
-					break;
-				default:
-					m_nSequence++;
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_widowmaker.mdl"))
-			{
-				//Fix Animations for the Talon Knife
-				switch (m_nSequence)
-				{
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(14, 15);
-					break;
-				}
-			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_skeleton.mdl"))
-			{
-				//Fix Animations for the Skeleton Knife
-				switch (m_nSequence)
-				{
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
+					m_nSequence = random_sequence(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
 					break;
 				default:
 					m_nSequence += 1;
 					break;
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_outdoor.mdl"))
-			{
-				//Fix Animations for the Nomad Knife
-				switch (m_nSequence)
-				{
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
+			else if (!strcmp(szModel, "models/weapons/v_knife_stiletto.mdl")) {
+				//Fix animations for the Stiletto Knife
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
+					m_nSequence = random_sequence(12, 13);
 					break;
 				default:
-					m_nSequence += 1;
-					break;
+					break; //do nothing
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_cord.mdl"))
-			{
-				//Fix Animations for the Paracord Knife
-				switch (m_nSequence)
-				{
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
+			else if (!strcmp(szModel, "models/weapons/v_knife_widowmaker.mdl")) {
+				//Fix animations for the Talon Knife
+				switch (m_nSequence) {
 				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
+					m_nSequence = random_sequence(14, 15);
 					break;
 				default:
-					m_nSequence += 1;
-					break;
+					break; //do nothing
 				}
 			}
-			else if (!strcmp(szModel, "models/weapons/v_knife_canis.mdl"))
-			{
-				//Fix Animations for the Survival Knife
-				switch (m_nSequence)
-				{
-				case SEQUENCE_DEFAULT_DRAW:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					break;
-				case SEQUENCE_DEFAULT_LOOKAT01:
-					m_nSequence = CSX::Utils::RandomIntRange(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					break;
-				default:
-					m_nSequence += 1;
-					break;
-				}
-			}
-			//[junk_enable /]
 			pData->m_Value.m_Int = m_nSequence;
 		}
 	}
-
 	fnSequenceProxyFn(pData, pStruct, pOut);
 }
 
@@ -855,7 +802,7 @@ void InitializeKits()
 	// lea     ecx, [eax+4]
 	// call    CEconItemSchema::GetPaintKitDefinition
 
-	//27th July 2019
+	//11th March 2020
 	static auto sig_address = CSX::Memory::FindPBYTEPattern("client_panorama.dll", (PBYTE)"\xE8\x00\x00\x00\x00\xFF\x76\x0C\x8D\x48\x04\xE8", "x????xxxxxxx", NULL, NULL);
 #if ENABLE_DEBUG_FILE == 1
 	CSX::Log::Add("[FindPattern - InitializeKits = %X]", sig_address);
@@ -930,7 +877,7 @@ void InitializeKits()
 
 	// Dump sticker kits
 	{
-		//27th July 2019
+		//11th March 2020
 		static auto sticker_sig = CSX::Memory::FindPBYTEPattern("client_panorama.dll", (PBYTE)"\x53\x8D\x48\x04\xE8\x00\x00\x00\x00\x8B\x4D\x10", "xxxxx????xxx", NULL, NULL) + 4;
 #if ENABLE_DEBUG_FILE == 1
 		CSX::Log::Add("[FindPattern - StickerKits = %X]", sticker_sig);

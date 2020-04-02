@@ -21,10 +21,10 @@ namespace CSX
 				IniFile = szPath;
 				IniFileLen = IniFile.size();
 				IniFileED();
-				return 1; //success!
+				return 0; //success!
 			}
 			catch (...) {
-				return 0; //fail!
+				return 1; //fail!
 			}
 		}
 

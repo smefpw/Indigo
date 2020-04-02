@@ -12,7 +12,15 @@
 DWORD WINAPI CheatEntry(LPVOID lpThreadParameter) {
 	HMODULE hModule = HMODULE(lpThreadParameter);
 	if (Engine::Initialize()) {
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[Engine - initialized!]\n");
+#endif
 		return 0;
+	}
+	else {
+#if ENABLE_DEBUG_FILE == 1
+		CSX::Log::Add("[Engine - failed to initialize!]\n");
+#endif
 	}
 	return 0;
 }

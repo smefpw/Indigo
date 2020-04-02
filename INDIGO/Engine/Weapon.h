@@ -22,7 +22,7 @@ namespace Engine
 		CBaseAttributableItem*	GeteAttributableItem();
 
 		const char*		GetName();
-		const char*		GetPrintName();
+		//const char*		GetPrintName(); //don't need as it's never called!
 		//[/swap_lines]
 	};
 
@@ -44,7 +44,7 @@ namespace Engine
 		//[/swap_lines]
 	};
 
-	//CSWeaponType - 27th July 2019
+	//CSWeaponType - 18th March 2020
 	enum WEAPON_TYPE {
 		WEAPON_TYPE_KNIFE = 0,
 		WEAPON_TYPE_PISTOL,
@@ -57,14 +57,14 @@ namespace Engine
 		WEAPON_TYPE_PLACEHOLDER,
 		WEAPON_TYPE_GRENADE,
 		WEAPON_TYPE_UNKNOWN,
-		MAXCSWEAPONTYPE
 	};
 
-	//27th July 2019
+	//30th March 2020
 	//ItemDefinitionIndex
 	enum WEAPON_ID {
-		ITEM_NONE = 0,
-		WEAPON_DEAGLE,
+		//weapons
+		WEAPON_INVALID = -1,
+		WEAPON_DEAGLE = 1,
 		WEAPON_ELITE,
 		WEAPON_FIVESEVEN,
 		WEAPON_GLOCK,
@@ -78,6 +78,7 @@ namespace Engine
 		WEAPON_M4A4 = 16,
 		WEAPON_MAC10,
 		WEAPON_P90 = 19,
+		WEAPON_ZONE_REPULSOR, //new
 		WEAPON_MP5SD = 23,
 		WEAPON_UMP45,
 		WEAPON_XM1014,
@@ -135,15 +136,17 @@ namespace Engine
 		WEAPON_KNIFE_SURVIVAL_BOWIE = 514,
 		WEAPON_KNIFE_BUTTERFLY,
 		WEAPON_KNIFE_PUSH,
-		WEAPON_KNIFE_CORD = 517,
-		WEAPON_KNIFE_CANIS = 518,
 		WEAPON_KNIFE_URSUS = 519,
 		WEAPON_KNIFE_GYPSY_JACKKNIFE,
-		WEAPON_KNIFE_OUTDOOR = 521,
 		WEAPON_KNIFE_STILETTO = 522,
 		WEAPON_KNIFE_WIDOWMAKER,
-		WEAPON_KNIFE_SKELETON = 525,
 		WEAPON_KNIFE_CSS = 503,
+		WEAPON_KNIFE_CORD = 517,
+		WEAPON_KNIFE_CANIS = 518, //survival
+		WEAPON_KNIFE_OUTDOOR = 521, //nomad
+		WEAPON_KNIFE_SKELETON = 525,
+
+		//gloves
 		GLOVE_STUDDED_BLOODHOUND = 5027,
 		GLOVE_T_SIDE = 5028,
 		GLOVE_CT_SIDE = 5029,
@@ -153,6 +156,5 @@ namespace Engine
 		GLOVE_MOTORCYCLE = 5033,
 		GLOVE_SPECIALIST = 5034,
 		GLOVE_HYDRA = 5035,
-		MAX_ITEM_DEFINITION_INDEX,
 	};
 }
