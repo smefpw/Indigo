@@ -66,7 +66,7 @@
 #define VENGINEVEFFECTS_INTERFACE_VERSION "VEngineEffects001"
 
 #define ENGINE_DLL "engine.dll"
-#define CLIENT_DLL "client_panorama.dll"
+#define CLIENT_DLL "client.dll"
 #define MATERIAL_DLL "materialsystem.dll"
 #define VGUIMT_DLL "vguimatsurface.dll"
 #define VSTDLIB_DLL	"vstdlib.dll"
