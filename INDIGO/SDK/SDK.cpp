@@ -94,7 +94,7 @@ namespace SDK
 			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
 			g_pClient = CaptureInterface<IBaseClientDLL>(pfnFactory, CLIENT_DLL_INTERFACE_VERSION);
 
-			while (!((DWORD)**(IClientMode***)((*(uint32_t**)Client())[10] + 0x5)) || !((DWORD)**(CGlobalVarsBase***)((*(uint32_t**)Client())[0] + 0x1B)))
+			while (!((DWORD)**(IClientMode***)((*(uint32_t**)Client())[10] + 0x5)) || !((DWORD)**(CGlobalVarsBase***)((*(uint32_t**)Client())[0] + 0x1F)))
 			{
 				Sleep(1000);
 			}
@@ -126,7 +126,7 @@ namespace SDK
 		if (!g_pGlobals)
 		{
 			auto pClientVFTable = *(uint32_t**)Client();
-			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1B);
+			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1F);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pGlobals = %X", g_pGlobals);
 #endif
