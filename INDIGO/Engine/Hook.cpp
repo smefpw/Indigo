@@ -157,7 +157,7 @@ namespace Engine {
 		float WINAPI Hook_GetViewModelFOV() {
 #if ENABLE_DEBUG_FILE == 1
 			if (!gvm) {
-				CSX::Log::Add("[Hooked - GetViewModelFOV]");
+				CSX::Log::Add("[Hooked - GetViewModelFOV]\n");
 				gvm = true;
 			}
 #endif

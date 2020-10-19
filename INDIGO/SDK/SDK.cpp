@@ -118,7 +118,7 @@ namespace SDK
 	CGlobalVarsBase* Interfaces::GlobalVars() {
 		if (!g_pGlobals) {
 			auto pClientVFTable = *(uint32_t**)Client();
-			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1F);
+			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1F); //0x1B
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pGlobals = %X", g_pGlobals);
 #endif
