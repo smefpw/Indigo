@@ -50,7 +50,7 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	//11th March 2020 - 19 October 2020
+	//19 October 2020
 	//GetCCSWeapData - GetWeaponData - GetCSWpnData
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
@@ -69,7 +69,7 @@ namespace Engine
 		return (CBaseAttributableItem*)(DWORD)this;
 	}
 
-	//18th March 2020 - 19 October 2020 - GetNameVirt
+	//19 October 2020 - GetNameVirt
 	const char*	CBaseWeapon::GetName() {
 		typedef const char* (__thiscall* GetNameFn)(void*);
 		return GetMethod<GetNameFn>(this, 386)(this); //383

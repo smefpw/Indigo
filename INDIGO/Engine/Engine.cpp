@@ -319,9 +319,8 @@ namespace Engine {
 	}
 
 	int sct; //set clan tag
-	//11th March 2020 - 19 October 2020
-	void SetMyClanTag(const char* tag, const char* name)
-	{
+	//19 October 2020
+	void SetMyClanTag(const char* tag, const char* name) {
 		static auto pSetClanTag = reinterpret_cast<void(__fastcall*)(const char*, const char*)>(((DWORD)CSX::Memory::FindPatternV2("engine.dll", "53 56 57 8B DA 8B F9 FF 15")));
 #if ENABLE_DEBUG_FILE == 1
 		if (!sct) {
@@ -426,12 +425,12 @@ namespace Engine {
 			Client::g_pSkin->SetModelConfig();
 			Client::g_pSkin->SetKillIconCfg();
 		}
-		//ForceFullUpdate - 11th March 2020 - 19 October 2020
+		//ForceFullUpdate - 19th october 2020
 		typedef void(*ForceUpdate) (void);
 		static ForceUpdate FullUpdate = (ForceUpdate)CSX::Memory::FindSignature("engine.dll", "FullUpdate", "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85");
 #if ENABLE_DEBUG_FILE == 1
 		if (!ffu) {
-			CSX::Log::Add("[FindPattern - FullUpdate = %X]", FullUpdate);
+			CSX::Log::Add("[FindPattern - FullUpdate = %X]\n", FullUpdate);
 			ffu = 1;
 		}
 #endif
@@ -742,7 +741,7 @@ namespace Engine {
 		return (sqrt(pow(vSrcPos.x - vDstPos.x, 2) + pow(vSrcPos.y - vDstPos.y, 2)));
 	}
 
-	//11th March 2020 - 19th October 2020
+	//19th October 2020
 	bool LineGoesThroughSmoke(Vector vStartPos, Vector vEndPos) {
 		typedef bool(__cdecl* _LineGoesThroughSmoke) (Vector, Vector);
 		static _LineGoesThroughSmoke LineGoesThroughSmokeFn = 0;

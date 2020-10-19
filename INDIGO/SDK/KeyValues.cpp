@@ -1,6 +1,6 @@
 #include "SDK.h"
 
-//11th March 2020 - 19 Oct 2020
+//19 Oct 2020
 namespace SDK {
 	bool KeyValues::LoadFromBuffer(KeyValues *pThis, const char *pszFirst, const char *pszSecond, PVOID pSomething, PVOID pAnother, PVOID pLast, PVOID New1Feb) {
 		typedef bool(__thiscall *_LoadFromBuffer)(KeyValues*, const char*, const char*, PVOID, PVOID, PVOID, PVOID);
