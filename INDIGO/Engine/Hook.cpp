@@ -121,7 +121,7 @@ namespace Engine {
 
 		int ic1; //is connected 1
 		bool WINAPI Hook_IsConnected() {
-			//1st April 2020
+			//1st April 2020 - 19th October 2020
 			static void* unk = CSX::Memory::NewPatternScan(GetModuleHandleA(CLIENT_DLL), "75 04 B0 01 5F") - 2;
 #if ENABLE_DEBUG_FILE == 1
 			if (!ic1) {
@@ -358,11 +358,12 @@ namespace Engine {
 				return false;
 			}
 
+			//19 October 2020
 			DWORD d3d9TablePtrPtr = CSX::Memory::FindPattern(SHADERPIDX9_DLL, D3D9_PATTERN, D3D9_MASK, 1);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("[FindPattern - pD3D9Table = %X]", d3d9TablePtrPtr);
 #endif
-			//30th March 2020 - GameOverlayRenderer.dll v5.78.0.89
+			//30th March 2020 - 19th October 2020 - GameOverlayRenderer.dll v6.12.87.0
 			DWORD_PTR** dwPresent_o = (DWORD_PTR**)CSX::Memory::FindPattern(GAMEOVERLAYRENDERER_DLL, GMOR_PATTERN, GMOR_MASK, 1);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("[FindPattern - dwPresent = %X]", dwPresent_o);

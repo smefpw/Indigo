@@ -20,14 +20,14 @@
 #define SHADERPIDX9_DLL "shaderapidx9.dll"
 #define GAMEOVERLAYRENDERER_DLL "GameOverlayRenderer.dll"
 #define D3D9_MASK "x????xxxxxx"
-#define GMOR_MASK "x????x????xxxx????xxx" //30th March 2020
+#define GMOR_MASK "x????x????xxxx????xxx"
 #define FORCE_FULL_UPDATE_MASK "x????xxxxxxxxxxxxxxx"
 
 //[enc_string_disable /]
 
 #define D3D9_PATTERN "\xA1\x00\x00\x00\x00\x50\x8B\x08\xFF\x51\x0C"
 #define FORCE_FULL_UPDATE_PATTERN "\xA1\x00\x00\x00\x00\xB9\x00\x00\x00\x00\x56\xFF\x50\x14\x8B\x34\x85"
-#define GMOR_PATTERN "\x68\x00\x00\x00\x00\x68\x00\x00\x00\x00\xFF\x76\x44\xE8\x00\x00\x00\x00\x83\xC4\x10" //30th March 2020
+#define GMOR_PATTERN "\x68\x00\x00\x00\x00\x68\x00\x00\x00\x00\xFF\x76\x44\xE8\x00\x00\x00\x00\x83\xC4\x10"
 #define SMOK_PATTERN "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\x00\x00\x00\x00\x0F\x57\xC0"
 
 typedef void(*LPSEARCHFUNC)(LPCTSTR lpszFileName);

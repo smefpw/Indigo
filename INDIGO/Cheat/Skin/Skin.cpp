@@ -802,7 +802,7 @@ void InitializeKits()
 	// lea     ecx, [eax+4]
 	// call    CEconItemSchema::GetPaintKitDefinition
 
-	//11th March 2020
+	//11th March 2020 - 19th October 2020
 	static auto sig_address = CSX::Memory::FindPBYTEPattern("client.dll", (PBYTE)"\xE8\x00\x00\x00\x00\xFF\x76\x0C\x8D\x48\x04\xE8", "x????xxxxxxx", NULL, NULL);
 #if ENABLE_DEBUG_FILE == 1
 	CSX::Log::Add("[FindPattern - InitializeKits = %X]", sig_address);
@@ -877,7 +877,7 @@ void InitializeKits()
 
 	// Dump sticker kits
 	{
-		//11th March 2020
+		//11th March 2020 - 19th October 2020
 		static auto sticker_sig = CSX::Memory::FindPBYTEPattern("client.dll", (PBYTE)"\x53\x8D\x48\x04\xE8\x00\x00\x00\x00\x8B\x4D\x10", "xxxxx????xxx", NULL, NULL) + 4;
 #if ENABLE_DEBUG_FILE == 1
 		CSX::Log::Add("[FindPattern - StickerKits = %X]", sticker_sig);

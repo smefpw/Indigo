@@ -50,18 +50,18 @@ namespace Engine
 		return *(float*)((DWORD)this + Offset::Entity::m_flNextPrimaryAttack);
 	}
 
-	//11th March 2020
+	//11th March 2020 - 19 October 2020
 	//GetCCSWeapData - GetWeaponData - GetCSWpnData
 	CWeaponInfo* CBaseWeapon::GetWeaponInfo() {
 		typedef CWeaponInfo*(__thiscall* GetWeaponDataFn)(void*);
 #if ENABLE_DEBUG_FILE == 1
 		if (!wInfo) {
-			wInfo = GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 460
+			wInfo = GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 457
 			CSX::Log::Add("[GetWeaponInfo = %X]", wInfo);
 			return wInfo;
 		}
 #endif
-		return GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 460
+		return GetMethod<GetWeaponDataFn>(this, 460)(this); //old = 457
 	}
 
 	CBaseAttributableItem* CBaseWeapon::GeteAttributableItem()
@@ -69,9 +69,8 @@ namespace Engine
 		return (CBaseAttributableItem*)(DWORD)this;
 	}
 
-	//18th March 2020
-	const char*	CBaseWeapon::GetName()
-	{
+	//18th March 2020 - 19 October 2020 - GetNameVirt
+	const char*	CBaseWeapon::GetName() {
 		typedef const char* (__thiscall* GetNameFn)(void*);
 		return GetMethod<GetNameFn>(this, 386)(this); //383
 	}
@@ -82,8 +81,7 @@ namespace Engine
 		return GetMethod<GetPrintNameFn>(this, 380)(this); //379
 	}*/
 
-	short* CBaseAttributableItem::GetItemDefinitionIndex()
-	{
+	short* CBaseAttributableItem::GetItemDefinitionIndex() {
 		// DT_BaseAttributableItem -> m_AttributeManager -> m_Item -> m_iItemDefinitionIndex
 		return (short*)((DWORD)this + Offset::Entity::m_iItemDefinitionIndex);
 	}
