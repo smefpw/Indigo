@@ -76,7 +76,7 @@ namespace SDK
 		return g_pEngine;
 	}
 
-	//11th March 2020
+	//19 Oct 2020
 	CGlowObjectManager* Interfaces::GlowManager() {
 		if (!g_GlowObjManager) {
 			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "A1 ? ? ? ? A8 01 75 4B") + 0x1);
@@ -87,14 +87,12 @@ namespace SDK
 		return g_GlowObjManager;
 	}
 
-	IBaseClientDLL* Interfaces::Client()
-	{
-		if (!g_pClient)
-		{
+	IBaseClientDLL* Interfaces::Client() {
+		if (!g_pClient) {
 			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
 			g_pClient = CaptureInterface<IBaseClientDLL>(pfnFactory, CLIENT_DLL_INTERFACE_VERSION);
 
-			while (!((DWORD)**(IClientMode***)((*(uint32_t**)Client())[10] + 0x5)) || !((DWORD)**(CGlobalVarsBase***)((*(uint32_t**)Client())[0] + 0x1F)))
+			while (!((DWORD)**(IClientMode***)((*(uint32_t**)Client())[10] + 0x5)) || !((DWORD)**(CGlobalVarsBase***)((*(uint32_t**)Client())[0] + 0x1F))) //0x1B
 			{
 				Sleep(1000);
 			}
@@ -103,48 +101,43 @@ namespace SDK
 			CSX::Log::Add("g_pClient = %X", g_pClient);
 #endif
 		}
-
 		return g_pClient;
 	}
 
-	IClientEntityList* Interfaces::EntityList()
-	{
-		if (!g_pEntityList)
-		{
+	IClientEntityList* Interfaces::EntityList() {
+		if (!g_pEntityList) {
 			CreateInterfaceFn pfnFactory = CaptureFactory(CLIENT_DLL);
 			g_pEntityList = CaptureInterface<IClientEntityList>(pfnFactory, VCLIENTENTITYLIST_INTERFACE_VERSION);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pEntityList = %X", g_pEntityList);
 #endif
 		}
-
 		return g_pEntityList;
 	}
 
-	CGlobalVarsBase* Interfaces::GlobalVars()
-	{
-		if (!g_pGlobals)
-		{
+	CGlobalVarsBase* Interfaces::GlobalVars() {
+		if (!g_pGlobals) {
 			auto pClientVFTable = *(uint32_t**)Client();
-			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1F);
+			g_pGlobals = **(CGlobalVarsBase***)(pClientVFTable[0] + 0x1F); //0x1B
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pGlobals = %X", g_pGlobals);
 #endif
 		}
-
 		return g_pGlobals;
 	}
 
-	//11th March 2020
+	//19th October 2020
 	CInput* Interfaces::Input() {
 		if (!g_pInput) {
 			g_pInput = *(CInput**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 0x1);
+			/*auto pdwClient = *(PDWORD_PTR*)g_pClient;
+			g_pInput = *(CInput**)(pdwClient[15] + 0x1);*/
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pInput = %X", g_pInput);
 #endif
 		}
 		return g_pInput;
-		}
+	}
 
 	IEngineTrace* Interfaces::EngineTrace()
 	{

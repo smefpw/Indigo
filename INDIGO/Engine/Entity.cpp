@@ -19,7 +19,7 @@ namespace Engine
 		return "";
 	}
 
-	//26th September 2019
+	//19 October 2020
 	bool CBaseEntity::IsPlayer() {
 		typedef bool(__thiscall* IsPlayerFn)(void*);
 		return GetMethod<IsPlayerFn>(this, 157)(this); //152
