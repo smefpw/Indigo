@@ -26,7 +26,7 @@ namespace CSX
 //[/swap_lines]
 		private:
 //[swap_lines]
-			PVOID* pPtrPtrTable;
+			PVOID* pPtrPtrTable; //class_base
 			PVOID* pPtrOldTable;
 			PVOID* pPtrNewTable;
 
