@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Engine.h"
-#include "Offset.h"
 
 namespace Engine {
 	class CBaseWeapon;
