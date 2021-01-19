@@ -449,10 +449,8 @@ namespace Engine {
 #endif
 						return false;
 					}
-
-					//doesn't work
+					//???
 					SurfaceTable.HookIndex(TABLE::ISurface::PlaySound, Hook_PlaySound);
-
 					//works
 					SurfaceTable.HookIndex(TABLE::ISurface::LockCursor, Hook_LockCursor);
 

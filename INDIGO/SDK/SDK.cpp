@@ -76,10 +76,10 @@ namespace SDK
 		return g_pEngine;
 	}
 
-	//19 Oct 2020
+	//24 dec 2020
 	CGlowObjectManager* Interfaces::GlowManager() {
-		if (!g_GlowObjManager) {
-			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "A1 ? ? ? ? A8 01 75 4B") + 0x1);
+		if(!g_GlowObjManager) {
+			g_GlowObjManager = *(CGlowObjectManager**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "0F 11 05 ? ? ? ? 83 C8 01") + 0x3);
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_GlowObjManager = %X", g_GlowObjManager);
 #endif
@@ -126,12 +126,10 @@ namespace SDK
 		return g_pGlobals;
 	}
 
-	//19th October 2020
+	//21 dec 2020
 	CInput* Interfaces::Input() {
-		if (!g_pInput) {
+		if(!g_pInput) {
 			g_pInput = *(CInput**)(CSX::Memory::FindPatternV2(CLIENT_DLL, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 0x1);
-			/*auto pdwClient = *(PDWORD_PTR*)g_pClient;
-			g_pInput = *(CInput**)(pdwClient[15] + 0x1);*/
 #if ENABLE_DEBUG_FILE == 1
 			CSX::Log::Add("g_pInput = %X", g_pInput);
 #endif
