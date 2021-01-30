@@ -17,7 +17,11 @@ void CMisc::OnRender() {
 		try {
 			if (Interfaces::Engine()->IsInGame()) {
 				//check to see if player has a weapon so no crash XD
-				CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+				//argh fuck it
+				CBaseWeapon* pWeaponEntity;
+				if (lp && lp != nullptr && lp != NULL) {
+					pWeaponEntity = lp->GetBaseWeapon();
+				}
 				if (lp && pWeaponEntity && !lp->IsDead() && !lp->IsDormant() && Interfaces::Engine()->IsConnected()){
 					Vector ViewAngles;
 					Interfaces::Engine()->GetViewAngles(ViewAngles);

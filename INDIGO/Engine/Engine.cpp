@@ -166,11 +166,11 @@ namespace Engine {
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_G3SG1:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_GALIL:
+		case WEAPON_GALILAR:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_M249:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_M4A4:
+		case WEAPON_M4A1:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_MAC10:
 			return WEAPON_TYPE_SHOTGUN;
@@ -192,9 +192,9 @@ namespace Engine {
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_TEC9:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_ZEUS:
+		case WEAPON_TASER:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_P2000:
+		case WEAPON_HKP2000:
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_MP7:
 			return WEAPON_TYPE_SHOTGUN;
@@ -206,7 +206,7 @@ namespace Engine {
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_SCAR20:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_SG553:
+		case WEAPON_SG556:
 			return WEAPON_TYPE_SHOTGUN;
 		case WEAPON_SSG08:
 			return WEAPON_TYPE_SNIPER;
@@ -230,11 +230,11 @@ namespace Engine {
 			return WEAPON_TYPE_C4;
 		case WEAPON_KNIFE_T:
 			return WEAPON_TYPE_KNIFE;
-		case WEAPON_M4A1S:
+		case WEAPON_M4A1_SILENCER:
 			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_USPS:
+		case WEAPON_USP_SILENCER:
 			return WEAPON_TYPE_PISTOL;
-		case WEAPON_CZ75:
+		case WEAPON_CZ75A:
 			return WEAPON_TYPE_PISTOL;
 		case WEAPON_REVOLVER:
 			return WEAPON_TYPE_PISTOL;
