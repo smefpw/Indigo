@@ -62,6 +62,7 @@ const char* sporty = "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.m
 const char* motorcycle = "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl";
 const char* specialist = "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl";
 const char* hydra = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl";
+const char* brokenfang = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_brokenfang.mdl";
 //[enc_string_disable /]
 
 WeaponSkins_s WeaponSkins[34];
