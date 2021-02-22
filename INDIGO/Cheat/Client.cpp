@@ -737,7 +737,7 @@ namespace Client
 				"Motorcycle",
 				"Specialist",
 				"Hydra",
-				"Brokenfang" //possibly broken
+				"Brokenfang"
 			};
 
 			ImGui::Separator();
