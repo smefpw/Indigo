@@ -709,10 +709,10 @@ namespace Client
 
 		if (otherpages == 0) {
 			const char* knife_models_items[] = {
-					"Default","Bayonet","Flip Knife","Gut Knife","Karambit" ,"M9 Bayonet",
-					"Huntsman Knife","Falchion Knife","Bowie Knife","Butterfly Knife","Shadow Daggers",
-					"Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife", "CSS Knife",
-					"Nomad Knife", "Skeleton Knife", "Survival Knife", "Paracord Knife"
+				"Default","Bayonet","Flip Knife","Gut Knife","Karambit" ,"M9 Bayonet",
+				"Huntsman Knife","Falchion Knife","Bowie Knife","Butterfly Knife","Shadow Daggers",
+				"Navaja Knife", "Stiletto Knife", "Ursus Knife", "Talon Knife", "CSS Knife",
+				"Nomad Knife", "Skeleton Knife", "Survival Knife", "Paracord Knife"
 			};
 
 			const char* quality_items[] = {
