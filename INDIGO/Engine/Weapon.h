@@ -59,7 +59,7 @@ namespace Engine
 		WEAPON_TYPE_UNKNOWN,
 	};
 
-		//1st January 2021
+	//1st January 2021
 	//ItemDefinitionIndex - item_definition_index
 	enum WEAPON_ID {
 		//weapons
