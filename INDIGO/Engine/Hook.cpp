@@ -95,14 +95,21 @@ namespace Engine {
 				glowObject.m_bRenderWhenOccluded = true;
 				glowObject.m_bRenderWhenUnoccluded = false;
 			};
+
 			if (Interfaces::GlowManager && Interfaces::Engine()->IsConnected()) {
 				if (Settings::Esp::glow) {
 					for (auto i = 0; i < Interfaces::GlowManager()->m_GlowObjectDefinitions.Count(); i++) {
 						auto& glowObject = Interfaces::GlowManager()->m_GlowObjectDefinitions[i];
 						auto entity = reinterpret_cast<CBaseEntity*>(glowObject.m_pEntity);
-						if (!entity || glowObject.IsUnused()) {
+
+						if (glowObject.IsUnused()) {
 							continue;
 						}
+
+						if (!entity || entity->IsDormant()) {
+							continue;
+						}
+
 						switch (entity->GetClientClass()->m_ClassID) {
 							case (int)CLIENT_CLASS_ID::CCSPlayer: {
 								if (entity->GetTeam() != Client::g_pPlayers->GetLocal()->m_pEntity->GetTeam()) {
@@ -110,8 +117,6 @@ namespace Engine {
 								}
 							}
 							break;
-							default:
-								break;
 						}
 					}
 				}
