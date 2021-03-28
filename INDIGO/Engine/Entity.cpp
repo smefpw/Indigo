@@ -196,7 +196,7 @@ namespace Engine
 
 	//reverted, as it wasn't working.
 	CBaseWeapon* CBaseEntity::GetBaseWeapon() {
-		return (CBaseWeapon*)Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)*(PDWORD)GetActiveWeapon());
+		return (CBaseWeapon*)Interfaces::EntityList()->GetClientEntityFromHandle((PVOID)*(PDWORD)GetActiveWeapon()); //????
 	}
 
 	UINT* CBaseEntity::GetWeapons()

@@ -148,160 +148,167 @@ namespace Engine {
 	bool stub_68616b65;
 	WEAPON_TYPE GetWeaponType(int iItemDefinitionIndex) {
 		switch (iItemDefinitionIndex) {
-		case WEAPON_DEAGLE:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_ELITE:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_FIVESEVEN:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_GLOCK:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_AK47:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_AUG:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_AWP:
-			return WEAPON_TYPE_SNIPER;
-		case WEAPON_FAMAS:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_G3SG1:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_GALIL:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_M249:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_M4A4:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_MAC10:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_P90:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_MP5SD:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_UMP45:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_XM1014:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_BIZON:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_MAG7:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_NEGEV:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_SAWEDOFF:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_TEC9:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_ZEUS:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_P2000:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_MP7:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_MP9:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_NOVA:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_P250:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_SCAR20:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_SG553:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_SSG08:
-			return WEAPON_TYPE_SNIPER;
-		case WEAPON_KNIFEGG:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_FLASHBANG:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_HEGRENADE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_SMOKEGRENADE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_MOLOTOV:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_DECOY:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_INCGRENADE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_C4:
-			return WEAPON_TYPE_C4;
-		case WEAPON_KNIFE_T:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_M4A1S:
-			return WEAPON_TYPE_SHOTGUN;
-		case WEAPON_USPS:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_CZ75:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_REVOLVER:
-			return WEAPON_TYPE_PISTOL;
-		case WEAPON_TAGRENADE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_FISTS:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_MELEE:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_AXE:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_HAMMER:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_SPANNER:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_GHOST:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_FIREBOMB:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_DIVERSION:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_FRAG_GRENADE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_SNOWBALL:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_BUMPMINE:
-			return WEAPON_TYPE_GRENADE;
-		case WEAPON_BAYONET:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_FLIP:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_GUT:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_KARAMBIT:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_M9_BAYONET:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_TACTICAL:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_FALCHION:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_SURVIVAL_BOWIE:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_BUTTERFLY:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_PUSH:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_URSUS:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_GYPSY_JACKKNIFE:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_STILETTO:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_WIDOWMAKER:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_CSS:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_CORD:
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_CANIS: //survival
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_OUTDOOR: //nomad
-			return WEAPON_TYPE_KNIFE;
-		case WEAPON_KNIFE_SKELETON:
-			return WEAPON_TYPE_KNIFE;
-		default:
-			return WEAPON_TYPE_UNKNOWN;
+			case WEAPON_DEAGLE:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_ELITE: //Dual Berettas
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_FIVESEVEN:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_GLOCK:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_AK47:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_AUG:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_AWP:
+				return WEAPON_TYPE_SNIPER;
+			case WEAPON_FAMAS:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_G3SG1:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_GALILAR:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_M249:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_M4A1: //M4A4
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_MAC10:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_P90:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_MP5SD:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_UMP45:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_XM1014:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_BIZON:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_MAG7:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_NEGEV:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_SAWEDOFF:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_TEC9:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_TASER: //ZEUS
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_HKP2000: //P2000
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_MP7:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_MP9:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_NOVA:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_P250:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_SCAR20:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_SG556: //SSG553
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_SSG08:
+				return WEAPON_TYPE_SNIPER;
+			case WEAPON_KNIFEGG: //Gold Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE: //Default Knife (CT)
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_FLASHBANG:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_HEGRENADE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_SMOKEGRENADE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_MOLOTOV:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_DECOY:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_INCGRENADE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_C4:
+				return WEAPON_TYPE_C4;
+		/*  case ITEM_KEVLAR, //body armour
+			case ITEM_ASSAULTSUIT, //helmet + body armour
+			case ITEM_HEAVYASSAULTSUIT, //special armour in co-op modes
+			case ITEM_NVG = 54, //night vision goggles
+			case ITEM_DEFUSER, //bomb defuser in bomb map, hostage cutter in hostage maps
+			case ITEM_CUTTERS, //hostage cutter (for faster hostage taking) only
+			case WEAPON_HEALTHSHOT = 57, //medi shot */
+			case WEAPON_KNIFE_T: //Default Knife (T)
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_M4A1_SILENCER:
+				return WEAPON_TYPE_SHOTGUN;
+			case WEAPON_USP_SILENCER:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_CZ75A:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_REVOLVER:
+				return WEAPON_TYPE_PISTOL;
+			case WEAPON_TAGRENADE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_FISTS:
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_MELEE:
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_AXE:
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_HAMMER:
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_SPANNER: //Wrench
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_GHOST: //Spectral Shiv
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_FIREBOMB:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_DIVERSION:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_FRAG_GRENADE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_SNOWBALL:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_BUMPMINE:
+				return WEAPON_TYPE_GRENADE;
+			case WEAPON_BAYONET: //Bayonet
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_CSS: //CSS Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_FLIP: //Flip Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_GUT: //Gut Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_KARAMBIT: //Karambit
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_M9_BAYONET: //M9 Bayonet
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_TACTICAL: //Huntsman Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_FALCHION: //Falchion Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_SURVIVAL_BOWIE: //Bowie Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_BUTTERFLY: //Butterfly Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_PUSH: //Shadow Daggers
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_CORD: //Paracord Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_CANIS: //Survival Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_URSUS: //Ursus Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_GYPSY_JACKKNIFE: //Navaja Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_OUTDOOR: //Nomad Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_STILETTO: //Stiletto Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_WIDOWMAKER: //Talon Knife
+				return WEAPON_TYPE_KNIFE;
+			case WEAPON_KNIFE_SKELETON: //Skeleton Knife
+				return WEAPON_TYPE_KNIFE;
+			default:
+				return WEAPON_TYPE_UNKNOWN;
 		}
 		return WEAPON_TYPE_UNKNOWN;
 	}

@@ -11,37 +11,35 @@ unordered_map<int, EconomyItemCfg> g_SkinChangerCfg;
 unordered_map<int, const char*> g_ViewModelCfg;
 unordered_map<const char*, const char*> g_KillIconCfg;
 
-char* pWeaponData[34] =
-{
+char* pWeaponData[34] = {
 	// ��������� - 0 - 9
 	WEAPON_DEAGLE_STR,WEAPON_ELITE_STR,WEAPON_FIVESEVEN_STR,
-	WEAPON_GLOCK_STR,WEAPON_P2000_STR,WEAPON_P250_STR,
-	WEAPON_USP_S_STR,WEAPON_CZ75_STR,WEAPON_REVOLVER_STR,
+	WEAPON_GLOCK_STR,WEAPON_HKP2000_STR,WEAPON_P250_STR,
+	WEAPON_USP_S_STR,WEAPON_CZ75A_STR,WEAPON_REVOLVER_STR,
 	WEAPON_TEC9_STR,
 	// �������� - 10 - 30
 	WEAPON_AK47_STR,WEAPON_AUG_STR,WEAPON_FAMAS_STR,WEAPON_GALIL_STR,
-	WEAPON_M249_STR,WEAPON_M4A4_STR,WEAPON_M4A1S_STR,WEAPON_MAC10_STR,
+	WEAPON_M249_STR,WEAPON_M4A1_STR,WEAPON_M4A1S_STR,WEAPON_MAC10_STR,
 	WEAPON_P90_STR,WEAPON_UMP45_STR,WEAPON_XM1014_STR,WEAPON_BIZON_STR,
 	WEAPON_MAG7_STR,WEAPON_NEGEV_STR,WEAPON_SAWEDOFF_STR,
-	WEAPON_MP7_STR,WEAPON_MP5SD_STR,WEAPON_MP9_STR,WEAPON_NOVA_STR,WEAPON_SG553_STR,
+	WEAPON_MP7_STR,WEAPON_MP5SD_STR,WEAPON_MP9_STR,WEAPON_NOVA_STR,WEAPON_SG556_STR,
 	WEAPON_SCAR20_STR,WEAPON_G3SG1_STR,
 	// ���������  - 31 - 32
 	WEAPON_AWP_STR,WEAPON_SSG08_STR
 };
 
-int pWeaponItemIndexData[34] =
-{
+int pWeaponItemIndexData[34] = {
 	// ��������� - 0 - 9
 	WEAPON_DEAGLE,WEAPON_ELITE,WEAPON_FIVESEVEN,
-	WEAPON_GLOCK,WEAPON_P2000,WEAPON_P250,
-	WEAPON_USPS,WEAPON_CZ75,WEAPON_REVOLVER,
+	WEAPON_GLOCK,WEAPON_HKP2000,WEAPON_P250,
+	WEAPON_USP_SILENCER,WEAPON_CZ75A,WEAPON_REVOLVER,
 	WEAPON_TEC9,
 	// �������� - 10 - 30
-	WEAPON_AK47,WEAPON_AUG,WEAPON_FAMAS,WEAPON_GALIL,
-	WEAPON_M249,WEAPON_M4A4,WEAPON_M4A1S,WEAPON_MAC10,
+	WEAPON_AK47,WEAPON_AUG,WEAPON_FAMAS,WEAPON_GALILAR,
+	WEAPON_M249,WEAPON_M4A1,WEAPON_M4A1_SILENCER,WEAPON_MAC10,
 	WEAPON_P90,WEAPON_UMP45,WEAPON_XM1014,WEAPON_BIZON,
 	WEAPON_MAG7,WEAPON_NEGEV,WEAPON_SAWEDOFF,
-	WEAPON_MP7,WEAPON_MP5SD,WEAPON_MP9,WEAPON_NOVA,WEAPON_SG553,
+	WEAPON_MP7,WEAPON_MP5SD,WEAPON_MP9,WEAPON_NOVA,WEAPON_SG556,
 	WEAPON_SCAR20,WEAPON_G3SG1,
 	// ���������  - 31 - 32
 	WEAPON_AWP,WEAPON_SSG08
@@ -56,6 +54,7 @@ char* pKnifeData[20] = {
 
 
 //[enc_string_enable /]
+//glove models
 const char* bloodhound = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl";
 const char* handwrap = "models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl";
 const char* slick = "models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl";
@@ -63,11 +62,13 @@ const char* sporty = "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.m
 const char* motorcycle = "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl";
 const char* specialist = "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl";
 const char* hydra = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl";
+const char* brokenfang = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_brokenfang.mdl";
 //[enc_string_disable /]
 
 WeaponSkins_s WeaponSkins[34];
 KnifeSkins_s KnifeSkins[20];
-Gloves_s GloveSkin[10];
+Gloves_s GloveSkin[11];
+
 //[junk_enable /]
 //[enc_string_enable /]
 RecvVarProxyFn fnSequenceProxyFn = NULL;
@@ -115,8 +116,7 @@ void CSkin::OnEvents(IGameEvent* pEvent)
 	}
 }
 
-void CSkin::SetSkinConfig() 
-{
+void CSkin::SetSkinConfig() {
 	int KnifeModelsType[20] = {
 		WEAPON_BAYONET,WEAPON_KNIFE_FLIP,WEAPON_KNIFE_GUT,WEAPON_KNIFE_KARAMBIT,
 		WEAPON_KNIFE_M9_BAYONET,WEAPON_KNIFE_TACTICAL,WEAPON_KNIFE_FALCHION,
@@ -126,45 +126,36 @@ void CSkin::SetSkinConfig()
 		WEAPON_KNIFE_CANIS, WEAPON_KNIFE_OUTDOOR, WEAPON_KNIFE_SKELETON
 	};
 
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20)
-	{
+	if(Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20) { //KNIFE ARRAY SIZE []
 		g_SkinChangerCfg[WEAPON_KNIFE].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_ct_model - 1];
 	}
-	else
-	{
+	else {
 		g_SkinChangerCfg[WEAPON_KNIFE].iItemDefinitionIndex = WEAPON_KNIFE;
 	}
 
-	if (Settings::Skin::knf_ct_skin)
-	{
+	if(Settings::Skin::knf_ct_skin) {
 		g_SkinChangerCfg[WEAPON_KNIFE].nFallbackPaintKit = Settings::Skin::knf_ct_skin;
 	}
-	else
-	{
+	else {
 		g_SkinChangerCfg[WEAPON_KNIFE].nFallbackPaintKit = 0;
 	}
 
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20)
-	{
+	if(Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20) { //KNIFE ARRAY SIZE []
 		g_SkinChangerCfg[WEAPON_KNIFE_T].iItemDefinitionIndex = KnifeModelsType[Settings::Skin::knf_tt_model - 1];
 	}
-	else
-	{
+	else {
 		g_SkinChangerCfg[WEAPON_KNIFE_T].iItemDefinitionIndex = WEAPON_KNIFE_T;
 	}
 
-	if (Settings::Skin::knf_tt_skin)
-	{
+	if(Settings::Skin::knf_tt_skin) {
 		g_SkinChangerCfg[WEAPON_KNIFE_T].nFallbackPaintKit = Settings::Skin::knf_tt_skin;
 	}
-	else
-	{
+	else {
 		g_SkinChangerCfg[WEAPON_KNIFE_T].nFallbackPaintKit = 0;
 	}
 }
 
-void CSkin::SetModelConfig()
-{
+void CSkin::SetModelConfig() {
 	char* pszDefaultCtModel = "models/weapons/v_knife_default_ct.mdl";
 	char* pszDefaultTtModel = "models/weapons/v_knife_default_t.mdl";
 
@@ -199,23 +190,19 @@ void CSkin::SetModelConfig()
 	int nOriginalKnifeCT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultCtModel);
 	int nOriginalKnifeT = Interfaces::ModelInfo()->GetModelIndex(pszDefaultTtModel);
 
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20)
-	{
+	if(Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20) { //KNIFE ARRAY SIZE []
 		char* mdl_ct = pszKnifeModels[Settings::Skin::knf_ct_model - 1];
 		g_ViewModelCfg[nOriginalKnifeCT] = mdl_ct;
 	}
-	else
-	{
+	else {
 		g_ViewModelCfg[nOriginalKnifeCT] = pszDefaultCtModel;
 	}
 
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20)
-	{
+	if(Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20) { //KNIFE ARRAY SIZE []
 		char* mdl_tt = pszKnifeModels[Settings::Skin::knf_tt_model - 1];
 		g_ViewModelCfg[nOriginalKnifeT] = mdl_tt;
 	}
-	else
-	{
+	else {
 		g_ViewModelCfg[nOriginalKnifeT] = pszDefaultTtModel;
 	}
 }
@@ -231,20 +218,16 @@ void CSkin::SetKillIconCfg() {
 		"knife_outdoor", "knife_skeleton"
 	};
 	//[enc_string_enable /]
-	if (Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20)
-	{
+	if(Settings::Skin::knf_ct_model >= 1 && Settings::Skin::knf_ct_model <= 20) { //KNIFE ARRAY SIZE []
 		g_KillIconCfg["knife_default_ct"] = pszKnifeModelsIcon[Settings::Skin::knf_ct_model - 1];
 	}
-	else
-	{
+	else {
 		g_KillIconCfg["knife_default_ct"] = "knife_default_ct";
 	}
-	if (Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20)
-	{
+	if(Settings::Skin::knf_tt_model >= 1 && Settings::Skin::knf_tt_model <= 20) { //KNIFE ARRAY SIZE []
 		g_KillIconCfg["knife_t"] = pszKnifeModelsIcon[Settings::Skin::knf_tt_model - 1];
 	}
-	else
-	{
+	else {
 		g_KillIconCfg["knife_t"] = "knife_t";
 	}
 }
@@ -863,7 +846,7 @@ void InitializeKits()
 			}
 			else {
 				k_gloves.push_back({ paint_kit->id, name });
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 11; i++) { //GLOVE ARRAY SIZE []
 					GloveSkin[i].Names.push_back(name);
 					GloveSkin[i].PaintKit.push_back(paint_kit->id);
 				}

@@ -74,7 +74,10 @@ namespace Engine {
 		try {
 			CBaseWeapon* pWeaponEntity;
 			if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
-				pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+				//argh
+				if (m_pMe && m_pMe->m_pEntity) {
+					pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+				}
 			}
 
 			if (pWeaponEntity) {
@@ -275,7 +278,10 @@ namespace Engine {
 			try {
 				CBaseWeapon* pWeaponEntity;
 				if (!local->IsDead() && !local->IsDormant() && Interfaces::Engine()->IsConnected()) {
-					pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+					//argh
+					if (m_pMe && m_pMe->m_pEntity) {
+						pWeaponEntity = m_pMe->m_pEntity->GetBaseWeapon();
+					}
 				}
 
 				CWeaponInfo* weaponinfo;

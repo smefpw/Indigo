@@ -555,176 +555,183 @@ void CEsp::OnRender() {
 	try {
 		CBaseEntity* lp = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(Interfaces::Engine()->GetLocalPlayer());
 		//check to see if player has a weapon so no crash XD
-		CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
-		if (pWeaponEntity && !lp->IsDead() && !lp->IsDormant()) {
-			if (Settings::Esp::esp_Sound) {
-				SoundEsp.DrawSoundEsp();
-			}
-			if (g_pAimbot) {
-				g_pAimbot->OnRender();
-			}
-			if (g_pTriggerbot) {
-				g_pTriggerbot->TriggerShowStatus();
-			}
-			if (Settings::Esp::esp_GrenadePrediction) {
-				GrenadePrediction();
-			}
-			if (Settings::Esp::esp_HitMarker) {
-				DrawHitmarker();
-			}
-			NightMode();
+		//argh fuck it EVEN MORE!!! FUCK YOU NULLPTR
+		CBaseWeapon* pWeaponEntity;
+		if (lp && lp != nullptr && lp != NULL) {
+			CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+		}
+		//yes, double check this is how annoying nullptr crashes are
+		if (lp && lp != nullptr && lp != NULL) {
+			if (pWeaponEntity && !lp->IsDead() && !lp->IsDormant()) {
+				if (Settings::Esp::esp_Sound) {
+					SoundEsp.DrawSoundEsp();
+				}
+				if (g_pAimbot) {
+					g_pAimbot->OnRender();
+				}
+				if (g_pTriggerbot) {
+					g_pTriggerbot->TriggerShowStatus();
+				}
+				if (Settings::Esp::esp_GrenadePrediction) {
+					GrenadePrediction();
+				}
+				if (Settings::Esp::esp_HitMarker) {
+					DrawHitmarker();
+				}
+				NightMode();
 
-			Ambient();
+				Ambient();
 
-			//add back if you fix sniper crosshair
-			/*if (Settings::Misc::misc_AwpAim && IsLocalAlive()) {
-				g_pRender->DrawFillBox(iScreenWidth, iScreenHeight, 1, 1, Color::Purple());
-			}*/
-			for (BYTE PlayerIndex = 0; PlayerIndex < g_pPlayers->GetSize(); PlayerIndex++) {
-				CPlayer* pPlayer = g_pPlayers->GetPlayer(PlayerIndex);
-				if (pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate) {
-					if (CheckPlayerTeam(pPlayer)) {
-						if (g_pTriggerbot) {
-							g_pTriggerbot->TriggerShow(pPlayer);
+				//add back if you fix sniper crosshair
+				/*if (Settings::Misc::misc_AwpAim && IsLocalAlive()) {
+					g_pRender->DrawFillBox(iScreenWidth, iScreenHeight, 1, 1, Color::Purple());
+				}*/
+				for (BYTE PlayerIndex = 0; PlayerIndex < g_pPlayers->GetSize(); PlayerIndex++) {
+					CPlayer* pPlayer = g_pPlayers->GetPlayer(PlayerIndex);
+					if (pPlayer && pPlayer->m_pEntity && pPlayer->bUpdate) {
+						if (CheckPlayerTeam(pPlayer)) {
+							if (g_pTriggerbot) {
+								g_pTriggerbot->TriggerShow(pPlayer);
+							}
+							DrawPlayerEsp(pPlayer);
+							if (Settings::Esp::esp_Skeleton) {
+								DrawPlayerSkeleton(pPlayer);
+							}
 						}
-						DrawPlayerEsp(pPlayer);
-						if (Settings::Esp::esp_Skeleton) {
-							DrawPlayerSkeleton(pPlayer);
+						if (Settings::Esp::esp_BulletTrace && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
+							DrawPlayerBulletTrace(pPlayer);
 						}
-					}
-					if (Settings::Esp::esp_BulletTrace && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
-						DrawPlayerBulletTrace(pPlayer);
-					}
-					if (Settings::Esp::esp_Dlightz && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
-						Dlight(pPlayer); //possible crash
+						if (Settings::Esp::esp_Dlightz && pPlayer->Team != g_pPlayers->GetLocal()->Team) {
+							Dlight(pPlayer); //possible crash
+						}
 					}
 				}
-			}
-			if (Settings::Esp::esp_BombTimer) {
-				if (bC4Timer && iC4Timer) {
-					float fTimeStamp = Interfaces::Engine()->GetLastTimeStamp();
-					if (!fExplodeC4Timer) {
-						fExplodeC4Timer = fTimeStamp + (float)iC4Timer;
+				if (Settings::Esp::esp_BombTimer) {
+					if (bC4Timer && iC4Timer) {
+						float fTimeStamp = Interfaces::Engine()->GetLastTimeStamp();
+						if (!fExplodeC4Timer) {
+							fExplodeC4Timer = fTimeStamp + (float)iC4Timer;
+						}
+						else {
+							fC4Timer = fExplodeC4Timer - fTimeStamp;
+							if (fC4Timer < 0.f) {
+								fC4Timer = 0.f;
+							}
+						}
 					}
 					else {
-						fC4Timer = fExplodeC4Timer - fTimeStamp;
-						if (fC4Timer < 0.f) {
-							fC4Timer = 0.f;
+						fExplodeC4Timer = 0.f;
+						fC4Timer = 0.f;
+					}
+				}
+				if (Settings::Esp::esp_Bomb || Settings::Esp::esp_WorldWeapons ||
+					Settings::Esp::esp_WorldGrenade || Settings::Esp::esp_Chicken || Settings::Esp::esp_BoxNade) {
+					for (int EntIndex = 0; EntIndex < Interfaces::EntityList()->GetHighestEntityIndex(); EntIndex++) {
+						CBaseEntity* pEntity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(EntIndex);
+						if (!pEntity || pEntity->IsPlayer()) {
+							continue;
 						}
-					}
-				}
-				else {
-					fExplodeC4Timer = 0.f;
-					fC4Timer = 0.f;
-				}
-			}
-			if (Settings::Esp::esp_Bomb || Settings::Esp::esp_WorldWeapons ||
-				Settings::Esp::esp_WorldGrenade || Settings::Esp::esp_Chicken || Settings::Esp::esp_BoxNade) {
-				for (int EntIndex = 0; EntIndex < Interfaces::EntityList()->GetHighestEntityIndex(); EntIndex++) {
-					CBaseEntity* pEntity = (CBaseEntity*)Interfaces::EntityList()->GetClientEntity(EntIndex);
-					if (!pEntity || pEntity->IsPlayer()) {
-						continue;
-					}
-					const model_t* pModel = pEntity->GetModel();
-					if (pModel) {
-						const char* pModelName = Interfaces::ModelInfo()->GetModelName(pModel);
-						if (pModelName) {
-							Vector vEntScreen;
-							if (!lp->IsDead() && !lp->IsDormant()) {
-								if (WorldToScreen(pEntity->GetRenderOrigin(), vEntScreen)) {
-									if (Settings::Esp::esp_Chicken && (pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CChicken)) {
-										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "Chicken");
-									}
-									if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CC4) {
-										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "[C4]");
-									}
-									if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4) {
-										g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(), "[C4 PLANTED]");
-									}
-									if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_") && !strstr(pModelName, "models/weapons/w_ied")) {
-										if (strstr(pModelName, "models/weapons/w_") && strstr(pModelName, "_dropped.mdl")) {
-											string WeaponName = pModelName + 17;
-											WeaponName[WeaponName.size() - 12] = '\0';
-											if (strstr(pModelName, "models/weapons/w_rif") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName.erase(0, 4);
-											}
-											else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223")) {
-												WeaponName.erase(0, 5);
-											}
-											else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName = "usp-s";
-											}
-											else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName.erase(0, 4);
-											}
-											else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName.erase(0, 5);
-											}
-											else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName.erase(0, 5);
-											}
-											else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl")) {
-												WeaponName.erase(0, 5);
-											}
-											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(), WeaponName.c_str());
+						const model_t* pModel = pEntity->GetModel();
+						if (pModel) {
+							const char* pModelName = Interfaces::ModelInfo()->GetModelName(pModel);
+							if (pModelName) {
+								Vector vEntScreen;
+								if (!lp->IsDead() && !lp->IsDormant()) {
+									if (WorldToScreen(pEntity->GetRenderOrigin(), vEntScreen)) {
+										if (Settings::Esp::esp_Chicken && (pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CChicken)) {
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "Chicken");
 										}
-									}
-									if (Settings::Esp::esp_BoxNade && (strstr(pModelName, "models/weapons/w_eq_")) || strstr(pModelName, "models/Weapons/w_eq_")) {
-										if (strstr(pModelName, "_dropped.mdl")) {
-											if (strstr(pModelName, "fraggrenade")) {
-												if (Settings::Esp::esp_BoxNade) {
-													g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Red());
+										if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CC4) {
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Green(), "[C4]");
+										}
+										if (Settings::Esp::esp_Bomb && pEntity->GetClientClass()->m_ClassID == (int)CLIENT_CLASS_ID::CPlantedC4) {
+											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Red(), "[C4 PLANTED]");
+										}
+										if (Settings::Esp::esp_WorldWeapons && !strstr(pModelName, "models/weapons/w_eq_") && !strstr(pModelName, "models/weapons/w_ied")) {
+											if (strstr(pModelName, "models/weapons/w_") && strstr(pModelName, "_dropped.mdl")) {
+												string WeaponName = pModelName + 17;
+												WeaponName[WeaponName.size() - 12] = '\0';
+												if (strstr(pModelName, "models/weapons/w_rif") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName.erase(0, 4);
 												}
-												else if (strstr(pModelName, "molotov")) {
+												else if (strstr(pModelName, "models/weapons/w_pist") && strstr(pModelName, "_dropped.mdl") && !strstr(pModelName, "models/weapons/w_pist_223")) {
+													WeaponName.erase(0, 5);
+												}
+												else if (strstr(pModelName, "models/weapons/w_pist_223") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName = "usp-s";
+												}
+												else if (strstr(pModelName, "models/weapons/w_smg") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName.erase(0, 4);
+												}
+												else if (strstr(pModelName, "models/weapons/w_mach") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName.erase(0, 5);
+												}
+												else if (strstr(pModelName, "models/weapons/w_shot") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName.erase(0, 5);
+												}
+												else if (strstr(pModelName, "models/weapons/w_snip") && strstr(pModelName, "_dropped.mdl")) {
+													WeaponName.erase(0, 5);
+												}
+												g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::White(), WeaponName.c_str());
+											}
+										}
+										if (Settings::Esp::esp_BoxNade && (strstr(pModelName, "models/weapons/w_eq_")) || strstr(pModelName, "models/Weapons/w_eq_")) {
+											if (strstr(pModelName, "_dropped.mdl")) {
+												if (strstr(pModelName, "fraggrenade")) {
 													if (Settings::Esp::esp_BoxNade) {
-														g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
+														g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Red());
 													}
-													else if (strstr(pModelName, "incendiarygrenade")) {
+													else if (strstr(pModelName, "molotov")) {
 														if (Settings::Esp::esp_BoxNade) {
 															g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
 														}
-														else if (strstr(pModelName, "flashbang")) {
+														else if (strstr(pModelName, "incendiarygrenade")) {
 															if (Settings::Esp::esp_BoxNade) {
-																g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Yellow());
+																g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::OrangeRed());
+															}
+															else if (strstr(pModelName, "flashbang")) {
+																if (Settings::Esp::esp_BoxNade) {
+																	g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Yellow());
+																}
 															}
 														}
 													}
 												}
 											}
-										}
-										else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
-											if (Settings::Esp::esp_BoxNade) {
-												g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
+											else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
+												if (Settings::Esp::esp_BoxNade) {
+													g_pRender->DrawOutlineBox((int)vEntScreen.x - 10, (int)vEntScreen.y - 10, 20, 20, Color::Gray());
+												}
 											}
 										}
-									}
-									if (Settings::Esp::esp_WorldGrenade && (strstr(pModelName, "models/weapons/w_eq_") || strstr(pModelName, "models/Weapons/w_eq_"))) {
-										if (strstr(pModelName, "_dropped.mdl")) {
-											string WeaponName = pModelName + 20;
-											WeaponName[WeaponName.size() - 12] = '\0';
-											Color GrenadeColor = Color::White();
-											if (strstr(pModelName, "fraggrenade")) {
-												WeaponName = "Grenade";
-												GrenadeColor = Color::Red();
-											}
-											else if (strstr(pModelName, "molotov")) {
-												WeaponName = "Molotov";
-												GrenadeColor = Color::OrangeRed();
-											}
-											else if (strstr(pModelName, "incendiarygrenade")) {
-												WeaponName = "Incendiary";
-												GrenadeColor = Color::OrangeRed();
-											}
-											else if (strstr(pModelName, "flashbang")) {
-												WeaponName = "Flashbang";
-												GrenadeColor = Color::Yellow();
-											}
+										if (Settings::Esp::esp_WorldGrenade && (strstr(pModelName, "models/weapons/w_eq_") || strstr(pModelName, "models/Weapons/w_eq_"))) {
+											if (strstr(pModelName, "_dropped.mdl")) {
+												string WeaponName = pModelName + 20;
+												WeaponName[WeaponName.size() - 12] = '\0';
+												Color GrenadeColor = Color::White();
+												if (strstr(pModelName, "fraggrenade")) {
+													WeaponName = "Grenade";
+													GrenadeColor = Color::Red();
+												}
+												else if (strstr(pModelName, "molotov")) {
+													WeaponName = "Molotov";
+													GrenadeColor = Color::OrangeRed();
+												}
+												else if (strstr(pModelName, "incendiarygrenade")) {
+													WeaponName = "Incendiary";
+													GrenadeColor = Color::OrangeRed();
+												}
+												else if (strstr(pModelName, "flashbang")) {
+													WeaponName = "Flashbang";
+													GrenadeColor = Color::Yellow();
+												}
 
-											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, GrenadeColor, WeaponName.c_str());
-										}
-										else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
-											string WeaponName = "Smoke";
-											g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Gray(), WeaponName.c_str());
+												g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, GrenadeColor, WeaponName.c_str());
+											}
+											else if (strstr(pModelName, "smokegrenade_thrown.mdl")) {
+												string WeaponName = "Smoke";
+												g_pRender->Text((int)vEntScreen.x, (int)vEntScreen.y, true, true, Color::Gray(), WeaponName.c_str());
+											}
 										}
 									}
 								}
@@ -882,7 +889,11 @@ void CEsp::OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &st
 						//one last check :D
 						if (lp && !lp->IsDead() && lp->IsDormant() && lp->IsValid()
 							&& Interfaces::Engine()->IsConnected()) {
-							CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+							//argh fuck it
+							CBaseWeapon* pWeaponEntity;
+							if (lp && lp != nullptr && lp != NULL) {
+								pWeaponEntity = lp->GetBaseWeapon();
+							}
 							if (pWeaponEntity) {
 								ForceMaterial(color, material); // <- hey :D
 								material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
@@ -894,7 +905,11 @@ void CEsp::OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &st
 						//one last check :D
 						if (lp && !lp->IsDead() && lp->IsDormant() && lp->IsValid()
 							&& Interfaces::Engine()->IsConnected()) {
-							CBaseWeapon* pWeaponEntity = lp->GetBaseWeapon();
+							//argh fuck it
+							CBaseWeapon* pWeaponEntity;
+							if (lp && lp != nullptr && lp != NULL) {
+								pWeaponEntity = lp->GetBaseWeapon();
+							}
 							if (pWeaponEntity) {
 								ForceMaterial(color, material); // <- hey :D
 								material->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, true);
