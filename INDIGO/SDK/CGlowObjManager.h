@@ -21,20 +21,6 @@ namespace SDK {
 		static const int END_OF_FREE_LIST = -1;
 		static const int ENTRY_IN_USE = -2;
 
-		/*
-		//8th july 2021:
-		New Glow Structure Offsets
-
-		[Float] Red Offset: (Index * 0x38) + 0x8
-		[Float] Green Offset: (Index * 0x38) + 0xC
-		[Float] Blue Offset: (Index * 0x38) + 0x10
-		[Float] Alpha Offset: (Index * 0x38) + 0x14
-
-		[Bool] Static Offset: (Index * 0x38) + 0x28
-		[Bool] Pulsing Offset: (Index * 0x38) + 0x30
-		[Bool] Full Offset: (Index * 0x38) + 0x2A
-		*/
-
 		//17th july 2021 - m_nNextFreeSlot moved to start
 		int		m_nNextFreeSlot;           //0x0000 - int
 		class IClientEntity* m_pEntity;    //0x0004 - void* entity
@@ -79,7 +65,7 @@ namespace SDK {
 			m_GlowObjectDefinitions[nIndex].m_flAlpha = flGlowAlpha;
 			m_GlowObjectDefinitions[nIndex].m_bRenderWhenOccluded = bRenderWhenOccluded;
 			m_GlowObjectDefinitions[nIndex].m_bRenderWhenUnoccluded = bRenderWhenUnoccluded;
-			//m_GlowObjectDefinitions[nIndex].m_nSplitScreenSlot = nSplitScreenSlot; //fix if u cba lol
+			//m_GlowObjectDefinitions[nIndex].m_nSplitScreenSlot = nSplitScreenSlot; //unused, fix if you cba.
 
 			return nIndex;
 		}
